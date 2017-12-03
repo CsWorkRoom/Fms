@@ -1,0 +1,311 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <!-- js -->
+
+    <!-- bootstrap -->
+    <script type="text/ecmascript" src="../Scripts/jquery-2.2.4.min.js"></script>
+    <script type="text/ecmascript" src="../Scripts/i18n/grid.locale-cn.js"></script>
+    <script type="text/ecmascript" src="../Scripts/jquery.jqGrid.min.js"></script>
+    <script type="text/ecmascript" src="../Scripts/bootstrap.min.js"></script>
+    <script type="text/ecmascript" src="../Common/Scripts/ContextMenu/ContextMenu.js"></script>
+
+    <!-- css -->
+    <link rel="stylesheet" href="../Content/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../Content/ui.jqgrid-bootstrap.css" />
+
+    <script>
+		$.jgrid.defaults.width = 780;
+    </script>
+    <meta charset="utf-8" />
+    <title>jqGrid Loading Data - Million Rows from a REST service</title>
+</head>
+<body>
+
+    <div id="topFieldDiv" style="width: 650px; height: 150px; overflow-y: hidden"><div style="width: 800px; height: 200px"></div></div>
+
+    <div style="margin-left:20px">
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+    <br /><br />
+
+    <input class="btn btn-default" type="button" value="Get Selected Rows" onclick="getSelectedRows()" />
+    <input class="btn btn-default" type="button" value="Get Selected Rows" onclick="getParam()" />
+    <input class="btn btn-default" type="button" value="startEdit" onclick="startEdit()" />
+    <input class="btn btn-default" type="button" value="saveRows" onclick="saveRows()" />
+    <br /><br /> 
+
+    <div class="contextMenu row" id="contextMenu" style="display:none;">
+        <ul>
+            <li id="add">
+                <span class="glyphicon glyphicon-plus" style="float:left"></span>
+                <span style="font-size:100%; font-family:Verdana;margin-left:10px;">新增行</span>
+            </li>
+            <li id="edit">
+                <span class="glyphicon glyphicon-pencil" style="float:left"></span>
+                <span style="font-size:100%; font-family:Verdana;margin-left:10px;">编辑行</span>
+            </li>
+            <li id="del">
+                <span class="glyphicon glyphicon-trash" style="float:left"></span>
+                <span style="font-size:100%; font-family:Verdana;margin-left:10px;">删除行</span>
+            </li>
+        </ul>
+    </div>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#jqGrid").jqGrid({
+                url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+                mtype: "GET",
+				styleUI : 'Bootstrap',
+                datatype: "jsonp",
+				editurl: 'clientArray',
+				colModel: [
+                    { label: '<a href="HtmlPage1.html" title="测试标题">OrderID</a>', name: 'OrderID', key: true, width: 75 },
+                    {
+                        label: '<label title="测试标题2">Customer ID</label>', editable: true, name: 'CustomerID', width: 150,
+                        edittype: "select",
+                        editoptions: {
+                            value: "WILMK:张三;TRADH:李四"
+                        }
+                    },
+                    { label: 'Order Date', name: 'OrderDate', editable: true, width: 150 },
+                    { label: 'Freight', name: 'Freight', editable: true, width: 150 },
+                    //{ label: 'Freight', name: 'Freight', width: 150, summaryType: 'sum', formatter: 'number' },
+                    //{ label: 'Ship Name', name: 'ShipName', editable: true, width: 150 },
+                    {
+                        label: 'Ship Name',
+                        name: 'ShipName',
+                        width: 90,
+                        editable: true,
+                        edittype: "select",
+                        editoptions: {
+                            value: "String:字符串;Vins et alcools:数值型;Int32:整型;Int64:长整型;Int16:短整型;DateTime:时间"
+                        }
+                    },
+                ],
+                //报表框架的数据是动态的，不宜采用分组。
+                //grouping: true,//启用分组
+                //groupingView: {
+                //    groupField: ["CustomerID"],
+                //    groupColumnShow: [true],
+                //    groupText: ["<b>{0}</b>"],
+                //    groupOrder: ["asc"],
+                //    groupSummary: [true],
+                //    groupCollapse: false
+                //},
+				viewrecords: true,
+				multiSort: true,
+                height: 250,
+                rowNum: 20,//默认分页大小-在框架动态赋值
+                rowList: [20, 30, 50],//传入分页大小的下拉-在框架动态复制
+                rownumbers: true,//显示行号
+                rownumWidth: 25,//行号列的宽度
+                scroll: 0,//1=启用滚动分页，0=关闭滚动分页
+                emptyrecords: 'Scroll to bottom to retrieve new page',//滚到到底以后的提示
+                multiselect: true,//支持复选
+                pager: "#jqGridPager",
+                gridComplete: initGridMenu,
+                caption: "测试表格"//设置和显示表格标题
+            });
+
+            // We need to have a navigation bar in order to add custom buttons to it
+            $('#jqGrid').navGrid('#jqGridPager',
+                { edit: true, add: false, del: false, search: true, refresh: true, view: false, position: "left", cloneToTop: true });
+
+            //$('#jqGrid').inlineNav('#jqGridPager',
+            //// the buttons to appear on the toolbar of the grid
+            //{
+            //    edit: true,
+            //    add: true,
+            //    del: true,
+            //    cancel: true,
+            //    editParams: {
+            //        keys: true,
+            //    },
+            //    addParams: {
+            //        keys: true
+            //    }
+            //});
+
+
+
+       
+
+            ////实现行拖拽  
+            //$('#jqGrid').jqGrid('sortableRows', {
+            //    items: '.jqgrow:not(.unsortable)'
+            //});
+
+            // add first custom button
+            //可以放入报表说明信息
+            $('#jqGrid').navButtonAdd('#jqGridPager',
+                {
+                    buttonicon: "ui-icon-mail-closed",
+                    title: "Send Mail",
+                    caption: "Send Mail",
+                    position: "last",
+                    onClickButton: customButtonClicked
+                });
+
+            $('#jqGrid').setGroupHeaders(
+             {
+                 useColSpanStyle: true,
+                 groupHeaders: [
+                     { "numberOfColumns": 5, "titleText": "<a href='HtmlPage1.html'>big big big</a>", "startColumnName": "OrderID" }]
+                 });
+
+            $('#jqGrid').setGroupHeaders(
+             {
+                 useColSpanStyle: true,
+                 groupHeaders: [
+                     { "numberOfColumns": 3, "titleText": "<a href='HtmlPage1.html'>Price</a>", "startColumnName": "OrderID" },
+                     { "numberOfColumns": 2, "titleText": "Secondary Details", "startColumnName": "Freight" }]
+             });
+
+            // the bindKeys() 
+            $("#jqGrid").jqGrid('bindKeys');
+
+        });
+
+
+        function startEdit() {
+            var grid = $("#jqGrid");
+            var ids = grid.jqGrid('getDataIDs');
+
+            for (var i = 0; i < ids.length; i++) {
+                grid.jqGrid('editRow', ids[i]);
+            }
+        };
+
+        function saveRows() {
+            var grid = $("#jqGrid");
+            var ids = grid.jqGrid('getDataIDs');
+
+            for (var i = 0; i < ids.length; i++) {
+                grid.jqGrid('saveRow', ids[i]);
+            }
+        }
+
+
+        function initGridMenu() {
+            $(".jqgrow", "#jqGrid").contextMenu('contextMenu', {
+                menuStyle: {
+                    width: "150px"
+                },
+                bindings: {
+                    'edit': function (t) {
+                        editRow();
+                    },
+                    'add': function (t) {
+                        addRow();
+                    },
+                    'del': function (t) {
+                        delRow();
+                    }
+                },
+                onContextMenu: function (event, menu) {
+                    var rowId = $(event.target).parent("tr").attr("id")
+                    var grid = $("#jqGrid");
+                    grid.setSelection(rowId);
+
+                    return true;
+                }
+            });
+
+            function addRow() {
+                // 选中行rowid
+                var rowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+
+                // 选中行实际表示的位置
+                var ind = $("#jqGrid").getInd(rowId);
+                // 新插入行的位置
+                var newInd = ind + 1;
+                $("#jqGrid").addRowData(rowId + 1, {}, newInd);
+
+
+                var $gridCase = $("#jqGrid");
+
+                //var ids = $gridCase.jqGrid('getDataIDs');
+                //if (ids != null && ids.length > 0) {
+                //    for (var i = 0; i < ids.length; i++) {
+                //        $gridCase.jqGrid('editRow', ids[i]);
+                //    }
+                //}
+
+                //var grid = $("#jqGrid");
+                //grid.editGridRow("new", { closeAfterAdd: true });
+            }
+
+            function editRow() {
+                var grid = $("#jqGrid");
+                var rowKey = grid.getGridParam("selrow");
+                if (rowKey) {
+                    grid.editGridRow(rowKey, { closeAfterEdit: true });
+                }
+                else {
+                    alert("No rows are selected");
+                }
+            }
+
+            function delRow() {
+                var grid = $("#jqGrid");
+                var rowKey = grid.getGridParam("selrow");
+                if (rowKey) {
+                    grid.delGridRow(rowKey);
+                }
+                else {
+                    alert("No rows are selected");
+                }
+            }
+        }
+
+
+        function customButtonClicked() {
+            alert("You have clicked a custom button.");
+        }
+
+
+        function getSelectedRows() {
+            var grid = $("#jqGrid");
+            var rowKey = grid.getGridParam("selrow");
+
+            if (!rowKey)
+                alert("No rows are selected");
+            else {
+                var selectedIDs = grid.getGridParam("selarrrow");
+                var result = "";
+                for (var i = 0; i < selectedIDs.length; i++) {
+                    result += selectedIDs[i] + ",";
+                }
+
+                alert(result);
+            }
+        }
+
+        function getParam()
+        {
+            var grid = $("#jqGrid"); 
+            //alert(grid.getDataIDs());
+            var pp= grid.getGridParam()
+            //alert(grid.getGridParam());
+            //获取所有行数据
+            var rows = grid.getRowData();
+            var ss = JSON.stringify(rows);
+
+            //ss = ss.slice(1, ss.length - 1);
+            var rr = $.parseJSON(ss);
+
+            var paras = grid.getGridParam();
+            alert(paras);
+        }
+
+    </script>
+
+
+</body>
+</html>

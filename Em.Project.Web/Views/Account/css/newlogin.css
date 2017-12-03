@@ -1,0 +1,174 @@
+﻿* {
+    font-family:PingFangSC-Light,'helvetica neue','hiragino sans gb',arial,'microsoft yahei ui','microsoft yahei',simsun,sans-serif; 
+}
+
+body {
+    margin: 0 0;
+   padding:0;
+   overflow:hidden;
+}
+
+#login_content,#login_wrap,#login_contents{
+    width: 100%;
+    height: 100%;
+}
+#login_contents{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#login_bg{
+    width: 100%;
+    height: 100%;
+}
+
+.pic_box_bg {
+    -webkit-animation-name: myfirst;
+    -webkit-animation-duration: 10s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-play-state: running;
+    animation-name: myfirst;
+    animation-duration: 10s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+}
+@-webkit-keyframes myfirst{
+    0%   {-webkit-transform:rotate(0deg);}
+    100% {-webkit-transform:rotate(360deg);}
+}
+@keyframes myfirst{
+    0%   {transform:rotate(0deg);}
+    100% {transform:rotate(360deg);}
+}
+
+
+/*third*/
+.login_area_right{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 102;
+    width: 350px;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+}
+.login_area_right .login_area_body{
+    position: relative;
+    top: 50%;
+    margin-top: -200px;
+}
+.login_area_right .login_box{
+    padding: 0 35px 15px 35px;
+}
+
+.login_area_right .login_box .pic{
+    position: relative;
+    height: 75px;
+}
+
+.login_area_right .login_box .pic .pic_box{
+    position: absolute;
+    z-index: 2;
+    left: 109px;
+    top: -47px;
+    overflow: hidden;
+    width: 96px;
+    height: 96px;
+    border-radius: 130px;
+}
+.login_area_right .login_box .pic .pic_box img{
+    height: 96px;
+    width: 96px;
+}
+.login_area_right .login_box .login_top{
+    /*display: none;*/
+    min-height: 248px;
+    width: 268px;
+    margin: 0 auto;
+}
+.login_area_right .login_box .login_top .text {
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+    padding: 10px 0;
+    text-align: center;
+    font-family: 'Microsoft YaHei',SimSun;
+}
+
+
+
+.login_area_right .login_bottom{
+    height: 39px;
+    width: 268px;
+    font-size: 12px;
+    margin: 0 auto;
+    color: #FFF;
+    border-radius: 0px 0px 4px 4px;
+    zoom: 1;
+    display: block;
+}
+.login_area_right .login_bottom .tool_area {
+    float: left;
+    margin-top: 7px;
+    width: 158px;
+}
+
+input[type=text],
+input[type=file],
+input[type=password],
+input[type=email], select {
+    border: 1px solid #DCDEE0;
+    vertical-align: middle;
+    border-radius: 3px;
+    height: 44px;
+    padding: 0px 16px;
+    font-size: 14px;
+    color: #555555;
+    outline:none;
+    width:100%;
+line-height:44px;
+}
+input[type=text]:focus,
+input[type=file]:focus,
+input[type=password]:focus,
+input[type=email]:focus, select:focus {
+    border: 1px solid #27A9E3;
+}
+
+
+input[type=submit],
+input[type=button]{
+    display: inline-block;
+    vertical-align: middle;
+    padding: 12px 24px;
+    margin: 0px;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #27A9E3;
+    border-radius: 3px;
+    border: none;
+    -webkit-appearance: none;
+    outline:none;
+    width:100%;
+}
+hr.hr15 {
+    height: 15px;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+hr.hr20 {
+    height: 20px;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}

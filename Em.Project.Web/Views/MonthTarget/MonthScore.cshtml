@@ -1,0 +1,82 @@
+﻿@using Easyman.Common.Mvc.Controls
+@using System.Web.Optimization;
+@model Easyman.Dto.MarkScore
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+@section Styles{
+@Styles.Render("~/Bundles/App/jqgrid/css")
+    <style>
+        
+        #iconMenuDiv {
+            width: 400px;
+        }
+
+            #iconMenuDiv span {
+                padding: 5px;
+                margin: 5px 10px;
+                font-size: 22px;
+                cursor: pointer;
+                display: inline-block;
+                border: 1px solid transparent;
+            }
+
+                #iconMenuDiv span:hover {
+                    transform: scale(1.02);
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+
+            #iconMenuDiv h5 {
+                margin-left: 10px;
+                padding-bottom: 4px;
+                border-bottom: solid 1px #707070;
+            }
+
+    </style>
+}
+@Html.HiddenFor(h => h.TargetTagId)
+@Html.HiddenFor(h => h.Month)
+@Html.HiddenFor(h => h.DistrictId)
+    <!--记录上一个指标打分-->
+    <input id="selectRowId" type="text" style="display:none" />
+<div role="tabpanel" class="tab-pane active" id="navMenu" style="padding:5px 20px 0px 20px">
+    <div class="form-group col-md-3 col-sm-3" style="padding:0px">
+        <label for="ft_FIELD_NAME" class="col-md-3 col-sm-3 control-label text-right" style="padding-left: 0px;padding-right: 2px;margin-top: 10px;line-height:17px">指标类型</label>
+        <div class="col-md-9 col-sm-9 jgrid-filter-field" style="padding:0px">
+        @Html.DropDownListFor(p => p.TargetTypeId, Model.TargetTypeList as List<SelectListItem>,new { @class = "form-control" })</div>
+    </div>
+    <div class="form-group col-md-3 col-sm-3" style="padding:0px">
+        <label for="ft_FIELD_NAME" class="col-md-3 col-sm-3 control-label text-right" style="padding-left: 0px;padding-right: 2px;margin-top: 10px;line-height:17px">指标</label>
+        <div class="col-md-9 col-sm-9 jgrid-filter-field" style="padding:0px">
+            @Html.DropDownListFor(p => p.TargetId, Model.TargetList,new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group col-md-3 col-sm-3" style="padding:0px">
+        <label for="ft_FIELD_NAME" class="col-md-3 col-sm-3 control-label text-right" style="padding-left: 0px;padding-right: 2px;margin-top: 10px;line-height:17px">客户经理名</label>
+        <div class="col-md-9 col-sm-9 jgrid-filter-field" style="padding:0px">
+            @Html.TextBoxFor(f => f.ManagerName, new { @class = "form-control", placeholder = "客户经理名" })
+        </div>
+    </div>
+    <div class="form-group col-md-3 col-sm-3" style="padding:0px">
+        <label for="ft_FIELD_NAME" class="col-md-3 col-sm-3 control-label text-right" style="padding-left: 0px;padding-right: 2px;margin-top: 10px;line-height:17px">客户经理工号</label>
+        <div class="col-md-9 col-sm-9 jgrid-filter-field" style="padding:0px">
+            @Html.TextBoxFor(f => f.ManagerNo, new { @class = "form-control", placeholder = "客户经理工号" })
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="DoSearch()"><i class="glyphicon glyphicon-search"></i> 查询</button>
+        <button class="btn btn-primary" id="sumbit-btn" data-loading-text="保存中..." type="submit" onclick="SaveTargetScore()"><i class="fa fa-save"></i> 保存打分</button>
+        <label class="control-label text-right" id="curMsg" style="font-size:14px;color:red"></label>
+     </div>
+</div>
+<div class="tab-content" style="width:100%;height:100%;padding:0px 20px 0px 20px">
+    <!--目标值编辑区域-->
+    <table id="jqGridList"></table>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/Bundles/App/jqgrid/js")
+    <script type="text/javascript" src="~/Views/MonthTarget/js/monthScore.js"></script>
+}

@@ -1,0 +1,77 @@
+﻿html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+/*以下是对bootstrap-multiselect控件的样式控制css*/
+
+/*自定义宽度*/
+.myOwnDdl {
+    display: inline-block;
+    width: 100%;
+}
+
+    /* 实现宽度自定义 */
+    .myOwnDdl .btn-group {
+        width: 100%;
+    }
+
+    .myOwnDdl .multiselect {
+        width: 100%;
+        text-align: right;
+        margin-top: -5px;
+    }
+
+    .myOwnDdl ul {
+        width: 100%;
+    }
+
+    .myOwnDdl .multiselect-selected-text {
+        position: absolute;
+        left: 0;
+        right: 25px;
+        text-align: left;
+        padding-left: 20px;
+    }
+
+/*控制隔行换色*/
+.myOwnDll .multiselect-container li.odd {
+    background: #eeeeee;
+}
+
+.form-control {
+    padding-left: 60px;
+}
+
+
+.jgrid-filter-field .jgrid-filter-operator {
+    position: absolute;
+    padding-left: 2px;
+}
+
+.option {
+    border: 0px;
+    height: 32px;
+    margin: 1px 0px 0px 2px;
+    padding: 0px;
+    width: 55px;
+}
+
+.form-group {
+    margin-bottom: 8px;
+}
+
+.row {
+    margin-left: 0px;
+}
+
+.toolPlace {
+    padding-right: 3px;
+    border-right: 1px solid #ddd;
+    margin-right: 3px;
+}
+
+.popover-content {
+    padding: 9px 14px 9px 14px;
+}

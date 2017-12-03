@@ -1,0 +1,284 @@
+﻿@using Easyman.Common.Mvc.Controls
+@using System.Web.Optimization;
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+@section Styles{
+    @Styles.Render("~/Bundles/App/jqgrid/css")
+    <style>
+        #iconMenuDiv {
+            width: 400px;
+        }
+
+            #iconMenuDiv span {
+                padding: 5px;
+                margin: 5px 10px;
+                font-size: 22px;
+                cursor: pointer;
+                display: inline-block;
+                border: 1px solid transparent;
+            }
+
+            #iconMenuDiv span:hover {
+                transform: scale(1.02);
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            #iconMenuDiv h5 {
+                margin-left: 10px;
+                padding-bottom: 4px;
+                border-bottom: solid 1px #707070;
+            }
+    </style>
+}
+<input id="targetJson" type="text" value="@ViewData["targetJson"]" style="display:none" />
+<input id="year" type="text" value="@ViewData["year"]" style="display:none" />
+<input id="targetTagId" type="text" value="@ViewData["targetTagId"]" style="display:none" />
+<input id="districtId" type="text" value="@ViewData["districtId"]" style="display:none" />
+@*<div role="tabpanel" class="tab-pane active" id="navMenu" style="padding:3px 0px 4px 20px;line-height:40px">
+    <button class="btn btn-primary" id="sumbit-btn" data-loading-text="提交中..." type="submit" onclick="SaveTargetValues()"><i class="fa fa-save"></i> 提交</button>&nbsp;
+</div>*@
+<div class="tab-content" style="width:100%;height:100%;">
+    <!--目标值编辑区域-->
+    <table id="jqGrid"></table>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/Bundles/App/jqgrid/js")
+    <script type="text/javascript">
+        //#region 页面入口
+        $(document).ready(function () {
+            InitGrid();
+            $(".jqg-second-row-header").addClass("table-bordered");//多表头首行无边线
+            WinResize("jqGrid", "navMenu", "jqGridPager");
+        })
+        //#endregion
+
+        //随着浏览器的变化而变化
+        $(window).resize(function () {
+            WinResize("jqGrid", "navMenu", "jqGridPager");
+        });
+        
+        //获取指标信息集合
+        function GetTargetArr()
+        {
+            var targetJson = $("#targetJson").val();
+            return JSON.parse(targetJson);
+        }
+
+        //初始化-加载表格内容
+        function InitGrid() {
+            var fieldArr = $.parseJSON("[]"); //字段信息初始化
+            //#region 拼凑colmodel列内容
+            var targetArr = GetTargetArr();
+            if (targetArr != null && targetArr.length > 0) {
+                //完成多表头的配置
+
+                //#region 列字段拼凑
+                //基础字段
+                fieldArr = [
+                    { label: '区县编号', name: 'DISTRICT_ID', width: 30, editable: false, key: true, frozen: true},
+                    { label: '区县名', name: 'DISTRICT_NAME', width: 50, editable: false, hidden: false, frozen: true, }
+                ];
+
+                //指标列的遍历
+                for (var i = 0; i < targetArr.length; i++) {
+                    var tg = targetArr[i];
+                    var targetV = {
+                        label: tg.Name + "(" + tg.Weight + ")",
+                        name: "TARGET_V_" + tg.Id.toString(),//目标值
+                        align: "center",//横向位置
+                        editable: true,
+                        edittype: "text",
+                        hidden: false,//是否隐藏
+                        width: 70//列宽度
+                    };
+                    fieldArr.push(targetV);
+                }
+                //#endregion
+            }
+            //#endregion
+
+            //#region 绑定表格的内容值
+
+            //获得表格内容集合
+            var targetValArr = [];
+            var targetVals = $.ajax({
+                type:"post",
+                async: false,
+                url: bootPATH + "api/services/api/NewTargetValue/GetQxTargetValueJson",
+                data: {
+                    TargetTagId: $("#targetTagId").val(),
+                    Year: $("#year").val(),
+                    DistrictId: $("#districtId").val()
+                },
+            });
+            if (targetVals.responseJSON.result.length > 0) {
+                targetValArr = JSON.parse(targetVals.responseJSON.result);
+            }
+
+            //绑定表格内容
+            $.jgrid.gridUnload("jqGrid");//先卸载
+            $("#jqGrid").jqGrid({
+                data: targetValArr,
+                datatype: "local",
+                styleUI: 'Bootstrap',
+                editurl: 'clientArray',
+                responsive: false,
+                colModel: fieldArr,
+                width: $(window).width(),
+                //shrinkToFit: true,//是否列宽度自适应。true=适应 false=不适应
+                loadonce: true,
+                viewrecords: true                
+            });
+            //#endregion
+
+            startEdit($("#jqGrid"));//批量启动编辑
+
+            //#region 设置多表头
+            var headArr = [];//初始化多表头
+            var typeArr = [];
+            if (targetArr != null && targetArr.length > 0) {
+                for (var i = 0; i < targetArr.length; i++) {
+                    var num = 0;
+                    var sumWeight = 0;
+
+                    if (!isInArray(typeArr, targetArr[i].TargetTypeId))//判断是否在集合中
+                    {
+                        for (j = 0; j < targetArr.length; j++) {
+                            if (targetArr[i].TargetTypeId == targetArr[j].TargetTypeId) {
+                                num = j - i;
+                                sumWeight += targetArr[j].Weight;
+                                typeArr.push(targetArr[i].TargetTypeId);
+                            }
+                        }
+
+                        if (num > 0) {
+                            var startName = "TARGET_V_" + targetArr[i].Id;
+                            var title = targetArr[i].TargetTypeName + "(" + sumWeight.toString() + ")";
+                            var hd = { "numberOfColumns": num + 1, "titleText": "" + title + "", "startColumnName": "" + startName + "" };
+                            headArr.push(hd);
+                        }
+                    }
+                }
+            }
+            var firstTitle = "【" + $("#year").val() + "】年度全市(州)指标下达";
+            firstTitle = '<button class="btn btn-primary" id="sumbit-btn" data-loading-text="提交中..." type="submit" onclick="SaveTargetValues()"><i class="fa fa-save"></i> 提交</button>&nbsp;&nbsp;' + firstTitle;
+            //设置多表头
+            $('#jqGrid').setGroupHeaders(
+            {
+                useColSpanStyle: true,
+                groupHeaders: [{ "numberOfColumns": targetArr.length + 2, "titleText": firstTitle, "startColumnName": "DISTRICT_ID" }]
+            });
+            //设置多表头
+            $('#jqGrid').setGroupHeaders(
+            {
+                useColSpanStyle: true,
+                groupHeaders: headArr
+            });
+            
+            //#endregion
+
+            //$("#jqGrid").jqGrid('setFrozenColumns');//设置冻结列生效
+        }
+
+        /*
+        * 使用循环的方式判断一个元素是否存在于一个数组中
+        *  arr 数组
+        *  value 元素值
+        */
+        function isInArray(arr, value) {
+            for (var i = 0; i < arr.length; i++) {
+                if (value === arr[i]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //批量启动编辑
+        function startEdit($gridCase) {
+            var ids = $gridCase.jqGrid('getDataIDs');
+
+            for (var i = ids.length - 1; i >= 0; i--) {
+                $gridCase.jqGrid('editRow', ids[i]);
+            }
+        }
+
+        function saveRows($gridCase) {
+            //var grid = $("#jqGrid");
+            var ids = $gridCase.jqGrid('getDataIDs');
+
+            for (var i = 0; i < ids.length; i++) {
+                $gridCase.jqGrid('saveRow', ids[i]);
+            }
+        }
+
+        function SaveTargetValues() {
+            $("#sumbit-btn").button('loading');//保存中
+            saveRows($("#jqGrid"));
+            //如果有错误时阻止提交
+            if ($("#info_dialog").attr("aria-hidden") == "false") {
+                startEdit($("#jqGrid"));
+                $("#sumbit-btn").button('reset');
+                return;
+            }
+            var gridArr = $("#jqGrid").getRowData();//获得grid的数据
+            startEdit($("#jqGrid"));
+
+            var targetValueArr = DealJqgridData(gridArr);
+
+            $.ajax({
+                type: "post",
+                url: "SaveQxTargetValueList",
+                data: {
+                    targetVals: JSON.stringify(targetValueArr)
+                },
+                success: function (e) {
+                    abp.message.success("", "提交成功！");
+                    $("#sumbit-btn").button('reset');
+                },
+                error: function (e) {
+                    if (e.responseText.indexOf("<title>") != -1) {
+                        var start = e.responseText.indexOf("<title>");
+                        var end = e.responseText.indexOf("</title>");
+                        abp.message.error(e.responseText.substring(start + 7, end), "保存失败");
+                    }
+                    else
+                        abp.message.error(e.responseText, "保存失败");
+                    $("#sumbit-btn").button('reset');
+                }
+            });
+        }
+        //解析表格内容为目标值
+        function DealJqgridData(gridArr)
+        {
+            var targetArr = GetTargetArr();
+
+            var valArr = [];
+            if(gridArr!=null&&gridArr.length>0)
+            {
+                for(var i=0;i<gridArr.length;i++)
+                {
+                    var row = gridArr[i];
+                    for(var j=0;j<targetArr.length;j++)
+                    {
+                        var tg=targetArr[j];
+                        var item = {
+                            TargetId: tg.Id,
+                            DistrictId: row.DISTRICT_ID,
+                            YearMonth: $("#year").val(),
+                            TargetTagId: $("#targetTagId").val(),
+                            TValue: row["TARGET_V_" + tg.Id.toString()]//指标值
+                        };
+                        valArr.push(item);//添加到集合
+                    }
+                }
+            }
+            return valArr;
+        }
+
+    </script>
+}

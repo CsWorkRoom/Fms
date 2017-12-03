@@ -1,0 +1,267 @@
+﻿@using Easyman.Common.Mvc.Controls
+@using System.Web.Optimization;
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+@section Styles{
+@Styles.Render("~/Bundles/App/jqgrid/css")
+    <style>
+    </style>
+}
+<input id="subitemJson" type="text" value="@ViewData["subitemJson"]" style="display:none" />
+<input id="month" type="text" value="@ViewData["month"]" style="display:none" />
+<input id="districtId" type="text" value="@ViewData["districtId"]" style="display:none" />
+<input id="districtName" type="text" value="@ViewData["districtName"]" style="display:none" />
+ @*<div role="tabpanel" class="tab-pane active" id="navMenu" style="padding:3px 0px 4px 20px;line-height:40px">
+    <button class="btn btn-primary" id="sumbit-btn" data-loading-text="提交中..." type="submit" onclick="SaveSubitemScores()"><i class="fa fa-save"></i> 提交</button>&nbsp;
+</div>*@
+<div class="tab-content" style="width:100%;height:100%;margin-top:-1px;">
+    <!--目标值编辑区域-->
+    <table id="jqGrid"></table>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/Bundles/App/jqgrid/js")
+    <script type="text/javascript">
+        //#region 页面入口
+        $(document).ready(function () {
+            InitGrid();
+            $(".jqg-second-row-header").addClass("table-bordered");//多表头首行无边线
+            SetShrinkToFit("jqGridList");
+            WinResize("jqGrid", "navMenu", null);
+        })
+        //#endregion
+
+        //随着浏览器的变化而变化
+        $(window).resize(function () {
+            WinResize("jqGrid", "navMenu", null);
+        });
+
+        //获取指标信息集合
+        function GetSubitemArr()
+        {
+            var subitemJson = $("#subitemJson").val();
+            return JSON.parse(subitemJson);
+        }
+
+        //初始化-加载表格内容
+        function InitGrid() {
+            var fieldArr = $.parseJSON("[]"); //字段信息初始化
+
+            //#region 拼凑colmodel列内容
+            var subitemArr = GetSubitemArr();
+            if (subitemArr != null && subitemArr.length > 0) {
+                //完成多表头的配置
+
+                //#region 列字段拼凑
+                //基础字段
+                fieldArr = [
+                    { label: '客户经理工号', name: 'MANAGER_NO', width: 40, editable: false, key: true },
+                    { label: '客户经理名称', name: 'MANAGER_NAME', width: 40, editable: false, hidden: false }
+                ];
+
+                //指标列的遍历
+                for (var i = 0; i < subitemArr.length; i++) {
+                    var sb = subitemArr[i];
+                    var sbScore = {
+                        label: sb.Name + "(" + sb.Weight + ")",
+                        name: "SUBITEM_SCORE_" + sb.Id.toString(),//目标值
+                        align: "center",//横向位置
+                        editable: true,
+                        edittype: "text",
+                        hidden: false,//是否隐藏
+                        width: 40//列宽度
+                    };
+                    fieldArr.push(sbScore);
+                }
+                //#endregion
+            }
+            //#endregion
+
+            //#region 绑定表格的内容值
+
+            //获得表格内容集合
+            var sbScoreArr = [];
+            var sbScores = $.ajax({
+                type:"post",
+                async: false,
+                url: bootPATH + "api/services/api/Subitem/GetSubitemJson",
+                data: {
+                    Month: $("#month").val(),
+                    DistrictId: $("#districtId").val()
+                },
+            });
+            if (sbScores.responseJSON.result.length > 0) {
+                sbScoreArr = JSON.parse(sbScores.responseJSON.result);
+            }
+
+
+            //绑定表格内容
+            $.jgrid.gridUnload("jqGrid");//先卸载
+            $("#jqGrid").jqGrid({
+                data: sbScoreArr,
+                datatype: "local",
+                styleUI: 'Bootstrap',
+                editurl: 'clientArray',
+                responsive: false,
+                page: 1,
+                colModel: fieldArr,
+                //shrinkToFit: true,//是否列宽度自适应。true=适应 false=不适应
+                loadonce: true,
+                viewrecords: true
+                //rowNum: fieldJson.length,
+            });
+            //#endregion
+
+            startEdit($("#jqGrid"));//批量启动编辑
+
+            //#region 设置多表头
+            var headArr = [];//初始化多表头
+
+            var typeArr = [];
+
+            if (subitemArr != null && subitemArr.length > 0) {
+                for (var i = 0; i < subitemArr.length; i++) {
+                    var num = 0;
+                    var sumWeight = 0;
+
+                    if (!isInArray(typeArr, subitemArr[i].SubitemTypeId))//判断是否在集合中
+                    {
+                        for (j = 0; j < subitemArr.length; j++) {
+                            if (subitemArr[i].SubitemTypeId!=null&& subitemArr[i].SubitemTypeId == subitemArr[j].SubitemTypeId) {
+                                num = j - i;
+                                sumWeight += subitemArr[j].Weight;
+                                typeArr.push(subitemArr[i].TargetTypeId);
+                            }
+                        }
+
+                        if (num > 0) {
+                            var startName = "SUBITEM_SCORE_" + subitemArr[i].Id;
+                            var title = subitemArr[i].SubitemTypeName + "(" + sumWeight.toString() + ")";
+                            var hd = { "numberOfColumns": num + 1, "titleText": "" + title + "", "startColumnName": "" + startName + "" };
+                            headArr.push(hd);
+                        }
+                    }
+                }
+            }
+
+            var firstTitle = '<button class="btn btn-primary" id="sumbit-btn" data-loading-text="提交中..." type="submit" onclick="SaveSubitemScores()"><i class="fa fa-save"></i> 提交</button>&nbsp;&nbsp;'
+            firstTitle = firstTitle + "【" + $("#month").val() + "】月份【" + $("#districtName").val() + "】经理打分";
+            //设置多表头
+            $('#jqGrid').setGroupHeaders(
+            {
+                useColSpanStyle: true,
+                groupHeaders: [{ "numberOfColumns": subitemArr.length + 2, "titleText": firstTitle, "startColumnName": "MANAGER_NO" }]
+            });
+            //设置多表头
+            $('#jqGrid').setGroupHeaders(
+            {
+                useColSpanStyle: true,
+                groupHeaders: headArr
+            });
+            
+            //#endregion
+            
+            //$("#jqGrid").jqGrid('setFrozenColumns');//设置冻结列生效
+        }
+
+        /*
+        * 使用循环的方式判断一个元素是否存在于一个数组中
+        *  arr 数组
+        *  value 元素值
+        */
+        function isInArray(arr, value) {
+            for (var i = 0; i < arr.length; i++) {
+                if (value === arr[i]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //批量启动编辑
+        function startEdit($gridCase) {
+            var ids = $gridCase.jqGrid('getDataIDs');
+
+            for (var i = ids.length - 1; i >= 0; i--) {
+                $gridCase.jqGrid('editRow', ids[i]);
+            }
+        }
+
+        function saveRows($gridCase) {
+            //var grid = $("#jqGrid");
+            var ids = $gridCase.jqGrid('getDataIDs');
+
+            for (var i = 0; i < ids.length; i++) {
+                $gridCase.jqGrid('saveRow', ids[i]);
+            }
+        }
+
+        function SaveSubitemScores() {
+            $("#sumbit-btn").button('loading');//保存中
+            saveRows($("#jqGrid"));
+            //如果有错误时阻止提交
+            if ($("#info_dialog").attr("aria-hidden") == "false") {
+                startEdit($("#jqGrid"));
+                $("#sumbit-btn").button('reset');
+                return;
+            }
+            var gridArr = $("#jqGrid").getRowData();//获得grid的数据
+            startEdit($("#jqGrid"));
+
+            var subitemScoreArr = DealJqgridData(gridArr);
+
+            $.ajax({
+                type: "post",
+                url: "SaveSubitemScoreList",
+                data: {
+                    sbScores: JSON.stringify(subitemScoreArr)
+                },
+                success: function (e) {
+                    abp.message.success("", "提交成功！");
+                    $("#sumbit-btn").button('reset');
+                },
+                error: function (e) {
+                    if (e.responseText.indexOf("<title>") != -1) {
+                        var start = e.responseText.indexOf("<title>");
+                        var end = e.responseText.indexOf("</title>");
+                        abp.message.error(e.responseText.substring(start + 7, end), "保存失败");
+                    }
+                    else
+                        abp.message.error(e.responseText, "保存失败");
+                    $("#sumbit-btn").button('reset');
+                }
+            });
+        }
+        //解析表格内容为目标值
+        function DealJqgridData(gridArr)
+        {
+            var subitemArr = GetSubitemArr();
+
+            var valArr = [];
+            if(gridArr!=null&&gridArr.length>0)
+            {
+                for(var i=0;i<gridArr.length;i++)
+                {
+                    var row = gridArr[i];
+                    for(var j=0;j<subitemArr.length;j++)
+                    {
+                        var sb=subitemArr[j];
+                        var item = {
+                            Month: $("#month").val(),
+                            SubitemId: sb.Id,
+                            DistrictId: $("#districtId").val(),
+                            ManagerNo: row.MANAGER_NO,
+                            ManagerName: row.MANAGER_NAME,
+                            MarkScore: row["SUBITEM_SCORE_" + sb.Id.toString()]//指标值
+                        };
+                        valArr.push(item);//添加到集合
+                    }
+                }
+            }
+            return valArr;
+        }
+
+    </script>
+}

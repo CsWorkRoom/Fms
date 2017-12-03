@@ -1,0 +1,124 @@
+﻿@using Easyman.Common.Mvc.Controls
+@model Easyman.Dto.TargetModel
+@{
+    Layout = "~/Views/Shared/_CommonEdite.cshtml";
+}
+@section Styles{
+    <style>
+        #iconMenuDiv {
+            width: 400px;
+        }
+
+            #iconMenuDiv span {
+                padding: 5px;
+                margin: 5px 10px;
+                font-size: 22px;
+                cursor: pointer;
+                display: inline-block;
+                border: 1px solid transparent;
+            }
+
+                #iconMenuDiv span:hover {
+                    transform: scale(1.02);
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+
+            #iconMenuDiv h5 {
+                margin-left: 10px;
+                padding-bottom: 4px;
+                border-bottom: solid 1px #707070;
+            }
+
+           .form-group{
+                margin-bottom: 20px;
+            }
+    </style>
+}
+
+    @Html.HiddenFor(h => h.Id)
+
+        <div class="tab-content" style="padding-top:12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+              
+                <div class="form-group">
+                    <label for="TargetTypeId" class="col-xs-2 control-label">指标类型</label>
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(p => p.TargetTypeId, Model.TargetTypeList as List<SelectListItem>,
+                        new { @class = "form-control" })
+                    </div>
+                    <label for="TargetTagId" class="col-xs-2 control-label">指标标识</label>
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(p => p.TargetTagId, Model.TargetTagList as List<SelectListItem>,
+                        new { @class = "form-control" })
+                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="Name" class="col-xs-2 control-label">指标名</label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "指标名", @Required = "Required" })
+                    </div>
+                    <label for="ChooseType" class="col-xs-2 control-label">是否可选</label>
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(p => p.ChooseType,
+                       new List<SelectListItem> {
+                           new SelectListItem { Text="可选",Value="可选"},
+                           new SelectListItem { Text="必选",Value="必选",Selected=true}
+                       },
+                        new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Weight" class="col-xs-2 control-label">权重分</label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(f => f.Weight, new { @class = "form-control", placeholder = "权重分", @Required = "Required" })
+                    </div>
+                    <label for="IsUse" class="col-xs-2 control-label">是否在用</label>
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(p => p.IsUse,
+                       new List<SelectListItem> {
+                           new SelectListItem { Text="在用",Value="true",Selected=true},
+                           new SelectListItem { Text="停用",Value="false"}
+                       },
+                        new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="EndTable" class="col-xs-2 control-label">结果表</label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(f => f.EndTable, new { @class = "form-control", placeholder = "结果表", @Required = "Required" })
+                    </div>
+                    <label for="MainField" class="col-xs-2 control-label">主字段</label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(f => f.MainField, new { @class = "form-control", placeholder = "主字段", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="CrisisValue" class="col-xs-2 control-label">计分门槛值</label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(f => f.CrisisValue, new { @class = "form-control", placeholder = "计分门槛值", @Required = "Required" })
+                    </div>
+                  
+                </div>
+                <div class="form-group">
+                    <label for="Remark" class="col-xs-2 control-label">说明</label>
+                    <div class="col-sm-10">
+                        @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "描述说明" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+@section scripts{
+   @*放页面自定义js*@
+<script type="text/javascript">
+    //母版页调用提交方法
+    function SubmitForm() {
+        //from表单提交路径
+        var postUrl = "../api/services/api/Target/InsertOrUpdateTarget";
+        //提交方法-JS里面
+        handleSubmitForm(postUrl);
+    }
+</script>
+}

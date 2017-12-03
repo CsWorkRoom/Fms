@@ -1,0 +1,352 @@
+﻿
+/*.ztable-table-container {
+    height:80%;
+}*/
+#dataTableDiv {
+    overflow-y:hidden;
+}
+.inline {
+    display:inline-block
+}
+.left {
+    float:left;
+}
+.ztable-main-container .row {
+    margin: 0px !important;
+}
+
+.ztable-main-container {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+
+.ztable-pager-container {
+    position: absolute;
+    height: 40px;
+    left: 0;
+    right: 0;
+    bottom: 1px;
+}
+
+.ztable-filter-div, .ztable-tool-div {
+    margin-top:5px;
+    margin-bottom: 7px;
+    padding-top: 2px;
+    margin-left: 10px;
+
+}
+
+.ztable-filter-label {
+    line-height: 32px;
+    text-align: right;
+    padding-right: 10px;
+    font-size: 14px;
+    font-weight: normal;
+    float: left; /*解决部份浏览器字体下掉的问题*/
+}
+
+.ztable-filter-field .ztable-filter-operator {
+    position: absolute;
+    left: 0px;
+    top: 1px;
+    padding-left:2px;
+}
+
+.ztable-filter-field .ztable-dropdown-list .btn {
+    width: 100%;
+}
+
+    .ztable-filter-field .ztable-dropdown-list .btn .caret {
+        float: right;
+        margin-top: 8px;
+    }
+
+
+.ztable-filter-field .ztable-filter-operator .btn {
+    border: none;
+    border-radius: 0;
+    -webkit-box-shadow: none !important;
+    -ms-box-shadow: none !important;
+    box-shadow: none !important;
+    line-height: 20px;
+    padding-right: 5px;
+    color: #B9ABAB;
+}
+
+.ztable-filter-input {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    padding-left: 60px;
+}
+
+.ztable-tool-div .btn {
+    margin-right: 10px;
+    font-size:12px;
+}
+
+
+/* table */
+
+.ztable-table {
+    width: 100%;
+    /*height:95%;*/
+    font-size: 12px;
+    border-left: solid 1px #ddd;
+    border-bottom: solid 1px #ddd;
+}
+
+    .ztable-table  tr {
+        border-right: solid 1px #ddd;
+    }
+
+        .ztable-table > tbody > tr > td, .ztable-table > thead > tr > th {
+            border-top: solid 1px #ddd;
+            border-right: solid 1px #ddd;
+            font-weight:normal;
+        }
+
+.ztable-table-head td, th {
+    padding: 10px 20px;
+}
+
+.ztable-table > tbody > tr > td {
+    padding: 8px 20px;
+}
+
+    .ztable-table > tbody > tr > td a {
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+.ztable-table tbody tr:hover {
+    background-color: #ecf3f8;
+}
+
+.ztable-table-sr {
+}
+
+.ztable-table-mr {
+    background-color: #f9f9f9;
+}
+
+.ztable-table-body {
+    display: block;
+    overflow-y: auto;
+}
+
+    .ztable-table-body tr:last-child td {
+        border-bottom: solid 1px #ddd;
+    }
+
+    .ztable-table-body tr td:last-child {
+        border-right: none;
+    }
+
+
+.ztable-table tr {
+    width: 100%;
+}
+
+.ztable-table > thead, .ztable-table > tbody tr {
+    display: table;
+    table-layout: fixed;
+}
+
+.ztable-table-head-scroll {
+    width: calc(100% - 1em) !important;
+}
+
+.ztable-table-head {
+    width: 100%;
+}
+
+.ztable-table > thead > tr {
+    background-color: #F9FBFC;
+    /*样式取消
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#f2f2f2),to(#fafafa));
+    background-image: -webkit-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
+    background-image: -moz-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
+    background-image: -ms-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
+    background-image: -o-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
+    background-image: -linear-gradient(top,#f2f2f2 0,#fafafa 100%);*/
+}
+
+.ztable-table > thead > th {
+    cursor: pointer;
+    padding-right: 30px;
+}
+
+.ztable-table .sorting {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATAgMAAAAPPt5fAAAACVBMVEUAAADIyMjl5eVIBBP/AAAAAXRSTlMAQObYZgAAAClJREFUCNdjwAYEwGQKiGDsBJFsTA5AUoJhAqZaiDhEDVg9RC/MHEwAANsMA91AQfd/AAAAAElFTkSuQmCC) no-repeat center right;
+}
+
+.ztable-table .sorting_asc {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATAQMAAABInqSPAAAABlBMVEUAAABVVVUT3Vn+AAAAAXRSTlMAQObYZgAAAB1JREFUCNdjwAkcgPgBAwPjBwYG5h8MDOx/GAgBAKRJBBCQbHkwAAAAAElFTkSuQmCC) no-repeat center right;
+}
+
+.ztable-table .sorting_desc {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATAQMAAABInqSPAAAABlBMVEUAAABVVVUT3Vn+AAAAAXRSTlMAQObYZgAAABxJREFUCNdjIATY/zAwMP9gYGD8AOQ8AGIHnEoBkNkEEEbbutQAAAAASUVORK5CYII=) no-repeat center right;
+}
+
+.ztable-table .sorting_asc, .sorting_desc {
+    background-color: #eee !important;
+}
+
+
+.ztable-table-empty {
+    height: 100%;
+    text-align: center;
+    color: threedshadow;
+    font-size: 20px;
+}
+
+    .ztable-table-empty td {
+        border-bottom: none !important;
+    }
+
+/*pager*/
+.ztable-pager-pagination {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.paginate_button {
+    padding: 0;
+    margin-left: 0;
+}
+.ztable-pager-pagination li a{
+    /*margin-right:6px;*/
+}
+.ztable-pager-pagination span {
+    font-size:13px;
+}
+.ztable-pager-pagination a {
+    font-size:13px;
+    border-radius:3px;
+}
+.ztable-pager-pagination.page-left {
+    position:absolute;
+    left:0;
+    bottom:4px;
+}
+.ztable-pager-pagination.page-right {
+    position:absolute;
+    right:0;
+}
+.ztable-pager-pagination .info > span > span, span > select {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.ztable-pager-pagination .info > span > select {
+      box-shadow: none;
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #3a3f51;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #dde6e9;
+    border-radius: 4px;
+
+}
+/*自定义按钮样式*/
+.btn-insert {
+    background-color:#0ed676;
+    color:white;
+}
+    .btn-insert:hover {
+        color :white;
+        opacity:0.9;
+    }
+.btn-delete {
+    background-color:#f56662;
+    color:white;
+}
+    .btn-delete:hover {
+        color:white;
+        opacity:0.9;
+    }
+.btn-export {
+    background-color:#6674dd;
+    color:white;
+}
+    .btn-export:hover {
+        color:white;
+        opacity:0.9;
+    }
+.btn-search {
+    background-color:#feae11;
+    border-color:#feae11;
+    color:white;
+}
+    .btn-search:hover {
+         color:white;
+         opacity:0.9;
+    }
+/*.ztable-tool-div > button.btn-primary {
+    background-color:#feae11;
+    border-color:#feae11;
+}
+    .ztable-tool-div > button.btn-primary:hover {
+        opacity:0.9;
+    }*/
+.pagination > .disabled > a {
+    /*background: -webkit-linear-gradient(top,#fff 50%,#eee 100%);
+    background: -moz-linear-gradient(top,#fff 50%,#eee 100%);
+    background: -o-linear-gradient(top,#fff 50%,#eee 100%);
+    background: linear-gradient(top,#fff 50%,#eee 100%);*/
+    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#f9f9f9,endColorstr=#e9e9e9,GradientType=0);*/
+  
+}
+.paginate_button>a {
+    /*background: -webkit-linear-gradient(top,#fff 50%,#eee 100%);
+    background: -moz-linear-gradient(top,#fff 50%,#eee 100%);
+    background: -o-linear-gradient(top,#fff 50%,#eee 100%);
+    background: linear-gradient(top,#fff 50%,#eee 100%);*/
+    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#f9f9f9,endColorstr=#e9e9e9,GradientType=0);*/
+    border-radius:1px;
+
+}
+table td {
+    word-break:break-all;
+}
+.ztable-pager-pagination.pagination.page-left > li > span {
+    border:none;
+}
+.pagination>li>a, .pagination>li>span {
+    /*padding:2px 12px;*/
+}
+.previous > a {
+    /*background: -webkit-linear-gradient(top,#fff 50%,#eee 100%);
+    background: -moz-linear-gradient(top,#fff 50%,#eee 100%);
+    background: -o-linear-gradient(top,#fff 50%,#eee 100%);
+    background: linear-gradient(top,#fff 50%,#eee 100%);*/
+      border-radius:1px;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    color:#fff !important;
+    border-color:#ddd;
+    background-color:#5d9cec !important;
+}
+.ztable-filter-field {
+    display:inline-block;
+    position:relative;
+    width:176px;
+}
+.ztable-filter-div {
+    margin-left:20px;
+}
+.pagination > li > a:focus, .pagination > li > a:hover, .pagination > li > span:focus, .pagination > li > span:hover {
+    color:#337ab7;
+    background-color:#fff;
+}
+td>a>i.fa,td>div>a>i.fa {
+    font-size:15px !important;
+}

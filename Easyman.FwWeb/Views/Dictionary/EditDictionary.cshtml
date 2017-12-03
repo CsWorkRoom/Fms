@@ -1,0 +1,106 @@
+﻿@using Easyman.Common.Mvc.Controls
+@model Easyman.Dto.DictionaryModel
+@{
+    Layout = "~/Views/Shared/_CommonEdite.cshtml";
+}
+@section Styles{
+}
+    @Html.HiddenFor(h => h.Id)
+
+        <div class="tab-content" style="padding-top:12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+                <div class="form-group">
+                    <label for="DictionaryTypeId" class="col-xs-4 control-label" style="text-align:right">字典类型</label>
+                    <div class="col-xs-6">
+                        @Html.DropDownListFor(p => p.DictionaryTypeId,
+                        Model.DictionaryTypeList == null ? new List<SelectListItem> { new SelectListItem { Text = "无选项", Value = "" } } : (Model.DictionaryTypeList as List<SelectListItem>),
+                        new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ParentId" class="col-xs-4 control-label" style="text-align:right">父级</label>
+                    <div class="col-xs-6">
+                        <input id="dicParentId" type="text" style="display:none" value="@Model.ParentId" />
+                        @Html.DropDownTreeFor(d => d.ParentId, "../api/services/api/Dictionary/GetDictionaryTreeJson")
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label" style="text-align:right">字典</label>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "字典", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Remark" class="col-xs-4 control-label" style="text-align:right">描述说明</label>
+                    <div class="col-xs-6">
+                        @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "描述说明" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+@section scripts{
+   @*放页面自定义js*@
+<script type="text/javascript">
+    //母版页调用提交方法
+    function SubmitForm() {
+        //from表单提交路径
+        var postUrl = "../api/services/api/Dictionary/InsertOrUpdateDictionary";
+        //提交方法-JS里面
+        handleSubmitForm(postUrl);
+    }
+
+    $(function () {
+        loadDictionary();
+
+        //当值发生变化时的加载
+        $('#DictionaryTypeId').change(function () {
+            loadDictionary();
+        });
+    });
+
+    function loadDictionary() {
+        var defaultVal = $("#dicParentId").val();
+
+        var setting_ParentId = {
+            callback: {
+                onClick: function (event, treeId, treeNode) {
+                    if (treeNode.chkDisabled)
+                        return;
+                    $('#ParentId').val(treeNode.id);
+                    $('#text_ParentId').val(treeNode.name);
+                    $('#dropDownTree_ParentId').toggle();
+                    ""
+                }
+            },
+            view: {
+                showLine: true,
+                selectedMulti: false
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        };
+
+        $.post('../api/services/api/Dictionary/GetDictionaryByTypeTreeJson', { id: $("#DictionaryTypeId").val() }, function (data) {
+            if (data.result.contentEncoding)
+                data = data.result.data;
+            else
+                data = data.result;
+
+            var tree = $.fn.zTree.init($('#menuTree_ParentId'), setting_ParentId, eval(data));
+
+            var value = defaultVal == '' ? null : defaultVal;
+
+            var defualtNode = tree.getNodeByParam('id', value, null);
+
+            if (defualtNode)
+                $('#text_ParentId').val(defualtNode.name);
+        });
+    }
+
+</script>
+}

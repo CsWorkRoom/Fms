@@ -1,0 +1,299 @@
+﻿@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+    <div>
+        <input type="button" onclick=" postFunc() " value="请求测试" />
+    </div>
+    <div>
+        <input type="button" onclick=" testLogin() " value="登录测试" />
+    </div>
+    <div>
+        <input type="button" onclick=" getLoginUserInfo() " value="用户登录信息测试" />
+    </div>
+    <div>
+        <input type="button" onclick=" getUserInfo() " value="UserInfo请求测试" />
+    </div>
+    <div>
+        <input type="button" onclick=" checkUpdate() " value="检查更新" />
+    </div>
+    <div>
+        <input type="button" onclick=" getContentType() " value="获取内容类型" />
+    </div>
+    <div>
+        <input type="button" onclick=" getContentList() " value="获取内容列表(分页)" />
+    </div>
+
+    <div>
+        <input type="button" onclick=" getReviewList() " value="获取评论列表" />
+    </div>
+    <div>
+        <input type="button" onclick=" likeContent() " value="点赞内容" />
+    </div>
+    <div>
+        <input type="button" onclick=" likeReview() " value="点赞评论" />
+    </div>
+    <div>
+        <input type="button" onclick=" getPagedComment() " value="分页获取评论的回复" />
+    </div>
+    <div>
+        <input type="button" onclick=" getPagedContent() " value="分页获取公告" />
+    </div>
+</body>
+
+</html>
+
+<script src="~/Views/AppRequest/js/aes.js"></script>
+<script>
+
+    function postFunc() {
+        $.ajax({
+            url: "../api/services/api/File/FileUp",
+            type: "post",
+            contentType: "application/json",
+            data: {
+                "userId": 1,
+                "authToken": "token",
+            },
+            success: function (data) {
+                alert("Success");
+            }
+        });
+    }
+
+    function testLogin() {
+        $.ajax({
+            url: "/Account/AppLogin?returnUrl=/api/services/api/UserInfo/GetUserLoginInfo",
+            type: "post",
+            //contentType: "application/json",
+            dataType: "json",
+            data: {
+                username: "admin",
+                password: "123qwe",
+                tenancyname: "技术平台组",
+                imei: "IMEI",
+                version: "1.1.2.0"
+            },
+            success: function (data) {
+                alert("Login Done");
+            }
+        });
+    }
+
+    function getLoginUserInfo() {
+        var para = {
+            userId: 2,
+            authToken: "33333",
+            id: "123"
+        }
+
+        var str = JSON.stringify(para);
+
+        $.ajax({
+            url: "../api/services/api/UserInfo/GetUserLoginInfo",
+            type: "post",
+            contentType: "application/json",
+            //dataType:"json",
+            data: str,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+    function getUserInfo() {
+
+        $.ajax({
+            url: "../api/services/api/UserInfo/UserSingle",
+            type: "post",
+            //contentType: "application/json",
+            dataType: "json",
+            data: {
+                userId: 2,
+                authToken: "132223",
+                id: "iddd"
+
+            },
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+    function checkUpdate() {
+
+        var para1 = { key: "type", value: "ios" };
+        var para2 = { key: "versionCode", value: "1" };
+        var allPara = [];
+        allPara.push(para1);
+        allPara.push(para2);
+
+        var str = "12345";
+
+        $.ajax({
+            url: "../api/services/api/AppApi/CheckUpdate",
+            type: "post",
+            contentType: "text/plain",
+            dataType: "text",
+            data: str,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+    function getContentType() {
+
+        var data = { id: "G001" };
+        var json = JSON.stringify(data);
+        var str = aesEncrypt(json);
+
+        var para = { reqData: str };
+
+        $.ajax({
+            url: "../api/services/api/AppApi/ContentGetAllType",
+            type: "post",
+            //contentType: "application/json",
+            dataType: "json",
+            data: para,
+            success: function (data) {
+                alert("typeget");
+            }
+        });
+    }
+
+    function getContentList() {
+        var searchArray = new Array();
+        var search = { key: "typeId", value: "1" };
+        searchArray.push(search);
+        var data = { id: "G001", currentPage: 2, pageSize: 1, searchKey: searchArray };
+        var json = JSON.stringify(data);
+        var str = aesEncrypt(json);
+
+        var para = { reqData: str };
+
+        $.ajax({
+            url: "../api/services/api/AppApi/ContentList",
+            type: "post",
+            //contentType: "application/json",
+            dataType: "json",
+            data: para,
+            success: function (data) {
+                alert("allListget");
+            }
+        });
+    }
+
+    function getReviewList() {
+
+        var data = { id: "2", currentPage: 1, pageSize: 10 };
+        var json = JSON.stringify(data);
+        var str = aesEncrypt(json);
+
+        var para = { reqData: str };
+
+        $.ajax({
+            url: "../api/services/api/AppApi/ContentReviewList",
+            type: "post",
+            //contentType: "application/json",
+            dataType: "json",
+            data: para,
+            success: function (data) {
+                alert("getReview");
+            }
+        });
+    }
+
+    function likeContent() {
+        var data = { id: "2" };
+        var json = JSON.stringify(data);
+        var str = aesEncrypt(json);
+
+        var para = { reqData: str };
+
+        $.ajax({
+            url: "../api/services/api/AppApi/LikeContent",
+            type: "post",
+            //contentType: "application/json",
+            dataType: "json",
+            data: para,
+            success: function (data) {
+                alert("likeContent");
+            }
+        });
+    }
+
+    function likeReview() {
+        var data = { id: "42" };
+        var json = JSON.stringify(data);
+        var str = aesEncrypt(json);
+
+        var para = { reqData: str };
+
+        $.ajax({
+            url: "../api/services/api/AppApi/LikeContentReview",
+            type: "post",
+            //contentType: "application/json",
+            dataType: "json",
+            data: para,
+            success: function (data) {
+                alert("likeReview");
+            }
+        });
+    }
+
+    function getPagedComment() {
+        var data = { id: "1", currentPage: 2, pageSize: 10 };
+        var json = JSON.stringify(data);
+        var str = aesEncrypt(json);
+
+        var para = { reqData: str };
+
+        $.ajax({
+            url: "../api/services/api/AppApi/ContentReviewCommentList",
+            type: "post",
+            //contentType: "application/json",
+            dataType: "json",
+            data: para,
+            success: function (data) {
+                alert("ContentReviewCommentList");
+            }
+        });
+    }
+
+    //----------------------------------------------------------------------
+    //对密码进行AES加密
+    function aesEncryptPassword() {
+
+        var oldPwdObj = $("#oldPassword");
+        var newPwdObj = $("#newPassword");
+        var confirmPwdObj = $("#confirmPassword");
+
+        var encryptedOld = aesEncrypt(oldPwdObj.val().trim());
+        var encryptedNew = aesEncrypt(newPwdObj.val().trim());
+        var encryptedConfirm = aesEncrypt(confirmPwdObj.val().trim());
+
+        oldPwdObj.val(encryptedOld);
+        newPwdObj.val(encryptedNew);
+        confirmPwdObj.val(encryptedConfirm);
+    }
+
+    function aesEncrypt(toEncryptStr) {
+
+        var key = CryptoJS.enc.Utf8.parse("Easyman-easyman3");
+        var iv = CryptoJS.enc.Utf8.parse("Easyman-easyman3");
+        var encrypted = CryptoJS.AES.encrypt(toEncryptStr, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+
+        return encrypted.toString();
+    }
+</script>

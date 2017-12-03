@@ -1,0 +1,135 @@
+﻿@model Easyman.Content.Dto.ContentIndexSearchInput
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+@section Styles{
+    <link href="~/Views/Content/css/fontawesome.css" rel="stylesheet">
+    <link href="~/Views/Content/css/style.css" rel="stylesheet">
+}
+<div class="Tablehigeht wrapper wrapper-content animated fadeInRight">
+    <input type="text" value="@Model.Code" id="Code" name="Code" style="display: none"/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins Tablehigeht">
+                <div class="ibox-content">
+                    <div class="search-form">
+                        <div class="input-group col-sm-offset-2 col-sm-8">
+                            <input type="text" placeholder="内容查询" name="SearchName" id="SearchName" class="form-control" style="height: 42px;">
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary" onclick="Search()" type="submit" style="padding:10px 30px">
+                                    搜索
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bodyContent">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="text-align:center;">
+    <div class="col-sm-12">
+        <div id="example">
+            <ul class="pagination"></ul>    
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Views/Content/js/bootstrappaginator.js"></script>
+    <script>
+
+        var pageTotal = 10;
+        var name = "";
+        var btn = false;
+        $(function () {
+
+            LoadData();
+
+        });
+
+        function GetPageTotal() {
+            $.ajax({
+                url: "/Content/GetTotalPage",
+                type: 'get',
+                data: { pageIndex: 1, searchName: name, code:$("#Code").val() },
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    if (data.num === 0)
+                        pageTotal = 1;
+                    else
+                        pageTotal = data.num;
+                },
+                error: function (err) {
+                }
+            });
+        }
+
+        function initPage() {
+            var options = {
+                currentPage: 1, //当前页
+                totalPages: pageTotal, //总页数
+                numberofPages: 5, //显示的页数
+                alignment: "center",
+                itemTexts: function (type, page, current) { //修改显示文字
+                    switch (type) {
+                        case "first":
+                            return "第一页";
+                        case "prev":
+                            return "上一页";
+                        case "next":
+                            return "下一页";
+                        case "last":
+                            return "最后一页";
+                        case "page":
+                            return page;
+                    }
+                },
+                onPageClicked: function (event, originalEvent, type, page) { //异步换页
+                    $.post("/Content/NewIndexSearch", { pageIndex: page, searchName: $("#SearchName").val(), take: 2 }, function (data) {
+                        $(".bodyContent").html(data);
+                    });
+                }
+            };
+
+            //var parent = $(".pagination").parent();
+            //$(".pagination").remove();
+            //parent.append(' <ul class="pagination" ></ul>');
+            //if (!btn)
+            //    $(".pagination").bootstrapPaginator(options);
+            //else
+            $(".pagination").bootstrapPaginator(options);
+        }
+
+        function Search() {
+            btn = true;
+            LoadData();
+        }
+
+        function LoadData() {
+            
+            name = $("#SearchName").val();
+            $.ajax({
+                url: "/Content/NewIndexSearch",
+                type: 'get',
+                data: { pageIndex: 1, searchName: name, code: $("#Code").val() },
+                dataType: 'html',
+                async: false,
+                success: function (data) {
+                    $(".bodyContent").html(data);
+                    //GetPageTotal();
+                    //initPage();
+                },
+                error: function (err) {
+                }
+            });
+            GetPageTotal();
+            initPage();
+        }
+    </script>
+}

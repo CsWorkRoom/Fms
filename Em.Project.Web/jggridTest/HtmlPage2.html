@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- js -->
+    <!-- bootstrap -->
+    <!--<script type="text/ecmascript" src="../Scripts/jquery-1.11.0.min.js"></script>-->
+    <script type="text/ecmascript" src="../Scripts/jquery-2.2.4.min.js"></script>
+    <script type="text/ecmascript" src="../Scripts/i18n/grid.locale-cn.js"></script>
+    <script type="text/ecmascript" src="../Scripts/i18n/grid.locale-cn.js"></script>
+    <script type="text/ecmascript" src="../Scripts/jquery.jqGrid.min.js"></script>
+    <script type="text/ecmascript" src="../Scripts/bootstrap.min.js"></script>
+
+    <!-- css -->
+    <link rel="stylesheet" href="../Content/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../Content/ui.jqgrid-bootstrap.css" />
+
+    <script>
+		$.jgrid.defaults.width = 780;
+		$.jgrid.defaults.responsive = true;
+		$.jgrid.defaults.styleUI = 'Bootstrap';
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <meta charset="utf-8" />
+    <title>jqGrid Loading Data - Grouping By Multiple Columns With Header Summaries</title>
+</head>
+<body>
+    <div style="margin-left:20px;">
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $("#jqGrid").jqGrid({
+                url: 'data.json',
+                mtype: "GET",
+                datatype: "json",
+                colModel: [
+                    { label: 'OrderID', name: 'OrderID', key: true, width: 155,hidden:true },
+ 					{ label: 'Customer ID', name: 'CustomerID', width: 70 },
+                    { label: 'Order Date', name: 'OrderDate', width: 150 },
+                    {
+						label: 'Freight',
+						name: 'Freight',
+						width: 150,
+						formatter: 'number',
+						summaryTpl : "<b>{0}</b>",
+						summaryType: "sum"
+					},
+                    { label: 'Employee ID', name: 'EmployeeID', width: 150 }
+                ],
+				loadonce:true,
+				viewrecords: true,
+				rowList: [20,30,50],
+                width: 780,
+                height: 250,
+                rowNum: 20,
+				sortname: 'OrderDate',
+                pager: "#jqGridPager",
+                grouping: true,
+                groupingView: {
+                    groupField: ["CustomerID", "EmployeeID"],
+                    groupColumnShow: [true, true],
+                    groupText: [
+						"CustomerID: <b>{0}</b>",
+						"EmployeeID: <b>{0}</b>"
+					],
+                    groupOrder: ["asc", "asc"],
+                    groupSummary: [true, false],
+					groupSummaryPos: ['header', 'header'],
+                    groupCollapse: false
+                }
+            });
+        });
+
+    </script>
+
+
+</body>
+</html>

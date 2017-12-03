@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "NoAccess";
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+<h2></h2>
+<script type="text/javascript" src="~/Common/Scripts/errorPage/error.js"></script>
+<script>
+    $(function () {
+        SendErrorInfo("权限提示", "当前用户无此页面的访问权限！");
+    })
+</script>

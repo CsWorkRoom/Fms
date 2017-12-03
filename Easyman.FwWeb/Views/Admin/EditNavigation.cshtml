@@ -1,0 +1,152 @@
+﻿@using System.Web.Optimization;
+@using Easyman.Common.Mvc.Controls
+@model Easyman.Dto.NavigationInput
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+@section Styles{
+@Styles.Render("~/Bundles/ztree/css")
+    <style>
+        #divTypeIcon {
+            width: 440px;
+            height: 285px;
+            background-color: #FFFFFF;
+        }
+
+            #divTypeIcon span {
+                padding: 5px;
+                margin: 5px 10px;
+                font-size: 22px;
+                cursor: pointer;
+                display: inline-block;
+                border: 1px solid transparent;
+            }
+
+
+        .input-group-btn button {
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .raceShow {
+            background-color: #ffffff; /* #ffffff*/
+            border: solid 1px #ccc;
+            position: absolute;
+            display: none;
+            width: 800px;
+            height: 600px;
+            padding: 5px;
+            top: 40px;
+            left: 64px;
+        }
+    </style>
+}
+
+<form style="width:100%;padding: 15px 15px 0px 15px;" id="saveForm" class="form-horizontal" action="../api/services/api/Modules/SaveNavigationEdit" method="post" role="form">
+    @Html.HiddenFor(h => h.Id)
+    <div class="form-body jarviswidget " style="margin-bottom:50px">
+        <header role="heading">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#navMenu" aria-controls="home" role="tab" data-toggle="tab">菜单属性</a></li>
+                <li role="presentation"><a href="#role" aria-controls="profile" role="tab" data-toggle="tab">权限</a></li>
+            </ul>
+        </header>
+        <div class="tab-content" style="padding-top:35px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu">
+                <div class="form-group">
+                    <label for="TenantId" class="col-sm-4 control-label">所属平台</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownTreeFor(d => d.TenantId, "../api/services/api/Tenant/GetTenantTreeJson")
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name" class="col-sm-4 control-label">名称</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "菜单名称", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Code" class="col-sm-4 control-label">编码</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "菜单编码", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="ParentId" class="col-sm-4 control-label">上级菜单</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownTreeFor(d => d.ParentId, "../api/services/api/Modules/GetNavTreeJson")
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Url" class="col-sm-4 control-label">请求地址</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.Url, new { @class = "form-control", placeholder = "请求地址" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Icon" class="col-sm-4 control-label">图标</label>
+                    <div class="col-sm-6">
+                        <div class="btn-group">
+                            @Html.HiddenFor(f => f.Icon)
+                            <button class="btn btn-default  dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="MyModelTypeIcon()">
+                                <span class="btn-value"><i id="icon_type_img" class="@Html.Raw(Model.Icon)"></i></span> <span class="caret"></span>
+                            </button>
+
+                            <div class="dropdown-menu" id="divTypeIcon" style="display:none;">
+                                @Html.Partial("~/Views/Shared/Type_Icon.cshtml")
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ShowOrder" class="col-xs-4 control-label">排序</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.ShowOrder, new { @class = "form-control", placeholder = "排序" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="IsUse" class="col-xs-4 control-label">是否显示</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(p => p.IsUse,
+                       new List<SelectListItem> {
+                           new SelectListItem { Text="开启",Value="true",Selected=true},
+                           new SelectListItem { Text="关闭",Value="false"}
+                       },
+                        new { @class = "form-control" })
+                    </div>
+                </div>
+
+            </div>
+            <div role="tabpanel" class="tab-pane" id="role" style="height: 354px;">
+                @Html.HiddenFor(f => f.RoleIds)
+                @Html.Hidden("isCtrl")
+                <ul id="roleTree" class="ztree"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row bottomPage">
+            <div class="col-md-12 right">
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                <button class="btn btn-success" id="sumbit-btn" type="button"><i class="fa fa-save"></i> 提交</button>
+               
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+@Scripts.Render("~/Bundles/ztree/js")
+    <script src="~/Views/Admin/js/editnavigation.js"></script>
+};

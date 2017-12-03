@@ -1,0 +1,43 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+#dir
+packages/
+logs/
+bin/
+obj/
+ExportFile/
+UpFiles/
+
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.out
+*.app
+.vs/EasyMan/v14/.suo
+.vs/config/applicationhost.config
+Easyman.Web/PlugIns/Easyman.FwWeb.dll
+Easyman.Web/PlugIns/Easyman.FwWeb.pdb
+Easyman.Web/PlugIns/Easyman.FwWeb.dll.config
+/Easyman.Web/Content/bootstrap.min.css
+Em.Project.Web/Properties/PublishProfiles/websit.pubxml.user
+Em.Project.Web/Properties/PublishProfiles/websit.pubxml
+Em.Project.Web/UpFiles/Bg/2.jpg
+Em.Project.Web/Properties/PublishProfiles/abp.pubxml
+Em.Project.Web/Properties/PublishProfiles/abp.pubxml.user
+Em.Project.Web/Properties/PublishProfiles/easyman.pubxml.user
+Em.Project.Web/Properties/PublishProfiles/easyman.pubxml
+Em.Project.Web/Properties/PublishProfiles/Easyma3Temp_HTML.pubxml.user
+Em.Project.Web/Properties/PublishProfiles/Easyma3Temp_HTML.pubxml

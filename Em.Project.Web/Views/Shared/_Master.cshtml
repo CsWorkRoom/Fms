@@ -1,0 +1,83 @@
+﻿@using Abp.Timing
+@using Abp.Web.Mvc.Extensions
+@using System.Web.Optimization
+@*
+    IMPORTANT NOTES FROM ASP.NET BOILERPLATE:
+
+    This _Layout.cshtml is not used actually. It's left here if you want to add some classic style (MPA)
+    pages to your application.
+
+    See App/Main/views/layout/layout.cshtml for Angular application's layout page.
+*@
+@{
+    SetAntiForgeryCookie();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>甘孜计件抢盘系统 V1</title>
+
+    <link rel="shortcut icon" href="~/favicon.ico">
+
+    @*<link href="~/Content/flexible-bootstrap-carousel.css" rel="stylesheet" />*@
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+    @Styles.Render("~/Bundles/bootstrap/css")
+    @Styles.Render("~/Bundles/common/css")
+    @Styles.Render("~/Bundles/alert/css")
+    @Styles.Render("~/Bundles/iconfont/css")
+    @Styles.Render("~/Bundles/Scroll/css")
+    @*@Styles.Render("~/Bundles/icheck/css")
+    @Styles.Render("~/Common/css/multipleselect/css")*@
+
+    @Styles.Render("~/Bundles/ztree/css")
+
+    <link href="~/Common/css/urlExtend.css" rel="stylesheet" />
+
+        @RenderSection("Styles", false)
+
+    <script type="text/javascript">
+        //This is used to get the application's root path from javascript. It's useful if you're running application in a virtual directory under IIS.
+        var abp = abp || {};
+        abp.appPath = '@ApplicationPath';
+
+    </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        @Html.IncludeScript("~/Scripts/others/html5shiv.js")
+        @Html.IncludeScript("~/Scripts/others/respond.min.js")
+    <![endif]-->
+            @Scripts.Render("~/Bundles/jquery/js")
+            <script src="~/Common/rootUrl.js"></script>
+    @Scripts.Render("~/Bundles/bootstrap/js")
+        @Scripts.Render("~/Bundles/alert/js")
+                        @Scripts.Render("~/Bundles/abp/js")
+                        @Scripts.Render("~/Bundles/controller/js")
+                        @Scripts.Render("~/Bundles/common/js")
+                        @Scripts.Render("~/Bundles/bootBack/js")
+    @*@Scripts.Render("~/Bundles/index/js")*@
+    @Scripts.Render("~/Bundles/iconfont/js")
+    @Scripts.Render("~/Bundles/Scroll/js")
+    @*@Scripts.Render("~/Bundles/icheck/js")
+    @Scripts.Render("~/Bundles/App/multipleselect/js")*@
+
+    @Scripts.Render("~/Bundles/ztree/js")
+    
+    <!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
+    <script src="~/api/AbpServiceProxies/GetAll?v=@(Clock.Now.Ticks)">
+    <script src="~/AbpScripts/GetScripts?v=@(Clock.Now.Ticks)" type="text/javascript"></script>
+
+
+    @RenderSection("Scripts", false)
+</head>
+
+<body>
+    @RenderBody()
+</body>
+</html>

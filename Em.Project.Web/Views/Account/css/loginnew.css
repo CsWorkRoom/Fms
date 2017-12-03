@@ -1,0 +1,404 @@
+﻿
+/*---------------------reset----------------------*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    overflow:hidden
+}
+
+ol, ul, li {
+    list-style: none;
+}
+
+body {
+    overflow:hidden;
+    background: #FFF;
+   font-family: "Helvetica Neue",Helvetica,Tahoma,Arial,"Microsoft Yahei","Hiragino Sans GB","WenQuanYi Micro Hei",sans-serif;
+   
+}
+
+:focus {
+    outline: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+    table, table td, table th {
+        border: 1px solid #edeada;
+        border-collapse: collapse;
+    }
+
+address, cite, code, dfn, em, var, i {
+    font-style: normal;
+}
+
+/*input[type=button], input[type=submit], button {
+    cursor: pointer;
+    outline: none;
+}*/
+
+input[type=submit],
+input[type=button]{
+    display: inline-block;
+    vertical-align: middle;
+    padding: 12px 24px;
+    margin: 0px;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #27A9E3;
+    border-radius: 3px;
+    border: none;
+    -webkit-appearance: none;
+    outline:none;
+    width:100%;
+}
+
+.input, select {
+    vertical-align: middle;
+}
+
+* html .clearfix {
+    zoom: 1;
+}
+
+* + html .clearfix {
+    zoom: 1;
+}
+
+textarea {
+    resize: none;
+}
+
+a {
+    text-decoration: none;
+    color: #999999;
+}
+
+.clearfix:after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.pos-r {
+  
+}
+
+.hide {
+    display: none;
+}
+/*---------------------header----------------------*/
+
+.header {
+    height: 50px;
+    margin: 5px auto;
+    overflow: hidden;
+    position: relative;
+    width: 900px;
+    z-index: 2;
+}
+
+.headerNav {
+    right: 39%;
+    text-align: right;
+    bottom: 36px;
+    width: 300px;
+    position: absolute;
+    line-height: 7px;
+}
+
+    .headerNav a {
+        color: #515151;
+        font-size: 12px;
+        padding: 0 2px;
+    }
+
+        .headerNav a:hover {
+            text-decoration: underline;
+            color: #658b98;
+        }
+
+/*---------------------banner----------------------*/
+.banner {
+    min-width: 1000px;
+    position: relative;
+    height: 508px;
+    overflow: hidden;
+}
+
+    .banner .bd {
+        position: relative;
+        z-index: 0;
+    }
+
+        .banner .bd ul {
+            width: 100% !important;
+        }
+
+        .banner .bd li {
+            width: 100% !important;
+            height: 508px;
+        }
+
+            .banner .bd li .siteWidth {
+                width: 1000px;
+                position: relative;
+                margin: 0 auto;
+                height: 299px;
+            }
+
+            .banner .bd li a {
+                height: 299px;
+                display: block;
+            }
+
+        .banner .bd .txt {
+            position: absolute;
+            width: 415px;
+            top: 100px;
+            left: 22px;
+            font: normal 18px/30px "Microsoft YaHei";
+        }
+
+.footer {
+    text-align: center;
+    font-size: 12px;
+    color: #5A5A5A;
+    height: 50px;
+    line-height: 25px;
+}
+
+.login-aside {
+    position: absolute;
+    width: 320px;
+    height: 380px;
+    z-index: 9999999;
+    border-radius: 5px;
+    left: 870px;
+    top: 101px;
+    z-index:2;
+}
+
+
+.error-box {
+    color: #f7ccc8;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+
+label.form-label {
+    display: block;
+    float: none;
+    height: auto;
+    line-height: 12px;
+    text-align: left;
+    width: auto;
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #4e6877;
+    -o-text-shadow: 1px 1px 1px #4e6877;
+    -o-moz-shadow: 1px 1px 1px #4e6877;
+    -o-mis-shadow: 1px 1px 1px #4e6877;
+    -o-webkit-shadow: 1px 1px 1px #4e6877;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+#o-box-up, #o-box-down {
+    width: 320px;
+    height: 320px;
+    position: absolute;
+    border-radius: 3px;
+}
+
+#o-box-up {
+    background-color: #fff;
+    filter: alpha(opacity:40);
+    opacity: 1;
+}
+
+#o-box-down {
+    padding: 30px 0 0 40px;
+}
+
+.i-text {
+    display: block;
+    /*原来的padding-left为34px*/
+    padding: 5px 10px 5px 46px;
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 3px;
+    font-size: 14px;
+    line-height: 37px;
+    *line-height: 35px;
+    height: 37px;
+    width: 275px;
+    color: #333;
+    position: relative;
+    right: 17px;
+}
+.focus:focus {
+    box-shadow:1px 1px 20px #2196f3;
+    outline: 1px solid #78a7c4;
+}
+
+.yzm {
+    width: 275px;
+}
+
+.yzm-img {
+    position: absolute;
+    left: 130px;
+    top: 30px;
+    cursor: pointer;
+}
+
+
+
+.h-light {
+    border: 1px solid #80acd9;
+    background: #fff;
+    color: #9cb5cd;
+    font-size: 14px;
+    text-indent: 12px;
+    border-color: #0787be;
+    box-shadow: 0 1px 4px rgba(11, 122, 179, 0.65) inset, 0 0 14px rgba(11, 122, 179, 0.45);
+}
+
+
+.code {
+    background-image: url(code.jpg);
+    font-family: Arial;
+    font-style: italic;
+    color: Red;
+    border: 0;
+    padding: 2px 3px;
+    letter-spacing: 3px;
+    font-weight: bolder;
+    background: #eef3f8;
+}
+
+.unchanged {
+    border: 0;
+}
+
+.down {
+    position: absolute;
+    top: 350px;
+    left: 25%;
+    z-index: 999;
+}
+
+.downBtn {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #FFF;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background: #68b92e;
+    background: -webkit-gradient(linear, left top, left bottom, from(#96ce6c), to(#68b92e));
+    background: -moz-linear-gradient(top, #96ce6c, #68b92e);
+    background: -o-linear-gradient(top, #96ce6c, #68b92e);
+    background: -ms-linear-gradient(top, #96ce6c, #68b92e);
+    background: linear-gradient(to bottom, #96ce6c, #68b92e);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96ce6c', endColorstr='#68b92e');
+}
+
+    .downBtn i {
+        margin-right: 6px;
+    }
+
+    .downBtn:hover {
+        background-repeat: no-repeat;
+        background: #5da926;
+        color: white;
+        background: -webkit-gradient(linear, left top, left bottom, from(#96ce6c), to(#5da926));
+        background: -moz-linear-gradient(top, #96ce6c, #5da926);
+        background: -o-linear-gradient(top, #96ce6c, #5da926);
+        background: -ms-linear-gradient(top, #96ce6c, #5da926);
+        background: linear-gradient(to bottom, #96ce6c, #5da926);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96ce6c', endColorstr='#5da926');
+    }
+
+.icons {
+    background: url(images/icons.png) no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+    .icons.apple {
+        background-position: 0px 0px;
+        width: 37px;
+        height: 44px;
+    }
+
+    .icons.android {
+        background-position: -37px 0px;
+        width: 37px;
+        height: 44px;
+    }
+.registerform>h4
+{
+    margin-left: 82px;
+    color: #0c72fc;
+    font-size: 20px;
+    font-weight: normal;
+}
+.fm-item > img.user
+{
+    position: absolute;
+    top: 86px;
+    left: 37px;
+    z-index: 999;
+}
+.fm-item > img.pwd
+{
+     position: absolute;
+    top: 134px;
+    left: 36px;
+    z-index:999
+}
+.key
+{
+     position: absolute;
+    top: 183px;
+    left: 36px;
+    z-index:999
+}
+.shadow
+{
+    position: absolute;
+    width: 117%;
+    bottom: 26px;
+    left: -25px;
+}
+.fm-item>.pwd+input
+{
+    position:relative;
+    bottom:5px;
+}
+.key+input
+{
+    position:relative;
+    bottom:10px;
+}

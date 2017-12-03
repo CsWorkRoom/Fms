@@ -1,0 +1,564 @@
+﻿@using System.Web.Optimization;
+@model Easyman.Content.Dto.ContentIndexInput
+@using System.Web.Mvc.Html
+@using Easyman.Common.Mvc.Controls
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+
+}
+@section Styles{
+@Styles.Render("~/Bundles/icheck/css")
+@Styles.Render("~/Bundles/ztree/css")
+    <link href="~/Views/Content/summernote/summernote.css" rel="stylesheet">
+    <link href="~/Common/Scripts/html5uploader/Huploadify.css" rel="stylesheet" />
+    <link href="~/Views/Content/summernote/summernote.css" rel="stylesheet">
+    <style>
+        .ui-autocomplete {
+            display: block;
+            z-index: 99999;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        .ul {
+            list-style: none;
+            margin: 0px;
+            display: inline;
+        }
+
+            .ul li {
+                margin: 0px 0px 10px 0px;
+            }
+
+                .ul li a {
+                    display: inline;
+                }
+
+        .user-div-list-ul {
+            list-style: none;
+            margin: 0px;
+            display: inline;
+        }
+
+            .user-div-list-ul li {
+                margin: 0px 0px 10px 0px;
+                float: left;
+                width: 50px;
+            }
+
+                .user-div-list-ul li a {
+                    display: inline;
+                    margin: 0px 10px 5px -19px;
+                }
+
+        .user-list-ul {
+            list-style: none;
+            margin: 0px;
+            display: inline;
+        }
+
+        .roleCheck-div {
+            margin-left: -20px;
+        }
+
+        .fResult {
+            background-color: #ededed;
+            border-radius: 2px;
+            border: 1px solid #d6d6d6;
+            float: left;
+            list-style: none;
+            height: 26px;
+            line-height: 22px;
+            margin-right: 8px;
+            padding: 0 3px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            width: 80px;
+        }
+
+        .person_tag {
+            float: left;
+            width: 57px;
+            white-space: nowrap;
+            overflow: hidden;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            word-wrap: normal;
+        }
+
+        .close {
+            float: left;
+            color: #a8a8a8;
+            margin-left: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 10px;
+            overflow: hidden;
+            font-family: arial;
+        }
+
+        .item {
+            display: inline-block;
+            /*width: 113px;*/
+            *display: inline;
+            *zoom: 1;
+            padding: 5px 0;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .itemdel {
+            display: none;
+            width: 14px;
+            height: 14px;
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            background-position: -262px -198px;
+            font-weight: 800;
+        }
+
+        .nickname {
+           
+            margin-left: 5px;
+            display: inline-block;
+            height: 30px;
+            line-height: 30px;
+            cursor: pointer;
+            text-decoration: none !important;
+            vertical-align: top;
+            margin: 5px;
+        }
+
+        .item:hover .itemdel {
+            background-color: #f2f2f2;
+            display: inline-block;
+        }
+
+        .item:hover {
+            background-color: #f2f2f2;
+        }
+
+        .limitUserCheck {
+            height: 220px;
+            overflow: auto;
+        }
+
+        .navBut {
+            border-bottom: 1px dashed #337ab7;
+            padding-bottom: 5px;
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+
+        .rowGroup {
+            border: 1px solid #e6dbdb;
+            margin-bottom: 10px;
+            margin-right: 0px;margin-left: 0px;
+        }
+
+        .row {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        p {
+            margin: 10px 0 0px 0px;
+        }
+        .form-group {
+            margin-right: 0px !important;
+            margin-left: 0px !important;
+        }
+        .close {
+            margin-top: 5px !important;
+            float:right;
+            color:#000;
+            font-size:20px;
+        }
+    </style>
+}
+
+<form style="width:100%;padding: 0px 30px 0px 30px;" id="saveForm" class="form-horizontal" action="../api/services/api/Content/UpdateOrInserContentIndex" method="post" role="form">
+    @Html.HiddenFor(h => h.Id)
+    @Html.HiddenFor(h => h.ContentTypeId)
+    @Html.HiddenFor(h => h.IsEdit)
+    @Html.HiddenFor(h => h.IsCheckUser)
+    @Html.HiddenFor(h => h.IsCheckRole)
+    @Html.HiddenFor(h => h.IsCheckDistrict)
+
+    <div class="form-body jarviswidget ">
+        <header role="heading">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#navMenu" aria-controls="home" role="tab" data-toggle="tab">基础属性</a></li>
+                <li role="presentation"><a href="#content" aria-controls="profile" role="tab" data-toggle="tab">内容编辑</a></li>
+                <li role="presentation"><a href="#powers" aria-controls="profile" role="tab" data-toggle="tab">权限配置</a></li>
+                <li role="presentation"><a href="#pushway" aria-controls="profile" role="tab" data-toggle="tab">推送方式</a></li>
+            </ul>
+        </header>
+        <div class="tab-content" style="padding-top: 12px;margin-bottom:50px">
+            <div role="tabpanel" class="tab-pane active" id="navMenu">
+
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 col-sm-4 control-label">内容定义</label>
+                    <div class="col-xs-6 col-sm-6">
+                        @Html.DropDownListFor(d => d.DefineId, ViewData["Define"] as List<SelectListItem>, new { @class = "form-control", @onchange = "LoadType()" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 col-sm-4 control-label">内容类别</label>
+                    <div class="col-xs-6 col-sm-6" id="htmlTreeDiv">
+                        @*@Html.DropDownTreeFor(d => d.ParentId, "../api/services/api/Content/GetContentTypeParentTreeJson")*@
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="TagName" class="col-xs-4 col-sm-4 control-label">标签</label>
+                    <div class="col-xs-6 col-sm-6" id="TagName">
+                        @Html.TextBoxFor(f => f.TagName, new { @class = "form-control", placeholder = "标签", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Title" class="col-xs-4 col-sm-4 control-label">标题</label>
+                    <div class="col-xs-6 col-sm-6" id="Title">
+                        @Html.TextBoxFor(f => f.Title, new { @class = "form-control", placeholder = "标题", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Summary" class="col-xs-4 col-sm-4 control-label">摘要</label>
+                    <div class="col-xs-6 col-sm-6" id="Summary">
+                        @Html.TextAreaFor(f => f.Summary, new { @class = "form-control", placeholder = "摘要", @Required = "Required", @rows = "3" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Summary" class="col-xs-4 col-sm-4 control-label"></label>
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="IsUrgent" id="IsUrgent" checked="@Model.IsUrgent"> 置顶
+                            </label>
+                            <label>
+                                <input type="checkbox" name="IsUse" id="IsUse" checked="@Model.IsUse"> 是否启用
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="content" style="margin-bottom:50px">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content no-padding">
+                                <div class="summernote" id="summernote">
+                                    <input type="text" style="display:none" value="@Model.Info" name="Info" class="form-control" id="Info" placeholder="内容">
+                                </div>
+                            </div>
+
+                            @*附件上传*@
+                            <div class="ibox-title" id="content_file">
+                                <h5>上传附件</h5>
+                                <div class="form-group">
+                                    <label for="Name" class="col-xs-4 control-label">上传文件</label>
+                                    <div class="col-sm-6">
+                                        <div id="upload"></div>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="FileId" value="@Model.FileId" id="FileId" placeholder="上传文件Id以“,”号隔开" style="display:none">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="powers" style="margin-bottom:50px">
+                <ul class="nav nav-pills  navBut">
+                    <li class="active" id="liAllRole"><a href="#">全部</a></li>
+                    <li id="liIsCheckUser"><a href="#">用户权限</a></li>
+                    <li><a href="#" id="liIsCheckRole">角色权限</a></li>
+                    <li><a href="#" id="liIsCheckDistrict">组织权限</a></li>
+                </ul>
+
+                @*用户权限*@
+                <div class="row" style="display:none;margin-bottom: 20px;" id="DivIsCheckUser">
+                    <div class="form-group" style="margin-bottom:5px">
+                        <div class="checkbox" style="float:left">
+                            <label for="nameSelect" style="font-weight: 600; margin-left:0px">用户权限</label>
+                            <label>
+                                <input type="checkbox" name="IsAllUser" id="IsAllUser" checked="@Model.IsAllUser"> 全部用户
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row rowGroup" id="userPanel">
+                        <div class="form-group" style="margin-left: 20px;">
+                            <p>
+                                <label for="nameSelect" style="font-weight: 600;margin-left: 20px;">指定名单</label>
+                                <a href="javascript:" class="ui-ml20" id="addUserList" data-toggle="modal" onclick="CerateHtml()" data-target="#myModal">设置</a>
+                            </p>
+                            <textarea type="text" readonly="readonly" class="form-control" style="width: 100%;height: 100%;border: 1px;background-color: #e4e0e000;cursor: default;" name="UserListName" id="UserNameList" placeholder="请配置访问此条类容的用户">@Model.UserListName</textarea>
+                            <input type="text" class="form-control" name="UserListId" value="@Model.UserListId" id="UserNameListId" placeholder="用户Id以“,”号隔开" style="display:none">
+                        </div>
+                    </div>
+
+                    <div class="row rowGroup" id="userPanelNo">
+                        <div class="form-group" style="margin-left: 20px;">
+                            <p>
+                                <label for="nameLimit" style="font-weight: 600; margin-left: 20px;">限制名单</label>
+                                <a href="javascript:" class="ui-ml20" id="addUserLimitList" data-toggle="modal" onclick="GetLimitUser()" data-target="#myLimitModal">设置</a>
+                            </p>
+                            <textarea type="text" readonly="readonly" class="form-control" style="width: 100%;height: 100%;border: 1px;background-color: #e4e0e000;cursor: default;" name="UserListNameNo" id="UserNameListNo" placeholder="请配置限制访问此条类容的用户">@Model.UserListNameNo</textarea>
+                            <input type="text" class="form-control" name="UserNameLimitList" value="@Model.UserNameLimitList" id="UserNameLimitList" placeholder="限制名单" style="display:none">
+                        </div>
+                    </div>
+                    
+                </div>
+
+                @*角色权限*@
+                <div id="DivIsCheckRole" class="row" style="display:none;margin-bottom: 20px;">
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label for="nameSelect" style="font-weight: 600;">角色权限</label>
+                            <label>
+                                <input type="checkbox" name="IsAllRole" id="IsAllRole" checked="@Model.IsAllRole"> 全部角色
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row rowGroup" id="rolePanel" style="border: 1px solid #e6dbdb;">
+                        <div class="form-group" style="margin-left: 20px;">
+                            <label for="nameRole" style="font-weight: 600;margin: 5px 0px -5px 3px;margin-left: 20px;">指定角色</label>
+                            <div class="col-sm-12" id="checkboxRoleList" style="margin-left: -50px;">
+                                @for (int i = 0; i < Model.Role.Count; i++)
+                                {
+                                    <div class="col-sm-3" style="margin-left:20px;">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="RoleId" checked="@Model.Role[i].IsCheck" value="@Model.Role[i].Id" id="IsReolyFloorFile"> @Model.Role[i].Name
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                                <input type="text" style="display:none" value="@Model.RoleListId" class="form-control" name="RoleListId" id="RoleListId" placeholder="指定角色名单">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row rowGroup" id="rolePanelNo" style="border: 1px solid #e6dbdb;">
+                        <div class="form-group" style="margin-left: 20px;">
+                            <label for="nameRole" style="font-weight: 600;margin: 5px 0px -5px 3px;margin-left: 20px;">限制角色</label>
+                            <div class="col-sm-12" id="checkboxRoleListNo" style="margin-left: -50px;">
+                                @for (int i = 0; i < Model.RoleNo.Count; i++)
+                                {
+                                    <div class="col-sm-3" style="margin-left:20px;">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="RoleId" checked="@Model.RoleNo[i].IsCheck" value="@Model.RoleNo[i].Id" id="IsReolyFloorFileNo"> @Model.RoleNo[i].Name
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                                <input type="text" style="display:none" value="@Model.RoleListIdNo" class="form-control" name="RoleListIdNo" id="RoleListIdNo" placeholder="限制角色名单">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*组织权限*@
+                <div id="DivIsCheckDistrict" class="row" style="display:none;margin-bottom: 20px;">
+
+                    <div class="form-group">
+
+                        <div class="checkbox">
+                            <label for="nameSelect" style="font-weight: 600;">组织权限</label>
+                            <label>
+                                <input type="checkbox" name="IsAllDistrict" id="IsAllDistrict" checked="@Model.IsAllDistrict"> 全部组织
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row rowGroup" id="distrcitPanel" style="border: 1px solid #e6dbdb;">
+                        <div class="form-group" style="margin-left: 20px;">
+                            <label for="nameDistrict" style="font-weight: 600;margin: 5px 0px -5px 3px; margin-left: 20px;">指定组织</label>
+                            <div class="col-sm-12" id="checkboxDistrictList" style="margin-left: -50px;">
+                                <div  id="district1_yes"   style="margin-left:45px;">
+                                    
+                                    <input type="hidden" id="NavIds" name="NavIds" value="">
+                                   
+                                    <ul id="zTreeMilti_NavIds" class="ztree" style="position: static; zoom: 1;"></ul>
+                                    <!-- Html.AsyncMultiSelectTreeFor(x => x.NavIds, "../api/services/api/Modules/GetNavTreeJsonByRoleIdForModule?roleId=" + Model.Id, "../api/services/api/Modules/GetModuleEventByUrl", "url", "POST")-->
+                                </div>
+
+                                <input type="text" style="display:none" value="@Model.DistrictListId" class="form-control" name="DistrictListId" id="DistrictListId" placeholder="指定组织名单">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row rowGroup" id="distrcitPanelNo" style="border: 1px solid #e6dbdb;">
+                        <div class="form-group" style="margin-left: 20px;">
+                            <label for="nameDistrictNo" style="font-weight: 600;margin: 5px 0px -5px 3px; margin-left: 20px;">限制组织</label>
+                            <div class="col-sm-12" id="checkboxDistrictListNo" style="margin-left: -50px;">
+                                <div id="district1_no" style="margin-left:45px;">
+
+                                    <input type="hidden" id="NavIdsNo" name="NavIdsNo" value="">
+
+                                    <ul id="zTreeMilti_NavIdsNo" class="ztree" style="position: static; zoom: 1;"></ul>
+                                    <!-- Html.AsyncMultiSelectTreeFor(x => x.NavIds, "../api/services/api/Modules/GetNavTreeJsonByRoleIdForModule?roleId=" + Model.Id, "../api/services/api/Modules/GetModuleEventByUrl", "url", "POST")-->
+                                </div>
+                                <input type="text" style="display:none" value="@Model.DistrictListIdNo" class="form-control" name="DistrictListIdNo" id="DistrictListIdNo" placeholder="限制组织名单">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div role="tabpanel" class="tab-pane" id="pushway">
+                <div class="row rowGroup">
+                    <div class="form-group" style="padding: 20px;">
+                        <label for="nameSelect" style="font-weight: 600;">设置此条类容推送方式</label>
+                        <div style="margin-left: -34px;" id="pushIdList">
+                            @foreach (var item in Model.Push)
+                            {
+                                <div class="col-sm-3">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" checked="@item.IsCheck" value="@item.Id" id="IsReolyFloorFile"> @item.Name
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                            <input type="text" name="PushId" id="PushId" style="display:none" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row bottomPage" style="margin-left: -30px;">
+            <div class="col-md-12">
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                <button class="btn btn-success" id="sumbit-btn" onclick="sumbitBtn()" type="button"><i class="fa fa-save"></i> 提交</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- 模态框（Modal） 指定用户-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabe2">
+                    设置指定名单
+                </h4>
+            </div>
+            <div class="modal-body" id="myLimitModelBodyYes">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="limitUserNameYes" placeholder="输入用户名" />
+                                <input type="text" class="form-control" style="display:none" id="limitUserIdYes" placeholder="输入用户名" />
+                            </div>
+                            <div class="col-sm-2">
+                                <a class="btn btn-default" id="BtnLimitUserYes">添加</a>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-sm-12" style="height: 300px;">
+                            <p id="limitUser_p" style="margin-left: -16px;">
+                                <label for="LimitUserYes" style="font-weight: 600;">已选(<span id="LimitUserYes"></span>/<span id="limitUserNumberYes">300</span>)</label>
+                            </p>
+                            <div id="limitUserCheckYes" class="limitUserCheck" style="margin-left: -16px;">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" @*onclick="UserLimitList()"*@ data-dismiss="modal" id="ConfirmUserListYes">
+                    确定
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+  
+</div>
+
+<!-- 模态框（Modal）限制名单 -->
+<div class="modal fade" id="myLimitModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabe2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabe2">
+                    设置限制名单
+                </h4>
+            </div>
+            <div class="modal-body" id="myLimitModelBody">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="limitUserName" placeholder="输入用户名" />
+                                <input type="text" class="form-control" style="display:none" id="limitUserId" placeholder="输入用户名" />
+                            </div>
+                            <div class="col-sm-2">
+                                <a class="btn btn-default" id="BtnLimitUser">添加</a>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-sm-12" style="height: 300px;">
+                            <p id="limitUser_p" style="margin-left: -16px;">
+                                <label for="LimitUser" style="font-weight: 600;">已选(<span id="LimitUser"></span>/<span id="limitUserNumber">300</span>)</label>
+                            </p>
+                            <div id="limitUserCheck" class="limitUserCheck" style="margin-left: -16px;">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" @*onclick="UserLimitList()"*@ data-dismiss="modal" id="ConfirmUserListNo">
+                    确定
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>
+    $(document).ready(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+    });
+</script>
+@section scripts{
+@Scripts.Render("~/Bundles/icheck/js")
+@Scripts.Render("~/Bundles/ztree/js")
+    <script src="~/Views/Content/js/AddContentIndex.js"></script>
+    <script src="~/views/content/js/editcontentindex.js"></script>
+    <script src="~/Views/Content/summernote/summernote.min.js"></script>
+    <script src="~/Views/Content/summernote/lang/summernotezhCN.js"></script>
+    <script src="~/Views/Script/js/jquery.jsPlumb-1.7.2.js"></script>
+    <script src="~/Common/Scripts/html5uploader/jquery.Huploadify.js"></script>
+}

@@ -1,0 +1,100 @@
+﻿@using System.Web.Optimization
+@{
+    Layout = null;
+    ViewBag.Title = "Login";
+}
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- CSS -->
+    @Styles.Render("~/Bundles/bootstrap/css")
+    @Styles.Render("~/Bundles/alert/css")
+    @Styles.Render("~/Bundles/common/css")
+    @*@Styles.Render("~/fonts/fonts/css")*@
+    <link href="~/Views/Account/css/newlogin.css" rel="stylesheet" />
+</head>
+<body oncontextmenu="return false">
+    <!--  第二版界面 -->
+    <div id="login_content">
+            <div id="login_wrap" style="background: rgb(255, 255, 255);">
+
+                <div id="login_bg" class="slideBox" style="margin: 0 0;overflow: hidden; position: relative;background-image:url(../Views/Account/img/pic_box_bg.png);background-repeat:no-repeat;background-position:center center;">
+                </div>
+
+                <div id="login_contents">
+                    <form action="~/Account/Login?returnUrl=/" method="post" id="loginForm" onsubmit="aesEncryptPassword()">
+                        <input name="action" value="login" type="hidden">
+
+                        <div id="login_area_div" class="login_area_right" style="top: 0px; right: 0%; background: rgba(0, 0, 0, 0.2);">
+                            <div class="login_area_body">
+                                <div class="login_box">
+                                    <div class="pic">
+                                        <div class="pic_box">
+                                            <img src="~/Views/Account/img/head.gif">
+                                        </div>
+                                        <div class="pic_box_bg"></div>
+                                    </div>
+                                    <div class="login_top" style="display: block;">
+                                        <div id="login_text_div" class="text" style="visibility: visible;">
+
+                                        </div>
+                                        <input name="action" value="login" type="hidden">
+
+                                        <!-- 用户名 -->
+                                        <input type="text" name="UsernameOrEmailAddress" required="Required" class="username" id="UsernameOrEmailAddress" placeholder="请输入账号" autocomplete="off" />
+                                        <hr class="hr15">
+
+                                        <!-- 密码 -->
+                                        <input type="password" name="Password" required="Required" class="username" id="pwd" placeholder="请输入密码" oncontextmenu="return false" onpaste="return false" />
+                                        <hr class="hr15">
+
+                                        <!-- 验证码 -->
+                                        <input type="text" style="float: left;width: 120px;" name="VerifyCode" required="Required" id="vertify" placeholder="请输入验证码" oncontextmenu="return false" onpaste="return false" />
+                                        <div style="margin-left: 10px;float: left;">
+                                            <a title="点击切换验证码" id="verifyCodeInfo" href="javascript:;" onclick="ToggleCode(this, 'GetVerifyCode');return false;">
+                                                <img src="~/Account/GetVerifyCode" width="100" height="43" />
+                                            </a>
+                                        </div>
+                                        <br/>
+                                        <hr class="hr15">
+                                        <!-- 登录按钮 -->
+                                        <input id="TenancyName" name="TenancyName" type="hidden" value="技术平台组">
+                                        <input id="ReturnUrlHash" name="ReturnUrlHash" type="hidden" value="">
+
+                                        <!-- 错误信息 -->
+                                        <div style="padding: 5px 0 10px 0; color: #FFF; font-size: 12px;width: 100%;margin-top: 10px;" id="error-message"></div>
+                                        <input style="width: 100%;" id="submit" type="submit" value="登录">
+                                        <hr class="hr20">
+                                    </div>
+
+                                </div>
+                                <div id="login_bottom_div" class="login_bottom" style="background: rgba(255, 255, 255, 0);">
+                                    <div class="tool_area">
+                                        <span title="找回密码？"><a onclick="alert('FindPwd')" style="cursor: pointer;color: rgb(255, 255, 255); text-decoration: none;">找回密码？</a></span>
+                                        <span title="浏览器下载"><a href="#" style="color: rgb(255, 255, 255); text-decoration: none;">浏览器下载</a></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <!-- Javascript -->
+    @Scripts.Render("~/Bundles/jquery/js")
+    @Scripts.Render("~/Bundles/bootstrap/js")
+    @Scripts.Render("~/Bundles/common/js")
+    @Scripts.Render("~/Bundles/alert/js")
+    <script src="~/Views/Account/js/login.js"></script>
+</body>
+
+
+</html>
+
+
+

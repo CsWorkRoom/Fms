@@ -1,0 +1,331 @@
+﻿@using Easyman.Common.Mvc.Controls
+@using System.Web.Optimization;
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+@section Styles{
+@Styles.Render("~/Bundles/App/jqgrid/css")
+    <style>
+        #iconMenuDiv {
+            width: 400px;
+        }
+            #iconMenuDiv span {
+                padding: 5px;
+                margin: 5px 10px;
+                font-size: 22px;
+                cursor: pointer;
+                display: inline-block;
+                border: 1px solid transparent;
+            }
+
+                #iconMenuDiv span:hover {
+                    transform: scale(1.02);
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+
+            #iconMenuDiv h5 {
+                margin-left: 10px;
+                padding-bottom: 4px;
+                border-bottom: solid 1px #707070;
+            }
+
+    </style>
+}
+    <input id="targetVals" type="text" value="@ViewData["targetVals"]" style="display:none" />
+<div role="tabpanel" class="tab-pane active" id="navMenu" style="padding:5px 20px 0px 20px;margin:5px 0px 10px 0px">
+    <button class="btn btn-primary" id="sumbit-btn" data-loading-text="提交中..." type="submit" onclick="SaveTargetValues()" ><i class="fa fa-save"></i> 提交</button>&nbsp;
+    <button class="btn btn-primary" style="display:none" id="cur-btn" data-loading-text="固化中..." type="submit" onclick="CurTarget()" ><i class="fa fa-save"></i> 固化指标</button>
+</div>
+    <div class="tab-content" style="width:100%;height:100%;padding: 0px 20px;">
+        <!--目标值编辑区域-->
+        <table id="jqGrid"></table>
+    </div>
+
+    @section scripts{
+        @Scripts.Render("~/Bundles/App/jqgrid/js")
+        <script src="~/Common/Scripts/custom/boot.js"></script>
+        @*<script src="@Url.Content("/Scripts/bootstrap-typeahead.js")" type="text/javascript"></script>*@
+        <script type="text/javascript">
+
+            //#region 页面入口
+            $(document).ready(function () {
+                InitGrid();
+            })
+            //#endregion
+            //随着浏览器的变化而变化
+            $(window).resize(function () {
+                WinReJqGridSize("navMenu", "jqGrid");
+            });
+
+            //初始化-加载表格内容
+            function InitGrid() {
+                var tvs = $("#targetVals").val();
+                if (tvs != null && tvs.length > 0) {
+                    var targetValArr = $.parseJSON(tvs);
+                    $.jgrid.gridUnload("jqGrid");//先卸载
+
+                    $("#jqGrid").jqGrid({
+                        //altRows: true,
+                        data: targetValArr,
+                        editurl: 'clientArray',
+                        styleUI: 'Bootstrap',
+                        // responsive: true,
+                        datatype: "local",
+                        page: 1,
+                        colModel: [
+                            { label: '编号', name: 'Id', width: 50, editable: false, hidden: true },
+                            {
+                                label: '是否选中',
+                                name: 'IsUse',
+                                width: 80,
+                                editable: true,
+                                edittype: "select",
+                                editoptions: {
+                                    value: "true:是;false:否"
+                                }
+                            },
+                             {
+                                 label: '可选/必选',
+                                 name: 'ChooseType',
+                                 width: 120,
+                                 editable: false
+                             },
+                             {
+                                 label: '指标类型',
+                                 name: 'TargetTypeName',
+                                 width: 130,
+                                 editable: false
+                             },
+                              {
+                                  label: '指标名',
+                                  name: 'TargetName',
+                                  width: 130,
+                                  editable: false,
+                              },
+                               {
+                                   label: '指标权重分',
+                                   name: 'TargetWeight',
+                                   width: 100,
+                                   editable: false,
+                               },
+
+                                {
+                                    label: '指标Id',
+                                    name: 'TargetId',
+                                    width: 20,
+                                    hidden: true
+                                },
+                                {
+                                    label: '组织Id',
+                                    name: 'DistrictId',
+                                    width: 20,
+                                    hidden: true
+                                },
+                                {
+                                    label: '目标值',
+                                    name: 'TValue',
+                                    width: 150,
+                                    editable: true,
+                                    editrules: { required: true, number: true, custom: true, custom_func: ValidateTvalue },
+                                    edittype: "text"
+                                },
+                                 {
+                                     label: '指标得分比重',
+                                     name: 'ScoreWeight',
+                                     width: 150,
+                                     editable: true,
+                                     editrules: { required: true, number: true, custom: true, custom_func: ValidateSWvalue },
+                                     edittype: "text"
+                                 },
+                                  {
+                                      label: '指标说明',
+                                      name: 'TargetRemark',
+                                      width: 220,
+                                      editable: false,
+                                  },
+                        ],
+                       // autoScroll: false,//当autoScroll和shrinkToFit均为false时，会出现行滚动条
+                        shrinkToFit: true,//是否列宽度自适应。true=适应 false=不适应
+                        loadonce: false,
+                        viewrecords: true,
+                        //height: window.innerHeight * 0.6,
+                        //width: $(".modal-body").width(),
+                        rowNum: targetValArr.length
+                    });
+                    startEdit($("#jqGrid"));
+                }
+                $(window).resize();
+            }
+            //自定义验证 value=输入控件的值，name=列名称（来自colModel）
+            function ValidateTvalue(value, colname) {
+                //var regu = "^[0-9]+(.[0-9]{2})?$";
+                //var regu = "/^([0-9]+.?[0-9]*$)|([0])/";
+                var regu = "(\b*)|(\b*.\b*)"
+                //var regu = "/^\+?(\d*\.\d{2})$/";
+                var re = new RegExp(regu);
+                if (re.test(value)) {
+                    return [true, ""];
+                }
+                else
+                    return [false, "【" + colname + "】错误，请输入数值型.如：12或12.23"];
+            }
+
+            //自定义验证 value=输入控件的值，name=列名称（来自colModel）
+            function ValidateSWvalue(value, colname) {
+                var regu = "(\b*)|(\b*.\b*)";
+                //var regu = "/^\+?(\d*\.\d{2})$/";
+                var re = new RegExp(regu);
+                if (re.test(value)) {
+                    //return [true, ""];
+                }
+                else
+                    return [false, "【" + colname + "】错误，请输入数值型.如：12或12.23"];
+                value = value - 0;
+
+                if (value >= 0 && value <= 1) {
+
+                }
+                else
+                    return [false, "【" + colname + "】应在范围【0~1】之间"];
+                return [true, ""];
+            }
+
+            //保存目标指标值
+            function SaveTargetValues() {
+                $("#sumbit-btn").button('loading');//保存中
+                saveRows($("#jqGrid"));
+                //如果有错误时阻止提交
+                if ($("#info_dialog").attr("aria-hidden") == "false") {
+                    startEdit($("#jqGrid"));
+                    $("#sumbit-btn").button('reset');
+                    return;
+                }
+                var gridArr = $("#jqGrid").getRowData();//获得grid的数据
+                startEdit($("#jqGrid"));
+
+                $.ajax({
+                    type: "post",
+                    url: "SaveTargetValueList",
+                    data: {
+                        targetVals: JSON.stringify(GetGridData(gridArr))
+                    },
+                    success: function (e) {
+                        abp.message.success("", "提交成功！");
+                        $("#sumbit-btn").button('reset');
+                    },
+                    error: function (e) {
+                        if (e.responseText.indexOf("<title>") != -1) {
+                            var start = e.responseText.indexOf("<title>");
+                            var end = e.responseText.indexOf("</title>");
+                            abp.message.error(e.responseText.substring(start + 7, end), "保存失败");
+                        }
+                        else
+                            abp.message.error(e.responseText, "保存失败");
+                        $("#sumbit-btn").button('reset');
+                    }
+                });
+            }
+
+            //获取编辑后的表格数据
+            function GetGridData(gridArr) {
+                var targetVals = $("#targetVals").val();
+                var targetValArr = $.parseJSON(targetVals);
+
+                for (var i = 0; i < targetValArr.length; i++) {
+                    for (var j = 0; j < gridArr.length; j++) {
+                        if (targetValArr[i].TargetId.toString() == gridArr[j].TargetId.toString()) {
+                            switch (gridArr[j].IsUse) {
+                                case "是":
+                                    targetValArr[i].IsUse = true;
+                                    break;
+                                case "否":
+                                    targetValArr[i].IsUse = false;
+                                    break;
+                                default:
+                                    targetValArr[i].IsUse = true;
+                            }
+                            targetValArr[i].TValue = parseFloat(gridArr[j].TValue);
+                            targetValArr[i].ScoreWeight = parseFloat(gridArr[j].ScoreWeight)
+                        }
+                    }
+                }
+                return targetValArr;
+            }
+
+            //#region grid批量编辑/保存
+            function startEdit($gridCase) {
+                //var grid = $("#jqGrid");
+                var ids = $gridCase.jqGrid('getDataIDs');
+
+                for (var i = 0; i < ids.length; i++) {
+                    $gridCase.jqGrid('editRow', ids[i]);
+
+                    //一个特殊判断:当为“必选”项时不允许进行“是否选中”的勾选
+                    var rowDatas = $gridCase.jqGrid('getRowData', ids[i]);
+                    if (rowDatas.ChooseType == "必选")
+                    {
+                        $("#" + ids[i] + "_IsUse").attr("disabled", "disabled");
+                    }
+                }
+            };
+
+            function saveRows($gridCase) {
+                //var grid = $("#jqGrid");
+                var ids = $gridCase.jqGrid('getDataIDs');
+
+                for (var i = 0; i < ids.length; i++) {
+                    $gridCase.jqGrid('saveRow', ids[i]);
+                }
+            }
+            //#endregion
+
+            //固化指标测试
+            function CurTarget() {
+                $("#cur-btn").button('loading');//保存中
+                $.ajax({
+                    type: "post",
+                    url: bootPATH + "api/services/api/MonthTarget/CuringMonthTarget",
+                    data: {
+                        Month: "201709",
+                        CurWay: "手工固化"
+                    },
+                    //dataType: "json",
+                    //contentType: 'application/json',
+                    success: function (e) {
+                        abp.message.success("", "固化成功！");
+                        $("#cur-btn").button('reset');
+                    },
+                    error: function (xhr) {
+                        //if (e.responseText.indexOf("<title>") != -1) {
+                        //    var start = e.responseText.indexOf("<title>");
+                        //    var end = e.responseText.indexOf("</title>");
+                        //    abp.message.error(e.responseText.substring(start + 7, end), "保存失败");
+                        //}
+                        //else
+                        //    abp.message.error(e.responseText, "保存失败");
+                        abp.ui.clearBusy();
+                        var data = JSON.parse(xhr.responseText);
+                        try {
+                            if (data.success === false) {
+                                if (data.error.validationErrors) {
+                                    abp.message.error(data.error.details, data.error.message);
+                                }
+                                else {
+                                    abp.message.error(data.error.message, '固化失败');
+                                }
+                            }
+                            else {
+                                abp.message.error(data.responseText, '固化失败');
+                            }
+                        } catch (e) {
+                            console.log(e);
+                        }
+                        $("#cur-btn").button('reset');
+                        return false;
+                    }
+                });
+            }
+        </script>
+    }

@@ -1,0 +1,53 @@
+﻿@using Abp.Collections.Extensions
+@model Abp.Web.Mvc.Models.ErrorViewModel
+@{
+    Layout = null;
+}
+<div class="row">
+    <section class="col-lg-12">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">@Model.ErrorInfo.Message</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    @(!string.IsNullOrEmpty(Model.ErrorInfo.Details) ? Model.ErrorInfo.Details : Model.ErrorInfo.Message)
+                </p>
+                @* Show validation errors *@
+                @if (!Model.ErrorInfo.ValidationErrors.IsNullOrEmpty())
+                {
+                    <ul>
+                        @foreach (var validationError in Model.ErrorInfo.ValidationErrors)
+                        {
+                            <li>
+                                @validationError.Message
+                                @if (validationError.Members != null && validationError.Members.Any())
+                                {
+                                    <text>(@string.Join(", ", validationError.Members))</text>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+<script src="~/Scripts/jquery-2.2.4.min.js"></script>
+<script src="~/Common/Scripts/errorPage/error.js"></script>
+<script src="~/Common/rootUrl.js"></script>
+<link href="~/Scripts/sweetalert/sweet-alert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert/sweet-alert.min.js"></script>
+<script>
+    $(function () {
+        var strTitle = $(".panel-title").html();
+        var strMessage = $(".panel-body").html();
+        SendErrorInfo(strTitle, strMessage);
+        if (strTitle.toLowerCase().indexOf("session.userid is null") >= 0) {
+            swal({ title: "登录提示", text: "当前用户登录超时，请重新登录！", type: "warning", confirmButtonText:"去重新登录" }, function (isConfirm) {
+                window.parent.location.href = bootPATH + "Account/Login";
+            });
+        }
+    });
+
+</script>

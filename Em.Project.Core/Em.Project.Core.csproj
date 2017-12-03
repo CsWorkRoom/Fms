@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{39E24EDD-4A3C-4866-8856-545AEAFEE5B1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Em.Project.Core</RootNamespace>
+    <AssemblyName>Em.Project.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Abp, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Abp.1.5.1\lib\net452\Abp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Abp.Zero, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Abp.Zero.1.5.1\lib\net452\Abp.Zero.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Syncfusion.Core">
+      <HintPath>..\dlls\Syncfusion.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domain\Export\DownData.cs" />
+    <Compile Include="Domain\Export\ExportData.cs" />
+    <Compile Include="Domain\Export\ExportConfig.cs" />
+    <Compile Include="Domain\Formula\MonthTargetFormula.cs" />
+    <Compile Include="Domain\Formula\TargetFormula.cs" />
+    <Compile Include="Domain\MonthTarget\MonthBill.cs" />
+    <Compile Include="Domain\MonthTarget\MonthBillLog.cs" />
+    <Compile Include="Domain\MonthTarget\MonthBonusDetail.cs" />
+    <Compile Include="Domain\MonthTarget\MonthTargetDetail.cs" />
+    <Compile Include="Domain\MonthTarget\MonthSubitemScore.cs" />
+    <Compile Include="Domain\MonthTarget\MonthTarget.cs" />
+    <Compile Include="Domain\MonthTarget\MonthBonus.cs" />
+    <Compile Include="Domain\Report\GlobalVar.cs" />
+    <Compile Include="Domain\Report\Param.cs" />
+    <Compile Include="Domain\Report\RdlcReport.cs" />
+    <Compile Include="Domain\Report\Report.cs" />
+    <Compile Include="Domain\Report\ReportFilter.cs" />
+    <Compile Include="Domain\Report\TbReport.cs" />
+    <Compile Include="Domain\Report\TbReportField.cs" />
+    <Compile Include="Domain\Report\TbReportFieldTop.cs" />
+    <Compile Include="Domain\Report\InEvent.cs" />
+    <Compile Include="Domain\Report\TbReportOutEvent.cs" />
+    <Compile Include="Domain\Subitem\Subitem.cs" />
+    <Compile Include="Domain\Subitem\SubitemType.cs" />
+    <Compile Include="Domain\Target\Manager.cs" />
+    <Compile Include="Domain\Target\TargetValue.cs" />
+    <Compile Include="Domain\Target\Target.cs" />
+    <Compile Include="Domain\Target\TargetTag.cs" />
+    <Compile Include="Domain\Target\TargetType.cs" />
+    <Compile Include="EmProjectCoreModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Easyman.Common\Easyman.Common.csproj">
+      <Project>{35976e70-09e4-4bd4-8a81-d292c7872d16}</Project>
+      <Name>Easyman.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Easyman.Core\Easyman.Core.csproj">
+      <Project>{17298ea0-af73-4f30-b6f1-2066100d7d74}</Project>
+      <Name>Easyman.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Managers\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

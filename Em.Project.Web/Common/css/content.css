@@ -1,0 +1,277 @@
+﻿/*自定义滚动条,但是兼容性差*/
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 10px;
+    -webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    -webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,.1);
+}
+
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    border: 5px solid transparent;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: 1px 1px 5px rgba(0,0,0,.2) inset;
+}
+
+::-webkit-scrollbar-thumb {
+    min-height: 20px;
+    background-clip: content-box;
+    box-shadow: 0 0 0 5px rgba(0,0,0,.2) inset;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+/*自定义滚动条,但是兼容性差*/
+.ztree li span.button.menu_ico_docu, .ztree li span.button.menu_ico_close, .ztree li span.button.menu_ico_docu {
+    background-image: url("../Images/ztree/menu.png");
+    background-color: transparent;
+}
+/** checkbox 优化 */
+input[type=checkbox], input[type=radio] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    cursor: pointer;
+    vertical-align: bottom;
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+    -webkit-box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    box-sizing: border-box !important;
+    position: relative;
+}
+
+    input[type=checkbox]:active, input[type=radio]:active {
+        border-color: #c6c6c6;
+        background: #ebebeb;
+    }
+
+    input[type=checkbox]:hover {
+        border-color: #c6c6c6;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+        -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+    }
+
+input[type=radio] {
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    border-radius: 1em;
+    width: 14px;
+    height: 14px;
+}
+
+    input[type=checkbox]:checked, input[type=radio]:checked {
+        background: #fff;
+    }
+
+        input[type=radio]:checked::after {
+            content: '';
+            display: block;
+            position: relative;
+            top: 0px;
+            left: 0px;
+            width: 12px;
+            height: 12px;
+            background: #666;
+            -webkit-border-radius: 1em;
+            -moz-border-radius: 1em;
+            border-radius: 1em;
+        }
+
+        input[type=checkbox]:checked::after {
+            display: block;
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAtklEQVQ4y2P4//8/A7Ux1Q0cxoaCADIbCUgCMTvVXAoE5kA8CYidyXYpGrAH4iVAHIXiCwoMDQTimUBcBsRMlBrKCsTpUANzkC0j11BuIK6EGlgKsoAkQ4FgChD7AzELVI8YEDdDDawDYk6YQaQY6gg1oAqILYC4D8oHGcyLbBAphoJAKtQgGO4EYiHk2CLHUJAXm6AG9gCxNHoSIMdQEJCFGqiALaGSayjMxQwUGzq0S6nhZygA2ojsbh6J67kAAAAASUVORK5CYII=);
+        }
+    /*input[type=checkbox]:checked::after{display:block;position:absolute;top:-4px;left:-4px;content:url("../Images/checkbox/check.png")}*/
+    input[type=checkbox]:focus, input[type=radio]:focus {
+        outline: none;
+    }
+
+.ztree li span.button.file_ico_docu {
+    background-image: url("../Images/ztree/file.png");
+    background-color: transparent;
+}
+
+.ztree li span.button.root_ico_open, .ztree li span.button.root_ico_close, .ztree li span.button.root_ico_docu {
+    background-image: url("../Images/ztree/root.png");
+    background-color: transparent;
+}
+
+.input-group span button {
+    height: 34px;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    color: #62a8ea;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    border-bottom: 2px solid #62a8ea;
+}
+
+.col-sm-6 > .icheckbox_flat-blue {
+    top: 5px;
+}
+
+.marb20 {
+    margin-bottom: 20px !important;
+}
+
+.inlineblock {
+    display: inline-block !important;
+}
+
+.center {
+    text-align: center;
+}
+
+
+/*公共样式*/
+.btn {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    padding: 4px 12px;
+    /*color: #fff;*/
+    text-align: center;
+    border-radius: 1px;
+}
+
+.modal-header {
+    padding: 9px;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+}
+
+.modal-body {
+    padding-bottom: 0px;
+    background-color:#fff;
+    padding: 2px;
+}
+
+body {
+    height: 100%;
+    font-size: 12px;
+}
+
+.sweet-alert button {
+    padding: 5px 32px;
+}
+
+.form-control {
+    border-radius: 4px;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #eee;
+    opacity: 1;
+}
+
+.modal-content {
+    border-radius: 3px;
+}
+
+/*jqgrid样式*/
+.ui-jqgrid .ui-pg-input, .ui-jqgrid .ui-jqgrid-toppager .ui-pg-input {
+    box-shadow: none;
+    height: 25px;
+    padding: 5px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #3a3f51;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #dde6e9;
+    border-radius: 4px;
+}
+
+.ui-jqgrid .ui-pg-selbox, .ui-jqgrid .ui-jqgrid-toppager .ui-pg-selbox {
+    box-shadow: none;
+    height: 25px;
+    padding: 5px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #3a3f51;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #dde6e9;
+    border-radius: 4px;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: rgba(229, 231, 232, 0.34);
+}
+
+.table > tbody > tr.success > td, .table > tbody > tr.success > th, .table > tbody > tr > td.success, .table > tbody > tr > th.success, .table > tfoot > tr.success > td, .table > tfoot > tr.success > th, .table > tfoot > tr > td.success, .table > tfoot > tr > th.success, .table > thead > tr.success > td, .table > thead > tr.success > th, .table > thead > tr > td.success, .table > thead > tr > th.success {
+    background-color: rgba(201, 208, 186, 0.34);
+}
+
+.table > tbody > tr.active > td, .table > tbody > tr.active > th, .table > tbody > tr > td.active, .table > tbody > tr > th.active, .table > tfoot > tr.active > td, .table > tfoot > tr.active > th, .table > tfoot > tr > td.active, .table > tfoot > tr > th.active, .table > thead > tr.active > td, .table > thead > tr.active > th, .table > thead > tr > td.active, .table > thead > tr > th.active {
+    background-color: rgba(201, 208, 186, 0.34);
+}
+
+.control-label {
+    word-wrap: break-word;
+    margin-bottom: 0px;
+}
+
+.repeat-watermark {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    background: #fff;
+}
+
+label {
+    font-weight: inherit;
+}
+
+.bottomPage {
+    position: absolute;
+    bottom: 0;
+    text-align: right;
+    border: 1px solid #ddd;
+    width: 100%;
+    background-color: #f8f8f8;
+    padding: 3px;
+    border-radius: 3px;
+    height:38px;
+}
+
+/*弹出提示框start*/
+.sweet-alert {
+    width: 400px;
+    padding: 0px 2px 10px 2px;
+}
+
+.sweet-alert .icon {
+        margin: 5px auto;
+}
+/*弹出提示框end*/

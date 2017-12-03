@@ -1,0 +1,32 @@
+﻿@model Easyman.Content.Dto.ContentIndexSearchOutput
+
+<div>
+    @foreach (var item in Model.Datas)
+    {
+        <div class="hr-line-dashed"></div>
+        <div class="search-result">
+            <h3>
+                <a href="/Content/ContentInfo?navId=@item.Id">@item.Title</a>
+            </h3>
+            <p style="font-size: 14px;line-height:1.6;">
+                @item.Summary
+            </p>
+            
+            <p>
+                <a href="/Content/ContentInfo?navId=@item.Id" class="search-link" >由 @item.CreateName 创建于 @item.CreateTime</a>
+                <span><i class="fa fa-eye"></i> 阅读(<span id="ReplyCount">@item.ReadContent</span>)</span>
+                @if (item.IsOrLike)
+                {
+                    <span><i class="fa fa-thumbs-up"></i> 点赞(<span id="ReplyCount">@item.ContentPraiseCount</span>)</span>
+                }
+                else
+                {
+                    <span><i class="fa fa-thumbs-o-up"></i> 点赞(<span id="ReplyCount">@item.ContentPraiseCount</span>)</span>
+                }
+                
+                <span><i class="fa fa-comments-o"></i> 评论(<span id="ReplyCount">@item.ReplyCount</span>)</span>
+            </p>
+        </div>
+    }
+    <input value="@Model.Page.TotalPage" id="pageTotal" style="display:none"/>
+</div>

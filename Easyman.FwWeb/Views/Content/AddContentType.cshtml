@@ -1,0 +1,66 @@
+﻿@using System.Web.Optimization;
+@model Easyman.Content.Dto.ContentTypeInput
+@using Easyman.Common.Mvc.Controls
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+    @Styles.Render("~/Bundles/icheck/css")
+    @Styles.Render("~/Bundles/ztree/css")
+}
+
+<form style="width:100%;padding: 0px 15px 0px 15px;" id="saveForm" class="form-horizontal" action="../api/services/api/ContentType/UpdateOrInserContentType" method="post" role="form">
+    @Html.HiddenFor(h => h.Id)
+    @Html.HiddenFor(h => h.IsEdit)
+    @Html.HiddenFor(h => h.PIdType)
+    <div class="form-body jarviswidget " style="height:339px">
+        <div class="tab-content" style="padding-top: 12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">内容定义</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(d => d.DefineId, ViewData["Define"] as List<SelectListItem>, new { @class = "form-control", @onchange = "LoadType()" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">类别名</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "类别名", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">上级类别</label>
+                    <div class="col-sm-6" id="htmlTreeDiv">
+                        @*@Html.DropDownTreeFor(d => d.ParentId, "../api/services/api/Content/GetContentTypeParentTreeJson")*@
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">排序</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.ShowOrder, new { @class = "form-control", placeholder = "排序", @Required = "Required" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row bottomPage">
+            <div class="col-md-12">
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                <button class="btn btn-success" id="sumbit-btn" type="button"><i class="fa fa-save"></i> 提交</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+    });
+</script>
+@section scripts{
+@Scripts.Render("~/Bundles/icheck/js")
+@Scripts.Render("~/Bundles/ztree/js")
+    <script src="~/Views/Content/js/AddContentType.js"></script>
+}

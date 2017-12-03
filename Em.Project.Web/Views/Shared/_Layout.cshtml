@@ -1,0 +1,274 @@
+﻿@using Abp.Timing
+@using Abp.Web.Mvc.Extensions
+@using System.Web.Optimization
+@{
+    SetAntiForgeryCookie();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8Bundles" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>甘孜计件抢盘系统 V1</title>
+    <link rel="shortcut icon" href="~/favicon.ico">
+    <link name="ColorOp" href="~/Common/Theme/blue.css" rel="stylesheet" />
+    <link href="~/Common/css/_layout.css" rel="stylesheet" />
+    <link href="~/Common/css/_main.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+    @Styles.Render("~/Bundles/bootstrap/css")
+                @Styles.Render("~/Bundles/common/css")
+                    @Styles.Render("~/Bundles/alert/css")
+                        @Styles.Render("~/Bundles/iconfont/css")
+                        @Styles.Render("~/Bundles/Scroll/css")
+
+    <link href="~/Common/css/urlExtend.css" rel="stylesheet" />
+
+    @RenderSection("Styles", false)
+    <script type="text/javascript">
+        var abp = abp || {}; abp.appPath = '@ApplicationPath';
+    </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        @Html.IncludeScript("~/Scripts/others/html5shiv.js")
+        @Html.IncludeScript("~/Scripts/others/respond.min.js")
+    <![endif]-->
+        @Scripts.Render("~/Bundles/jquery/js")
+        <script src="~/Common/rootUrl.js"></script>
+    @Scripts.Render("~/Bundles/bootstrap/js")
+    @Scripts.Render("~/Bundles/alert/js")
+    @Scripts.Render("~/Bundles/abp/js")
+    @Scripts.Render("~/Bundles/common/js")
+    @Scripts.Render("~/Bundles/bootBack/js")
+    @Scripts.Render("~/Bundles/index/js")        
+    @Scripts.Render("~/Bundles/iconfont/js")
+    @Scripts.Render("~/Bundles/Scroll/js")
+
+
+    <!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
+    <script src="~/AbpScripts/GetScripts?v=@(Clock.Now.Ticks)" type="text/javascript"></script>
+    <script src="~/api/AbpServiceProxies/GetAll?v=@(Clock.Now.Ticks)"></script>
+    <script src="~/Scripts/TweenMax.min.js"></script>
+
+    @RenderSection("Scripts", false)
+    <style>
+     ::-webkit-scrollbar {
+        width: 6px;
+        background-color: #fff;
+    }
+    </style>
+</head>
+<body class="hold-transition skin-style sidebar-mini" >
+    <div class="navbar navbar-fixed-top" role="navigation" ng-controller="app.views.layout.header as vm">
+        <div class="">
+            <div class="navbar-header">
+                <a href="#/" target="_blank" class="logo" style="text-decoration:none;">
+                    <span class="logo-mini">
+                        <i class="iconfont" style="font-size:18px;">&#xe6bf;</i>
+                    </span>
+                    <span class="logo-lg"><i class="iconfont" style="margin-right:10px;font-size:18px;">&#xe6bf;</i><span>甘孜计件抢盘系统 V1</span></span>
+                </a>
+
+                <div class="left-bar" style="display:none">
+                   <ul class="top-menu" id="top-menu" >
+                    </ul>
+                </div>
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="display:none">
+                        <a id="change-menu" class="fa fa-exchange"></a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="fa fa-bell-o" data-toggle="dropdown"><span class="badge" id="newConeentCount"></span></a>
+                        <ul class="dropdown-menu changecolor" id="newConeent3" style="width: 460px;">
+                            <li><a style='padding: 3px 10px;float: right;' id='AllContents'>查看全部</a></li>
+                            
+                        </ul>
+                    </li>
+                   
+                    <li>
+                        @*<a class="fa fa-envelope-o"><span class="badge">6</span></a>*@
+                        <a class="fa fa-question-circle-o" id="fa_help"></a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="icon iconfont" data-toggle="dropdown" title="更换主题">&#xe64f;</a>
+                        <ul class="dropdown-menu changecolor">
+                            <li id="op"><a>请选择您喜欢的主题样式：</a></li>
+                            <li id="blue"><a style=""> 深 蓝 主 题</a></li>
+                            <li id="blueMin"><a style=""> 浅 蓝 主 题</a></li>
+                            <li id="green"><a>绿 色 主 题</a></li>
+                            <li id="purple"><a> 紫 色 主 题</a></li>
+                            <li id="black"><a>咖 啡 色 主 题</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown"><img class="user-image" src="~/Views/Account/img/user3.jpg" alt="Alternate Text" /> <span id="userInfo"></span> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="bd"><a target="_blank" href="http://www.easyman.com.cn"><i class="fa fa-user-circle"></i> 联系我们</a></li>
+                            <li class="bd"><a href="javascript:void(0);" onclick="TopModeDialogUrl(null, '密码修改', 'Account/ModifyPassword', 399, 286)"><i class="fa fa-expeditedssl"></i> 密码修改</a></li>
+                            <li class="bd"><a target="_blank" href="http://www.easyman.com.cn"><i class="fa fa-info-circle" ></i> 关于我们</a></li>
+                            <li class="bd"><a href="@Url.Action("Logout", "Account")"><i class="fa fa-power-off"></i> 退出登录</a></li>
+                            <li><a><i class="fa fa-clock-o"></i>上次登录时间：<span id="lastLoginTime"></span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="scrollbarContent main-sidebar">
+        <div class="sidebar">
+            <ul class="sidebar-menu" id="sidebar-menu"></ul>
+        </div>
+    </div>
+    <div></div>
+    <div style="position:fixed;left:0;right:0;top:0;bottom:0">
+        <div id="content-wrapper" class="content-wrapper">
+            <div class="content-tabs">
+                <button class="sidebar-toggle roll-nav tabLeft" id="tabLRBut">
+                    <span class="fa fa-chevron-left"></span>
+                </button>
+                <button class="roll-nav roll-left tabLeft">
+                    <i class="fa fa-backward"></i>
+                </button>
+                <nav class="page-tabs menuTabs">
+                    <div class="page-tabs-content" style="margin-left: 0;">
+                        <a href="javascript:;" class="menuTab active" data-id="~/Views/default.html"><i class="fa fa-file-o"></i> 首页</a>
+                    </div>
+                </nav>
+                <button class="roll-nav roll-right tabRight">
+                    <i class="fa fa-forward"></i>
+                </button>
+
+                <button class="roll-nav roll-right tabRight">
+                    <i class="fa fa-forward"></i>
+                </button>
+                <div class="btn-group roll-nav roll-right">
+                    <button class="dropdown tabClose" data-toggle="dropdown">
+                        页签操作<i class="fa fa-caret-down" style="padding-left: 3px;"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a class="tabReload" style="cursor:pointer">刷新当前</a></li>
+                        <li><a class="tabCloseCurrent" style="cursor:pointer">关闭当前</a></li>
+                        <li><a class="tabCloseAll" style="cursor:pointer">全部关闭</a></li>
+                        <li><a class="tabCloseOther" style="cursor:pointer">除此之外全部关闭</a></li>
+                    </ul>
+                </div>
+
+                <button class="roll-nav roll-right fullscreen"><i class="fa fa-arrows-alt"></i></button>
+            </div>
+            <div class="content-iframe" style="overflow: hidden;">
+                <div class="mainContent" id="content-main" style="margin-left:0px; margin-bottom: 0px; padding: 0; margin-top:3px">
+                    <iframe class="LRADMS_iframe" width="100%" height="100%" src="~/Views/default.html" frameborder="0" data-id="~/Views/default.html"></iframe>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @RenderBody()
+    <script>
+        $(function () {
+            $("#change-menu").click(function () {
+                if ($(".left-bar").hasClass("none")) {
+                    $(".left-bar").removeClass("none");
+                    $(".main-sidebar").addClass("none");
+                    $(".content-wrapper").addClass("marl0");
+                    $("button.sidebar-toggle").attr("disabled", "true");
+                } else if ($(".main-sidebar").hasClass("none")) {
+                    $(".left-bar").addClass("none");
+                    $(".main-sidebar").removeClass("none");
+                    $(".content-wrapper").removeClass("marl0");
+                    $("button.sidebar-toggle").removeAttr("disabled");
+                }
+            });
+
+            $(".changecolor li").click(function () {
+                var style = $(this).attr("id");
+                switch (style) {
+                    case "blue":
+                        style = "blue";
+                        break;
+                    case "blueMin":
+                        style = "blueMin";
+                        break;
+                    case "green":
+                        style = "green";
+                        break;
+                    case "purple":
+                        style = "purple";
+                        break;
+                    case "black":
+                        style = "black";
+                        break;
+                    default:
+                        style = "blue";
+                        break;
+                }
+                $("link[name='ColorOp']").attr("href", bootPATH+ "/Common/Theme/" + style + ".css");
+            });
+            SetCookie("ModeFrameIds", "", null);//清除记录打开窗口的缓存
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+           // TopTypeContent();
+            $("#fa_help").on("click", function () {
+                var urlCode = bootPATH + "Report/TbReport?code=contentHelp&helpCode=help";
+                TopModeDialogUrl("h33333", "帮助文档", urlCode);
+            });
+            $("#AllContents").on("click", function () {
+                var urlContent = bootPATH + "Report/TbReport?code=content_list";
+                TopModeDialogUrl("h33334", "查看全部", urlContent);
+            });
+        });
+        function TopTypeContent() {
+            //功能定义code，传入参数,以,隔开.zxxx最新消息xtgg系统公告
+            var codes = "zxxx,xtgg";
+            var urlContents = bootPATH + "/api/services/api/Content/GetDefineNewContents?codes=" + codes;
+            $.post(urlContents, {}, function (data) {
+                console.log(data);
+                var datas = data.result;
+                if (datas.length > 0) {
+                    //判断是否是未读数据，未读的显示未读数量，已读的不显示
+                    if (datas[0].is_user == 1) {
+                        //已读不显示
+                    } else {
+                        //未读，显示记录条数
+                        $("#newConeentCount").html(datas.length)
+                    }
+                    //显示数据
+                    var htmlli = "";
+                    //加入最新，为读的3条信息
+                    for (var i = 0 ; i < datas.length; i++) {
+                        var urlClick = "~/Content/ContentInfo?navId=" + datas[i].id;
+                        htmlli += "<li>";
+                        
+                        htmlli += " <a title='" + datas[i].title + "' style='padding: 3px 10px;float: left;;height:26px;line-height:26px;'  href='javascript:void(0)' onclick=TopModeDialogUrl('modalId664','查看','" + urlClick + "',1000,500) >";
+                        
+                        htmlli += "【" + datas[i].type + "】" + datas[i].title.substr(0, 12);
+                        htmlli += "</a>";
+                        htmlli += "<span style='float: right;height:26px;line-height:26px;'>【" + datas[i].createTime + "】</span>";
+                        htmlli += "</li>";
+                    }
+                    //加入，查看全部                  
+                   // htmlli += "<li><a style='padding: 3px 10px;float: left;' id='AllContents'>查看全部</a><span style='float: right;' ></span></li>";
+                    $("#newConeent3").append(htmlli);
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

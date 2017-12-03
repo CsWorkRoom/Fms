@@ -1,0 +1,874 @@
+﻿@using System.Web.Optimization;
+@model Easyman.Dto.EditScript
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+@section Styles{
+
+    <link rel="stylesheet" href="~/Views/Script/css/combo.select.css" />
+
+    <style>
+        html{height:100%}
+        #left {
+            border: 1px solid #ebebeb;
+            float: left;
+            width: 300px;
+            height:100%;
+            background-color:#fafafa;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display:none;
+        }
+        #left .node {
+                float:left;
+                margin:5px;
+                text-align:center;
+            }
+        #right {
+            border: 1px solid #ebebeb;
+            float: left;
+            width: 100%;
+            height: 100%;
+            /*-moz-border-radius: 2px;
+            border-radius: 5px;
+            margin-top:10px;
+            margin-left: 5px;
+            margin-bottom: 40px;*/
+            background-image: url("../Views/Script/images/gezib.png");
+        }
+        .node {
+            -moz-border-radius: 0.5em;
+            border-radius: 0.5em;
+            opacity: 0.8;
+            filter: alpha(opacity=80);
+            width: 100px;
+            height: 50px;
+            text-align: center;
+            font-family: helvetica;
+            /* padding: 0.5em;*/
+            font-size: 1em;
+            cursor: pointer;
+            color: #030303;
+            border: 1px solid #191970;
+        }
+        .form-body{
+            height:100%;
+        }
+        #stretching {
+            cursor: se-resize;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+        }
+        #navMenu .col-sm-6 {
+            width: 65%;
+        }
+        #navMenu .col-xs-4 {
+            width: 35%;
+        }
+        .header{
+            position:absolute;
+            width:100%;
+            background-color:#fafafa;
+        }
+        form{background-color: #fff;width:100%;height:100%;}
+    </style>
+}
+
+<form id="saveForm" class="form-horizontal" action="../api/services/api/Script/editScript" method="post" role="form" >
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.ConnectLineJson)
+    @Html.HiddenFor(m => m.NodePositionJson)
+    @Html.HiddenFor(m => m.DivHigh)
+    @Html.HiddenFor(m => m.DivWide)
+    <input type="hidden" value="@ViewBag.ScriptNodeTypeList" id="ScriptNodeTypeList" />
+    <div class="form-body jarviswidget" style="height:100%;">
+        <header role="heading" class="header">
+            <ul class="nav nav-tabs" role="tablist">
+                <li><a href="#" id="NodeTypeList"><i class="fa fa-file-text" aria-hidden="true" style="color: #ec9a22;"></i> 任务列表</a></li>
+                <li><a href="#" id="setMenu"><i class="fa fa-cog" aria-hidden="true" style="color:#079048"></i> 任务组信息</a></li>
+                <li><a href="#" id="" onclick="handleSubmitForm()"><i class="fa fa-floppy-o" aria-hidden="true" style="color:#209ff9"></i> 保存</a></li>
+                <li><a href="#" id="aHealp" ><i class="fa fa-question-circle" aria-hidden="true" style="color:#1c7851"></i> 帮助</a></li>
+            </ul>
+        </header>
+
+        <div id="right">
+            <div id="left">
+                <div style="width:96%;margin-left:3px;display:none" id="flowSet">
+                    <select id="ScriptNodeType" style="width:100%"></select>
+                </div>
+
+                <div role="tabpanel" style="width:96%;display:none" class="tab-pane active" id="navMenu">
+                    <div class="form-group">
+                        <label for="Name" class="col-xs-4 control-label">任务组名称</label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "任务组名称", @Required = "Required" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ScriptTypeId" class="col-xs-4 control-label">任务组类型</label>
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(m => m.ScriptTypeId, ViewBag.ScriptTypeList as List<SelectListItem>, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Cron" class="col-xs-4 control-label">时间表达式</label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.Cron, new { @class = "form-control", placeholder = "时间表达式", @Required = "Required" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Status" class="col-xs-4 control-label">任务组状态</label>
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(m => m.Status, new List<SelectListItem>() {
+                       new SelectListItem{ Text ="开启", Value="1", Selected = true },
+                       new SelectListItem{ Text ="关闭", Value="0" }
+                   }, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RetryTime" class="col-xs-4 control-label">失败重启次数</label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.RetryTime, new { @class = "form-control", placeholder = "失败重启次数", @Required = "Required" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Remark" class="col-xs-4 control-label">任务组说明</label>
+                        <div class="col-sm-6">
+                            @Html.TextAreaFor(m => m.Remark, new { @class = "form-control", })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div class="tab-content" style="padding-top:12px;float:left; ">
+            
+        </div>
+    </div>
+   
+</form>
+
+@section scripts{
+
+    <script src="~/Views/Script/js/jquery.jsPlumb-1.7.2.js"></script>
+    <script src="~/Views/Script/js/jquery.combo.select.js"></script>
+<script src="~/Views/Script/js/EditScript.js"></script>
+
+}
+
+<script type="text/javascript">
+    var num = 0;
+    var nodeTypeId = 0;
+    var shuX = 0;
+    var shuY = 0;
+    var endpointType = "";
+   
+    //随着浏览器的变化而变化
+    $(window).resize(function () {
+        $("#left").css("height", $("#right").height() - $(".header").height());
+        $("#left").css("margin-top", $(".header").height());
+    });
+    $(function () {
+        //$("script").each(function(){
+        //    if ($(this).attr("src").indexOf("bootBack")) {
+        //        alert($(this).attr("src"));
+        //        $(this).remove();
+        //    }
+        //});
+        //显示隐藏任务节点div
+        $("#left").hide();
+        //帮助提示
+        $("#aHealp").click(function () {
+            HealpContent();
+        });
+        $("#NodeTypeList").click(function () {
+            var flowNavMenu = $("#navMenu").is(":hidden");//记录是否保存
+            $("#left > div").show();
+            $("#navMenu").hide();
+            if (flowNavMenu) {
+                if ($("#left").is(":hidden")) {
+                    $("#left").show(50);
+                } else {
+                    $("#left").hide(50);
+                }
+            }
+        });
+        $("#setMenu").click(function () {
+            var flowSetHide = $("#flowSet").is(":hidden");//记录是否保存
+            $("#left > div").hide();
+            $("#navMenu").show();
+            if (flowSetHide) {
+                if ( $("#left").is(":hidden")) {
+                    $("#left").show(50);
+                } else {
+                    $("#left").hide(50);
+                }
+            }           
+        });
+
+        $("#left").css("height", $("#right").height() - $(".header").height());
+        $("#left").css("margin-top", $(".header").height());
+        
+        //鼠标移动事件
+        $(document).bind("mouseup", function (e) {
+            shuX = e.pageX;
+            shuY = e.pageY;
+        });
+        //屏蔽右键事件
+        $(document).bind("contextmenu", function (e) {
+            return false;
+        });
+        $("#stretching").css("left", $("#right").offset().left + $("#right").width());
+        $("#stretching").css("top", $("#right").offset().top + $("#right").height());
+        //节点类型加载
+        InitNodeType();
+        $('#ScriptNodeType').comboSelect();
+        //节点加载
+        InitNode(nodeTypeId);
+        $("#right").droppable({
+            scope: "script",
+            drop: function (event, ui) {
+                var leftWidth = $("#left").width();
+                var left = parseInt(ui.offset.left - $(this).offset().left + 4);
+                var top = parseInt(ui.offset.top - $(this).offset().top)  + 7;
+                var name = ui.draggable[0].id;
+                var id = name.substr(5) + "_" + num;
+                //新建任务
+                var isCheck = true;
+                if (name == "left_node_temp") {
+                    var TaskSpecific = guid();
+                    addNode(TaskSpecific, num);
+                    id = TaskSpecific;
+                } else {
+                    isCheck = Check_Eaues(id);
+                }
+                if (isCheck) {
+                    num++;
+                    $(this).append("<div class='node cols'  id='" + id + "' style='position: absolute;background-color:#C1C1C1;'  name='" + $("#" + name).attr("name") + "' title='"+ $("#" + name).attr("title")+"'  option-data='" + $("#" + name).attr("option-data") + "'>" + $(ui.helper).html() + "</div>");
+
+                    $("#" + id).css("left", left).css("top", top);
+                    var endpoint = jsPlumb.addEndpoint(id, { anchors: "RightMiddle" }, solidCircle);//在 id 的右边设置一个连接点
+                    //右边端点按下事件
+                    endpoint.bind("mousedown", function (endpoint) {
+                       // console.log("you clicked on ", endpoint.anchor.type);
+                        endpointType = endpoint.anchor.type;
+                    });
+                    var endpoint1 = jsPlumb.addEndpoint(id, { anchors: "LeftMiddle" }, solidCircle);//在 id 的左边设置一个连接点
+                    //左边端点按下事件
+                    endpoint1.bind("mousedown", function (endpoint) {
+                       // console.log("you clicked on ", endpoint1.type);
+                        endpointType = endpoint1.anchor.type;
+                    });
+                    jsPlumb.draggable(id);//连接点跟着  id 移动
+                    $("#" + id).draggable({
+                        containment: "parent",//设置 id   不能拖出父容器
+                        opacity: 0.35,
+                        start: function () {//可以拖放的元素     拖放开始触发事件
+                        },
+                        stop: function () {//可以拖放的元素     拖放结束后触发事件
+                            
+                        }
+                    });
+
+                    // alert(left+"-"+top);
+                } else {
+                    abp.message.error("已有该节点。", "提示");
+                }
+            }
+
+        });
+        $("#right").on("mouseenter",'.cols',function () {
+            $(this).append('<img src="../Views/Script/images/close.png"  style="position: absolute;" />');
+            $("img").css("left", $(this).width()-10).css("top", -10);
+        });
+        $("#right").on("mouseleave", ".cols", function () {
+            $("img").remove();
+        });
+        $("#right").on("click", "img", function () {
+            jsPlumb.removeAllEndpoints($(this).parent().attr("id"));
+            $(this).parent().remove();
+
+        });
+
+        //双击节点
+        $(document).on("dblclick", ".node", function () {
+            if ($(this).attr("id")=="left_node_temp"){
+                return;
+            }
+            //修改代码
+            //var nodeInfo = $(this).attr("option-data");
+            var nodeInfo = $(this).attr("name");
+            if ((nodeInfo == 0 || nodeInfo == null || nodeInfo == "undefined") && $(this).text() == "新建任务") {
+                addNode($(this).attr("id"), num);
+            } else {
+                //var data = JSON.parse(nodeInfo);
+                enditNode(nodeInfo);
+            }
+        });
+        var _time = null;
+        //画线终止触发事件
+        jsPlumb.bind("connectionDragStop", function (info) {
+            var right_node_list = $("#right .node");
+            var list = jsPlumb.getAllConnections();//获取所有线(连接)信息
+            $.each(right_node_list, function (i, o) {
+                if (shuX > ($(o).offset().left) && shuX < ($(o).offset().left + $(o).width()) && shuY > ($(o).offset().top) && shuY < ($(o).offset().top + $(o).height())) {
+                    //画线
+                    var conn=jsPlumb.connect({
+                        source: info.sourceId,
+                        target: $(o).attr("id"),
+                        anchors: [endpointType, "LeftMiddle"],
+                        connector: "Straight",
+                        endpoint: "Blank",//端点
+                        paintStyle: {
+                            //连接线颜色
+                            strokeStyle: "#C7C7C7", lineWidth: 1
+                        },
+                        overlays: [["Label",
+                            {
+                                //线上内容
+                                // label: connect,
+                                location: 0.5
+                                //
+                            }], ["Arrow", { width: 12, length: 10, location: 1 }]]
+                    });
+                    var isRepeat = 0;
+                    $.each(list, function (idx, connection) {
+                        console.log("info.sourceId=" + info.sourceId);
+                        console.log("connection.sourceId=" + connection.sourceId);
+                        console.log("$(o).attr('id')=" + $(o).attr("id"));
+                        console.log("connection.targetId=" + connection.targetId);
+                        console.log("--------------------------------------------");
+                        if (info.sourceId == connection.sourceId && $(o).attr("id") == connection.targetId) {
+                            isRepeat++;
+                        }
+                    });
+                    if (isRepeat >= 2) {
+                        jsPlumb.detach(conn);
+                        abp.message.error("不能重复连接！", "提示");
+                        return false;
+                    }
+                     //右键删除
+                    conn.bind("contextmenu", function (c, e) {
+                        jsPlumb.detach(c);
+                    });
+                    //双击编辑lable
+                    conn.bind("dblclick", function (e) {
+                        var str = conn.getLabel();
+                        if (str == null) {
+                            conn.setLabel("<input type='text' value=' ' class='conn_text' />");
+                        } else {
+                            conn.setLabel("<input type='text' value='" + $(str).text() + "' class='conn_text' />");
+                        }
+                        $(".conn_text").mouseleave(function () {
+                            if ($(this).val().trim() == "") {
+                                conn.setLabel("");
+                            } else {
+                                conn.setLabel("<span style='display:block;padding:10px;opacity: 0.5;height:auto;background-color:white;border:1px solid #346789;text-align:center;font-size:12px;color:black;border-radius:0.5em;'>" + $(this).val() + "</span>");
+                            }
+                        });
+                    });
+                }
+                
+            });
+            
+            if (info.sourceId == info.targetId) {
+                jsPlumb.detach(info);
+                abp.message.error("不能连接自己！", "提示");
+                return false;
+            }
+            
+            var isRepeat = 0;
+            $.each(list, function (idx, connection) {
+                if (info.sourceId == connection.sourceId && info.targetId == connection.targetId) {
+                    isRepeat++;
+                }
+            });
+            if (isRepeat >= 2) {
+                jsPlumb.detach(info);
+                abp.message.error("不能重复连接！", "提示");
+                return false;
+            }
+
+
+            var conn = info;
+            info.bind("dblclick", function (e) {
+                var str = conn.getLabel();
+                if (str == null) {
+                    conn.setLabel("<input type='text' value=' ' class='conn_text' />");
+                } else {
+                    conn.setLabel("<input type='text' class='conn_text' value='" + $(str).text() + "' />");
+                }
+                $(".conn_text").mouseleave(function () {
+                    if ($(this).val().trim() == "") {
+                        conn.setLabel("");
+                    } else {
+                        conn.setLabel("<span style='display:block;padding:10px;opacity: 0.5;height:auto;background-color:white;border:1px solid #346789;text-align:center;font-size:12px;color:black;border-radius:0.5em;'>" + $(this).val() + "</span>");
+                    }
+                });
+            });
+            //右键删除
+            info.bind("contextmenu", function (c, e) {
+                jsPlumb.detach(conn);
+            });
+
+        });
+        
+        //基本连接线样式
+        var connectorPaintStyle = {
+            lineWidth: 4,
+            strokeStyle: "#61B7CF",
+            joinstyle: "round",
+            outlineColor: "white",
+            outlineWidth: 2
+        };
+        // 鼠标悬浮在连接线上的样式
+        var connectorHoverStyle = {
+            lineWidth: 4,
+            strokeStyle: "#216477",
+            outlineWidth: 2,
+            outlineColor: "white"
+        };
+        var endpointHoverStyle = {
+            fillStyle: "#216477",
+            strokeStyle: "#216477"
+        };
+        //实心圆样式
+        var solidCircle = {
+            endpoint: ["Dot", { radius: 8 }],  //端点的形状
+            paintStyle: { fillStyle: "#C1C1C1", radius: 3 },	//端点的颜色样式
+            connectorStyle: { strokeStyle: "#1e8151", strokeStyle: "#C7C7C7", lineWidth: 1 },	  //连接线的颜色，大小样式
+            isSource: true,	//是否可以拖动（作为连线起点）
+            connector: ["Straight"], //连接线的样式种类有[Bezier],[Flowchart],[StateMachine ],[Straight ]       ,{ stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true }
+            isTarget: true,		//是否可以放置（连线终点）
+            //anchor: [0.2,0,0,-1],定义连接点的位置
+            maxConnections: -1,	// 设置连接点最多可以连接几条线
+            connectorOverlays: [["Arrow", { width: 12, length: 10, location: 1 }]]
+        };
+
+        //jsPlumb组件加载完成之后，绘制已有的 图形
+        jsPlumb.ready(function () {
+
+            var NodePosition = null;
+            var ConnectLine = null;
+            //连接线
+            if ($("#ConnectLineJson").val() != "") {
+                var ConnectLine = JSON.parse($("#ConnectLineJson").val());
+            }
+            //脚本流节点位置
+            if ($("#NodePositionJson").val() != "") {
+                var NodePosition = JSON.parse($("#NodePositionJson").val());
+            }
+            //初始化div id 集合
+            var divIdArray = "";
+            
+            $.each(NodePosition, function (i, o) {
+                //获取节点信息
+                var node = "";
+                var nodeName = "";
+                var nodeId = 0;
+                abp.services.api.scriptNode.getScriptNode(o.ScriptNodeId, {
+                    async: false
+                }).done(function (data) {
+                    nodeid = data.id;
+                    //node = JSON.stringify(data);
+                    // var node = JSON.stringify(data);
+                    //option-data，有特殊字符,考虑只转换对象的一部分需要的属性
+                    //JSON.stringify({ x: 5, y: 6 });"{"x":5,"y":6}"
+                   node = JSON.stringify({ id: data.id, name: data.name });
+
+
+                    nodeName = data.name;
+                });
+                var id = o.DivId + "_" + (i + 666666);
+                
+                //加载节点，节点名称过长，截取前6个字符 o.name.substr(0, 6)
+                $("#right").append("<div class='node cols' id='" + id + "' title='" + nodeName + "' name='" + nodeid + "' style='position: absolute;' >" + nodeName.substr(0, 14) + "</div>");
+                //先加载完成DIV后再加载option-data，有特殊字符
+                $("#" + id).attr("option-data", node);
+
+                $("#" + id).css("left", o.X).css("top", o.Y);
+                var endpoint= jsPlumb.addEndpoint(id, { anchors: "RightMiddle" }, solidCircle);
+                //右边端点按下事件
+                endpoint.bind("mousedown", function (endpoint) {
+                    // console.log("you clicked on ", endpoint.anchor.type);
+                    endpointType = endpoint.anchor.type;
+                });
+                var endpoint1=jsPlumb.addEndpoint(id, { anchors: "LeftMiddle" }, solidCircle);
+                //左边端点按下事件
+                endpoint1.bind("mousedown", function (endpoint) {
+                    // console.log("you clicked on ", endpoint1.type);
+                    endpointType = endpoint1.anchor.type;
+                });
+                jsPlumb.draggable(id);
+                $("#" + id).draggable({
+                    containment: "parent",
+                    stop: function () {//可以拖放的元素     拖放结束后触发事件
+                        // alert($(this).offset().left);
+                    }
+                });
+                divIdArray += id + ",";
+            });
+
+            $.each(ConnectLine, function (i, o) {
+                var connect = o.Content;
+                if (connect != null && connect != "") {
+                    connect = "<span style='display:block;padding:10px;opacity: 0.5;height:auto;background-color:white;border:1px solid #346789;text-align:center;font-size:12px;color:black;border-radius:0.5em;'>" + connect + "</span>";
+                } else {
+                    connect = "";
+                }
+
+                var id_list = divIdArray.substr(0, divIdArray.length - 1);
+                var id_array = id_list.split(',');
+
+                var FromDivId;
+                var ToDivId;
+                $.each(id_array, function (j, k) {
+                    var formId = k.substr(0, k.lastIndexOf('_'));
+                    if (formId == o.FromDivId) {
+                        FromDivId = k;
+                    }
+                    if (formId == o.ToDivId) {
+                        ToDivId = k;
+                    }
+                });
+
+                conn = jsPlumb.connect({
+                    source: FromDivId,
+                    target: ToDivId,
+                    anchors: [o.FromPointAnchors, o.ToPintAnchors],
+                    connector: "Straight",
+                    endpoint: "Blank",//端点
+                    paintStyle: {
+                        //连接线颜色
+                        strokeStyle: "#C7C7C7", lineWidth: 1
+                    },
+                    overlays: [["Label",
+                        {
+                            //线上内容
+                            // label: connect,
+                            location: 0.5
+                            //
+                        }], ["Arrow", { width: 12, length: 10, location: 1}]]
+
+                }).setLabel(connect);
+                
+            });
+            var conn = jsPlumb.getAllConnections();//获取所有线(连接)信息
+            $.each(conn, function (i, o) {
+                o.bind("dblclick", function (e) {
+                    var conn = o;
+                    var str = conn.getLabel();
+                    if (str == null) {
+                        conn.setLabel("<input type='text' value=' ' class='conn_text' />");
+                    } else {
+                        conn.setLabel("<input type='text' value='" + $(str).text() + "' class='conn_text' />");
+                    }
+                    $(".conn_text").mouseleave(function () {
+                        if ($(this).val().trim() == "") {
+                            conn.setLabel("");
+                        } else {
+                            conn.setLabel("<span style='display:block;padding:10px;opacity: 0.5;height:auto;background-color:white;border:1px solid #346789;text-align:center;font-size:12px;color:black;border-radius:0.5em;'>" + $(this).val() + "</span>");
+                        }
+                    });
+                });
+                //右键删除
+                o.bind("contextmenu", function (c, e) {
+                    jsPlumb.detach(c);
+                });
+            });
+
+            //设置容器宽度、高度
+            //$("#right").width($("#DivWide").val());
+            //$("#right").height($("#DivHigh").val());
+            $("#stretching").css("left", $("#right").offset().left + $("#right").width());
+            $("#stretching").css("top", $("#right").offset().top + $("#right").height());
+        });
+        
+    });
+    //右边节点背景色
+    function Right_Back()
+    {
+        var right_node = $("#right .node");
+        var left_node = $("#left .node");
+        $.each(left_node, function (i, o) {
+            var left_node_id = $(o).attr("id").substr(5);
+            $.each(right_node, function (j, k) {
+                var right_node_id = $(k).attr("id").substr(0, $(k).attr("id").lastIndexOf("_"));
+                if (left_node_id == right_node_id)
+                {
+                    $(k).css("background-color", $(o).css("background-color"));
+                }
+            });
+        });
+
+    }
+    //判断右边区域是否存在相同ID
+    function Check_Eaues(id) {
+        var res = true;
+        var r_div = $("#right").children("div");
+        id = id.substr(0, id.lastIndexOf('_'));
+        $.each(r_div, function (i, o) {
+            var r_id = $(o).attr("id");
+            r_id = r_id.substr(0, r_id.lastIndexOf('_'));
+            if (r_id == id) {
+                res = false;
+                return;
+            }
+        });
+        return res;
+    }
+    //双击  编辑可拖动元素里面的内容
+    function doubleclick(id) {
+        $(id).dblclick(function () {
+            var text = $(this).text();
+            $(this).html("");
+            $(this).append("<input type='text' value='" + text + "' />");
+            $(this).mouseleave(function () {
+                $(this).html($("input[type='text']").val());
+            });
+        });
+    }
+
+    //节点类型加载
+    function InitNodeType() {
+        var scriptNode = $("#ScriptNodeTypeList").val();
+        var sss = JSON.parse(scriptNode)
+        $.each(sss, function (i, o) {
+            $("#ScriptNodeType").append("<option value='" + o.Value + "'>" + o.Text + "</option>");
+        });
+        
+        //节点类型改变事件
+        $("#ScriptNodeType").change(function () {
+            //删除可拖动div
+            $("#left .node").remove();
+            InitNode($("#ScriptNodeType").val());
+        });
+
+    }
+    //节点加载
+    function InitNode(id) {
+        var nodeColor = ["#C1C1C1", "#C1C1C1", "#C1C1C1"];
+        $("#left").append("<div class='node' style='color:#030303;border:1px solid #191970' id='left_node_temp' title='新建任务' option-data=''>新建任务</div>");
+        abp.services.api.scriptNode.getScriptNodeType(id).done(function (data) {
+            //["#e98885", "#5fcc99", "#3f91c9"];
+            var isFor = 0;
+            $.each(data, function (i, o) {
+                if (isFor>=3){
+                    isFor = 0;
+                }
+                $("#left").append("<div class='node' style='background-color:" + nodeColor[isFor] + "' id='left_node_" + o.id + "' name='" + o.id + "' title='" + o.name + "'>" + o.name.substr(0, 14) + "</div>");
+                $("#left_node_" + o.id).attr("option-data", JSON.stringify({ id: o.id, name: o.name }));
+                //option-data，有特殊字符,考虑只转换对象的一部分需要的属性
+                //JSON.stringify({ x: 5, y: 6 });"{"x":5,"y":6}"
+
+                isFor++;
+            });
+            Right_Back();
+            //设置DIV  可拖动   必须等到 div加载完了之后在设置 否则无效
+            $("#left .node").draggable({
+                helper: "clone",
+                scope: "script",
+                opacity: 0.35//拖动元素时的透明度
+            });
+
+        }).fail(function (data) {
+            abp.message.error("节点加载失败", "提示");
+            });
+       
+    }
+
+    //提交之前的数据组装
+    function IsSubmit() {
+        //获取全部div  并保存
+        var div = $("#right").children(".node");
+        var NodePosition = new Array();
+        $.each(div, function (i, o) {
+            var id = $(o).attr("id");
+            //div ID
+            var DivId = id.substr(0, id.lastIndexOf('_'));
+            //节点ID
+            var node_id = DivId.substr(5);
+            var node = new Object();
+            node.ScriptNodeId = Number(node_id);
+            node.X = $(o).offset().left;
+            node.Y = $(o).offset().top;
+            node.DivId = DivId;
+            NodePosition.push(node);
+        });
+        $("#NodePositionJson").val(JSON.stringify(NodePosition));
+        //获取所有连接线并保存
+        var ConnectLine = new Array();
+        var list = jsPlumb.getAllConnections();//获取所有线(连接)信息
+        $(list).each(function (i, o) {
+            var connect = new Object();
+            //线上文字
+            var cont = o.getLabel();
+            if (cont != "" && cont != null) {
+                connect.Content = cont.substring(cont.indexOf('>') + 1, cont.lastIndexOf('<'));
+            }
+
+            //起点DIV   id
+            connect.FromDivId = o.sourceId.substr(0, o.sourceId.lastIndexOf('_'));
+            //插件起点位置
+            connect.FromPointAnchors = o.endpoints[0].anchor.type;
+            //结束点div id
+            connect.ToDivId = o.targetId.substr(0, o.targetId.lastIndexOf('_'));
+            //插件结束点位置
+            connect.ToPintAnchors = o.endpoints[1].anchor.type;
+            ConnectLine.push(connect);
+        });
+        $("#ConnectLineJson").val(JSON.stringify(ConnectLine));
+
+        //容器宽度、高度
+        //$("#DivHigh").val($("#right").height());
+        //$("#DivWide").val($("#right").width());
+    }
+    //关闭弹出层、遮罩层
+    function colseWindow() {
+        abp.ui.unblock();
+        $("#nodeInfo").css("top", "50%");
+        $("#nodeInfo").css("left", "50%");
+        $("#nodeInfo").hide();
+    }
+
+    //产生一个唯一ID
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    }
+    function guid() {
+        return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+    }
+    
+    //新增任务
+    function addNode(TaskSpecific,num) {
+         DiyModal.window({
+            title: "新增任务",
+            url: bootPATH+"ScriptNode/InsertScriptNode?TaskSpecific=" + TaskSpecific,
+            width: 850,
+            height: 550,
+            fullscreen: false,
+            afterClose: function () { },
+            beginColse: function () {
+                //关闭窗口  更新画布上节点
+                SelNode(TaskSpecific, num);
+            }
+        }).open();
+    }
+    function SelNode(TaskSpecific,num) {
+        abp.services.api.scriptNode.getScriptNodeEx(TaskSpecific).done(function (data) {
+            if (data.id != 0) {
+                if (data.scriptNodeTypeId == $("#ScriptNodeType").val() || $("#ScriptNodeType").val()==0)
+                {
+                    $("#left .node").remove();
+                    InitNode($("#ScriptNodeType").val());
+                }
+               // var node = JSON.stringify(data);
+                //option-data，有特殊字符,考虑只转换对象的一部分需要的属性
+                //JSON.stringify({ x: 5, y: 6 });"{"x":5,"y":6}"
+                var node = JSON.stringify({ id: data.id, name: data.name });
+
+                var id = "node_" + data.id + "_" + num;
+                $("#" + TaskSpecific).attr("option-data", node);
+                $("#" + TaskSpecific).attr("name", data.id);
+                $("#" + TaskSpecific).attr("title", data.name);
+                $("#" + TaskSpecific).text(data.name.substr(0,14));
+                $("#" + TaskSpecific).attr("id", "node_" + data.id + "_" + num);
+                jsPlumb.removeAllEndpoints(TaskSpecific);
+                var solidCircle = {
+                    endpoint: ["Dot", { radius: 8 }],  //端点的形状
+                    paintStyle: { fillStyle: "#2bc1f5", radius: 1 },	//端点的颜色样式
+                    connectorStyle: { strokeStyle: "#2bc1f5", lineWidth: 1 },	  //连接线的颜色，大小样式
+                    isSource: true,	//是否可以拖动（作为连线起点）
+                    connector: ["Straight"], //连接线的样式种类有[Bezier],[Flowchart],[StateMachine ],[Straight ]       ,{ stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true }
+                    isTarget: true,		//是否可以放置（连线终点）
+                    //anchor: [0.2,0,0,-1],定义连接点的位置
+                    maxConnections: 5,	// 设置连接点最多可以连接几条线
+                    connectorOverlays: [["Arrow", { width: 12, length: 10, location: 1 }]]
+                };
+                jsPlumb.addEndpoint(id, { anchors: "RightMiddle" }, solidCircle);//在 id 的右边设置一个连接点
+                jsPlumb.addEndpoint(id, { anchors: "LeftMiddle" }, solidCircle);//在 id 的左边设置一个连接点
+                jsPlumb.draggable(id);//连接点跟着  id 移动
+                $("#" + id).draggable({
+                    containment: "parent",//设置 id   不能拖出父容器
+                    opacity: 0.35,
+                    start: function () {//可以拖放的元素     拖放开始触发事件
+                    },
+                    stop: function () {//可以拖放的元素     拖放结束后触发事件
+
+                    }
+                });
+            }
+
+
+        });
+    }
+    //修改任务
+    function enditNode(id) {
+        DiyModal.window({
+            title: "修改、查看任务",
+            url: bootPATH + "ScriptNode/EditScriptNode?ScriptNodeId=" + id,
+            width: 850,
+            height: 550,
+            fullscreen: false,
+            afterClose: function () {},
+            beginColse: function () {
+                abp.services.api.scriptNode.getScriptNode(id).done(function (data) {
+                   
+                    //var node = JSON.stringify(data);
+                    //option-data，有特殊字符,考虑只转换对象的一部分需要的属性
+                    //JSON.stringify({ x: 5, y: 6 });"{"x":5,"y":6}"
+                    var node = JSON.stringify({ id: data.id, name: data.name });
+                    //修改右边节点信息
+                    var r_div = $("#right").children("div");
+                    $.each(r_div, function (i,o) {
+                        var r_id = $(o).attr("id");
+                        var r_node_id = r_id.substr(0, r_id.lastIndexOf('_'));
+                        r_node_id = r_node_id.substr(r_node_id.lastIndexOf('_') + 1);
+                        if (id == r_node_id || Number(id) == Number(r_node_id)) {
+                            $("#" + r_id).attr("option-data", node);
+                            $("#" + r_id).attr("name", data.id);
+                            $("#" + r_id).attr("title", data.name);
+                            $("#" + r_id).text(data.name.substr(0,14));
+                        }
+                    });
+                    //修改左边DIV 信息
+                    var l_div = $("#left .node");
+                    $.each(l_div, function (i, o) {
+                        var l_id = $(o).attr("id");
+                        var l_node_id = l_id.substr(l_id.lastIndexOf('_') + 1);
+                        if (id == l_node_id || Number(id) == Number(l_node_id)) {
+                            $("#" + l_id).attr("option-data", node);
+                            $("#" + l_id).attr("name", data.id);
+                            $("#" + l_id).attr("title", data.name);
+                            $("#" + l_id).text(data.name.substr(0,14));
+                        }
+                    });
+                });
+            }
+        }).open();
+    }
+
+    //帮助说明
+    function HealpContent() {
+        var strTitle = "帮助说明";
+        var strContent = "0 0 12 * * ? 每天中午12点整触发;<br/>"; 
+        strContent += "0 15 10 ? * * 每天上午10:15触发;<br/>";
+        strContent += "0 15 10 * * ? 每天上午10:15触发;<br/>";
+        strContent += "0 15 10 * * ? * 每天上午10:15触发;<br/>";
+        strContent += "0 15 10 * * ? 2017 2017年的每天上午10:15触发;<br/>";
+        strContent += "0 * 14 * * ? 在每天下午2点到下午2:59期间的每1分钟触发;<br/>";
+        strContent += "0 0/5 14 * * ? 在每天下午2点到下午2:55期间的每5分钟触发;<br/>";
+        strContent += "0 0/5 14,18 * * ? 在每天下午2点到2:55期间和下午6点到6:55期间的每5分钟触发;<br/>";
+        strContent += "0 0-5 14 * * ? 在每天下午2点到下午2:05期间的每1分钟触发;<br/>";
+        strContent += "0 15 10 ? * MON-FRI 周一至周五的上午10:15触发;<br/>";
+        strContent += "0 10,30 14 ? 3 WED 每年三月的星期三的下午2:10和2:30触发;<br/>";
+        strContent = "<div>" + strContent + "</div>";
+        new PopMsg(strTitle, strContent, "");//右下角显示信息
+    }
+</script>

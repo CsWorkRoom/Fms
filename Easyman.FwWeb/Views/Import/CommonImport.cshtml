@@ -1,0 +1,156 @@
+﻿@using System.Web.Optimization;
+@model Easyman.Dto.ImportLogInput
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+@section Styles{
+@Styles.Render("~/Bundles/icheck/css")
+    <style>
+        .radioBtn { list-style: none; margin-left: -30px;  }
+        .radioBtn li { margin: 10px;  margin-right: 10px;}
+        .radioBtn li a {display: inline;}
+    </style>    
+<link href="~/Common/Scripts/html5uploader/Huploadify.css" rel="stylesheet" />
+}
+
+<form style="width:95%" id="saveForm" class="form-horizontal" action="../api/services/api/ImportLog/Add" method="post" role="form">
+        @Html.HiddenFor(m => m.Code)
+        @Html.HiddenFor(m => m.ModuleCode)
+    <div class="form-body jarviswidget ">
+        <header role="heading">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#navMenu" aria-controls="home" role="tab" data-toggle="tab">基础属性</a></li>
+                <li role="presentation"><a href="#navTemplate" aria-controls="home" role="tab" data-toggle="tab">模板下载</a></li>
+            </ul>
+        </header>
+
+        <div class="tab-content" style="padding-top:12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+               <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">导入模式</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(m => m.ImportMode, ViewBag.Offline as List<SelectListItem>, new { @class = "form-control"})
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">上传文件</label>
+                    <div class="col-sm-6">
+                        <div id="upload"></div>
+                        <div class="input-group" >
+                            @*<span class="input-group-btn">
+                                <button class="btn btn-default" type="button">选择文件</button>
+                            </span>*@
+                            @Html.HiddenFor(m => m.FileId, new { @value = "" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="suffix" style="display:none">
+                    <label for="Name" class="col-xs-4 control-label">自定义后缀</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.Suffix, new { @class = "form-control", placeholder = "自定义后缀" })
+                    </div>
+                </div>
+
+                <div class="form-actions text-right">
+                    <div class="row bottomPage" style="margin-left: 0px;">
+                        <div style="margin-right:15px">
+                            <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                            <button class="btn btn-primary" id="sumbit-btn" type="button" onclick="handleSubmitForm()"><i class="fa fa-save"></i> 提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="navTemplate" style="margin-bottom:50px">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <ul class="radioBtn">
+                            @{
+                                foreach (string str in ViewBag.Radio)
+                                {
+                                    <li>
+                                        <a class="iradio_square-blue">
+                                            <label>
+                                                <input type="radio" name="format" value="@str">
+                                                @str
+                                            </label>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-actions text-right">
+                    <div class="row bottomPage" style="margin-left: 0px;">
+                        <div style="margin-right:15px">
+                            <button class="btn btn-export" id="showExcel" type="button" onclick="down()"><i class="fa fa-download"></i> 模板下载</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+@Scripts.Render("~/Bundles/icheck/js")
+    <script src="~/Views/Import/js/Sumbit.js"></script>
+    <script src="~/Views/Script/js/jquery.jsPlumb-1.7.2.js"></script>
+    <script src="~/Common/Scripts/html5uploader/jquery.Huploadify.js"></script>
+    <script>
+        $(function () {
+            $("input[type='radio'][name='format']").iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
+            });
+            BindUploadFile();
+            if (GetUrlParam("rule") == 4) {
+                $("#suffix").show();
+            }
+           
+        });
+        ///下载文件
+        function down() {
+            var code = $("#Code").val();
+            var name = $('input[type="radio"][name="format"]:checked').val();
+            if (typeof (name) == "undefined") {
+                abp.message.error("请选择模板！", "下载失败");
+            }
+            else {
+                window.location = bootPATH+"Import/UploadDown?code=" + code + "&name=" + name;
+            }
+        }
+        ///绑定上传控件
+        function BindUploadFile() {
+            $('#upload').Huploadify({
+                auto: true,
+                fileTypeExts: '*.xls;*.xlsx;*.csv',
+                multi: false,
+                fileSizeLimit: 9999,
+                showUploadedPercent: true,//是否实时显示上传的百分比，如20%
+                showUploadedSize: true,
+                removeTimeout: 9999999,
+                uploader: bootPATH+'api/services/api/ImportLog/uploadFile',
+                onUploadStart: function () {
+                    //alert('开始上传');
+                },
+                onInit: function () {
+                    //alert('初始化');
+                },
+                onUploadSuccess:function(file,resultId){
+                    $("#FileId").val(resultId);
+                },
+                onDelete: function (file) {
+                    console.log('删除的文件：' + file);
+                    console.log(file);
+                }
+            });
+        }
+
+    </script>
+}
+

@@ -1,0 +1,90 @@
+﻿@using Easyman.Common.Mvc.Controls
+@model Easyman.Dto.TargetFormulaModel
+@{
+    Layout = "~/Views/Shared/_CommonEdite.cshtml";
+}
+@section Styles{
+    <style>
+        #iconMenuDiv {
+            width: 400px;
+        }
+
+            #iconMenuDiv span {
+                padding: 5px;
+                margin: 5px 10px;
+                font-size: 22px;
+                cursor: pointer;
+                display: inline-block;
+                border: 1px solid transparent;
+            }
+
+                #iconMenuDiv span:hover {
+                    transform: scale(1.02);
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+
+            #iconMenuDiv h5 {
+                margin-left: 10px;
+                padding-bottom: 4px;
+                border-bottom: solid 1px #707070;
+            }
+
+           .form-group{
+                margin-bottom: 20px;
+            }
+    </style>
+}
+
+    @Html.HiddenFor(h => h.Id)
+ 
+        <div class="tab-content" style="padding-top:12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+              
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label" style="text-align:right">公式名</label>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "公式名", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Type" class="col-xs-4 control-label" style="text-align:right">公式类型</label>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(f => f.Type, new { @class = "form-control", placeholder = "公式类型" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="CnExpression" class="col-xs-4 control-label" style="text-align:right">中文表达式</label>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(f => f.CnExpression, new { @class = "form-control", placeholder = "中文表达式" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="EnExpression" class="col-xs-4 control-label" style="text-align:right">英文表达式</label>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(f => f.EnExpression, new { @class = "form-control", placeholder = "英文表达式" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Remark" class="col-xs-4 control-label" style="text-align:right">描述说明</label>
+                    <div class="col-xs-6">
+                        @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "描述说明" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+@section scripts{
+   @*放页面自定义js*@
+<script type="text/javascript">
+    //母版页调用提交方法
+    function SubmitForm() {
+        //from表单提交路径
+        var postUrl = "../api/services/api/TargetFormula/InsertOrUpdateTargetFormula";
+        //提交方法-JS里面
+        handleSubmitForm(postUrl);
+    }
+</script>
+}

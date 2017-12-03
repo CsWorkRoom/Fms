@@ -1,0 +1,116 @@
+﻿@using System.Web.Optimization;
+@using Easyman.Common.Mvc.Controls;
+@model Easyman.Dto.DbServerInput
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+@section Styles{
+@Styles.Render("~/Bundles/ztree/css")
+
+    <style>
+        #iconMenuDiv {
+            width: 400px;
+        }        
+        #iconMenuDiv span {
+           padding: 5px;
+           margin: 5px 10px;
+           font-size: 22px;
+           cursor: pointer;
+           display: inline-block;
+           border: 1px solid transparent;
+        }
+        #iconMenuDiv span:hover {
+           transform: scale(1.02);
+           border: 1px solid #ccc;
+           border-radius: 4px;
+        }
+        #iconMenuDiv h5 {
+           margin-left: 10px;
+           padding-bottom: 4px;
+           border-bottom: solid 1px #707070;
+        }
+    </style>
+}
+
+<form style="width:100%;padding: 0px 15px 0px 15px;"id="saveForm" class="form-horizontal" action="../api/services/api/DbServer/InsertOrUpdateDbServer" method="post" role="form">
+    @Html.HiddenFor(h => h.Id)
+    <div class="form-body jarviswidget ">
+        <div class="tab-content" style="padding-top:12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+
+                <div class="form-group">
+                    <label for="ByName" class="col-xs-4 control-label">数据库别名</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.ByName, new { @class = "form-control", placeholder = "数据库别名", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="DbTagId" class="col-xs-4 control-label">数据库标识</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownTreeFor(d => d.DbTagId, "../api/services/api/DbTag/GetDbTagTreeJson")
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="DbType" class="col-xs-4 control-label">数据库种类</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(m => m.DbTypeId, ViewBag.DbType as List<SelectListItem>, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Ip" class="col-xs-4 control-label">IP</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.Ip, new { @class = "form-control", placeholder = "IP", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Port" class="col-xs-4 control-label">端口</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.Port, new { @class = "form-control", placeholder = "端口", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="DataCase" class="col-xs-4 control-label">实例名</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.DataCase, new { @class = "form-control", placeholder = "实例名", @Required = "Required" })
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="User" class="col-xs-4 control-label">用户名</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.User, new { @class = "form-control", placeholder = "用户名", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Password" class="col-xs-4 control-label">密码</label>
+                    <div class="col-sm-6">
+                        @Html.HiddenFor(p => p.Password)
+                        <input id="dbPwd" name="dbPwd" type="password" placeholder="请输入用户密码" class="form-control" required="Required" />
+                        @*@Html.TextBoxFor(f => f.Password, new { @class = "form-control", placeholder = "密码", @Required = "Required" })*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Order" class="col-xs-4 control-label">描述说明</label>
+                    <div class="col-sm-6">
+                        @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "描述说明" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions text-right">
+        <div class="row bottomPage">
+            <div style="margin-right:15px">
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                <button class="btn btn-primary" id="sumbit-btn" type="submit" onclick="submitDb()" ><i class="fa fa-save"></i> 提交</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+@Scripts.Render("~/Bundles/ztree/js")
+    <script src="~/Views/DbServer/js/editDbServer.js"></script>
+}

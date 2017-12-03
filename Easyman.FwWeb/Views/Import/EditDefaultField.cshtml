@@ -1,0 +1,229 @@
+﻿@model Easyman.Dto.DefaultFieldInput
+@{
+    Layout = "~/Views/Shared/_CommonEdite.cshtml";
+}
+@section Styles{
+    @*放页面自定义样式*@
+    <style>
+        .liOp{
+            width:100%;
+            cursor:pointer;
+            border:0px;
+        }
+    </style>
+}
+       @Html.HiddenFor(m => m.Id)  
+        <div class="tab-content" style="padding-top:12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+                <div class="form-group">
+                    <label for="DatabaseTypeId" class="col-xs-4 control-label">数据库类型</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(m => m.DbTypeId, ViewBag.DbType as List<SelectListItem>, new { @class = "form-control",onchange = "GetTypeList(this)" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="DataType" class="col-xs-4 control-label">字段类型</label>
+                    <div class="col-sm-6">
+
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.DataType, new { @class = "form-control", placeholder = "字段类型", @Required = "Required" })
+                           
+                            <div id="dropDownTree_DataTypeId" class="dropdown-menu dropdown-tree col-xs-12">
+                                <ul id="menuTree_DataTypeId" class="ztree" style="-moz-user-select: none;">
+                                        <li class="liOp" title="本地库">本地库</li>
+                                        <li class="liOp" title="测试">测试</li>
+                                </ul>
+                            </div>
+                            <span class="input-group-btn">
+                                <button id="btn_DataTypeId" class="btn btn-default" type="button"><i class="fa fa-chevron-down"></i></button>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">字段别名</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.FieldName, new { @class = "form-control", placeholder = "字段别名", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="FieldName" class="col-xs-4 control-label">字段编码</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.FieldCode, new { @class = "form-control", placeholder = "字段编码", @Required = "Required" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="DataType" class="col-xs-4 control-label">默认值</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.DefaultValue, new { @class = "form-control", placeholder = "默认值", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="DataLength" class="col-xs-4 control-label">字段说明</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", placeholder = "字段说明", @Required = "Required" })
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    
+
+@section scripts{
+   @*放页面自定义js*@
+    <script type="text/javascript">
+        //母版页调用提交方法
+        function SubmitForm() {
+            //from表单提交路径
+            var postUrl = "../api/services/api/DefaultField/AddOrUpdate";
+            //提交方法-JS里面
+            handleSubmitForm(postUrl);
+        }
+
+        $(function () {
+            //点击下拉按钮
+            $('#btn_DataTypeId').click(function () {
+                $('#dropDownTree_DataTypeId').toggle();
+            });
+            GetTypeList($("#DbTypeId"));//读取类型列表
+
+            //选项的选择
+            $("#menuTree_DataTypeId li").click(function () {
+                $("#DataType").val($(this).html());
+                $('#dropDownTree_DataTypeId').toggle();
+            });
+        });
+
+        //读取类型列表
+        var GetTypeList = function (itemOp) {
+            var DbTyleText = $(itemOp).find("option:selected").text().toLowerCase();//数据库的选择
+            if (DbTyleText == null || DbTyleText == "") 
+                return;
+        
+            var strOp = "";
+            switch (DbTyleText) {//数据库类型选择
+                case "oracle":
+                    strOp = GetOracleType(strOp);
+                    break;
+                case "sqlserver":
+                    strOp = GetSqlServerType(strOp);
+                    break;
+                case "db2":
+                    strOp = GetDb2Type(strOp);
+                    break;
+                case "access":
+                    strOp = GetAccessType(strOp);
+                    break;                
+                default:
+                    break;
+            }
+            $("#menuTree_DataTypeId").html(strOp);
+        }
+
+        //读取ORACLE类别
+        var GetOracleType = function (strOp) {
+            strOp = '<li class="liOp" title="varchar2(20)">varchar2(20)</li>';
+            strOp += '<li class="liOp" title="varchar2(50)">varchar2(50)</li>';
+            strOp += '<li class="liOp" title="varchar2(100)">varchar2(100)</li>';
+            strOp += '<li class="liOp" title="nvarchar2(20)">nvarchar2(20)</li>';
+            strOp += '<li class="liOp" title="nvarchar2(50)">nvarchar2(50)</li>';
+            strOp += '<li class="liOp" title="nvarchar2(100)">nvarchar2(100)</li>';
+            strOp += '<li class="liOp" title="char(20)">char(20)</li>';
+            strOp += '<li class="liOp" title="char(50)">char(50)</li>';
+            strOp += '<li class="liOp" title="char(100)">char(100)</li>';
+
+            strOp += '<li class="liOp" title="number">number</li>';
+            strOp += '<li class="liOp" title="long">long</li>';
+            strOp += '<li class="liOp" title="binary_double">binary_double</li>';
+            strOp += '<li class="liOp" title="binary_float">binary_float</li>';
+            strOp += '<li class="liOp" title="date">date</li>';
+            strOp += '<li class="liOp" title="timestamp">timestamp</li>';
+            strOp += '<li class="liOp" title="blob">blob</li>';
+            strOp += '<li class="liOp" title="clob">clob</li>';
+            strOp += '<li class="liOp" title="nclob">nclob</li>';
+            return strOp;
+        }
+
+        //读取SqlServer类别
+        var GetSqlServerType = function (strOp) {
+            strOp += '<li class="liOp" title="varchar2(20)">varchar2(20)</li>';
+            strOp += '<li class="liOp" title="varchar2(50)">varchar2(50)</li>';
+            strOp += '<li class="liOp" title="varchar2(100)">varchar2(100)</li>';
+            strOp += '<li class="liOp" title="varchar2(MAX)">varchar2(MAX)</li>';
+            strOp += '<li class="liOp" title="nvarchar2(20)">nvarchar2(20)</li>';
+            strOp += '<li class="liOp" title="nvarchar2(50)">nvarchar2(50)</li>';
+            strOp += '<li class="liOp" title="nvarchar2(100)">nvarchar2(100)</li>';
+            strOp += '<li class="liOp" title="nvarchar(MAX)">nvarchar(MAX)</li>';
+            strOp += '<li class="liOp" title="char(20)">char(20)</li>';
+            strOp += '<li class="liOp" title="char(50)">char(50)</li>';
+            strOp += '<li class="liOp" title="char(100)">char(100)</li>';
+
+            strOp += '<li class="liOp" title="int">int</li>';
+            strOp += '<li class="liOp" title="float">float</li>';
+            strOp += '<li class="liOp" title="money">money</li>';
+            strOp += '<li class="liOp" title="numeric(18, 0)">numeric(18, 0)</li>';
+            strOp += '<li class="liOp" title="numeric(18, 2)">numeric(18, 2)</li>';
+            strOp += '<li class="liOp" title="numeric(18, 4)">numeric(18, 4)</li>';
+            strOp += '<li class="liOp" title="date">date</li>';
+            strOp += '<li class="liOp" title="bit">bit</li>';
+            strOp += '<li class="liOp" title="date">date</li>';
+            strOp += '<li class="liOp" title="datetime">datetime</li>';
+            strOp += '<li class="liOp" title="image">image</li>';
+            strOp += '<li class="liOp" title="ntext">ntext</li>';
+            strOp += '<li class="liOp" title="text">text</li>';
+            strOp += '<li class="liOp" title="xml">xml</li>';
+            return strOp;
+        }
+
+        //读取Db2类别
+        var GetDb2Type = function (strOp) {
+            strOp += '<li class="liOp" title="varchar2(20)">varchar2(20)</li>';
+            strOp += '<li class="liOp" title="varchar2(50)">varchar2(50)</li>';
+            strOp += '<li class="liOp" title="varchar2(100)">varchar2(100)</li>';
+            strOp += '<li class="liOp" title="varchar2(MAX)">varchar2(MAX)</li>';
+            strOp += '<li class="liOp" title="nvarchar2(20)">nvarchar2(20)</li>';
+            strOp += '<li class="liOp" title="nvarchar2(50)">nvarchar2(50)</li>';
+            strOp += '<li class="liOp" title="nvarchar2(100)">nvarchar2(100)</li>';
+            strOp += '<li class="liOp" title="nvarchar(MAX)">nvarchar(MAX)</li>';
+            strOp += '<li class="liOp" title="char(20)">char(20)</li>';
+            strOp += '<li class="liOp" title="char(50)">char(50)</li>';
+            strOp += '<li class="liOp" title="char(100)">char(100)</li>';
+
+            strOp += '<li class="liOp" title="int">int</li>';
+            strOp += '<li class="liOp" title="float">float</li>';
+            strOp += '<li class="liOp" title="money">money</li>';
+            strOp += '<li class="liOp" title="numeric(18, 0)">numeric(18, 0)</li>';
+            strOp += '<li class="liOp" title="numeric(18, 2)">numeric(18, 2)</li>';
+            strOp += '<li class="liOp" title="numeric(18, 4)">numeric(18, 4)</li>';
+            strOp += '<li class="liOp" title="date">date</li>';
+            strOp += '<li class="liOp" title="bit">bit</li>';
+            strOp += '<li class="liOp" title="date">date</li>';
+            strOp += '<li class="liOp" title="datetime">datetime</li>';
+            strOp += '<li class="liOp" title="image">image</li>';
+            strOp += '<li class="liOp" title="ntext">ntext</li>';
+            strOp += '<li class="liOp" title="text">text</li>';
+            strOp += '<li class="liOp" title="xml">xml</li>';
+            return strOp;
+        }
+
+        //读取access类别
+        var GetAccessType = function (strOp) {
+            strOp = '<li class="liOp" title="短文本">短文本</li>';
+            strOp += '<li class="liOp" title="长文本">长文本</li>';
+            strOp += '<li class="liOp" title="数字">数字</li>';
+            strOp += '<li class="liOp" title="日期/时间">日期/时间</li>';
+            strOp += '<li class="liOp" title="货币">货币</li>';
+            strOp += '<li class="liOp" title="是/否">是/否</li>';
+            strOp += '<li class="liOp" title="超链接">超链接</li>';
+            strOp += '<li class="liOp" title="OLE 对象">OLE 对象</li>';
+            return strOp;
+        }
+    </script>
+}

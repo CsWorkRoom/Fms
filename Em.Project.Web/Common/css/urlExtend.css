@@ -1,0 +1,106 @@
+﻿/*from multipleselect.css multipleselect扩展*/
+.ms-choice > div {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 25px;
+    background: url('multipleselect/multipleselect.png') left top no-repeat;
+}
+.ms-choice > div.open {
+    background: url('multipleselect/multipleselect.png') right top no-repeat;
+}
+.ms-search input {
+    width: 100%;
+    height: auto !important;
+    min-height: 24px;
+    padding: 0 20px 0 5px;
+    margin: 0;
+    outline: 0;
+    font-family: sans-serif;
+    font-size: 1em;
+    border: 1px solid #aaa;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    background: #fff url('multipleselect/multipleselect.png') no-repeat 100% -22px;
+    background: url('multipleselect/multipleselect.png') no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
+    background: url('multipleselect/multipleselect.png') no-repeat 100% -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
+    background: url('multipleselect/multipleselect.png') no-repeat 100% -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
+    background: url('multipleselect/multipleselect.png') no-repeat 100% -22px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
+    background: url('multipleselect/multipleselect.png') no-repeat 100% -22px, -ms-linear-gradient(top, #ffffff 85%, #eeeeee 99%);
+    background: url('multipleselect/multipleselect.png') no-repeat 100% -22px, linear-gradient(top, #ffffff 85%, #eeeeee 99%);
+}
+
+/**from content.css checkbox优化for URL */
+input[type=checkbox]:checked::after{display:block;position:absolute;top:-4px;left:-4px;content:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAtklEQVQ4y2P4//8/A7Ux1Q0cxoaCADIbCUgCMTvVXAoE5kA8CYidyXYpGrAH4iVAHIXiCwoMDQTimUBcBsRMlBrKCsTpUANzkC0j11BuIK6EGlgKsoAkQ4FgChD7AzELVI8YEDdDDawDYk6YQaQY6gg1oAqILYC4D8oHGcyLbBAphoJAKtQgGO4EYiHk2CLHUJAXm6AG9gCxNHoSIMdQEJCFGqiALaGSayjMxQwUGzq0S6nhZygA2ojsbh6J67kAAAAASUVORK5CYII=)}
+
+/*from content.css 自定义滚动条,但是兼容性差 for url*/
+.ztree li span.button.menu_ico_docu, .ztree li span.button.menu_ico_close, .ztree li span.button.menu_ico_docu {
+    background-image: url("../Images/ztree/menu.png");
+    background-color: transparent;
+}
+.ztree li span.button.file_ico_docu {
+    background-image: url("../Images/ztree/file.png");
+    background-color: transparent;
+}
+.ztree li span.button.root_ico_open, .ztree li span.button.root_ico_close, .ztree li span.button.root_ico_docu {
+    background-image: url("../Images/ztree/root.png");
+    background-color: transparent;
+}
+
+.ztree li ul.line{ background:url(../../Scripts/components/ztree/zTreeStyle/img/line_conn.gif) 0 0 repeat-y;}
+.ztree li span.button {line-height:0; margin:0; width:5px;  display: inline-block; vertical-align:middle;
+	border:0 none; cursor: pointer;outline:none;
+	background-color:transparent; background-repeat:no-repeat; background-attachment: scroll;
+	background-image:url("../../Scripts/components/ztree/zTreeStyle/img/zTreeStandard.png"); *background-image:url("../../Scripts/components/ztree/zTreeStyle/img/zTreeStandard.gif")}
+.ztree li span.button.ico_loading{margin-right:2px; background:url(../../Scripts/components/ztree/zTreeStyle/img/loading.gif) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
+span.tmpzTreeMove_arrow {width:16px; height:16px; display: inline-block; padding:0; margin:2px 0 0 1px; border:0 none; position:absolute;
+	background-color:transparent; background-repeat:no-repeat; background-attachment: scroll;
+	background-position:-110px -80px; background-image:url("../../Scripts/components/ztree/zTreeStyle/img/zTreeStandard.png"); *background-image:url("../../Scripts/components/ztree/zTreeStyle/img/zTreeStandard.gif")}
+
+/*from iconfont.css 阿里巴巴字体样式 for url*/
+@font-face {font-family: "iconfont";
+  src: url('../../fonts/iconfont/iconfont.eot?t=1494298093205'); /* IE9*/
+  src: url('../../fonts/iconfont/iconfont.eot?t=1494298093205#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('../../fonts/iconfont/iconfont.woff?t=1494298093205') format('woff'), /* chrome, firefox */
+  url('../../fonts/iconfont/iconfont.ttf?t=1494298093205') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('../../fonts/iconfont/iconfont.svg?t=1494298093205#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+/*from jquery.mCustomScrollbar.css 滚动条 for url*/
+.mCSB_scrollTools .mCSB_buttonRight{
+	background-image:url('../Scripts/customerScrollbar/mCSB_buttons.png');
+	background-repeat:no-repeat;
+	opacity:0.4;
+	filter:"alpha(opacity=40)"; -ms-filter:"alpha(opacity=40)"; /* old ie */
+}
+/*from ztable.css 滚动条 for url*/
+.ztable-table .sorting {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATAgMAAAAPPt5fAAAACVBMVEUAAADIyMjl5eVIBBP/AAAAAXRSTlMAQObYZgAAAClJREFUCNdjwAYEwGQKiGDsBJFsTA5AUoJhAqZaiDhEDVg9RC/MHEwAANsMA91AQfd/AAAAAElFTkSuQmCC) no-repeat center right;
+}
+
+.ztable-table .sorting_asc {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATAQMAAABInqSPAAAABlBMVEUAAABVVVUT3Vn+AAAAAXRSTlMAQObYZgAAAB1JREFUCNdjwAkcgPgBAwPjBwYG5h8MDOx/GAgBAKRJBBCQbHkwAAAAAElFTkSuQmCC) no-repeat center right;
+}
+
+.ztable-table .sorting_desc {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATAQMAAABInqSPAAAABlBMVEUAAABVVVUT3Vn+AAAAAXRSTlMAQObYZgAAABxJREFUCNdjIATY/zAwMP9gYGD8AOQ8AGIHnEoBkNkEEEbbutQAAAAASUVORK5CYII=) no-repeat center right;
+}
+
+.icheckbox_flat-blue,
+.iradio_flat-blue {
+    display: inline-block;
+    *display: inline;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    background: url(../../Scripts/components/icheck/flat/blue.png) no-repeat;
+    border: none;
+    cursor: pointer;
+}

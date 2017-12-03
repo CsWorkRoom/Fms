@@ -1,0 +1,539 @@
+﻿<html>
+<link href="css/amazeui.min.css" rel="stylesheet" />
+<link href="css/app.css" rel="stylesheet" />
+<link href="../Content/flags/famfamfam-flags.css" rel="stylesheet" />
+<link href="../fonts/css/font-awesome.min.css" rel="stylesheet" />
+<script src="../Scripts/jquery-2.2.4.js"></script>
+<script src="js/amazeui.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/iscroll.js"></script>
+<script src="js/echarts.min.js"></script>
+
+  <body data-type="index">
+    <div class="tpl-content-wrapper">
+      <div class="tpl-content-scope">
+        <div class="note note-info">
+          <h3>
+            甘孜计件抢盘系统 V1.0.0.1
+            <span class="close" data-close="note"></span>
+          </h3>
+          <p>尊敬的ADMIN用户您好，欢迎使用综合支撑平台！您上次的登陆时间为:2017年7月19日11:15:33</p>
+          <p>
+            <span class="label label-danger">最新公告:</span> 综合支撑平台即将上线 2017年7月19日11:14:15
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+          <div class="dashboard-stat blue">
+            <div class="visual">
+                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+            </div>
+            <div class="details">
+              <div class="number"> 1349 </div>
+              <div class="desc"> 新闻公告 </div>
+            </div>
+            <a class="more" href="#">
+              查看更多
+              <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+          </div>
+        </div>
+        <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+          <div class="dashboard-stat red">
+            <div class="visual">
+                <i class="fa fa-book" aria-hidden="true"></i>
+            </div>
+            <div class="details">
+              <div class="number"> 62 </div>
+              <div class="desc"> 知识库 </div>
+            </div>
+            <a class="more" href="#">
+              查看更多
+              <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+          </div>
+        </div>
+        <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+          <div class="dashboard-stat green">
+            <div class="visual">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            </div>
+            <div class="details">
+              <div class="number"> 653 </div>
+              <div class="desc"> 代办工单 </div>
+            </div>
+            <a class="more" href="#">
+              查看更多
+              <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+          </div>
+        </div>
+        <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+          <div class="dashboard-stat purple">
+            <div class="visual">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </div>
+            <div class="details">
+              <div class="number"> 786 </div>
+              <div class="desc"> 已办工单 </div>
+            </div>
+            <a class="more" href="#">
+              查看更多
+              <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="row">
+        <div class="am-u-md-6 am-u-sm-12 row-mb">
+          <div class="tpl-portlet">
+            <div class="tpl-portlet-title">
+              <div class="tpl-caption font-green">
+                  <i class="fa fa-area-chart" aria-hidden="true"></i> 数据统计
+              </div>
+              <div class="actions">
+                <ul class="actions-btn">
+                  <li class="red-on">昨天</li>
+                  <li class="green">前天</li>
+                  <li class="blue">本周</li>
+                </ul>
+              </div>
+            </div>
+
+            <!--此部分数据请在 js文件夹下中的 app.js 中的 “百度图表A” 处修改数据 插件使用的是 百度echarts-->
+            <div class="tpl-echarts" id="tpl-echarts-A">
+
+            </div>
+          </div>
+        </div>
+        <div class="am-u-md-6 am-u-sm-12 row-mb">
+          <div class="tpl-portlet">
+            <div class="tpl-portlet-title">
+              <div class="tpl-caption font-red ">
+                <i class="fa fa-cogs" aria-hidden="true"></i> 工单动态
+              </div>
+              <div class="actions">
+                <ul class="actions-btn">
+                  <li class="purple-on">本周</li>
+                  <li class="green">本月</li>
+                  <li class="dark">全部</li>
+                </ul>
+              </div>
+            </div>
+            <div class="tpl-scrollable">
+              <div class="number-stats">
+                <div class="stat-number am-fl am-u-md-6">
+                  <div class="title am-text-right"> 代办工单 </div>
+                  <div class="number am-text-right am-text-warning"> 2460 </div>
+                </div>
+                <div class="stat-number am-fr am-u-md-6">
+                  <div class="title"> 已办工单 </div>
+                  <div class="number am-text-success"> 2460 </div>
+                </div>
+
+              </div>
+
+              <table class="am-table tpl-table">
+                <thead>
+                  <tr class="tpl-table-uppercase">
+                    <th>工单名称</th>
+                    <th>代办工单</th>
+                    <th>已办工单</th>
+                    <th>办理率</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                   
+                        <a class="user-name" href="###">调涨管理</a>
+                      </td>
+                    <td>3213</td>
+                    <td>65</td>
+                    <td class="font-green bold">26%</td>
+                  </tr>
+                  <tr>
+                    <td>
+                   
+                        <a class="user-name" href="###">实名卡补办</a>
+                      </td>
+                    <td>2635</td>
+                    <td>52</td>
+                    <td class="font-green bold">32%</td>
+                  </tr>
+                  <tr>
+                    <td>
+                     
+                        <a class="user-name" href="###">宣传物料</a>
+                      </td>
+                    <td>1267</td>
+                    <td>65</td>
+                    <td class="font-green bold">51%</td>
+                  </tr>
+                  <tr>
+                    <td>
+                     
+                        <a class="user-name" href="###">测试卡申请管理</a>
+                      </td>
+                    <td>657</td>
+                    <td>65</td>
+                    <td class="font-green bold">73%</td>
+                  </tr>
+                  <tr>
+                    <td>
+                    
+                        <a class="user-name" href="###">公免维护</a>
+                      </td>
+                    <td>3907</td>
+                    <td>65</td>
+                    <td class="font-green bold">12%</td>
+                  </tr>
+                  <tr>
+                    <td>
+                    
+                        <a class="user-name" href="###">滞纳金减免</a>
+                      </td>
+                    <td>900</td>
+                    <td>65</td>
+                    <td class="font-green bold">10%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="am-u-md-6 am-u-sm-12 row-mb">
+
+          <div class="tpl-portlet">
+            <div class="tpl-portlet-title">
+              <div class="tpl-caption font-green ">
+                  <i class="fa fa-history" aria-hidden="true"></i> 指派任务
+                <span class="caption-helper">16 件</span>
+              </div>
+            </div>
+            <div id="wrapper" class="wrapper">
+              <div id="scroller" class="scroller">
+                <ul class="tpl-task-list">
+                  <li>
+                    <div class="task-title">
+                      <span class="task-title-sp"> 详单管理流程(刘勇) </span>
+                      <span class="label label-sm label-success">待审核</span>
+                      <span class="task-bell">
+                        <i class="am-icon-bell-o"></i>
+                      </span>
+                    </div>
+                    
+                  </li>
+
+                  <li>
+                    
+                    <div class="task-title">
+                      <span class="task-title-sp"> 广告宣传管理（市公司需求收集）(张媛媛),并发测试 </span>
+                      <span class="label label-sm label-danger">即将超时</span>
+
+                    </div>
+                    
+                  </li>
+
+                  <li>
+                    
+                    <div class="task-title">
+                      <span class="task-title-sp"> 广告宣传管理（市公司需求收集）(张媛媛),并发测试 </span>
+                      <span class="label label-sm label-warning">处理中</span>
+
+                    </div>
+                    
+                  </li>
+
+                  <li>
+                    
+                    <div class="task-title">
+                      <span class="task-title-sp"> 广告宣传管理（市公司需求收集）(张媛媛),双节营销广告收集</span>
+                      <span class="label label-sm label-default">超时</span>
+
+                    </div>
+                    
+                  </li>
+
+                  <li>
+                    
+                    <div class="task-title">
+                      <span class="task-title-sp"> 退费调账流程（市场部）(系统管理员) </span>
+                      <span class="label label-sm label-success">待审核</span>
+                      <span class="task-bell">
+                        <i class="am-icon-bell-o"></i>
+                      </span>
+                    </div>
+                    
+                  </li>
+
+                  <li>
+                    
+                    <div class="task-title">
+                      <span class="task-title-sp">广告宣传管理（市公司需求收集）(张媛媛),双节营销广告收集 </span>
+                      <span class="label label-sm label-default">超时</span>
+
+                    </div>
+                    
+                  </li>
+                  <li>
+                    
+                    <div class="task-title">
+                      <span class="task-title-sp"> 广告宣传管理（市公司需求收集）(张媛媛),双节营销广告收集</span>
+                      <span class="label label-sm label-warning">处理中</span>
+
+                    </div>
+                  </li>
+
+                  <li>
+                    
+                    <div class="task-title">
+                      <span class="task-title-sp"> 广告宣传管理（市公司需求收集）(张媛媛),并发测试</span>
+                      <span class="label label-sm label-default">超时</span>
+
+                    </div>
+                    
+                  </li>
+
+                  <li>
+                    <div class="task-title">
+                      <span class="task-title-sp"> 广告宣传管理（市公司需求收集）(张媛媛),并发测试 </span>
+                      <span class="label label-sm label-success">待审核</span>
+                      <span class="task-bell">
+                        <i class="am-icon-bell-o"></i>
+                      </span>
+                    </div>
+                    
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="am-u-md-6 am-u-sm-12 row-mb">
+          <div class="tpl-portlet">
+            <div class="tpl-portlet-title">
+              <div class="tpl-caption font-green ">
+                  <i class="fa fa-book" aria-hidden="true"></i> 知识库
+              </div>
+
+            </div>
+
+            <div class="am-tabs tpl-index-tabs" data-am-tabs="">
+              <ul class="am-tabs-nav am-nav am-nav-tabs">
+                <li class="am-active">
+                  <a href="#tab1">已读</a>
+                </li>
+                <li>
+                  <a href="#tab2">未读</a>
+                </li>
+              </ul>
+
+              <div class="am-tabs-bd">
+                <div class="am-tab-panel am-fade am-in am-active" id="tab1">
+                  <div id="wrapperA" class="wrapper">
+                    <div id="scroller" class="scroller">
+                      <ul class="tpl-task-list tpl-task-remind">
+                        <li>
+                          <div class="cosB">
+                            12分钟前
+                          </div>
+                          <div class="cosA">
+                         
+
+                            <span>
+                              注意：Chrome 和 Firefox 下， display: inline-block; 或 display: block; 的元素才会应用旋转动画。<span class="tpl-label-info">
+                                知识库标签
+                              </span>
+                            </span>
+                          </div>
+
+                        </li>
+                        <li>
+                          <div class="cosB">
+                            36分钟前
+                          </div>
+                          <div class="cosA">
+                            <span> FontAwesome 在绘制图标的时候不同图标宽度有差异， 添加 .am-icon-fw 将图标设置为固定的宽度，解决宽度不一致问题（v2.3 新增）。</span>
+                          </div>
+
+                        </li>
+
+                        <li>
+                          <div class="cosB">
+                            2小时前
+                          </div>
+                          <div class="cosA">
+                            <span> 使用 flexbox 实现，只兼容 IE 10+ 及其他现代浏览器。</span>
+                          </div>
+
+                        </li>
+                        <li>
+                          <div class="cosB">
+                            1天前
+                          </div>
+                          <div class="cosA">
+                            <span> 部分用户反应在过长的 Tabs 中滚动页面时会意外触发 Tab 切换事件，用户可以选择禁用触控操作。</span>
+                          </div>
+
+                        </li>
+                        <li>
+                          <div class="cosB">
+                            12分钟前
+                          </div>
+                          <div class="cosA">
+                            <span>
+                              注意：Chrome 和 Firefox 下， display: inline-block; 或 display: block; 的元素才会应用旋转动画。<span class="tpl-label-info">
+                                标签
+                                <i class="am-icon-share"></i>
+                              </span>
+                            </span>
+                          </div>
+
+                        </li>
+                        <li>
+                          <div class="cosB">
+                            36分钟前
+                          </div>
+                          <div class="cosA">
+                            <span> FontAwesome 在绘制图标的时候不同图标宽度有差异， 添加 .am-icon-fw 将图标设置为固定的宽度，解决宽度不一致问题（v2.3 新增）。</span>
+                          </div>
+
+                        </li>
+
+                        <li>
+                          <div class="cosB">
+                            2小时前
+                          </div>
+                          <div class="cosA">
+                            <span> 使用 flexbox 实现，只兼容 IE 10+ 及其他现代浏览器。</span>
+                          </div>
+
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="am-tab-panel am-fade" id="tab2">
+                  <div id="wrapperB" class="wrapper">
+                    <div id="scroller" class="scroller">
+                      <ul class="tpl-task-list tpl-task-remind">
+                        <li>
+                          <div class="cosB">
+                            12分钟前
+                          </div>
+                          <div class="cosA">
+                          
+                            <span>
+                              注意：Chrome 和 Firefox 下， display: inline-block; 或 display: block; 的元素才会应用旋转动画。
+                              </span>
+                          </div>
+
+                        </li>
+                        <li>
+                          <div class="cosB">
+                            36分钟前
+                          </div>
+                          <div class="cosA">
+                           
+
+                            <span> FontAwesome 在绘制图标的时候不同图标宽度有差异， 添加 .am-icon-fw 将图标设置为固定的宽度，解决宽度不一致问题（v2.3 新增）。</span>
+                          </div>
+
+                        </li>
+
+                        <li>
+                          <div class="cosB">
+                            2小时前
+                          </div>
+                          <div class="cosA">
+                           
+
+                            <span> 使用 flexbox 实现，只兼容 IE 10+ 及其他现代浏览器。</span>
+                          </div>
+
+                        </li>
+                        <li>
+                          <div class="cosB">
+                            1天前
+                          </div>
+                          <div class="cosA">
+                            <span class="cosIco label-warning">
+                              <i class="am-icon-plus"></i>
+                            </span>
+
+                            <span> 部分用户反应在过长的 Tabs 中滚动页面时会意外触发 Tab 切换事件，用户可以选择禁用触控操作。</span>
+                          </div>
+
+                        </li>
+                        <li>
+                          <div class="cosB">
+                            12分钟前
+                          </div>
+                          <div class="cosA">
+                            <span class="cosIco">
+                              <i class="am-icon-bell-o"></i>
+                            </span>
+
+                            <span>
+                              注意：Chrome 和 Firefox 下， display: inline-block; 或 display: block; 的元素才会应用旋转动画。<span class="tpl-label-info">
+                                标签
+                              </span>
+                            </span>
+                          </div>
+
+                        </li>
+                        <li>
+                          <div class="cosB">
+                            36分钟前
+                          </div>
+                          <div class="cosA">
+                            <span class="cosIco label-danger">
+                              <i class="am-icon-bolt"></i>
+                            </span>
+
+                            <span> FontAwesome 在绘制图标的时候不同图标宽度有差异， 添加 .am-icon-fw 将图标设置为固定的宽度，解决宽度不一致问题（v2.3 新增）。</span>
+                          </div>
+
+                        </li>
+
+                        <li>
+                          <div class="cosB">
+                            2小时前
+                          </div>
+                          <div class="cosA">
+                            <span class="cosIco label-info">
+                              <i class="am-icon-bullhorn"></i>
+                            </span>
+
+                            <span> 使用 flexbox 实现，只兼容 IE 10+ 及其他现代浏览器。</span>
+                          </div>
+
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+
+</html>

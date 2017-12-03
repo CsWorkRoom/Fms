@@ -1,0 +1,143 @@
+﻿@using System.Web.Optimization;
+@using Easyman.Common.Mvc.Controls
+@model Easyman.Dto.DepartmentInput
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+@section Styles{
+@Styles.Render("~/Bundles/ztree/css")
+    <style>
+        #divTypeIcon {
+            width: 440px;
+            height: 285px;
+            background-color: #FFFFFF;
+        }
+        #divTypeIcon span {
+            padding: 5px;
+            margin: 5px 10px;
+            font-size: 22px;
+            cursor: pointer;
+            display: inline-block;
+            border: 1px solid transparent;
+        }
+    </style>
+}
+
+<form style="width:100%;padding: 0px 15px 0px 15px;" id="saveForm" class="form-horizontal" action="../api/services/api/Department/SavePost" method="post" role="form">
+    @Html.HiddenFor(h => h.Id)
+    <div class="form-body jarviswidget ">
+        <div class="tab-content" style="padding-top:19px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu">
+                <div class="form-group">
+                    <label for="TenantId" class="col-sm-2 control-label">租户</label>
+                    <div class="col-sm-4">
+                        @Html.DropDownTreeFor(d => d.TenantId, "../api/services/api/Tenant/GetTenantTreeJson")
+                    </div>
+                    <label for="ParentId" class="col-sm-2 control-label">上级部门</label>
+                    <div class="col-sm-4">
+                        @Html.DropDownTreeFor(d => d.ParentId, "../api/services/api/Department/GetDepartmentTreeJson")
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name" class="col-sm-2 control-label">名称</label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "部门名称", @Required = "Required" })
+                    </div>
+                    <label for="Code" class="col-sm-2 control-label">编码</label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "部门编码", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <label for="Icon" class="col-sm-2 control-label">部门图标</label>
+                    <div class="col-sm-4">
+                        <div class="btn-group">
+                            @Html.HiddenFor(f => f.Icon)
+                            <button class="btn btn-default  dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="MyModelTypeIcon()">
+                                <span class="btn-value"><i id="icon_type_img" class="@Html.Raw(Model.Icon)"></i></span> <span class="caret"></span>
+                            </button>
+                            <div class="dropdown-menu" id="divTypeIcon" style="display:none;">
+                                @Html.Partial("~/Views/Shared/Type_Icon.cshtml")
+                            </div>
+                        </div>
+                    </div>
+
+                    <label for="ObjectType" class="col-sm-2 control-label">部门分类</label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(f => f.ObjectType, new { @class = "form-control", placeholder = "部门分类" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="IsUse" class="col-sm-2 control-label">是否在用</label>
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(p => p.IsUse, new List<SelectListItem> {
+                       new SelectListItem { Text = "否", Value = "false"},
+                       new SelectListItem { Text = "是", Value = "true", Selected = true  } },
+                        new { @class = "form-control" })
+                    </div>
+                    <label for="CurLevel" class="col-sm-2 control-label">部门层级</label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(f => f.CurLevel, new { @class = "form-control", placeholder = "部门层级" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="LinkMan" class="col-sm-2 control-label">部门联系人</label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(f => f.LinkMan, new { @class = "form-control", placeholder = "部门联系人" })
+                    </div>
+                    <label for="LinkPhone" class="col-sm-2 control-label">部门联系人电话</label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(f => f.LinkPhone, new { @class = "form-control", placeholder = "部门联系人电话" })
+                    </div>
+                </div>
+
+                <div class="form-group" ">
+                    <label for="Order" class="col-sm-2 control-label">描述说明</label>
+                    <div class="col-sm-10">
+                        @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "描述说明", @style = "height:50px" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row bottomPage">
+            <div class="col-md-12 right">
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                <button class="btn btn-success" id="sumbit-btn" type="submit"><i class="fa fa-save"></i> 提交</button>
+                
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+        //手机号码只能输入数字
+        $("#LinkPhone").keyup(function () {
+            keyUps(this);
+        });
+
+        function keyUps(ob) {
+            if (!ob.value.match(/^(?:[\+\-]?\d+(?:\d+)?)?$/)) {
+                if (!isNaN(ob.t_value)) {
+                    ob.value = ob.t_value;
+                } else {
+                    ob.value = null;
+                }
+            } else {
+                ob.o_value = ob.value;
+            }
+            if (ob.value.match(/^(?:[\+\-]?\d+(?:\d+)?)?$/)) {
+                ob.o_value = ob.value;
+            }
+        }
+</script>
+@section scripts{
+@Scripts.Render("~/Bundles/ztree/js")
+    <script src="~/Views/Admin/js/editdepartment.js"></script>
+
+}

@@ -1,0 +1,149 @@
+﻿@using System.Web.Optimization;
+@using System.Web.Mvc.Html
+@using Easyman.Common.Mvc.Controls
+@model Easyman.Dto.UserInput
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+    @Styles.Render("~/Bundles/icheck/css")
+    @Styles.Render("~/Bundles/ztree/css")
+}
+<form style="width:100%;padding: 0px 15px 0px 15px;" id="saveForm" class="form-horizontal" action="../api/services/api/User/UpdateOrInserUser" method="post" role="form">
+    @Html.HiddenFor(h => h.Id)
+    <div class="form-body jarviswidget ">
+        <header role="heading">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#navMenu" aria-controls="home" role="tab" data-toggle="tab">用户属性</a></li>
+                <li role="presentation"><a href="#role" aria-controls="profile" role="tab" data-toggle="tab">角色权限</a></li>
+            </ul>
+        </header>
+        <div class="tab-content" style="padding-top:12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+                <div class="form-inline">
+                    <div class="form-group col-sm-6 marb20">
+                        <label for="TenantId" class="col-sm-4 control-label">租户</label>
+                        <div class="col-sm-8">
+                            @Html.DropDownTreeFor(d => d.TenantId, "../api/services/api/Tenant/GetTenantTreeJson")
+                        </div>
+                    </div>
+                    <div class="form-group marb20">
+                        <label for="UserName" class="col-sm-4 control-label">工号</label>
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(f => f.UserName, new { @class = "form-control", placeholder = "工号", @Required = "Required" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-inline">
+                    <div class="form-group col-sm-6 marb20">
+                        <label for="DistrictId" class="col-sm-4 control-label">组织</label>
+                        <div class="col-sm-8">
+                            @Html.DropDownTreeForUser(d => d.DistrictId, "../api/services/api/District/GetDistrictTreeJson")
+                            <div id="EmptyContent" onmouseover="subjectItemshow()" onmouseout="subjectItemhide()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group marb20">
+                        <label for="Name" class="col-sm-4 control-label">名称</label>
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "姓名", @Required = "Required" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-inline">
+                    <div class="form-group col-sm-6 marb20">
+                        <label for="DepartmentId" class="col-sm-4 control-label">部门</label>
+                        <div class="col-sm-8">
+                            @Html.DropDownTreeFor(d => d.DepartmentId, "../api/services/api/Department/GetDepartmentTreeJson")
+                        </div>
+                    </div>
+
+                    <div class="form-group marb20">
+                        <label for="PhoneNo" class="col-sm-4 control-label">电话</label>
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(f => f.PhoneNo, new { @class = "form-control", placeholder = "电话", @Required = "Required" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-inline">
+                    <div class="form-group col-sm-6 marb20">
+                        <label for="IsActive" class="col-sm-4 control-label">是否激活</label>
+                        <div class="col-sm-6">
+                            @Html.CheckBoxFor(f => f.IsActive)
+                        </div>
+                    </div>
+
+                    <div class="form-group marb20">
+                        <label for="IsDeleted" class="col-sm-8 control-label">是否注销</label>
+                        <div class="col-sm-2">
+                            @Html.CheckBoxFor(f => f.IsDeleted)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-inline">
+                    <div class="form-group col-sm-6 marb20">
+                        <label for="EmailAddress" class="col-sm-4 control-label">邮箱</label>
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(f => f.EmailAddress, new { @class = "form-control", placeholder = "邮箱", @Required = "Required" })
+                        </div>
+                    </div>
+
+                    <div class="form-group marb20">
+
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="role" style="height: 230px;margin-bottom:50px">
+                @Html.HiddenFor(f => f.RoleIds)
+                @Html.HiddenFor(f => f.RoleNames)
+                @Html.Hidden("isCtrl")
+                <ul id="roleTree" class="ztree"></ul>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="function">
+
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row bottomPage">
+            <div class="col-md-12 right">
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                <button class="btn btn-success" id="sumbit-btn" type="button"><i class="fa fa-save"></i> 提交</button>
+               
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+    });
+    //手机号码只能输入数字
+    $("#PhoneNo").keyup(function () {
+        keyUps(this);
+    });
+
+    function keyUps(ob) {
+        if (!ob.value.match(/^(?:[\+\-]?\d+(?:\d+)?)?$/)) {
+            if (!isNaN(ob.t_value)) {
+                ob.value = ob.t_value;
+            } else {
+                ob.value = null;
+            }
+        } else {
+            ob.o_value = ob.value;
+        }
+        if (ob.value.match(/^(?:[\+\-]?\d+(?:\d+)?)?$/)) {
+            ob.o_value = ob.value;
+        }
+    }
+
+</script>
+@section scripts{
+@Scripts.Render("~/Bundles/icheck/js")
+@Scripts.Render("~/Bundles/ztree/js")
+    <script src="~/Views/Admin/js/createUser.js"></script>
+}

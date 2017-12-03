@@ -1,0 +1,233 @@
+﻿@using System.Web.Optimization;
+@model Easyman.Dto.ImpTbInput
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+@section Styles{
+@Styles.Render("~/Bundles/icheck/css")
+    <style>
+        .fieldList {
+            list-style: none;
+            margin-left: -70px;
+        }
+        .fieldList li {
+            margin: 10px;
+            float: left;
+            margin-right: 10px;
+        }
+        .fieldList li a {
+            display: inline;
+        }
+        .fieldList li a span {
+             margin-left: 10px;
+        }
+    </style>
+}
+
+<form style="width:100%;padding: 0px 15px 0px 15px;" id="saveForm" class="form-horizontal" action="../api/services/api/ImpTb/AddOrUpdate" method="post" role="form">
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Sql)
+    <div class="form-body jarviswidget ">
+        <header role="heading">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#navMenu" aria-controls="home" role="tab" data-toggle="tab">基础属性</a></li>
+                <li role="presentation"><a href="#navDefault" aria-controls="home" role="tab" data-toggle="tab">内置字段</a></li>
+            </ul>
+        </header>
+
+        <div class="tab-content" style="padding-top:12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">表别名</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.CnTableName, new { @class = "form-control", placeholder = "表别名", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">代码</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "代码", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">表名称</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.EnTableName, new { @class = "form-control", placeholder = "表名称", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">建表规则</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(m => m.Rule, ViewBag.Rule as List<SelectListItem>, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="DatabaseType" class="col-xs-4 control-label">外导表分类</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(m => m.ImpTypeId, ViewBag.ImpType as List<SelectListItem>, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="DatabaseType" class="col-xs-4 control-label">建表目标库</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(m => m.DbServerId, ViewBag.DbServer as List<SelectListItem>, new { @class = "form-control", @onchange = "GetDBType(this)" })
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="navDefault" style="margin-bottom:50px">
+                @Html.HiddenFor(m => m.DefaultFields)
+                <div class="form-group col-sm-12">
+                    <label for="DbTypeId" class="col-sm-2 control-label">数据库类型</label>
+                    <div class="col-sm-10">
+                        @Html.DropDownListFor(m => m.DbTypeId, ViewBag.DbType as List<SelectListItem>, new { @class = "form-control", @onchange = "change(this)", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="form-group col-sm-12" id="inside">
+                    <label for="defaultfield" class="col-sm-2 control-label">内置字段</label>
+                    <div class="col-sm-10">
+                        <ul id="defaultfield" class="fieldList"></ul>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label for="defaultfield" class="col-sm-2 control-label">系统字段</label>
+                    <div class="col-sm-10">
+                        <ul id="defaultfield" class="fieldList">
+                            <li><a class="checkbox"><label><input type="checkbox" checked="checked" disabled="disabled" name="defaultfield" value=""><span>日期(createDate)</span></label></a></li>   
+                            <li><a class="checkbox"><label><input type="checkbox" checked="checked" disabled="disabled" name="defaultfield" value=""><span>用户(createUser)</span></label></a></li>   
+                            <li><a class="checkbox"><label><input type="checkbox" checked="checked" disabled="disabled" name="defaultfield" value=""><span>批次(createImport)</span></label></a></li>    
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label for="Sql" class="col-sm-2 control-label">脚本预览</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="7">@ViewBag.Sql</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-actions text-right">
+        <div class="row bottomPage">
+            <div style="margin-right:15px">
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                <button class="btn btn-primary" id="sumbit-btn" type="button" onclick="handleSubmitForm()"><i class="fa fa-save"></i> 提交</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+@Scripts.Render("~/Bundles/icheck/js")
+    <script src="~/Views/Import/js/Sumbit.js"></script>
+    <script src="~/Views/Script/js/jquery.jsPlumb-1.7.2.js"></script>
+
+
+    <script>
+        $(function () {
+            change();
+            $("#Rule").val(@Model.Rule);
+        });
+
+        function GetCheckBox() {
+            var ids = "";
+            $('input[type="checkbox"][name="defaultfield"]:checked').each(
+                 function () {
+                     if (ids == "") {
+                         ids += $(this).val();
+                     }
+                     else {
+                         ids += "," + $(this).val();
+                     }
+                 }
+             );
+            $("#DefaultFields").val(ids);
+        }
+
+        //读取数据库类型
+        var GetDBType = function () {
+            var dbId = $("#DbServerId").val();
+            $.ajax({
+                url: bootPATH + "Import/GetDBType",
+                data: { id: dbId },
+                dataType: "json",
+                type: "post",
+                async: true,
+                success: function (data) {
+                    $("#DbTypeId").val(data);
+                    change();
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        }
+
+        //读取内置字段
+        function change() {
+            var dbId = $("#DbTypeId").val();
+            $.ajax({
+                url: bootPATH+"Import/GetJson",
+                data: { id: dbId },
+                dataType: "json",
+                type: "post",
+                async: true,
+                success: function (data) {
+                    var h1 = '<li><a class="checkbox"><label><input type="checkbox" name="defaultfield" value="'
+                    var h2 = '"><span>';
+                    var h3 = '</span></label></a></li>';
+                    var html = "";
+                    $.each(data, function (index, item) {
+                        html += h1 + item.id + h2 + item.name + "(" + item.code + ")" + h3;
+                    });
+                    $("#defaultfield").html(html);
+                    if (html == "") //如果没有内置字段，就不显示整行
+                        $("#inside").hide();
+                    else
+                        $("#inside").show();
+                    EventRegister();
+                    UpdateChecked();
+                },
+                error: function () {
+                   alert("error");
+                }
+            });
+        }
+
+        function EventRegister() {
+            $("input[type='checkbox'][name='defaultfield']").iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
+            });
+
+            $("input[type='checkbox'][name='defaultfield']").on('ifChecked', function (event) {
+                GetCheckBox();
+            });
+
+            $("input[type='checkbox'][name='defaultfield']").on('ifUnchecked', function (event) {
+                GetCheckBox();
+            });
+        }
+
+        function UpdateChecked() {
+            var ids = $("#DefaultFields").val();
+            $('input[type="checkbox"][name="defaultfield"]').each(
+                function () {
+                    var val = $(this).val();
+                    $.each(ids.split(","), function (k,v) {
+                        if (val == v) {
+                            $('input:checkbox[value="' + val + '"]').iCheck('check');
+                        }
+                    });
+                }
+            );
+        }
+    </script>
+}

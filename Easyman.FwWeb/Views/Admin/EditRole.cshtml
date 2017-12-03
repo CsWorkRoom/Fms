@@ -1,0 +1,79 @@
+﻿@using System.Web.Optimization;
+@using Easyman.Common.Mvc.Controls
+@model Easyman.Dto.RoleInput
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+@section Styles{
+@Styles.Render("~/Bundles/ztree/css")
+    <style>
+        .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+}
+
+<form style="width:100%;padding: 0px 15px 0px 15px;" id="saveForm" class="form-horizontal" action="../api/services/api/Role/SavePost" method="post" role="form">
+    @Html.HiddenFor(h => h.Id)
+    @Html.HiddenFor(h => h.FunIds)
+    @*@Html.HiddenFor(f => f.NavIds)*@
+    <div class="form-body jarviswidget ">
+        <header role="heading">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#navMenu" aria-controls="home" role="tab" data-toggle="tab">基础属性</a></li>
+                <li role="presentation"><a href="#role" aria-controls="profile" role="tab" data-toggle="tab">关联菜单</a></li>
+            </ul>
+        </header>
+        <div class="tab-content" style="padding-top:20px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+                <div class="form-group">
+                    <label for="TenantId" class="col-sm-4 control-label">租户</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownTreeFor(d => d.TenantId, "../api/services/api/Tenant/GetTenantTreeJson")
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="DisplayName" class="col-sm-4 control-label">名称</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.DisplayName, new { @class = "form-control", placeholder = "名称", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name" class="col-sm-4 control-label">编码</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "编码", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ParentId" class="col-sm-4 control-label">上级</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownTreeFor(d => d.ParentId, "../api/services/api/role/GetRoleTreeJson")
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="role" style="margin-bottom:50px;overflow:auto">
+                <input type="hidden" id="NavIds" name="NavIds" value="">
+                <input type="hidden" id="ParentNavIds" name="parentNavIds" value="">
+                <input type="hidden" id="ChildNavIds" name="childNavIds" value="">
+                <ul id="zTreeMilti_NavIds" class="ztree" style="position: static; zoom: 1;"></ul>
+                <!-- Html.AsyncMultiSelectTreeFor(x => x.NavIds, "../api/services/api/Modules/GetNavTreeJsonByRoleIdForModule?roleId=" + Model.Id, "../api/services/api/Modules/GetModuleEventByUrl", "url", "POST")-->
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row bottomPage">
+            <div class="col-md-12 text-right">
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                <button class="btn btn-success" id="sumbit-btn" type="button" onclick="handleSubmitForm()"><i class="fa fa-save"></i> 提交</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+@Scripts.Render("~/Bundles/ztree/js")
+    <script src="~/Views/Admin/js/editrole.js"></script>
+}

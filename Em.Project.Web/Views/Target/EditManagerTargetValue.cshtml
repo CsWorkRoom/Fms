@@ -1,0 +1,323 @@
+﻿@using Easyman.Common.Mvc.Controls
+@using System.Web.Optimization;
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+@section Styles{
+@Styles.Render("~/Bundles/App/jqgrid/css")
+    <style>
+        .form-control{
+            padding:0px;
+        }
+    </style>
+}
+<input id="managerJson" type="text" value="@ViewData["managerJson"]" style="display:none" />
+<input id="month" type="text" value="@ViewData["month"]" style="display:none" />
+<input id="targetTagId" type="text" value="@ViewData["targetTagId"]" style="display:none" />
+<input id="districtId" type="text" value="@ViewData["districtId"]" style="display:none" />
+<input id="districtName" type="text" value="@ViewData["districtName"]" style="display:none" />
+ 
+<div class="tab-content" style="width:100%;height:100%;padding-top:7px">
+    <!--目标值编辑区域-->
+    <table id="jqGridList"></table>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/Bundles/App/jqgrid/js")
+    <script type="text/javascript">
+        //#region 页面入口
+        $(document).ready(function () {
+            InitGrid();
+            $(".jqg-second-row-header").addClass("table-bordered");//多表头首行无边线
+            $(window).resize();
+        })
+        //#endregion
+
+        ////随着浏览器的变化而变化
+        $(window).resize(function () {
+            WinResize("jqGridList", null, null);
+        });
+
+        //初始化-加载表格内容
+        function InitGrid() {
+            var fieldArr = $.parseJSON("[]"); //字段信息初始化
+
+            //#region 拼凑colmodel列内容
+            var managerJson = $("#managerJson").val();
+            //表格绑定
+            var managerArr = JSON.parse(managerJson);
+            if (managerArr != null && managerArr.length > 0) {
+                //完成多表头的配置
+
+                //#region 列字段拼凑
+                //基础字段
+                fieldArr = [
+                    { label: '指标编号', name: 'ID', width: 30, editable: false,frozen: true, key: true, hidden: true },
+                    { label: '指标类型', name: 'TARGET_TYPE_NAME', width: 65, frozen: true, editable: false, hidden: false },
+                    { label: '指标名', name: 'NAME', width: 60, frozen: true, editable: false, hidden: false },
+                    { label: '权重', name: 'WEIGHT', width: 40, frozen: true, editable: false, hidden: false },
+                    { label: '*月指标', name: 'MONTH_TARGET_V', width: 58, frozen: true, editable: false, hidden: false },
+                    { label: '合计', name: 'TOTAL_VALUE', width: 40, frozen: true, editable: false, hidden: false }
+                ];
+
+                //操作区
+                var opro = {
+                    label: '<label title="操作区" style="width:98%;text-align:center">操作区</label>',
+                    name: "actions",//字段编码
+                    align: "center",//横向位置
+                    sortable: false,//是否排序
+                    hidden: false,//是否隐藏
+                    frozen: true,//是否冻结
+                    width: 75,//列宽度
+                    editable: false,
+                    hidden: false,
+                    formatter: function (cellvalue, options, rowObject) {
+                        var lbl = "";
+                        lbl += "<a name='hrefLike' style='font-size: 15px;cursor: pointer;' onclick='SumGridRows(" + JSON.stringify(rowObject) + ")' title='指标【" + rowObject.NAME + "】目标值求和计算'>求和</a>&nbsp;";
+                        lbl += "<a name='hrefLike' style='font-size: 15px;cursor: pointer;' onclick='SaveGridRows(" + JSON.stringify(rowObject) + ")' title='批量保存指标【" + rowObject.NAME + "】目标值'>保存</a>";
+                        return lbl;
+                    }
+                };
+                fieldArr.push(opro);
+
+                //客户经理字段的遍历
+                for (var i = 0; i < managerArr.length; i++) {
+                    var manager = managerArr[i];
+                    var lastV = {
+                        label: '“*-1”月完成值',
+                        name: "LAST_V_" + manager.ManagerNo.toUpperCase(),//上月完成值
+                        align: "center",//横向位置
+                        sortable: true,//是否排序
+                        hidden: false,//是否隐藏
+                        editable: false,
+                        width: 55//列宽度
+                    };
+                    var targetV = {
+                        label: '*月指标',
+                        name: "TARGET_V_" + manager.ManagerNo.toUpperCase(),//上月完成值
+                        align: "center",//横向位置
+                        editable: true,
+                        edittype: "text",
+                        hidden: false,//是否隐藏
+                        width:(managerArr.length-1==i)? 70 : 50//列宽度
+                    };
+                    fieldArr.push(lastV);
+                    fieldArr.push(targetV);
+                }
+                //#endregion
+            }
+            //#endregion
+
+            //#region 绑定表格的内容值
+
+            //获得表格内容集合
+            var targetValArr = [];
+            var targetVals = $.ajax({
+                async: false,
+                url: "ManagerTargetValueList",
+                data: {
+                    targetTagId: $("#targetTagId").val(),
+                    month: $("#month").val(),
+                    districtId: $("#districtId").val()
+                },
+            });
+            if (targetVals.responseText.length > 0) {
+                targetValArr = JSON.parse(targetVals.responseText).rows;
+            }
+
+            //绑定表格内容
+            $.jgrid.gridUnload("jqGridList");//先卸载
+            $("#jqGridList").jqGrid({
+                //url: 'ManagerTargetValueList',
+                //postData: {
+                //    targetTagId: $("#targetTagId").val(),
+                //    month: $("#month").val(),
+                //    districtId: $("#districtId").val(),
+                //},
+                data: targetValArr,
+                datatype: "local",
+                //datatype: "json",//如果url中需要回调函数，则此处格式为jsonp mtype: "POST",
+                styleUI: 'Bootstrap',
+                //altRows: true,
+                editurl: 'clientArray',
+                responsive: false,
+                colModel: fieldArr,
+                shrinkToFit: true,//是否列宽度自适应。true=适应 false=不适应
+                loadonce: true,
+                viewrecords: true
+            });
+            //#endregion
+
+            startEdit($("#jqGridList"));//批量启动编辑
+
+            //#region 设置多表头
+            var headArr = [];//初始化多表头
+
+            var managerJson = $("#managerJson").val();
+            //表格绑定
+            var managerArr = JSON.parse(managerJson);
+            if (managerArr != null && managerArr.length > 0) {
+                for (var i = 0; i < managerArr.length; i++) {
+                    var manager = managerArr[i];
+                    var startName = "LAST_V_" + manager.ManagerNo.toUpperCase();
+                    var title = manager.ManagerName;
+                    var hd = { "numberOfColumns": 2, "titleText": "" + title + "", "startColumnName": "" + startName + "" };
+                    headArr.push(hd);
+                }
+            }
+            //设置多表头
+            $('#jqGridList').setGroupHeaders(
+            {
+                useColSpanStyle: true,
+                groupHeaders: [{ "numberOfColumns": (managerArr.length * 2 + 7), "titleText": "【" + $("#month").val() + "】月份【" + $("#districtName").val() + "】客户经理指标下达", "startColumnName": "ID" }]
+            });
+
+            //设置多表头
+            $('#jqGridList').setGroupHeaders(
+            {
+                useColSpanStyle: true,
+                groupHeaders: headArr
+            });
+            //#endregion
+
+            $("#jqGridList").jqGrid('setFrozenColumns');//设置冻结列生效
+        }
+
+        //批量启动编辑
+        function startEdit($gridCase) {
+            var ids = $gridCase.jqGrid('getDataIDs');
+
+            for (var i = ids.length - 1; i >= 0; i--) {
+                $gridCase.jqGrid('editRow', ids[i]);
+                var sumV = SumTargetValues(ids[i]);//求和
+                $("#jqGridList").setCell(ids[i], 'TOTAL_VALUE', sumV);//设置求和列值
+            }
+        };
+
+        //按钮保存行数据
+        function SaveGridRows(rowObject)
+        {
+            var sumV = SumTargetValues(rowObject.ID)//获得目标值的求和
+            var monthV = rowObject.MONTH_TARGET_V - 0;
+            if (monthV != "NaN" && monthV != null&&sumV < monthV) {
+                abp.message.confirm(
+                    '求和值【' + sumV + '】小于目标值【' + monthV + '】',
+                    '确定保存吗?',
+                    function (isConfirmed) {
+                        if (isConfirmed) {
+                            SaveTargetValues(rowObject, sumV);
+                        }
+                    }
+                );
+            }
+            else
+                SaveTargetValues(rowObject, sumV);
+        }
+
+        //按钮求和,并设置求和列值
+        function SumGridRows(rowObject) {
+   
+            var sumV = SumTargetValues(rowObject.ID);//获得目标值的求和
+            var monthV = rowObject.MONTH_TARGET_V - 0;
+            $("#jqGridList").setCell(rowObject.ID, 'TOTAL_VALUE', sumV);
+            
+            $("#jqGridList").jqGrid('saveRow', rowObject.ID);//关闭行编辑
+            $("#gview_jqGridList .ui-jqgrid-bdiv").scroll();//触发一下滚动条
+            $("#jqGridList").jqGrid('editRow', rowObject.ID);//开启行编辑
+
+            if (monthV != "NaN" && monthV !=null&& sumV < monthV) {
+                abp.message.confirm(
+                    '求和值【'+sumV+'】小于目标值【'+monthV+'】',
+                    '你知道了吗?',
+                    function (isConfirmed) {
+                        if (isConfirmed) {
+                            //设置合计值
+                            //$("#jqGridList").setCell(rowObject.ID, 'TOTAL_VALUE', sumV);
+                        }
+                    }
+                );
+            }
+        }
+
+        //计算每行目标值的和
+        function SumTargetValues(rowId)
+        {
+            var intColHeight = $("#" + rowId).height();//解决点击高度问题（记录原始高度）
+            var sumV = 0;//求和初始化
+
+            $("#jqGridList").jqGrid('saveRow', rowId);//关闭行编辑
+            var rowDatas = $("#jqGridList").jqGrid('getRowData', rowId);//获取行数据
+            $("#jqGridList").jqGrid('editRow', rowId);//开启行编辑
+            var managerJson = $("#managerJson").val();
+            //表格绑定
+            var managerArr = JSON.parse(managerJson);
+            if (managerArr != null && managerArr.length > 0) {
+                for (var i = 0; i < managerArr.length; i++) {
+                    var manager = managerArr[i];
+                    var tvn = "TARGET_V_" + manager.ManagerNo.toUpperCase();
+                    sumV += rowDatas["" + tvn + ""] - 0;
+                }
+            }
+            $("#" + rowId).height(intColHeight);//解决点击高度问题（重置高度）
+
+            return sumV;
+        }
+
+        //批量保存每行的目标值
+        function SaveTargetValues(rowObject, sumV)
+        {
+            //设置合计值
+            $("#jqGridList").setCell(rowObject.ID, 'TOTAL_VALUE', sumV);
+            //保存数据
+            //先整理保存数据，再传值保存
+            $("#jqGridList").jqGrid('saveRow', rowObject.ID);//关闭行编辑
+            var rowDatas = $("#jqGridList").jqGrid('getRowData', rowObject.ID);//获取行数据
+            $("#jqGridList").jqGrid('editRow', rowObject.ID);//开启行编辑
+            $("#gview_jqGridList .ui-jqgrid-bdiv").scroll();//触发一下滚动条
+          
+            var managerJson = $("#managerJson").val();
+            //表格绑定
+            var managerArr = JSON.parse(managerJson);
+            if (managerArr != null && managerArr.length > 0) {
+                var targetValueArr = [];
+                for (var i = 0; i < managerArr.length; i++) {
+                    var manager = managerArr[i];
+                    var tn="TARGET_V_" + manager.ManagerNo.toUpperCase();
+                    var tv = {
+                        TargetId: rowDatas.ID,
+                        DistrictId: manager.DistrictId,
+                        ManagerNo: manager.ManagerNo,
+                        ManagerName: manager.ManagerName,
+                        TValue: rowDatas["" + tn + ""]
+                    };
+                    targetValueArr.push(tv);
+                }
+                //异步保存打分和得分
+                $.ajax({
+                    type: "post",
+                    url: "../api/services/api/NewTargetValue/SaveManagerTargetValue",
+                    data: {
+                        Month: $("#month").val(),
+                        TargetTagId: $("#targetTagId").val(),
+                        DistrictId: $("#districtId").val(),
+                        TargetValues: JSON.stringify(targetValueArr)
+                    },
+                    success: function (e) {
+                        abp.message.success("", "目标值【" + rowDatas.NAME + "】保存成功！");
+                    },
+                    error: function (e) {
+                        if (e.responseText.indexOf("<title>") != -1) {
+                            var start = e.responseText.indexOf("<title>");
+                            var end = e.responseText.indexOf("</title>");
+                            abp.message.error(e.responseText.substring(start + 7, end), rowDatas.NAME + "目标值设定成功！");
+                        }
+                        else
+                            abp.message.error(e.error.message, rowDatas.NAME + "目标值设定失败！");
+                    }
+                });
+            }
+        }
+
+    </script>
+}

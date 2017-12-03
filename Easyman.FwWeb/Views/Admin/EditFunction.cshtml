@@ -1,0 +1,89 @@
+﻿@using Easyman.Common.Mvc.Controls
+@model Easyman.Dto.FunctionInput
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+@section Styles{
+    <style>
+        #iconMenuDiv {
+            width: 400px;
+        }
+        #iconMenuDiv span {
+            padding: 5px;
+            margin: 5px 10px;
+            font-size: 22px;
+            cursor: pointer;
+            display: inline-block;
+            border: 1px solid transparent;
+        }
+        #iconMenuDiv span:hover {
+            transform: scale(1.02);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #iconMenuDiv h5 {
+            margin-left: 10px;
+            padding-bottom: 4px;
+            border-bottom: solid 1px #707070;
+        }
+    </style>
+}
+
+<form id="saveForm" style="width:100%;padding: 0px 15px 0px 15px;" class="form-horizontal" action="../api/services/api/Function/SavePost" method="post" role="form">
+    @Html.HiddenFor(h => h.Id)
+    <div class="form-body jarviswidget ">
+        <header role="heading">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#navMenu" aria-controls="home" role="tab" data-toggle="tab">基本属性</a></li>
+                <li role="presentation"><a href="#role" aria-controls="profile" role="tab" data-toggle="tab">角色权限</a></li>
+            </ul>
+        </header>
+        <div class="tab-content" style="padding-top:12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu">
+                <div class="form-group">
+                    <label for="TenantId" class="col-sm-4 control-label">租户</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownTreeFor(d => d.TenantId, "../api/services/api/Tenant/GetTenantTreeJson")
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name" class="col-sm-4 control-label">名称</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "名称", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Code" class="col-sm-4 control-label">编码</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "编码", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Discribition" class="col-sm-4 control-label">描述</label>
+                    <div class="col-sm-6">
+                        @Html.TextAreaFor(f => f.Discribition, new { @class = "form-control", placeholder = "功能权限描述" })
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="role">
+                @Html.HiddenFor(f => f.RoleIds)
+                @Html.Hidden("isCtrl")
+                <ul id="roleTree" class="ztree"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions" style="text-align: right;border-top: 1px solid #ddd;">
+        <div class="row">
+            <div class="col-md-12 right">
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                <button class="btn btn-success" id="sumbit-btn" type="button" style="margin-top: 5px;"><i class="fa fa-save"></i> 提交</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script src="~/Views/Admin/js/editfunction.js"></script>
+}

@@ -1,0 +1,148 @@
+﻿@using System.Web.Optimization;
+@model Easyman.Content.Dto.ContentDefineInput
+@using Easyman.Common.Mvc.Controls
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+    @Styles.Render("~/Bundles/icheck/css")
+}
+<style>
+
+</style>
+<form style="width:100%;padding: 0px 15px 0px 15px;" id="saveForm" class="form-horizontal" action="../api/services/api/Define/UpdateOrInserContentDefine" method="post" role="form">
+    @Html.HiddenFor(h => h.Id)
+    <div class="form-body jarviswidget" style="height:339px">
+        <div class="tab-content" style="padding-top:12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">名称</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "名称", @Required = "Required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">代码</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "代码", @Required = "Required" })
+                    </div>
+                </div>
+                @*<div class="form-group">
+                        <label for="Name" class="col-xs-4 control-label">推送方式</label>
+                        <div class="col-sm-6">
+                            @Html.DropDownTreeFor(d => d.PushTypeId, "../api/services/api/Content/GetPushTreeJson")
+                        </div>
+                    </div>*@
+                <div class="form-group">
+                    <label for="Name" class="col-xs-4 control-label">权限配置</label>
+                    <div class="col-sm-6" id="CheckBoxDiv" style="margin-left: -20px;">
+                        <div class="form-group">
+                            <div class="col-sm-5">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="IsReoly" id="IsReoly" checked="@Model.IsReoly"> 允许评论
+
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="IsReolyFloor" id="IsReolyFloor" checked="@Model.IsReolyFloor"> 允许评论楼层
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-5">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="IsLike" id="IsLike" checked="@Model.IsLike"> 允许点赞
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="IsShare" id="IsShare" checked="@Model.IsShare"> 允许转发
+                                       
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-5">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="IsContentFile" id="IsContentFile" checked="@Model.IsContentFile"> 允许内容上传附件
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-7">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="IsReolyFile" id="IsReolyFile" checked="@Model.IsReolyFile"> 允许评论上传附件
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                                <div class="col-sm-5">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="IsReolyFloorFile" id="IsReolyFloorFile" checked="@Model.IsReolyFloorFile"> 允许评论楼层上传附件
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="IsChenkUser" id="IsChenkUser" checked="@Model.IsChenkUser"> 是否可选择用户发送
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="form-group">
+                            <div class="col-sm-5">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="IsChenkRole" id="IsChenkRole" checked="@Model.IsChenkRole"> 是否可选择角色发送
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-7">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="IsChenkDistrict" id="IsChenkDistrict" checked="@Model.IsChenkDistrict"> 是否可选择组织发送
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row bottomPage">
+            <div class="col-md-12">
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                <button class="btn btn-success" id="sumbit-btn" type="button"><i class="fa fa-save"></i> 提交</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+
+    });
+</script>
+@section scripts{
+@Scripts.Render("~/Bundles/icheck/js")
+    <script src="~/Views/Content/js/AddDefine.js"></script>
+}

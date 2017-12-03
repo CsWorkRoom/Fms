@@ -1,0 +1,1002 @@
+﻿@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="~/Views/Report/css/basicLayout.css" />
+    <script src="~/Views/Report/js/bacsicLayout.js"></script>
+    <script>
+			$(document).ready(function(){
+			  $('input').iCheck({
+			    checkboxClass: 'icheckbox_flat-blue',
+			    radioClass: 'iradio_flat-blue',
+			    increaseArea: '20%' // optional
+			  });
+			});
+    </script>
+</head>
+<body>
+    <div class="areaContent">
+        <ul id="myTab" class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab"><i class="fa fa-file-text-o"></i> 基本信息</a></li>
+            <li role="presentation"><a href="#formScript" aria-controls="formScript" role="tab" data-toggle="tab"><i class="fa fa-file-code-o"></i> 报表脚本</a></li>
+            <li role="presentation"><a href="#viewShow" aria-controls="viewShow" role="tab" data-toggle="tab"><i class="fa fa-codepen"></i> 视图展示</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="info">
+                <div class="topContent">
+                    <div class="row">
+                        <label for="" class="col-xs-8">
+                            报表名称<input type="text">
+                        </label>
+                        <label for="" class="col-xs-4">
+                            代码<input type="text" />
+                        </label>
+                        <label for="" class="col-xs-12">
+                            备注<input type="text" />
+                        </label>
+                    </div>
+                </div>
+                <div class="bottomContent">
+                    <form action="">
+                        <ul>
+                            <li><span>选择输出报表类型</span></li>
+                            <li>         
+                                <input type="radio" name="a" />
+                                <label for="">Web自定义</label>
+                            </li>
+                            <li>    
+                                <input type="radio" name="a" />
+                                <label for="">RDLC</label>
+                            </li>
+                            <li>                   
+                                <input type="checkbox" />
+                                <label for="">APP</label>
+                            </li>
+                        </ul>
+                        <div class="bottomContent_left">
+                            <div class="title">
+                                <span>Web报表/RDLE</span>
+                            </div>
+                            <ul>
+                                <li>
+                                    报表风格
+
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+
+                                </li>
+                                <li>
+                                    Grid类型
+
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+
+                                </li>
+                                <li>
+                                    自动加载显示
+
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+
+                                </li>
+                                <li>
+                                    复选框
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+                                </li>
+                                <li>
+                                    限制搜索结果
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+                                </li>
+                                <li>
+                                    限制搜索结果数
+                                    <input type="text" />
+                                </li>
+                                <li>
+                                    分页显示
+
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+
+                                </li>
+                                <li>
+                                    每页记录数
+                                    <label for=""></label>
+                                    <input type="text" />
+                                </li>
+                                <li>
+                                    到处最大条数
+                                    <label for=""></label>
+                                    <input type="text" />
+                                </li>
+                            </ul>
+
+                        </div>
+                        <div class="bottomContent_right">
+                            <div class="title">
+                                <span>APP报表</span>
+                            </div>
+                            <ul>
+                                <li>
+                                    报表风格
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+                                </li>
+                                <li>
+                                    Grid类型
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+                                </li>
+                                <li>
+                                    自动加载显示
+
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+
+                                </li>
+                                <li>
+                                    复选框
+
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+
+                                </li>
+                                <li>
+                                    限制搜索结果
+
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+
+                                </li>
+                                <li>
+                                    限制搜索结果数
+                                    <input type="text" />
+                                </li>
+                                <li>
+                                    分页显示
+
+                                    <select>
+                                        <option value=""></option>
+                                    </select>
+
+                                </li>
+                                <li>
+                                    每页记录数
+                                    <label for=""></label>
+                                    <input type="text" />
+                                </li>
+                                <li>
+                                    到处最大条数
+                                    <label for=""></label>
+                                    <input type="text" />
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="btns">
+                            <button class="btn btn-success"><i class="fa fa-check"></i> 提交</button>
+                            <button class="btn btn-danger"><i class="fa fa-repeat"></i> 重置</button>                          
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade row" id="formScript">
+                <div class="topContent col-xs-9">
+                    <div class="title">
+                        <span>SQL代码编辑</span>
+                    </div>
+                    <div class="textContent">
+                        <textarea name="" rows="" cols=""></textarea>
+                    </div>
+                    <div class="btns">
+                        <button class="btn btn-primary"><i class="fa fa-desktop"></i> 脚本解析</button>
+                        <button class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> 保存</button>
+                        <button class="btn btn-flat" id="fullContent"><i class="fa fa-arrows-alt"></i></button>
+                    </div>
+                </div>
+
+                <div class="rightContent col-xs-3">
+                    <div class="dropdown">
+                        <a id="hasData" role="button" data-toggle="dropdown" data-target="#" href="">
+                            选择已有数据 <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="hasData">
+                            <li>测试数据</li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a id="dataBase" role="button" data-toggle="dropdown" data-target="#" href="">
+                            数据库选择<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dataBase">
+                            <li>测试数据库</li>
+                        </ul>
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+                <div class="bottomContent col-xs-9">
+                    <div class="title">
+                        <span>DML脚本显示</span>
+                    </div>
+                    <div class="textContent">
+
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade row" id="viewShow">
+                <ul id="myTab-tab" class="nav nav-tabs col-xs-12" role="tablist">
+                    <li role="presentation"><a href="#webForm" aria-controls="webForm" role="tab" data-toggle="tab"><i class="fa fa-television"></i> Web报表</a></li>
+                    <li role="presentation"><a href="#appForm" aria-controls="appForm" role="tab" data-toggle="tab"><i class="fa fa-mobile fa-6"></i> App报表</a></li>
+                    <li role="presentation"><a href="#rdlc" aria-controls="rdlc" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> RDLC</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            布局设置
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#web-inquiry" tabindex="-1" data-toggle="tab">查询区</a></li>
+                            <li><a href="#web-function" tabindex="-1" data-toggle="tab">功能操作区</a></li>
+                            <li><a href="#web-form" tabindex="-1" data-toggle="tab">表单展示区</a></li>
+                            <li><a href="#web-chart" tabindex="-1" data-toggle="tab">图表展示区</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            布局设置
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#app-inquiry" tabindex="-1" data-toggle="tab">查询区</a></li>
+                            <li><a href="#app-function" tabindex="-1" data-toggle="tab">功能操作区</a></li>
+                            <li><a href="#app-form" tabindex="-1" data-toggle="tab">表单展示区</a></li>
+                            <li><a href="#app-chart" tabindex="-1" data-toggle="tab">图表展示区</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div id="myTabContent-content" class="tab-content">
+                    <!--web报表-->
+                    <div role="tabpanel" class="tab-pane fade row" id="webForm">
+                        <div class="leftContent col-xs-9">
+                            <!--查询区-->
+                            <div class="inquiryBox none">
+                                <div class="title">
+                                    <span>查询区</span>
+                                    <i class="glyphicon glyphicon-remove-sign"></i>
+                                </div>
+                                <div class="inquiryContent">
+                                    <div class="btn-group">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                高级查询全量定义
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">下拉链接 1</a></li>
+                                                <li><a href="#">下拉链接 2</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                弹框显示
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">下拉链接 1</a></li>
+                                                <li><a href="#">下拉链接 2</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                八列布局
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">下拉链接 1</a></li>
+                                                <li><a href="#">下拉链接 2</a></li>
+                                            </ul>
+                                        </div>
+                                        <button type="button" class="btn btn-default">生成</button>
+                                        <button type="button" class="btn btn-default">添加定义</button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!--查询区结束-->
+                            <!--功能操作区-->
+                            <div class="functionBox none">
+                                <div class="title">
+                                    <span>功能操作区</span>
+                                    <i class="glyphicon glyphicon-remove-sign"></i>
+                                </div>
+                                <div class="functionContent">
+
+                                </div>
+                            </div>
+                            <!--功能操作区结束-->
+                            <!--表单展示区-->
+                            <div class="formBox none">
+                                <div class="title">
+                                    <span>表单展示区</span>
+                                    <i class="glyphicon glyphicon-remove-sign"></i>
+                                </div>
+                                <div class="formContent"></div>
+                            </div>
+                            <!--表单展示区结束-->
+                            <!--图表展示区-->
+                            <div class="chartBox none">
+                                <div class="title">
+                                    <span>图表展示区</span>
+                                    <i class="glyphicon glyphicon-remove-sign"></i>
+                                </div>
+                                <div class="chartContent">
+
+                                </div>
+                            </div>
+                            <!--图表展示区结束-->
+
+                        </div>
+                        <div class="rightContent col-xs-3 none">
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="web-inquiry">
+                                    <ul>
+                                        <li>
+                                            字段名
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            字段参数
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            查询中文
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            查询方式
+                                            <select name="" id="">
+                                                <option value=""></option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            输入类型
+                                            <select name="" id="">
+                                                <option value=""></option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            验证输入
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            默认输入
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            默认查询条件
+
+                                        </li>
+                                        <li>
+                                            <textarea name="" rows="" cols="" placeholder=" 请输入关键字"></textarea>
+                                            <span>查询脚本</span>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> 保存</button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="web-function">
+                                    <ul>
+                                        <li>
+                                            功能操作名
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            图标样式
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            按钮主题
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            链接URL
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            链接窗口呈现
+                                            <select name="" id="">
+                                                <option value="">
+                                                    DIV
+                                                </option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            窗口宽
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            窗口高
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> 保存</button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="web-form">
+                                    <ul>
+                                        <li>
+                                            字段名
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            Header名
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            字段类型
+                                            <select name="" id="">
+                                                <option value="">数值类型</option>
+                                                <option value="">文本类型</option>
+                                                <option value="">日期类型</option>
+                                                <option value="">长整型</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            显示内容
+                                            <select name="" id="">
+                                                <option value="">字段名+字段值</option>
+                                                <option value="">字段值</option>
+                                                <option value="">自定义label</option>
+                                                <option value="">图片</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            可排序
+                                            <select name="">
+                                                <option value="">是</option>
+                                                <option value="">否</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            是否显示
+                                            <select name="">
+                                                <option value="">是</option>
+                                                <option value="">否</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            格式化输出
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            对齐方式
+                                            <select name="">
+                                                <option value="">左对齐</option>
+                                                <option value="">右对齐</option>
+                                                <option value="">居中对齐</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            显示宽度
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            跳转href
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            列统计方式
+                                            <select name="">
+                                                <option value="">[无]</option>
+                                                <option value="">SUM</option>
+                                                <option value="">AVG</option>
+                                                <option value="">COUNT</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            字段颜色
+                                            <input type="color" />
+                                        </li>
+                                        <li>
+                                            字段值颜色
+                                            <input type="color" />
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> 保存</button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="web-chart">
+                                    <ul>
+                                        <li>
+                                            标题
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            背景色
+                                            <input type="color" />
+                                        </li>
+                                        <li>
+                                            启用拖拽重新计算特性
+                                            <select name="">
+                                                <option value="">是</option>
+                                                <option value="">否</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            加载开启动画
+                                            <select name="">
+                                                <option value="">是</option>
+                                                <option value="">否</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            工具箱
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            提示框
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            图例
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            X轴
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            Y轴
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            数据系列
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            数值内容颜色
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            数据区域缩放
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            值域选择
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            显示脚本
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> 保存</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--web报表结束-->
+                    <!--app报表-->
+                    <div role="tabpanel" class="tab-pane row" id="appForm">
+                        <div class="leftContent col-xs-9">
+                            <!--查询区-->
+                            <div class="inquiryBox none">
+                                <div class="title">
+                                    <span>查询区</span>
+                                    <i class="glyphicon glyphicon-remove-sign"></i>
+                                </div>
+                                <div class="inquiryContent">
+                                    <div class="btn-group">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                高级查询全量定义
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">下拉链接 1</a></li>
+                                                <li><a href="#">下拉链接 2</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                弹框显示
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">下拉链接 1</a></li>
+                                                <li><a href="#">下拉链接 2</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                八列布局
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">下拉链接 1</a></li>
+                                                <li><a href="#">下拉链接 2</a></li>
+                                            </ul>
+                                        </div>
+                                        <button type="button" class="btn btn-default">生成</button>
+                                        <button type="button" class="btn btn-default">添加定义</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--查询区结束-->
+                            <!--功能操作区-->
+                            <div class="functionBox none">
+                                <div class="title">
+                                    <span>功能操作区</span>
+                                    <i class="glyphicon glyphicon-remove-sign"></i>
+                                </div>
+                                <div class="functionContent">
+
+                                </div>
+                            </div>
+                            <!--功能操作区结束-->
+                            <!--表单展示区-->
+                            <div class="formBox none">
+                                <div class="title">
+                                    <span>表单展示区</span>
+                                    <i class="glyphicon glyphicon-remove-sign"></i>
+                                </div>
+                                <div class="formContent">
+
+                                </div>
+                            </div>
+                            <!--表单展示区结束-->
+                            <!--图表展示区-->
+                            <div class="chartBox none">
+                                <div class="title">
+                                    <span>图表展示区</span>
+                                    <i class="glyphicon glyphicon-remove-sign"></i>
+                                </div>
+                                <div class="chartContent">
+
+                                </div>
+                            </div>
+                            <!--图表展示区结束-->
+
+
+                        </div>
+                        <div class="rightContent col-xs-3 none">
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="app-inquiry">
+                                    <ul>
+                                        <li>
+                                            字段名
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            字段参数
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            查询中文
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            查询方式
+                                            <select name="" id="">
+                                                <option value=""></option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            输入类型
+                                            <select name="" id="">
+                                                <option value=""></option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            验证输入
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            默认输入
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            默认查询条件
+
+                                        </li>
+                                        <li>
+                                            <textarea name="" rows="" cols="" placeholder=" 请输入关键字"></textarea>
+                                            <span>查询脚本</span>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> 保存</button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="app-function">
+                                    <ul>
+                                        <li>
+                                            功能操作名
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            图标样式
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            按钮主题
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            链接URL
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            链接窗口呈现
+                                            <select name="" id="">
+                                                <option value="">
+                                                    DIV
+                                                </option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            窗口宽
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            窗口高
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> 保存</button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="app-form">
+                                    <ul>
+                                        <li>
+                                            字段名
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            Header名
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            字段类型
+                                            <select name="" id="">
+                                                <option value="">数值类型</option>
+                                                <option value="">文本类型</option>
+                                                <option value="">日期类型</option>
+                                                <option value="">长整型</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            显示内容
+                                            <select name="" id="">
+                                                <option value="">字段值</option>
+                                                <option value="">字段名+字段值</option>
+                                                <option value="">自定义label</option>
+                                                <option value="">图片</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            可排序
+                                            <select name="">
+                                                <option value="">是</option>
+                                                <option value="">否</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            是否显示
+                                            <select name="">
+                                                <option value="">是</option>
+                                                <option value="">否</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            格式化输出
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            对齐方式
+                                            <select name="">
+                                                <option value="">左对齐</option>
+                                                <option value="">右对齐</option>
+                                                <option value="">居中对齐</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            显示宽度
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            跳转href
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            列统计方式
+                                            <select name="">
+                                                <option value="">[无]</option>
+                                                <option value="">SUM</option>
+                                                <option value="">AVG</option>
+                                                <option value="">COUNT</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            字段颜色
+                                            <input type="color" />
+                                        </li>
+                                        <li>
+                                            字段值颜色
+                                            <input type="color" />
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> 保存</button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="app-chart">
+                                    <ul>
+                                        <li>
+                                            标题
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            背景色
+                                            <input type="color" />
+                                        </li>
+                                        <li>
+                                            启用拖拽重新计算特性
+                                            <select name="">
+                                                <option value="">是</option>
+                                                <option value="">否</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            加载开启动画
+                                            <select name="">
+                                                <option value="">是</option>
+                                                <option value="">否</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            工具箱
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            提示框
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            图例
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            X轴
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            Y轴
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            数据系列
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            数值内容颜色
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            数据区域缩放
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            值域选择
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            显示脚本
+                                            <input type="text" />
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> 保存</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--app报表结束-->
+                    <!--RDLC-->
+                    <div role="tabpanel" class="tab-pane fade" id="rdlc">
+                        <div class="topContent row">
+                            <div class="downLoad-data col-xs-2">
+                                <i class="fa fa-cloud-download"></i>
+                                <p>下载数据集定义</p>
+                            </div>
+                            <div class="step col-xs-10">
+                                <ul class="row">
+                                    <li class="step-one col-xs-1">
+                                        <img src="/Views/Report/img/step1.png" alt="" />
+                                        <p>定义报表视图脚本</p>
+                                    </li>
+                                    <li class="hr-blue">
+                                        <hr />
+                                    </li>
+                                    <li class="step-two col-xs-1">
+                                        <img src="/Views/Report/img/step2.png" alt="" />
+                                        <p>下载数据集定义</p>
+                                    </li>
+                                    <li class="hr-green">
+                                        <hr />
+                                    </li>
+                                    <li class="step-three col-xs-1">
+                                        <img src="/Views/Report/img/step3.png" alt="" />
+                                        <p>在VSIDE中定义REPORT报表转存为XML格式</p>
+                                    </li>
+                                    <li class="hr-yellow">
+                                        <hr />
+                                    </li>
+                                    <li class="step-four col-xs-1">
+                                        <img src="/Views/Report/img/step4.png" alt="" />
+                                        <p>复制粘贴至“报表显示内容”区</p>
+                                    </li>
+                                    <li class="hr-red">
+                                        <hr />
+                                    </li>
+                                    <li class="step-five col-xs-1">
+                                        <img src="/Views/Report/img/step5.png" alt="" />
+                                        <p>保存即可</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="bottomContent">
+                            <div class="title">
+                                <span>报表显示内容（粘贴至此区域）</span>
+                            </div>
+                            <div class="textContent">
+                                <textarea name="" rows="" cols=""></textarea>
+                            </div>
+                        </div>
+                        <div class="btns">
+                            <button class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> 保存</button>
+                            <button class="btn btn-danger"><i class="fa fa-times"></i> 取消</button>
+                        </div>
+                    </div>
+                    <!--RDLC结束-->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

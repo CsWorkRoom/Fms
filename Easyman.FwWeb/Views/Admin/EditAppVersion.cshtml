@@ -1,0 +1,134 @@
+﻿@using System.Web.Mvc.Html
+@using Easyman.Common.Mvc.Controls
+@model Easyman.App.Dto.AppVersionInput
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Views/Admin/css/webuploader.css">
+
+@section Styles{
+    <style>
+        #iconMenuDiv {
+            width: 400px;
+        }
+
+            #iconMenuDiv span {
+                padding: 5px;
+                margin: 5px 10px;
+                font-size: 22px;
+                cursor: pointer;
+                display: inline-block;
+                border: 1px solid transparent;
+            }
+
+                #iconMenuDiv span:hover {
+                    transform: scale(1.02);
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+
+            #iconMenuDiv h5 {
+                margin-left: 10px;
+                padding-bottom: 4px;
+                border-bottom: solid 1px #707070;
+            }
+    </style>
+}
+
+<form style="width:100%;padding: 0px 15px 0px 15px;" id="saveForm" class="form-horizontal" action="../api/services/api/AppVersion/SaveAppVersionEdit" method="post" role="form">
+    @Html.HiddenFor(h => h.Id)
+    <div class="form-body jarviswidget ">
+        <header role="heading">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#navMenu" aria-controls="home" role="tab" data-toggle="tab">版本信息</a></li>
+            </ul>
+        </header>
+        <div class="tab-content" style="padding-top:12px;">
+            <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+
+                <div class="form-group">
+                    <label for="File" class="col-xs-4 control-label">上传文件</label>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <div class="uploader">
+                                <div id="filePicker" class="picker">选择文件</div>
+                                <label id="postedFileName" class="control-label"></label>
+                                @Html.HiddenFor(v => v.FileId)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="VersionCode" class="col-sm-4 control-label">版本编码</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(v => v.VersionCode, new { @class = "form-control", placeholder = "版本编码", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="VersionName" class="col-sm-4 control-label">版本名</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(v => v.VersionName, new { @class = "form-control", placeholder = "版本名", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Type" class="col-sm-4 control-label">APP类型</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(v => v.Type, new[]
+                        {
+                            new SelectListItem() {Text = "IOS", Value = "ios", Selected = true},
+                            new SelectListItem() {Text = "Android", Value = "android"},
+                        })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="IsNew" class="col-sm-4 control-label">是否设为最新</label>
+                    <div class="col-sm-6">
+                        @Html.CheckBoxFor(v => v.IsNew)
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="IsMust" class="col-sm-4 control-label">是否强制更新</label>
+                    <div class="col-sm-6">
+                        @Html.CheckBoxFor(v => v.IsMust)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="UpdateUrl" class="col-sm-4 control-label">更新地址</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(v => v.UpdateUrl, new { @class = "form-control", placeholder = "更新地址", @Required = "Required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="UpgradeLog" class="col-sm-4 control-label">更新日志</label>
+                    <div class="col-sm-6">
+                        @Html.TextAreaFor(v => v.UpgradeLog, new { @class = "form-control", placeholder = "更新日志", @Required = "Required", @style = "height: 100px;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row bottomPage">
+            <div class="col-md-12 text-right">
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
+                <button class="btn btn-success" id="sumbit-btn" type="button"><i class="fa fa-save"></i> 提交</button>
+                
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script src="~/Views/Admin/js/webuploader.js"></script>
+    <script src="~/Views/Admin/js/editAppVersion.js"></script>
+
+}

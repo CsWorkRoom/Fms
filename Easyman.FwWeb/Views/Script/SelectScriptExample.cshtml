@@ -1,0 +1,492 @@
+﻿@model Easyman.Dto.InitExampleScript
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+@section Styles{
+    <style>
+        html{height:100%}
+        #left {
+            position:absolute;
+            border: 1px solid #ebebeb;
+            float: left;
+            width: 300px;
+            height:100%;
+            background-color:#fafafa;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display:none;
+        }
+        #right {
+            border: 1px solid #ebebeb;
+            float: left;
+            width: 100%;
+            height: 100%;
+            background-image: url("../Views/Script/images/gezib.png");
+        }
+        #navMenu .col-sm-4 {
+            width:40%;
+        }
+        .node {
+            -moz-border-radius: 0.5em;
+            border-radius: 0.5em;
+            opacity: 0.8;
+            filter: alpha(opacity=80);
+            width: 110px;
+            height: 70px;
+            text-align: center;
+            font-family: helvetica;
+            padding: 0.5em;
+            font-size: 1em;
+            cursor: pointer;
+            color: #ffffff;
+        }
+        #comment_bubble {
+            width: 160px;
+            height: 100px;
+            position: relative;
+            -moz-border-radius: 12px;
+            -webkit-border-radius: 12px;
+            border-radius: 12px;
+            text-align: left;
+            margin-left: 20px;
+            color: #ffffff;
+            padding:5px;
+            background-color:#989898;
+        }
+        #node_info {
+            z-index:1001;
+        }
+        .start {
+            /*display:block;*/
+            /*padding-top:2px;*/
+            /*手工启动样式*/
+           top: 10px;
+           position: relative;
+           left: 10px;
+
+        }
+        .log {
+            color: #ff903e;
+            border-radius: 3px;
+            border: none;
+            height: 18px;
+            /*margin-top: 4px;*/
+            font-size: 12px;
+            background-color: floralwhite;
+        }
+        #comment_bubble::before {
+            content: '';
+            right:100%;
+            top: 30px;
+            position: absolute;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+        .backgroundcolor-w::before {
+            border-right: 16px solid #a1a1a1;
+        }
+        .backgroundcolor-z::before {
+            border-right: 16px solid #5fcc99;
+        }
+        .backgroundcolor-s::before {
+            border-right: 16px solid #df4b29;
+        }
+        .backgroundcolor-c::before {
+            border-right: 16px solid #24aad9;
+        }
+        form{width:100%;padding: 0px 15px 0px 15px;height:100%}
+    </style>
+}
+
+<form class="form-horizontal" action="" method="post" role="form">
+    @Html.HiddenFor(m => m.ConnectLineJson)
+    @Html.HiddenFor(m => m.NodePositionJson)
+    @Html.HiddenFor(m=>m.ScriptNodeCaseJson)
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.LOG_NODE_ID)
+    @Html.HiddenFor(m => m.RETURN_CODE)
+   
+    <div class="form-body jarviswidget" style="height:100%;width:100%">
+        <header role="heading" class="header">
+            <ul class="nav nav-tabs" role="tablist" style="background-color:#fafafa;">
+                <li><a href="#" id="aSetConfig"><i class="fa fa-cog" aria-hidden="true" style="color:#079048"></i> 任务组属性</a></li>
+                @*<li><a href="#" id="start_script"><i class="fa fa-play" aria-hidden="true" style="color:#1aa3f4"></i> 启动任务组</a></li>*@
+                <li><a href="#" id="NodeTypeList"><i class="fa fa-file-text" aria-hidden="true" style="color: #ec9a22;"></i> 任务组日志</a></li>
+                <li><a href="#" id="aHealp"><i class="fa fa-question-circle" aria-hidden="true" style="color:#1c7851"></i> 帮助</a></li>
+                <li style="float:right"><i class="fa fa-share-alt" aria-hidden="true" style="color:#e35341;padding: 10px 15px;"></i>
+                    <img src="~/Common/Images/selectScript/acc.png" />成功&nbsp;
+                    <img src="~/Common/Images/selectScript/error.png" />失败&nbsp;
+                 <img src="~/Common/Images/selectScript/executing.png" />执行中&nbsp;
+                 <img src="~/Common/Images/selectScript/start.png" />未执行&nbsp;
+                
+                </li>
+            </ul>
+        </header>
+
+        <div id="right" class="form-actions">
+        </div>
+
+        <div class="tab-content" id="left">
+            <div role="tabpanel" class="tab-pane active" id="navMenu">
+
+                <div class="form-group">
+                    <label for="Name" class="col-sm-4 control-label">任务组实例名称</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control",  @readonly= "readonly" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="RETRY_TIME" class="col-sm-4 control-label">失败重启次数</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.RetryTime, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="START_TIME_STR" class="col-sm-4 control-label">启动时间</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.START_TIME_STR, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="START_MODEL_STR" class="col-sm-4 control-label">启动模式</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.START_MODEL_STR, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="USER_ID_STR" class="col-sm-4 control-label">启动人</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.USER_ID_STR, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="RUN_STATUS_STR" class="col-sm-4 control-label">启动状态</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.RUN_STATUS_STR, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="IS_HAVE_FAIL_STR" class="col-sm-4 control-label">是否有失败节点</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.IS_HAVE_FAIL_STR, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="RETURN_CODE_STR" class="col-sm-4 control-label">结束标识</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.RETURN_CODE_STR, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="END_TIME_STR" class="col-sm-4 control-label">结束时间</label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.END_TIME_STR, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+   
+    <div style="position:absolute;" id="node_info" hidden="hidden">
+        <div id="comment_bubble" class="backgroundcolor-w">
+            
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script src="~/Views/Script/js/jquery.jsPlumb-1.7.2.js"></script>
+}
+
+<script type="text/javascript">
+    function bind(id) {
+        abp.services.api.script.getExampNodeLog(id).done(function (data) {
+            alert(JSON.stringify(data));
+        });
+    }
+    //随着浏览器的变化而变化
+    $(window).resize(function () {
+        var intHeight = $(".form-body").height() - $(".header").height();
+        $("#right").css("height", intHeight);
+        $("#left").css("height", intHeight);
+    });
+
+    $(function () {
+        var intHeight = $(".form-body").height() - $(".header").height();
+        $("#right").css("height", intHeight);
+        $("#left").css("height", intHeight);
+        //帮助提示
+        $("#aHealp").click(function () {
+            HealpContent();
+        });
+
+        $("#aSetConfig").click(function () {
+            if ($("#left").is(":hidden")) {
+                $("#left").show(50);
+            } else {
+                $("#left").hide(50);
+            }
+        });
+
+        $("#NodeTypeList").on("click", function () {
+            TopModeDialogUrl("n33332", "任务组实例日志",bootPATH+"Report/TbReport?code=RWZ_LOG&ExampleId=" + $("#Id").val());
+        });
+
+        $("#right").on("click", ".log", function (e) {
+           // var data = JSON.parse($(this).parent().attr("option-data"));
+            var LOG_NODE_ID = $("#LOG_NODE_ID").val();
+            if (LOG_NODE_ID == null || LOG_NODE_ID == "" || LOG_NODE_ID == 0) {
+                abp.message.info("未执行任务没有日志", "提示");
+                return false;
+            }
+            TopModeDialogUrl("n33331", "任务实例日志", bootPATH+"Report/TbReport?code=RW_LOG&ExampleNodeId=" + LOG_NODE_ID);
+            
+           // bind(data.LOG_NODE_ID);
+        });
+        //手动启动任务
+        $("#right").on("click", ".start", function (e) {
+
+            //var data_CODE = JSON.parse($(this).parent().attr("option-data"));
+            //在.start外面包了一个层，原来是获取父级的option-data属性，现在要修改为获取父级的父级
+            var data_CODE = JSON.parse($(this).parent().parent().attr("option-data"));
+            //RETURN_CODE成功=1失败 = 0
+            // var RETURN_CODE = $("#RETURN_CODE").val();
+           
+            if (data_CODE.RETURN_CODE_STR!="失败")
+            {
+                abp.message.info("只有失败任务可以重启。", "提示");
+                return false;
+            }
+            $.post("../api/services/api/Script/StartExampSelect?StartType=2&ExampleId=" + data_CODE.SCRIPT_CASE_ID + "&ExampleNode=" + data_CODE.LOG_NODE_ID, {}, function (dataicon) {
+                console.log(dataicon);
+                //dataicon.result
+                
+                if (dataicon.result == true || dataicon.result == "ture") {
+                    abp.message.info("启动成功", "提示");
+                }
+
+            });
+            // abp.services.api.script.StartExampSelect(2, data_CODE.SCRIPT_CASE_ID, data_CODE.LOG_NODE_ID).done(function (data) {
+            ////abp.services.api.script.startExamp(2, data_CODE.SCRIPT_CASE_ID, data_CODE.LOG_NODE_ID).done(function (data) {
+            //    if (data == true || data == "true") {
+            //        abp.message.info("启动成功","提示");
+            //    }
+            //});
+        });
+        // 手动启动任务组
+        /*$("#start_script").click(function (e) {
+            var id = $("#Id").val();
+           
+
+            abp.services.api.script.startExamp(1, id ).done(function (data) {
+                if (data == true || data == "true") {
+                    abp.message.info("启动成功", "提示");
+                }
+            });
+        });*/
+
+        //基本连接线样式
+        var connectorPaintStyle = {
+            lineWidth: 4,
+            strokeStyle: "#61B7CF",
+            joinstyle: "round",
+            outlineColor: "white",
+            outlineWidth: 2
+        };
+        // 鼠标悬浮在连接线上的样式
+        var connectorHoverStyle = {
+            lineWidth: 4,
+            strokeStyle: "#216477",
+            outlineWidth: 2,
+            outlineColor: "white"
+        };
+        var endpointHoverStyle = {
+            fillStyle: "#216477",
+            strokeStyle: "#216477"
+        };
+
+        //实心圆样式
+        var solidCircle = {
+            endpoint: ["Dot", { radius: 8 }],  //端点的形状
+            paintStyle: { fillStyle: "#C1C1C1", radius: 3 },	//端点的颜色样式
+            connectorStyle: { strokeStyle: "#1e8151", strokeStyle: "#C7C7C7", lineWidth: 1},	  //连接线的颜色，大小样式
+            isSource: true,	//是否可以拖动（作为连线起点）
+            connector: ["Straight"], //连接线的样式种类有[Bezier],[Flowchart],[StateMachine ],[Straight ]       ,{ stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true }
+            isTarget: true,		//是否可以放置（连线终点）
+            //anchor: [0.2,0,0,-1],定义连接点的位置
+            maxConnections: 5,	// 设置连接点最多可以连接几条线
+            connectorOverlays: [["Arrow", { width: 10, length: 10, location: 1 }]]
+        };
+
+        //jsPlumb组件加载完成之后，绘制已有的 图形
+        jsPlumb.ready(function () {
+            var ScriptNode = null;  //节点
+            var NodePosition = null; //节点位置
+            var ConnectLine = null; //连接线
+            if ($("#ConnectLineJson").val() != "") {
+                ConnectLine = JSON.parse($("#ConnectLineJson").val());
+            }
+            if ($("#NodePositionJson").val()!=""){
+                NodePosition = JSON.parse($("#NodePositionJson").val());
+            }
+            if ($("#ScriptNodeCaseJson").val()!=""){
+                ScriptNode = JSON.parse($("#ScriptNodeCaseJson").val());
+            }
+            //画节点
+            $.each(ScriptNode, function (i, o) {
+                var node_color;
+                //RUN_STATUS_STR执行状态RETURN_CODE_STR执行结果
+                switch (o.RUN_STATUS_STR) {
+                    case "未执行":
+                        node_color = "#999999";
+                        break;
+                    case "执行中":
+                        node_color = "#189dfb";
+                        break;
+                    case "停止":
+                        //RETURN_CODE修改为RETURN_CODE_STR
+                        if (o.RETURN_CODE_STR == "失败") {
+                            node_color = "#dc2811";
+                        } else if (o.RETURN_CODE_STR == "成功") {
+                            node_color = "#028b68";
+                        } else {
+                            node_color = "#a1a1a1";
+                        }
+                        break;
+                    default:
+                        node_color = "#a1a1a1";
+                        break;
+                }
+                //div的ID
+                var divId = "node_" + o.SCRIPT_NODE_ID;
+                $("#LOG_NODE_ID").val(o.LOG_NODE_ID);
+                $("#RETURN_CODE").val(o.RETURN_CODE);
+                var strHtml = "<div>";
+                strHtml+="          <div class='node' id='" + divId + "' style='position: absolute;background-color:" + node_color + "'>"+o.NODE_NAME.substr(0, 6);
+                strHtml+="              <div id='faStylefa' style='width: 100%;float: left;text-align: center;'>";
+                strHtml += "                  <input type='button' value='日志' style='position: relative; top: 2px;left: 0px;' class='log'/>";
+                strHtml += "                 <lable class='fa-2x fa fa-play-circle-o start'/>";
+                strHtml += "            </div>";
+                strHtml += "          </div>";
+                strHtml += "   </div>";
+                $("#right").append(strHtml);
+
+                //先加载完成DIV后再加载option-data，有特殊字符,考虑只转换对象的一部分需要的属性
+                //JSON.stringify({ x: 5, y: 6 });"{"x":5,"y":6}"
+                $("#" + divId).attr("option-data", JSON.stringify({ id: o.id, NODE_NAME: o.NODE_NAME, RUN_STATUS_STR: o.RUN_STATUS_STR, RETURN_CODE_STR: o.RETURN_CODE_STR, SCRIPT_CASE_ID: o.SCRIPT_CASE_ID, LOG_NODE_ID:o.LOG_NODE_ID}));
+               // $("#" + divId).attr("option-data", JSON.stringify(o));
+                $("#" + divId).mousedown(function () {
+                    $("#node_info").hide();
+                });
+
+                //悬浮层，出现问题代码
+                $("#" + divId).mouseup(function () {
+                    var node_date = JSON.parse($(this).attr("option-data"), function (k, v) {
+          
+                        if (v === null || v === "null") {
+                            return "";
+                        } return v;
+                    });
+                    //var html = "<div><lable>任务名称：</lable>" + node_date.NODE_NAME + "</div><div><lable>执行状态：</lable>" + node_date.RUN_STATUS_STR + "</div><div><lable>执行结果：</lable>" + node_date.RETURN_CODE_STR + "</div>";
+                        var html = "<div><lable>任务名称：</lable>" + o.NODE_NAME.substr(0, 25) + "</div><div><lable>执行状态：</lable>" + o.RUN_STATUS_STR + "</div><div><lable>执行结果：</lable>" + o.RETURN_CODE_STR + "</div>";
+                    $("#comment_bubble").html(html);
+                    $("#node_info").css("left", $(this).offset().left + 93);
+                    $("#node_info").css("top", $(this).offset().top -20);
+                    $("#node_info").show();
+                });
+
+                $("#" + divId).hover(function () {
+                    var node_date = JSON.parse($(this).attr("option-data"), function (k, v) {
+                      
+                        if (v === null || v === "null") {
+                            return "";
+                        } return v;
+                    });
+                    var html = "<div><lable>任务名称：</lable>" + o.NODE_NAME.substr(0, 25) + "</div><div><lable>执行状态：</lable>" + o.RUN_STATUS_STR + "</div><div><lable>执行结果：</lable>" + o.RETURN_CODE_STR + "</div>";
+                    $("#comment_bubble").html(html);
+                    $("#node_info").css("left", $(this).offset().left+93);
+                    $("#node_info").css("top", $(this).offset().top -20);
+                    $("#node_info").show();
+
+                }, function () {
+                    $("#node_info").hide();
+                });
+                //定位  初始定位节点位置
+                var yyy =0;
+                $.each(NodePosition, function (i, o) {
+                    console.log("divId:" + divId + "—" + "o.DivId:" + o.DivId);
+                    if (divId == o.DivId)
+                    {
+                        $("#" + o.DivId).css("left", o.X - 200).css("top", o.Y + 55);
+                    }
+                    if (o.Y > yyy) {
+                        yyy = o.Y;
+                    }
+                });
+               // $("#right").height(yyy + 100);
+                jsPlumb.draggable(divId);
+            });
+
+            //画连接线
+            $.each(ConnectLine, function (i, o) {
+                //线上内容
+                var connect = o.CONTENT;
+                if (connect != null && connect != "") {
+                    connect = "<span style='display:block;padding:10px;opacity: 0.5;height:auto;background-color:white;border:1px solid #346789;text-align:center;font-size:12px;color:black;border-radius:0.5em;'>" + connect + "</span>";
+                } else { connect = ""; }
+
+                //画线
+                jsPlumb.connect({
+                    source: o.FROM_DIV_ID,
+                    target: o.TO_DIV_ID,
+                    anchors: [o.FROM_POINT_ANCHORS, o.TO_POINT_ANCHORS],
+                    connector: "Straight",
+                    endpoint: "Blank",//端点
+                    paintStyle: {
+                        //连接线颜色
+                        strokeStyle: "rgb(153, 153, 153)", lineWidth: 1
+                    },
+                    overlays: [["Label",
+                        {
+                            //线上内容
+                            label: connect,
+                            location: 0.5
+                        }], ["Arrow", { width: 10, length: 10, location: 1 }]]
+
+                }).setLabel(connect);
+
+            });
+
+        });
+
+    });
+
+    function colseWindow()
+    {
+        parent.$(".close").click();
+    }
+
+    //帮助说明
+    function HealpContent() {
+        var strTitle = "帮助说明";
+        var strContent = "0 0 12 * * ? 每天中午12点整触发;<br/>";
+        strContent += "0 15 10 ? * * 每天上午10:15触发;<br/>";
+        strContent += "0 15 10 * * ? 每天上午10:15触发;<br/>";
+        strContent += "0 15 10 * * ? * 每天上午10:15触发;<br/>";
+        strContent += "0 15 10 * * ? 2017 2017年的每天上午10:15触发;<br/>";
+        strContent += "0 * 14 * * ? 在每天下午2点到下午2:59期间的每1分钟触发;<br/>";
+        strContent += "0 0/5 14 * * ? 在每天下午2点到下午2:55期间的每5分钟触发;<br/>";
+        strContent += "0 0/5 14,18 * * ? 在每天下午2点到2:55期间和下午6点到6:55期间的每5分钟触发;<br/>";
+        strContent += "0 0-5 14 * * ? 在每天下午2点到下午2:05期间的每1分钟触发;<br/>";
+        strContent += "0 15 10 ? * MON-FRI 周一至周五的上午10:15触发;<br/>";
+        strContent += "0 10,30 14 ? 3 WED 每年三月的星期三的下午2:10和2:30触发;<br/>";
+        strContent = "<div>" + strContent + "</div>";
+        new PopMsg(strTitle, strContent, "");//右下角显示信息
+    }
+</script>
