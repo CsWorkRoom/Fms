@@ -58,13 +58,15 @@ namespace Easyman.Migrations.SeedData
 
             //Admin user for tenancy host
 
-            var adminUserForHost = _context.Users.FirstOrDefault(u => u.TenantId == null && u.UserName == User.AdminUserName);
+            //var adminUserForHost = _context.Users.FirstOrDefault(u => u.TenantId == null && u.UserName == User.AdminUserName);
+            var adminUserForHost = _context.Users.FirstOrDefault(u => u.TenantId == null && u.UserName == "system");
             if (adminUserForHost == null)
             {
                 adminUserForHost = _context.Users.Add(
                     new User
                     {
-                        UserName = User.AdminUserName,
+                        //UserName = User.AdminUserName,
+                        UserName = "system",
                         Name = "System",
                         Surname = "Administrator",
                         EmailAddress = "admin@aspnetboilerplate.com",
