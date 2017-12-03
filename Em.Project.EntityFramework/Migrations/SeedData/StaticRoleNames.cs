@@ -21,7 +21,7 @@ namespace Easyman.DefaultData
 
         public static class Tenants
         {
-            public static readonly DefaultDataModel Tenant = new DefaultDataModel("Crq", "技术平台组");
+            public static readonly DefaultDataModel Tenant = new DefaultDataModel("Crq", "监控平台");
         }
 
         public static class Departments
