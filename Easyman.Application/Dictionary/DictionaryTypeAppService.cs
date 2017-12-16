@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Easyman.Common;
 
 namespace Easyman.Service
 {
@@ -24,13 +25,15 @@ namespace Easyman.Service
         #region 初始化
 
         private readonly IRepository<DictionaryType,long> _DictionaryTypeCase;
+        private readonly IRepository<Dictionary, long> _DictionaryCase;
         /// <summary>
         /// 构造函数注入DictionaryType仓储
         /// </summary>
         /// <param name="DictionaryTypeCase"></param>
-        public DictionaryTypeAppService(IRepository<DictionaryType, long> DictionaryTypeCase)
+        public DictionaryTypeAppService(IRepository<DictionaryType, long> DictionaryTypeCase, IRepository<Dictionary, long> DictionaryCase)
         {
             _DictionaryTypeCase = DictionaryTypeCase;
+            _DictionaryCase = DictionaryCase;
         }
         #endregion
 
@@ -56,21 +59,28 @@ namespace Easyman.Service
         /// <returns></returns>
         public DictionaryTypeModel InsertOrUpdateDictionaryType(DictionaryTypeModel input)
         {
-            if(_DictionaryTypeCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
+           
+            if (_DictionaryTypeCase.GetAll().Any(p => p.Id != input.Id && p.Name == input.Name))
             {
                 throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
             }
-            var entObj =input.MapTo<DictionaryType>();
-            //var entObj= AutoMapper.Mapper.Map<DictionaryType>(input);
-            var resObj= _DictionaryTypeCase.InsertOrUpdate(entObj);
-            if (resObj == null)
+            //使用MapTo和 Map会把没有传值过来的字段清空
+            //var entObj = AutoMapper.Mapper.Map<DictionaryType>(input);
+            //var entObj = input.MapTo<DictionaryType>();
+            //使用框架方法Fun.ClassToCopy,复制一个类到另一个类进行赋值备注：需要排除ID（主键）
+            var type = _DictionaryTypeCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new DictionaryType();
+            type = Fun.ClassToCopy(input, type, (new string[] {"Id" }).ToList());
+            var res=  _DictionaryTypeCase.InsertOrUpdate(type);
+            if (res == null)
             {
                 throw new UserFriendlyException("新增或更新失败！");
             }
             else
             {
-                return resObj.MapTo<DictionaryTypeModel>();
+                return res.MapTo<DictionaryTypeModel>();
             }
+
+
         }
 
         /// <summary>
@@ -79,14 +89,26 @@ namespace Easyman.Service
         /// <param name="input"></param>
         public void DeleteDictionaryType(EntityDto<long> input)
         {
-            try
-            {
-                _DictionaryTypeCase.Delete(input.Id);
-            }
-            catch (Exception ex)
-            {
-                throw new UserFriendlyException("删除失败：" + ex.Message);
-            }
+           
+            
+                var type = _DictionaryTypeCase.Get(input.Id);
+                if (type == null)
+                {
+                    throw new UserFriendlyException("操作出错，对象或已被删除！");
+                }
+                var content = _DictionaryCase.GetAll().Count(a => a.DictionaryTypeId == input.Id);
+                if (content > 0)
+                {
+                    throw new UserFriendlyException("删除出错，字典类型正在被使用，请先删除字典，在执行此删除操作！");
+
+                }
+                else
+                {
+                    _DictionaryTypeCase.Delete(type);
+
+                }
+            
+            
         }
         /// <summary>
         /// 获取字典类型json

@@ -341,17 +341,15 @@
            
             //顶部菜单点击事件
             $("#tabLRBut").click(function () {
-                var strClass = $("#tabLRBut span").attr("class");
-                if (strClass.indexOf("fa-chevron-left") >= 0) {
-                    $(".left-bar").hide();
-                    SetCookie("topMenu", false, null);//存入cookie
-                   
-                    //移出左边菜单缩进状态列表
-                    $("#sidebar-menu .treeview").unbind("mouseenter").unbind("mouseleave");
-                } else {
+                if (IsNavbarShow()) {
                     $(".left-bar").show();
                     SetCookie("topMenu", true, null);//存入cookie
                     $.learuntab.LeftMenu();
+                } else {
+                    $(".left-bar").hide();
+                    SetCookie("topMenu", false, null);//存入cookie                   
+                    //移出左边菜单缩进状态列表
+                    $("#sidebar-menu .treeview").unbind("mouseenter").unbind("mouseleave");
                 }
             });
 
@@ -546,9 +544,11 @@
                     userInfo = appSession.user.userName;
                 } else {
                     if (tenant) {
-                        userInfo = tenant.tenancyName + '\\' + user.userName;
+                        //userInfo = tenant.tenancyName + '\\' + user.userName;//原含有租户，现不考虑租户
+                        userInfo = ' ' + user.userName;
                     } else {
-                        userInfo = '.\\' + user.userName;
+                        //userInfo = '.\\' + user.userName;
+                        userInfo = ' ' + user.userName;
                     }
                 }
                 $('#userInfo').html(userInfo);

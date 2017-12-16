@@ -109,7 +109,7 @@ function InitEvent() {
 function onsign(id) {
     //DiyModal.window({
     //    title: "查看当前实例",
-    //    url: "/Script/SelectScriptExample?ExampleId=" + id,
+    //    url: bootPATH +"/Script/SelectScriptExample?ExampleId=" + id,
     //    width: 850,
     //    height: 550,
     //    fullscreen: false,

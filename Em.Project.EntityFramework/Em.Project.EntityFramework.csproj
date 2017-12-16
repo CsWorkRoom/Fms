@@ -57,8 +57,9 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Core">
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.3.3.0\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Castle.Facilities.Logging">
       <HintPath>..\packages\Castle.LoggingFacility.3.4.0\lib\net45\Castle.Facilities.Logging.dll</HintPath>
@@ -82,12 +83,13 @@
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.24160719\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Oracle.ManagedDataAccess.EntityFramework">
-      <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.12.1.2400\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
+    <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.12.2.1100\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -107,9 +109,9 @@
     <Compile Include="EmProjectDataModule.cs" />
     <Compile Include="EntityFramework\EmProjectDbContext.cs" />
     <Compile Include="EntityFramework\Repositories\EasymanRepositoryBase.cs" />
-    <Compile Include="Migrations\201712030250364_initfms1.cs" />
-    <Compile Include="Migrations\201712030250364_initfms1.Designer.cs">
-      <DependentUpon>201712030250364_initfms1.cs</DependentUpon>
+    <Compile Include="Migrations\201712150348031_initfms1.cs" />
+    <Compile Include="Migrations\201712150348031_initfms1.Designer.cs">
+      <DependentUpon>201712150348031_initfms1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\AbpZeroDbMigrator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -133,16 +135,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Easyman.Common\Easyman.Common.csproj">
-      <Project>{35976E70-09E4-4BD4-8A81-D292C7872D16}</Project>
+      <Project>{35976e70-09e4-4bd4-8a81-d292c7872d16}</Project>
       <Name>Easyman.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Easyman.Core\Easyman.Core.csproj">
       <Project>{17298ea0-af73-4f30-b6f1-2066100d7d74}</Project>
       <Name>Easyman.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Easyman.EntityFramework\Easyman.EntityFramework.csproj">
-      <Project>{3979f157-deb0-4878-ab1d-4cef6b5a1300}</Project>
-      <Name>Easyman.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Em.Project.Application\Em.Project.Application.csproj">
       <Project>{6d81f975-716d-4e7c-b381-b8866cc75539}</Project>
@@ -154,8 +152,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712030250364_initfms1.resx">
-      <DependentUpon>201712030250364_initfms1.cs</DependentUpon>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201712150348031_initfms1.resx">
+      <DependentUpon>201712150348031_initfms1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

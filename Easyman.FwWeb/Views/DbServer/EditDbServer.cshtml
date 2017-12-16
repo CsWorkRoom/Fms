@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <label for="ByName" class="col-xs-4 control-label">数据库别名</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.ByName, new { @class = "form-control", placeholder = "数据库别名", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.ByName, new { @class = "form-control", placeholder = "数据库别名", @Required = "Required", @oninvalid = "setCustomValidity('请输入数据库别名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
@@ -60,34 +60,33 @@
                 <div class="form-group">
                     <label for="Ip" class="col-xs-4 control-label">IP</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.Ip, new { @class = "form-control", placeholder = "IP", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Ip, new { @class = "form-control", placeholder = "IP", @Required = "Required", @oninvalid = "setCustomValidity('请输入IP')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Port" class="col-xs-4 control-label">端口</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.Port, new { @class = "form-control", placeholder = "端口", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Port, new { @class = "form-control", placeholder = "端口", @Required = "Required", @oninvalid = "setCustomValidity('请输入端口')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="DataCase" class="col-xs-4 control-label">实例名</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.DataCase, new { @class = "form-control", placeholder = "实例名", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.DataCase, new { @class = "form-control", placeholder = "实例名", @Required = "Required", @oninvalid = "setCustomValidity('请输入实例名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="User" class="col-xs-4 control-label">用户名</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.User, new { @class = "form-control", placeholder = "用户名", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.User, new { @class = "form-control", placeholder = "用户名", @Required = "Required", @oninvalid = "setCustomValidity('请输入用户名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Password" class="col-xs-4 control-label">密码</label>
                     <div class="col-sm-6">
                         @Html.HiddenFor(p => p.Password)
-                        <input id="dbPwd" name="dbPwd" type="password" placeholder="请输入用户密码" class="form-control" required="Required" />
-                        @*@Html.TextBoxFor(f => f.Password, new { @class = "form-control", placeholder = "密码", @Required = "Required" })*@
+                        <input id="dbPwd" name="dbPwd" type="password" placeholder="请输入用户密码" class="form-control" required="Required" oninvalid="setCustomValidity('请输入用户密码')" oninput="setCustomValidity('')" /><i class="iRequired">*</i>
                     </div>
                 </div>
 
@@ -112,5 +111,8 @@
 
 @section scripts{
 @Scripts.Render("~/Bundles/ztree/js")
-    <script src="~/Views/DbServer/js/editDbServer.js"></script>
+    <script src="~/Views/DbServer/js/editDbServer.js">
+
+        
+    </script>
 }

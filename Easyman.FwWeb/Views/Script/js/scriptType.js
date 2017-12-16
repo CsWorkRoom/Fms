@@ -80,7 +80,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增脚本类型",
-        url: "/Script/EditScriptType",
+        url: bootPATH + "/Script/EditScriptType",
         width: 850,
         height: 550,
         fullscreen: false,
@@ -94,7 +94,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "修改脚本类型",
-        url: "/Script/EditScriptType?ScriptTypeId=" + id,
+        url: bootPATH + "/Script/EditScriptType?ScriptTypeId=" + id,
         width: 850,
         height: 550,
         fullscreen: false,

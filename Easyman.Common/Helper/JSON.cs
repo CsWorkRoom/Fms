@@ -44,7 +44,7 @@ namespace Easyman.Common
                 {
                     return entity.ToString();
                 }
-                string DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss";
+                string DateTimeFormat = "yyyy'-'MM'-'dd' 'HH':'mm':'ss";
                 IsoDateTimeConverter dt = new IsoDateTimeConverter();
                 dt.DateTimeFormat = DateTimeFormat;
                 return JsonConvert.SerializeObject(entity, dt);

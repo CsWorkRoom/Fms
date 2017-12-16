@@ -14,8 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easyman.Core", "Easyman.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easyman.Application", "Easyman.Application\Easyman.Application.csproj", "{EDF5D964-4C0F-4F19-B674-58A38A5E5401}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easyman.EntityFramework", "Easyman.EntityFramework\Easyman.EntityFramework.csproj", "{3979F157-DEB0-4878-AB1D-4CEF6B5A1300}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easyman.Common", "Easyman.Common\Easyman.Common.csproj", "{35976E70-09E4-4BD4-8A81-D292C7872D16}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easyman.FwWeb", "Easyman.FwWeb\Easyman.FwWeb.csproj", "{06F950F2-FF34-402A-A6B9-C083322D0790}"
@@ -46,10 +44,6 @@ Global
 		{EDF5D964-4C0F-4F19-B674-58A38A5E5401}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDF5D964-4C0F-4F19-B674-58A38A5E5401}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDF5D964-4C0F-4F19-B674-58A38A5E5401}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3979F157-DEB0-4878-AB1D-4CEF6B5A1300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3979F157-DEB0-4878-AB1D-4CEF6B5A1300}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3979F157-DEB0-4878-AB1D-4CEF6B5A1300}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3979F157-DEB0-4878-AB1D-4CEF6B5A1300}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35976E70-09E4-4BD4-8A81-D292C7872D16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35976E70-09E4-4BD4-8A81-D292C7872D16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35976E70-09E4-4BD4-8A81-D292C7872D16}.Release|Any CPU.ActiveCfg = Release|Any CPU

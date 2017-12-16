@@ -19,7 +19,7 @@ namespace Easyman.Dto
             [Description("键值报表")]
             KeyValue = 2,
             [Description("图形报表")]
-            Echart = 3,
+            Chart = 3,
             [Description("RDLC报表")]
             Rdlc = 4
         }

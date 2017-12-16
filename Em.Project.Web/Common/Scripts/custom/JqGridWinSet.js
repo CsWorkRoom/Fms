@@ -1,24 +1,22 @@
 ﻿
 //设置列表高宽
 var WinResize = function (jqGrid, navMenu, jqGridPager) {
-    $(".Nodata").remove();
+    $(".Nodata").remove();//移除暂无数据层
     var columnNames = $("#" + jqGrid + " tr").eq(0).find("td:visible");//过虑隐藏的列，得到真实的列数
-    var bolShrinkToFit = $("#" + jqGrid).jqGrid("getGridParam", "shrinkToFit");
-    if (bolShrinkToFit == true && columnNames.length * 100 > window.innerWidth) {//如果每列平均最小宽度小于100px时，停止用自适应
+    //var bolShrinkToFit = $("#" + jqGrid).jqGrid("getGridParam", "shrinkToFit");
+    //if (bolShrinkToFit == true && columnNames.length * 100 > window.innerWidth) {//如果每列平均最小宽度小于100px时，停止用自适应
+    //    bolShrinkToFit = false;
+    //}
+    var bolShrinkToFit = true;//默认自适应
+    if (columnNames.length * 100 > window.innerWidth) {//如果每列平均最小宽度小于100px时，停止用自适应
         bolShrinkToFit = false;
     }
-    $("#gview_" + jqGrid + " .frozen-bdiv").css("top", $("#gview_" + jqGrid + " .ui-jqgrid-hdiv").height());
+    
     //向JQGrid动态注入事件
     $("#" + jqGrid).jqGrid('setGridParam', {  // 重新加载数据
         shrinkToFit: bolShrinkToFit,
-        loadError: function (xhr, status, error) {
-            if (xhr.responseText.indexOf("<title>") != -1) {
-                var start = xhr.responseText.indexOf("<title>");
-                var end = xhr.responseText.indexOf("</title>");
-                abp.message.error(xhr.responseText.substring(start + 7, end), "错误信息");
-            }
-            else
-                abp.message.error(xhr.responseText, "错误信息");
+        loadError: function (xhr, status, error) {            
+                abp.message.error("信息加载有异常，请联系管理员", "错误信息");
         },
         gridComplete: function () {
             $("#" + jqGrid + " .ui-row-ltr:first").focus();//加载完数据滚动条置顶
@@ -36,8 +34,11 @@ var WinResize = function (jqGrid, navMenu, jqGridPager) {
         resizeStop: function () {//改变列宽度后引发
             SetFrozenTr(jqGrid, navMenu, jqGridPager);
         },
+        loadComplete: function () {
+            SetDefultDataImg(jqGrid);
+        },
         onPaging: function () {
-            WinResize(jqGrid, navMenu, jqGridPager);
+            SetFrozenTr(jqGrid, navMenu, jqGridPager);
         }
     });
     //End向JQGrid动态注入事件
@@ -49,11 +50,6 @@ var WinResize = function (jqGrid, navMenu, jqGridPager) {
     var jqDdiv = $("#gview_" + jqGrid + " .ui-jqgrid-bdiv").eq(0);
     $(jqDdiv).css("width", $(jqDdiv).width() + 5);
     //end消除滚动条的设置
-
-    ////设置冻结的列宽
-    ////设置DIV的高度
-    $("#gview_" + jqGrid + " .frozen-div").css("height", $("#gview_" + jqGrid + " .ui-jqgrid-hdiv").height());
-    $("#" + jqGrid + "_frozen").css("height", $("#" + jqGrid).height());
 
     //设置表格的标题栏的宽度 
     var jagridHd = $("#gview_" + jqGrid + " .ui-jqgrid-hdiv .ui-jqgrid-hbox table tr").eq(0).find("th");
@@ -74,38 +70,11 @@ var WinResize = function (jqGrid, navMenu, jqGridPager) {
     $("#gview_" + jqGrid).css("overflow", "hidden");//冻结引起的区域滚动条
     $(".jqg-second-row-header").addClass("table-bordered");//多表头首行无边线
 
-    //设置列表列首页高度
-    $("#" + jqGrid + " tr").each(function () {
-        $(this).find("td").each(function () {
-            $(this).css("width", $(this).css("width"));
-            $(this).css("height", $(this).css("height"));
-        });
-    });
-
-    //设置冻结列高度
-    $("#" + jqGrid + "_frozen tr").each(function () {
-        $(this).find("td").each(function () {
-            $(this).css("width", $(this).css("width"));
-            $(this).css("height", $(this).css("height"));
-        });
-    });
-    //滚动时处理冻结引起的冻结层铺不满的问题
-
-    //$("#gview_" + jqGrid + " .ui-jqgrid-bdiv").scroll(function () {
-    //    // HackHeight(jqGrid);
-    //    var x = $("#gview_" + jqGrid + " .frozen-bdiv").eq(0);
-    //    $(x).height($("#jqGrid_frozen").height());
-    //});
-    //end滚动时处理冻结引起的冻结层铺不满的问题
-    // $("#gview_" + jqGrid + " .frozen-bdiv").height($("#gview_" + jqGrid + " .frozen-bdiv").height()+16);
-   // debugger;
-    //   $("#" + jqGrid + "_frozen").css("background", $("#repeat-watermark").css("background"));
     SetShrinkToFit(jqGrid);
 }
 //设置冻结的高度
-var SetFrozenTr = function (jqGrid, navMenu, jqGridPager) {
+var SetFrozenTr = function (jqGrid, navMenu, jqGridPager) {    
     SetPeportSize(jqGrid, navMenu, jqGridPager);//设置报表大小
-
     //设置每行的高度 
     var jagridTr = $("#" + jqGrid + " tr");
     var jqGridFrozen = $("#" + jqGrid + "_frozen tr");
@@ -114,20 +83,18 @@ var SetFrozenTr = function (jqGrid, navMenu, jqGridPager) {
     }
     $("#gview_" + jqGrid + " td").css("vertical-align", "middle");
     var gviewTableHeight = $("#gview_" + jqGrid + " .ui-jqgrid-hdiv .ui-jqgrid-hbox table").height() - 1;
+
     //设置标题栏
     $("#gview_" + jqGrid + " .frozen-div").height(gviewTableHeight);
     $("#gview_" + jqGrid + " .frozen-div table").height(gviewTableHeight);
-    
-  //  alert($("#gview_" + jqGrid + " .frozen-div").height());
-    //alert($("#gview_" + jqGrid + " .frozen-div table").height());
+    var jagridHeadTr = $("#gview_" + jqGrid + " .ui-jqgrid-hdiv .ui-jqgrid-hbox .ui-jqgrid-htable tr");
+    var jqGridFrozenHeadTr = $("#gview_" + jqGrid + " .frozen-div .ui-jqgrid-htable tr");
 
-   // $("#gview_" + jqGrid + " th").css("border", "1px solid #ddd");
-   //$("#gview_" + jqGrid + " tr").eq(0).find("td").css("border", "none");
-   // $("#gview_" + jqGrid + " th").css("border-top", "none");
-    // $("#gview_" + jqGrid + " .frozen-div").css("height", "auto");
-    //$("#gview_" + jqGrid + " .frozen-div").css("border-bottom", "1px solid #ddd");
-    // $("#gview_" + jqGrid + " .frozen-div table").css("border-bottom", "1px solid #ddd");
-    // $("#gview_" + jqGrid + " .frozen-div table tr th div").css("top", "auto");
+    for (var i = 0; i < jagridHeadTr.length; i++) {
+        $(jqGridFrozenHeadTr[i]).height($(jagridHeadTr[i]).height());
+    }
+    $("#gview_" + jqGrid + " .frozen-bdiv").css("top", $("#gview_" + jqGrid + " .ui-jqgrid-hdiv").height());
+    //End设置标题栏
 }
 
 //设置报表大小
@@ -170,10 +137,10 @@ var SetShrinkToFit = function (jqGrid) {
         }
     }
    //针对不同浏览器的处理
-    var BrowserType = GetBrowser();//得到浏览器版本
-    switch (BrowserType) {
-        case "firefox"://针对火狐浏览器做特殊处理
-          //  $("#gview_" + jqGrid + " .ui-jqgrid-bdiv").css("left", "1px");
-            break;
-    }
+    //var BrowserType = GetBrowser();//得到浏览器版本
+    //switch (BrowserType) {
+    //    case "firefox"://针对火狐浏览器做特殊处理
+    //      //  $("#gview_" + jqGrid + " .ui-jqgrid-bdiv").css("left", "1px");
+    //        break;
+    //}
 }

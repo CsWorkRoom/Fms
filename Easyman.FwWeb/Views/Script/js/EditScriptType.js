@@ -20,8 +20,3 @@ function InitPage() {
 function InitEvent() {
     SubmitFormData("#saveForm", "#sumbit-btn");//提交数据
 }
-
-function handleSubmitForm() {
-    $("#saveForm").submit();
-
-}

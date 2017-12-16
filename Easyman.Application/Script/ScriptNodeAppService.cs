@@ -83,12 +83,9 @@ namespace Easyman.Service
             {
                 throw new System.Exception("节点类型重复");
             }
-            //var dbServer = _dbServerRepository.Get(input.Id) ?? new DbServer();
-
-            //var dbServer = AutoMapper.Mapper.Map<DbServer>(input);
-
-            var type = AutoMapper.Mapper.Map<ScriptNodeTypeInput, ScriptNodeType>(input);
-
+            //var type = AutoMapper.Mapper.Map<ScriptNodeTypeInput, ScriptNodeType>(input);
+            var type = _scriptNodeTypeRepository.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new ScriptNodeType();
+            type = Fun.ClassToCopy(input, type, (new string[] { "Id" }).ToList());
             var nodeType = _scriptNodeTypeRepository.InsertOrUpdate(type);
 
             if (nodeType != null)
@@ -224,7 +221,11 @@ namespace Easyman.Service
             if (node != null)
             {
                 res = AutoMapper.Mapper.Map<ScriptNodeOutput>(node);
-                res.DbServerName = _dbServer.Get(res.DbServerId.Value).ByName;
+                if (res.DbServerId != null)
+                {
+
+                    res.DbServerName = _dbServer.Get(res.DbServerId.Value).ByName;
+                }
                 return res;
                 
             }
@@ -273,7 +274,12 @@ namespace Easyman.Service
 
             //var dbServer = AutoMapper.Mapper.Map<DbServer>(input);
 
-            var node = AutoMapper.Mapper.Map<ScriptNodeInput, ScriptNode>(input);
+            // var node = AutoMapper.Mapper.Map<ScriptNodeInput, ScriptNode>(input);
+            var node = _scriptNodeRepository.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new ScriptNode();
+            node = Fun.ClassToCopy(input, node, (new string[] { "Id" }).ToList());
+
+
+
             #region 修改节点的时候是否修改实例节点
             if (input.Id != 0 && input.IsUpdateExample == 1)
             {
@@ -318,6 +324,7 @@ namespace Easyman.Service
             }
            
             #endregion
+            //修改节点
             var scriptNode = _scriptNodeRepository.InsertOrUpdate(node);
 
             #region 写入节点的调整日志
@@ -388,7 +395,10 @@ namespace Easyman.Service
             }
             foreach (var temp in res)
             {
-                temp.DbServerName = _dbServer.Get(temp.DbServerId.Value).ByName;
+                if (temp.DbServerId != null)
+                {
+                    temp.DbServerName = _dbServer.Get(temp.DbServerId.Value).ByName;
+                }
             }
             return res;
         }

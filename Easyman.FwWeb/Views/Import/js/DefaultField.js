@@ -96,7 +96,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增内置字段",
-        url: "/Import/EditDefaultField",
+        url: bootPATH + "/Import/EditDefaultField",
         width: 850,
         height: 550,
         fullscreen: false,
@@ -110,7 +110,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "修改内置字段",
-        url: "/Import/EditDefaultField?id=" + id,
+        url: bootPATH + "/Import/EditDefaultField?id=" + id,
         width: 850,
         height: 550,
         fullscreen: false,

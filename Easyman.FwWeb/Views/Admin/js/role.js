@@ -87,7 +87,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增角色",
-        url: "/Admin/InserRole",
+        url: bootPATH + "/Admin/InserRole",
         width: 850,
         height: 550,
         fullscreen: false,
@@ -101,7 +101,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑角色",
-        url: "/Admin/EditRole?&roleId=" + id,
+        url: bootPATH + "/Admin/EditRole?&roleId=" + id,
         width: 850,
         height: 550,
         fullscreen: false,

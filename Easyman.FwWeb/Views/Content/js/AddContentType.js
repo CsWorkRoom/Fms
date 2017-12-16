@@ -111,7 +111,8 @@ function GetScript() {
 function InitEvent() {
 
     $("#sumbit-btn").click(function () {
-        $("#saveForm").submit();
+        $("#sumbit-btn").attr("type", "submit");
+        //$("#saveForm").submit();
     });
 
     SubmitFormData("#saveForm", "#sumbit-btn");//提交数据

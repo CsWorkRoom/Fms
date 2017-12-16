@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Abp.Application.Services.Dto;
 using System;
 using Abp.UI;
+using Easyman.Common;
 
 namespace Easyman.Service
 {
@@ -66,22 +67,14 @@ namespace Easyman.Service
                 throw new System.Exception("已有类型：" + input.Name);
             }
 
-            var model = input.MapTo<ScriptType>();
+            // var model = input.MapTo<ScriptType>();
+            var model = _scriptType.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new ScriptType();
+            model = Fun.ClassToCopy(input, model, (new string[] { "Id" }).ToList());
             var res = _scriptType.InsertOrUpdate(model);
             if (res==null) {
                 throw new System.Exception("保存失败！");
             }
-            //model.Id = input.Id;
-            //model.Name = input.Name;
-            //model.Remark = input.Remark;
-            //if (input.Id == 0)//新增
-            //{
-            //    _scriptType.Insert(model);
-            //}
-            //else//修改
-            //{
-            //    _scriptType.Update(model);
-            //}
+           
         }
 
         /// <summary>

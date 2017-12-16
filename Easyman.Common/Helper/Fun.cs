@@ -117,6 +117,7 @@ namespace Easyman.Common
         /// <typeparam name="outT">输出类型</typeparam>
         /// <param name="inClass">传入的类</param>
         /// <param name="outClass">输入的类</param>
+        /// <param name="allPar">排除的赋值属性</param>
         /// <returns>复制结果的类</returns>
         public static outT ClassToCopy<inT, outT>(inT inClass, outT outClass, IList<string> allPar = null)
         {
@@ -124,7 +125,7 @@ namespace Easyman.Common
             PropertyInfo[] proInfoArr = inClass.GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);//得到该类的所有公共属性
             for (int a = 0; a < proInfoArr.Length; a++)
             {
-                if (allPar != null && !allPar.Contains(proInfoArr[a].Name)) continue;
+                if (allPar != null && allPar.Contains(proInfoArr[a].Name)) continue;
                 PropertyInfo outproInfo = outClass.GetType().GetProperty(proInfoArr[a].Name);
                 if (outproInfo != null)
                 {

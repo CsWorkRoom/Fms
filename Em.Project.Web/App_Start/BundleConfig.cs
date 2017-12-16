@@ -223,7 +223,7 @@ namespace Easyman.Web
             #region 消息弹框插件
             bundles.Add(
                new ScriptBundle("~/Bundles/alert/js")
-                     .Include("~/Scripts/sweetalert/sweet-alert.js")
+                    .Include("~/Scripts/sweetalert/sweet-alert.js")
                     );
             bundles.Add(
                 new StyleBundle("~/Bundles/alert/css")
@@ -234,7 +234,8 @@ namespace Easyman.Web
             #region 滚动条插件
             bundles.Add(
                new ScriptBundle("~/Bundles/Scroll/js")
-                    .Include("~/Common/Scripts/customerScrollbar/jquery.mCustomScrollbar.js")
+                     .Include("~/Common/Scripts/customerScrollbar/jquery.mousewheel.js")
+                     .Include("~/Common/Scripts/customerScrollbar/jquery.mCustomScrollbar.js")
                     );
 
             bundles.Add(
@@ -316,6 +317,7 @@ namespace Easyman.Web
                     .Include("~/Views/Report/js/EditReport/TbTopField.js")
                     .Include("~/Views/Report/js/EditReport/Filter.js")
                     .Include("~/Views/Report/js/EditReport/RdlcMain.js")
+                    .Include("~/Views/Report/js/EditReport/ChartMain.js")
                     );
 
             #endregion
@@ -345,9 +347,24 @@ namespace Easyman.Web
                     .Include("~/Views/Report/js/RdlcReport.js")
                     );
             #endregion
+
+
+            #region txtIDE txtIDE文本编辑器
+            //css
+            bundles.Add(
+                new StyleBundle("~/Bundles/txtIDE/css")
+                    .Include("~/Common/css/txtIDE/txtIDE.css", new CssRewriteUrlTransform())
+                    );
+            //script
+            bundles.Add(
+                new ScriptBundle("~/Bundles/txtIDE/js")
+                    .Include("~/Common/Scripts/txtIDE/txtIDE.js")
+                    );
+            #endregion
+
             //启用压缩：true 或 删除该行代码
             //禁用压缩：false
-            //BundleTable.EnableOptimizations = false;
+            BundleTable.EnableOptimizations = true;
         }
     }
 }

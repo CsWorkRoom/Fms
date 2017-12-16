@@ -1132,8 +1132,8 @@ a {
             float: left;
             list-style: none;
             height: 50px;
-            padding-left: 20px;
-            padding-right: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
         }
 
             .left-bar > .top-menu > li:hover {
@@ -1432,7 +1432,7 @@ ul.treeview-down {
 }
 
 .dropdown {
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 ::-webkit-scrollbar {
@@ -1445,4 +1445,17 @@ ul.treeview-down {
 scrollbar[orient="vertical"] {
 min-width: 6px !important;
 }
+}
+
+.navbar-toggle .icon-bar {
+    background-color: #fff !important;
+}
+
+.nav > li > a {
+    padding: 0px !important;
+    margin: 10px 10px 10px 0px;
+}
+
+.navbar-right{
+margin: 5px -10px 0px 0px !important;
 }

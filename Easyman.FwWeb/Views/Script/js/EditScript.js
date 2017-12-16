@@ -2,18 +2,11 @@
 //#region 页面入口
 
 $(document).ready(function () {
-    InitPage();
     InitEvent();
 })
 
 //#endregion
 
-//#region 初始化页面
-
-function InitPage() {
-}
-
-//#endregion 
 
 //#region 初始化事件
 
@@ -23,5 +16,5 @@ function InitEvent() {
 
 function handleSubmitForm() {
     IsSubmit();
-    $("#saveForm").submit();
+    $("#sumbit-btn").click();
 }

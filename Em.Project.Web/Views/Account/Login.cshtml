@@ -45,15 +45,15 @@
                                         <input name="action" value="login" type="hidden">
 
                                         <!-- 用户名 -->
-                                        <input type="text" name="UsernameOrEmailAddress" required="Required" class="username" id="UsernameOrEmailAddress" placeholder="请输入账号" autocomplete="off" />
+                                        <input type="text" name="UsernameOrEmailAddress" required="Required" class="username" id="UsernameOrEmailAddress" placeholder="请输入账号" autocomplete="off"  oninvalid="setCustomValidity('请输入您的账号');" oninput="setCustomValidity('');"/>
                                         <hr class="hr15">
 
                                         <!-- 密码 -->
-                                        <input type="password" name="Password" required="Required" class="username" id="pwd" placeholder="请输入密码" oncontextmenu="return false" onpaste="return false" />
+                                        <input type="password" name="Password" required="Required" class="username" id="pwd" placeholder="请输入密码" oncontextmenu="return false" onpaste="return false" oninvalid="setCustomValidity('请输入您的密码');" oninput="setCustomValidity('');"/>
                                         <hr class="hr15">
 
                                         <!-- 验证码 -->
-                                        <input type="text" style="float: left;width: 120px;" name="VerifyCode" required="Required" id="vertify" placeholder="请输入验证码" oncontextmenu="return false" onpaste="return false" />
+                                        <input type="text" style="float: left;width: 120px;" name="VerifyCode" required="Required" id="vertify" placeholder="请输入验证码" oncontextmenu="return false" onpaste="return false" oninvalid="setCustomValidity('请输入您的验证码');" oninput="setCustomValidity('');"/>
                                         <div style="margin-left: 10px;float: left;">
                                             <a title="点击切换验证码" id="verifyCodeInfo" href="javascript:;" onclick="ToggleCode(this, 'GetVerifyCode');return false;">
                                                 <img src="~/Account/GetVerifyCode" width="100" height="43" />
@@ -62,7 +62,7 @@
                                         <br/>
                                         <hr class="hr15">
                                         <!-- 登录按钮 -->
-                                        <input id="TenancyName" name="TenancyName" type="hidden" value="监控平台">
+                                        <input id="TenancyName" name="TenancyName" type="hidden" value="管理后台">
                                         <input id="ReturnUrlHash" name="ReturnUrlHash" type="hidden" value="">
 
                                         <!-- 错误信息 -->

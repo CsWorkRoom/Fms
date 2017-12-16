@@ -86,7 +86,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增功能权限",
-        url: "/Admin/InsertFunction",
+        url: bootPATH + "/Admin/InsertFunction",
         width: 800,
         height: 550,
         fullscreen: false,
@@ -100,7 +100,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑功能权限",
-        url: "/Admin/EditFunction",
+        url: bootPATH + "/Admin/EditFunction",
         width: 800,
         height: 650,
         fullscreen: false,

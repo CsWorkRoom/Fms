@@ -27,24 +27,25 @@ function InitEvent() {
             $("#submit").attr("disabled", true);
         },
         success: function (data) {
-            if (data.success) {
+            var isResult = data.result.isError;
+            if (isResult==false) {
                 $('#error-message').html("");
-                window.location.href = data.targetUrl;
+                window.location.href = data.result.message;
             } else {
                 $("#submit").val("登录");
                 $("#submit").attr("disabled", false);
                 $('#error-message').html(data.result.message);
+                $("#pwd").val("");
+                $("#vertify").val("");
+                ToggleCode($("#verifyCodeInfo"), 'GetVerifyCode');
             }
         },
         error: function (e) {
-
             $("#submit").val("登录");
             $("#submit").attr("disabled", false);
-
             $("#pwd").val("");
             $("#vertify").val("");
             ToggleCode($("#verifyCodeInfo"), 'GetVerifyCode');
-
             //abp.message.error(e.result.message, "登录失败");
 
             //#region 抛出错误

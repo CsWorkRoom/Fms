@@ -75,7 +75,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增图标",
-        url: "/Admin/EditIcon",
+        url: bootPATH + "/Admin/EditIcon",
         width: 850,
         height: 600,
         fullscreen: false,
@@ -88,7 +88,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑图标",
-        url: "/Admin/EditIcon?&id=" + id,
+        url: bootPATH + "/Admin/EditIcon?&id=" + id,
         width: 850,
         height: 600,
         fullscreen: false,

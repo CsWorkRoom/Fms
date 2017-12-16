@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label for="TenantId" class="col-sm-2 control-label">租户</label>
                     <div class="col-sm-4">
-                        @Html.DropDownTreeFor(d => d.TenantId, "../api/services/api/Tenant/GetTenantTreeJson")
+                        @Html.DropDownTreeFor(d => d.TenantId, "../api/services/api/Tenant/GetTenantTreeJson")<i class="iRequired">*</i>
                     </div>
                     <label for="ParentId" class="col-sm-2 control-label">上级部门</label>
                     <div class="col-sm-4">
@@ -42,11 +42,11 @@
                 <div class="form-group">
                     <label for="Name" class="col-sm-2 control-label">名称</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "部门名称", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "部门名称", @Required = "Required" ,@oninvalid = "setCustomValidity('请输入名称')",@oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                     <label for="Code" class="col-sm-2 control-label">编码</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "部门编码", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "部门编码", @Required = "Required", @oninvalid = "setCustomValidity('请输入编码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
@@ -56,7 +56,7 @@
                     <div class="col-sm-4">
                         <div class="btn-group">
                             @Html.HiddenFor(f => f.Icon)
-                            <button class="btn btn-default  dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="MyModelTypeIcon()">
+                            <button class="btn btn-default  dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="MyModelTypeIcon('#divTypeIcon')">
                                 <span class="btn-value"><i id="icon_type_img" class="@Html.Raw(Model.Icon)"></i></span> <span class="caret"></span>
                             </button>
                             <div class="dropdown-menu" id="divTypeIcon" style="display:none;">
@@ -139,5 +139,5 @@
 @section scripts{
 @Scripts.Render("~/Bundles/ztree/js")
     <script src="~/Views/Admin/js/editdepartment.js"></script>
-
+<script src="~/Common/Scripts/TypeIcon/TypeIcon.js"></script>
 }

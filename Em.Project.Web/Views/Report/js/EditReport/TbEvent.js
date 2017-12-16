@@ -459,7 +459,12 @@ function EditTbRpEvent(Identifier) {
                 $("#eventDisplayWay").val(ev.DisplayWay);
                 $("#eventDisplayName").val(ev.DisplayName);
                 $("#eventIcon").val(ev.Icon);
+                $("#eventIcon").keyup();//选中一下图标控件
                 $("#eventStyle").val(ev.Style);
+                //加载选择按钮样式
+                $("#dropdownStyleBut").removeClass();
+                $("#dropdownStyleBut").addClass("btn dropdown-toggle " + (ev.Style == "" ? "btn-default" : ev.Style));
+                //End加载选择按钮样式
                 $("#eventTitle").val(ev.Title);
                 $("#eventOrderNum").val(ev.OrderNum);
 
@@ -502,3 +507,22 @@ function DeleteTbRpEvent(Identifier) {
 }
 
 //#endregion
+
+//选择图标事件
+function ContentIconType(value) {
+    $("#divTypeIcon").hide();
+    $("#icon_type_img").attr("class", value);
+    $("#eventIcon").val(value);
+}
+
+$(function () {
+    ///选择按钮样式
+    $(".dropdown-menu li button").click(function () {
+        var strClassVal = $(this).attr("class");
+        if (strClassVal == "noneStyleBut")
+            strClassVal = "";
+        $("#eventStyle").val(strClassVal);
+        $("#dropdownStyleBut").removeClass();
+        $("#dropdownStyleBut").addClass("btn dropdown-toggle " + (strClassVal == "" ? "btn-default" : strClassVal));
+    });
+});

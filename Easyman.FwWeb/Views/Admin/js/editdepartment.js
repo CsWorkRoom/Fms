@@ -44,16 +44,16 @@ function InitEvent() {
 //#region 自定义项
 
 //点击显示模态窗口，模态窗使用分部视图显示类型小图标
-function MyModelTypeIcon() {
-    var divicon = $("#divTypeIcon");
+//function MyModelTypeIcon() {
+//    var divicon = $("#divTypeIcon");
 
-    if (divicon.is(':hidden')) {
-        divicon.show();
+//    if (divicon.is(':hidden')) {
+//        divicon.show();
 
-    } else {
-        divicon.hide();
-    }
-}
+//    } else {
+//        divicon.hide();
+//    }
+//}
 
 $(document).click(function (e) {
     var _con = $('#divTypeIcon');   // 设置目标区域

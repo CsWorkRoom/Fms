@@ -101,7 +101,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增定义",
-        url: "/Import/EditImpTb",
+        url: bootPATH + "/Import/EditImpTb",
         width: 850,
         height: 550,
         fullscreen: false,
@@ -114,7 +114,7 @@ function onAdd() {
 function onaddfor(id) {
     DiyModal.window({
         title: "字段管理",
-        url: "/Import/ImpTbFieldPage?id=" + id,
+        url: bootPATH + "/Import/ImpTbFieldPage?id=" + id,
         width: 900,
         height: 600,
         fullscreen: false,
@@ -127,7 +127,7 @@ function onaddfor(id) {
 function onImport() {
     DiyModal.window({
         title: "导入",
-        url: "/Import/CommonImport?importCode=CJ&moduleCode=M30006",
+        url: bootPATH + "/Import/CommonImport?importCode=CJ&moduleCode=M30006",
         width: 850,
         height: 550,
         fullscreen: false,
@@ -140,7 +140,7 @@ function onImport() {
 function onedit(id) {
     DiyModal.window({
         title: "修改定义",
-        url: "/Import/EditImpTb?id=" + id,
+        url: bootPATH + "/Import/EditImpTb?id=" + id,
         width: 850,
         height: 550,
         fullscreen: false,

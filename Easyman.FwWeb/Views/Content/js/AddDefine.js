@@ -22,7 +22,7 @@ function InitEvent() {
 
     $("#sumbit-btn").click(function () {
         GetCheckbox();
-        $("#saveForm").submit();
+        $("#sumbit-btn").attr("type", "submit");
     });
 
     SubmitFormData("#saveForm", "#sumbit-btn");//提交数据

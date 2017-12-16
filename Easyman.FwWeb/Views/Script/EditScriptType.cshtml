@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label for="Name" class="col-sm-4 control-label">任务组类型名称</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "任务组类型名称", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "任务组类型名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入任务组类型名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
@@ -37,7 +37,7 @@
         <div class="row bottomPage">
             <div class="col-md-12 right">
                 <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
-                <button class="btn btn-primary" id="sumbit-btn" type="button" onclick="handleSubmitForm()"><i class="fa fa-save"></i> 提交</button>
+                <button class="btn btn-primary" id="sumbit-btn" type="submit"><i class="fa fa-save"></i> 提交</button>
             </div>
         </div>
     </div>

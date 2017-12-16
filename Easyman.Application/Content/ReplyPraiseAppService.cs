@@ -98,10 +98,6 @@ namespace Easyman.Content
         }
         #endregion
 
-        
-
-        
-
         #region 内容功能管理
         /// <summary>
         /// 阅读日志
@@ -613,10 +609,6 @@ namespace Easyman.Content
 
        
         #endregion
-
-        
-
-        
 
     }
 }

@@ -253,8 +253,6 @@ namespace Easyman.Dto
     [AutoMap(typeof(ScriptCase))]
     public class ExampleScriptCase
     {
-        public long ID { get { return Id; } }
-
         public  long Id { get; set; }
         /// <summary>
         /// 脚本流名称

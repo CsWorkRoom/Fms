@@ -72,7 +72,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增标识",
-        url: "/DbServer/InserDbTag",
+        url: bootPATH + "/DbServer/InserDbTag",
         width: 850,
         height: 600,
         fullscreen: false,
@@ -85,7 +85,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑标识",
-        url: "/DbServer/EditDbTag?&dbTagId=" + id,
+        url: bootPATH + "/DbServer/EditDbTag?&dbTagId=" + id,
         width: 850,
         height: 600,
         fullscreen: false,

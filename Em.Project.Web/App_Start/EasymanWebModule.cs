@@ -20,7 +20,7 @@ using System.Web.Routing;
 namespace Easyman.Web
 {
     [DependsOn(
-        typeof(AbpZeroCoreModule),
+         typeof(AbpZeroCoreModule),
         typeof(AbpWebSignalRModule),
         typeof(AbpAutoMapperModule),
         //typeof(AbpHangfireModule), - ENABLE TO USE HANGFIRE INSTEAD OF DEFAULT JOB MANAGER
@@ -31,7 +31,7 @@ namespace Easyman.Web
         typeof(EasymanCommonModule),//Easyman.Common
         typeof(EasymanCoreModule),//Easyman.Core
         typeof(EasymanApplicationModule),//Easyman.Application
-        typeof(EasymanDataModule),//Easyman.EntityFramework
+        //typeof(EasymanDataModule),//Easyman.EntityFramework
         typeof(EasymanViewMoudle),//Easyman.FwWeb
 
         typeof(EmProjectCommonModule),//Em.Project.Common
@@ -49,7 +49,8 @@ namespace Easyman.Web
 
             //Configure navigation/menu
             Configuration.Navigation.Providers.Add<EasymanNavigationProvider>();
-            //是否开启验证客户端
+           
+            //关闭跨站脚本攻击
             Configuration.Modules.AbpWeb().AntiForgery.IsEnabled = false;
 
             //Configure Hangfire - ENABLE TO USE HANGFIRE INSTEAD OF DEFAULT JOB MANAGER

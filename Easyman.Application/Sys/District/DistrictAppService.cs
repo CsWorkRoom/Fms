@@ -82,7 +82,9 @@ namespace Easyman.Sys
         public void SavePost(DistrictInput input)
         {
             //var depart = Fun.ClassToCopy<DistrictInput, District>(input);
-            var depart = AutoMapper.Mapper.Map<District>(input);
+            //var depart = AutoMapper.Mapper.Map<District>(input);
+            var depart = _districtManagerManager.GetDistrict(input.Id) ?? new District();
+            depart = Fun.ClassToCopy(input, depart, (new string[] { "Id" }).ToList());
             _districtManagerManager.SaveOrUpdateDistrict(depart);
         }
 

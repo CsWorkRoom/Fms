@@ -7,7 +7,7 @@ using Abp.PlugIns;
 using Easyman.Web;
 using System.IO;
 
-[assembly: PreApplicationStartMethod(typeof(PreStarter), "Start")]
+//[assembly: PreApplicationStartMethod(typeof(PreStarter), "Start")]
 namespace Easyman.Web
 {
     public class MvcApplication : AbpWebApplication<EasymanWebModule>

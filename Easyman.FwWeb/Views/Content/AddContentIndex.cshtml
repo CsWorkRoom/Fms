@@ -210,25 +210,25 @@
                 <div class="form-group">
                     <label for="Name" class="col-xs-4 col-sm-4 control-label">内容类别</label>
                     <div class="col-xs-6 col-sm-6" id="htmlTreeDiv">
-                        @*@Html.DropDownTreeFor(d => d.ParentId, "../api/services/api/Content/GetContentTypeParentTreeJson")*@
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="TagName" class="col-xs-4 col-sm-4 control-label">标签</label>
                     <div class="col-xs-6 col-sm-6" id="TagName">
-                        @Html.TextBoxFor(f => f.TagName, new { @class = "form-control", placeholder = "标签", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.TagName, new { @class = "form-control", placeholder = "标签" })
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Title" class="col-xs-4 col-sm-4 control-label">标题</label>
                     <div class="col-xs-6 col-sm-6" id="Title">
-                        @Html.TextBoxFor(f => f.Title, new { @class = "form-control", placeholder = "标题", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Title, new { @class = "form-control", placeholder = "标题", @Required = "Required", @oninvalid = "setCustomValidity('请输入标题')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Summary" class="col-xs-4 col-sm-4 control-label">摘要</label>
                     <div class="col-xs-6 col-sm-6" id="Summary">
-                        @Html.TextAreaFor(f => f.Summary, new { @class = "form-control", placeholder = "摘要", @Required = "Required", @rows = "3" })
+                        @Html.TextAreaFor(f => f.Summary, new { @class = "form-control", placeholder = "摘要", @Required = "Required", @rows = "3", @oninvalid = "setCustomValidity('请输入摘要')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+
                     </div>
                 </div>
                 <div class="form-group">
@@ -488,7 +488,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     取消
                 </button>
-                <button type="button" class="btn btn-primary" @*onclick="UserLimitList()"*@ data-dismiss="modal" id="ConfirmUserListYes">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="ConfirmUserListYes">
                     确定
                 </button>
             </div>

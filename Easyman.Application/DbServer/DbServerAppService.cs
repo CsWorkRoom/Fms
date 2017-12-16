@@ -22,6 +22,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using Easyman.Common.Helper;
+using Easyman.Common;
 
 namespace Easyman.Service
 {
@@ -129,29 +130,26 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public DbServerOutput InsertOrUpdateDbServer(DbServerInput input)
+        public void InsertOrUpdateDbServer(DbServerInput input)
         {
 
+            
             if (_dbServerRepository.GetAll().Any(p => p.Id != input.Id && p.ByName == input.ByName))
             {
                 throw new System.Exception("数据库别名重复");
             }
-            //var dbServer = _dbServerRepository.Get(input.Id) ?? new DbServer();
 
-            //var dbServer = AutoMapper.Mapper.Map<DbServer>(input);
-
-            var dbServer = AutoMapper.Mapper.Map<DbServerInput, DbServer>(input);
+            //var dbServer = AutoMapper.Mapper.Map<DbServerInput, DbServer>(input);
+            var dbServer = _dbServerRepository.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new DbServer();
+            dbServer = Fun.ClassToCopy(input, dbServer, (new string[] { "Id" }).ToList());
 
             var server = _dbServerRepository.InsertOrUpdate(dbServer);
 
-            if (server != null)
+            if (server == null)
             {
-                return AutoMapper.Mapper.Map<DbServerOutput>(server);
+                throw new UserFriendlyException("新增或者更新失败！");
             }
-            else
-            {
-                throw new UserFriendlyException("更新失败！");
-            }
+            
         }
 
         /// <summary>

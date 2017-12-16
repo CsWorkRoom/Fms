@@ -80,7 +80,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增节点类型",
-        url: "/ScriptNode/InsertScriptNodeType",
+        url: bootPATH + "/ScriptNode/InsertScriptNodeType",
         width: 850,
         height: 550,
         fullscreen: false,
@@ -94,7 +94,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "修改节点类型",
-        url: "/ScriptNode/EditScriptNodeType?scriptNodeTypeId=" + id,
+        url: bootPATH + "/ScriptNode/EditScriptNodeType?scriptNodeTypeId=" + id,
         width: 850,
         height: 550,
         fullscreen: false,

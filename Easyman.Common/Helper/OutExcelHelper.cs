@@ -350,9 +350,8 @@ namespace Easyman.Common.Helper
                         case "System.DateTime"://日期类型
                             DateTime dateV;
                             DateTime.TryParse(drValue, out dateV);
-                            newCell.SetCellValue(dateV);
-
-                            newCell.CellStyle = dateStyle;//格式化显示
+                            newCell.SetCellValue(dateV.ToString("yyyy-MM-dd hh:mm:ss"));
+                            //newCell.CellStyle = dateStyle;//格式化显示
                             break;
                         case "System.Boolean"://布尔型
                             bool boolV = false;

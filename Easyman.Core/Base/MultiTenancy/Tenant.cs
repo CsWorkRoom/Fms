@@ -5,7 +5,7 @@ namespace Easyman.MultiTenancy
 {
     public class Tenant : AbpTenant<User>
     {
-        public const string TenantName = "监控平台";
+        public const string TenantName = "管理后台";
 
         public Tenant()
         {

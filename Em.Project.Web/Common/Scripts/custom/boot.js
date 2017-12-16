@@ -317,7 +317,7 @@ var SavaSuccessData = function () {
     //提示消息 
     swal({
         title: "保存提示",
-        text: "数据已保存成功!是否返回列表页。",
+        text: "数据已保存成功!是否返回列表页?",
         type: "success",
         confirmButtonText: "是",
         cancelButtonText: "否",
@@ -341,8 +341,8 @@ var ColseModel = function () {
         }
         else {
             var blnOpenWind = true;//是否以打开浏览器方式打开窗口
-            parent.$(".page-tabs-content a").each(function () {//如果是tabs时，就关闭tabs
-                if ($(this).attr("data-id") == window.location.href) {
+            $(parent.$(".page-tabs-content a")).each(function () {//如果是tabs时，就关闭tabs
+                if ($(this).attr("data-id").indexOf(window.location.href) >= 0 || window.location.href.indexOf($(this).attr("data-id")) >= 0) {
                     blnOpenWind = false;
                     $(this).find(".fa-remove").click();
                     return true;
@@ -385,13 +385,8 @@ var SubmitFormData = function (fromID, subButId) {
 //});
 
 ///底部按钮区悬浮
-var temp = $(document).scrollTop();
 $(window).scroll(function () {
-var intWinHeight = window.innerHeight - $(".bottomPage").height() - 10;
-    var offsetTop = intWinHeight + getScrollTop();
-    var offsetTopStr = offsetTop + "px";
-    $(".bottomPage").animate({ top: offsetTopStr }, { queue: false });
-    // $(".bottomPage").css("top", offsetTopStr);
+    $(".bottomPage").animate({ bottom: -getScrollTop() }, { queue: false });
 });
 $(window).scroll();
 

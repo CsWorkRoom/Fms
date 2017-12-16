@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Repositories;
+using Abp.UI;
 using Easyman.Domain;
 using EasyMan;
 using System;
@@ -20,7 +21,14 @@ namespace Easyman.Managers
 
         public Department GetDepartment(long id)
         {
-            return _departmentRepository.FirstOrDefault(w => w.Id == id);
+            try
+            {
+                return _departmentRepository.FirstOrDefault(w => w.Id == id);
+            }
+            catch (Exception ex)
+            {
+                throw new UserFriendlyException("操作出错，对象或已被删除！");
+            }
         }
 
         public Department GetDepartment(string code)
@@ -73,6 +81,15 @@ namespace Easyman.Managers
             if (department == null) return;
 
             _departmentRepository.Delete(department);
+        }
+        /// <summary>
+        /// 根据部门ID查询该部门下有多少子部门
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public int GetDepartmentCount(long id)
+        {
+            return _departmentRepository.GetAll().Count(a => a.ParentId == id);
         }
 
     }

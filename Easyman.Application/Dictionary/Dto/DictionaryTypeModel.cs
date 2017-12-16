@@ -15,7 +15,7 @@ namespace Easyman.Dto
         public new long Id { get; set; }
 
         [Display(Name= "名称")]
-        [Required(ErrorMessage ="名称不能为空")]
+        [Required(ErrorMessage ="字典类型名称不能为空")]
         public virtual string Name { get; set; }
 
         [Display(Name ="备注")]

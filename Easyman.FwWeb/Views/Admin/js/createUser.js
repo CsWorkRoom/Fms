@@ -105,7 +105,7 @@ function InitEvent() {
         $("#RoleNames").val(names.splice(","));
         $("#RoleIds").val(roles.splice(","));
 
-        $("#saveForm").submit();
+        $("#sumbit-btn").attr("type", "submit");
     });
 
     SubmitFormData("#saveForm", "#sumbit-btn");//提交数据

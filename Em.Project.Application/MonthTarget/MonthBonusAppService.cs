@@ -3,6 +3,7 @@ using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.UI;
+using Easyman.Common;
 using Easyman.Domain;
 using Easyman.Dto;
 using Easyman.Managers;
@@ -80,10 +81,10 @@ namespace Easyman.Service
             {
                 throw new UserFriendlyException("月份【" + input.Month + "】的对象已存在！");
             }
-            var entObj =input.MapTo<MonthBonus>();
+            // var entObj =input.MapTo<MonthBonus>();
+            var entObj = _MonthBonusCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new MonthBonus();
             //var entObj= AutoMapper.Mapper.Map<MonthBonus>(input);
-            entObj.InWay = "手工录入";
-            entObj.CreatorUserId = CurrUserId();
+            entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
             var resObj= _MonthBonusCase.InsertOrUpdate(entObj);
             if (resObj == null)
             {

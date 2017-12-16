@@ -100,58 +100,70 @@ namespace Easyman.Web.Controllers
         [DisableAuditing]
         public async Task<JsonResult> Login(LoginViewModel loginModel, string returnUrl = "", string returnUrlHash = "")
         {
-            CheckModelState();
-
-            // 对密码进行AES解密
-            loginModel.Password = EncryptHelper.AesDecrpt(loginModel.Password);
-
-            var verifyCode = loginModel.VerifyCode;
-            var isMatch = ToolHelper.MatchVerifyCode(verifyCode);
-
-            if (!isMatch)
+            EasyMan.Dtos.ErrorInfo err = new EasyMan.Dtos.ErrorInfo();
+            err.IsError = false;
+            try
             {
-                //throw new UserFriendlyException("登录失败", "验证码错误");
-                throw new Exception("登录失败：验证码错误！");
+                CheckModelState();
+                // 对密码进行AES解密
+                loginModel.Password = EncryptHelper.AesDecrpt(loginModel.Password);
+
+                var verifyCode = loginModel.VerifyCode;
+                var isMatch = ToolHelper.MatchVerifyCode(verifyCode);
+
+                if (!isMatch)
+                {
+                    //throw new UserFriendlyException("登录失败", "验证码错误");
+                    throw new Exception("登录失败：验证码错误！");
+                }
+
+                var loginResult = await GetLoginResultAsync(
+                           loginModel.UsernameOrEmailAddress,
+                           loginModel.Password,
+                           loginModel.TenancyName
+                           );
+
+                ValidateCycleAndComplex(loginModel, loginResult);//密码复杂度和周期校验
+
+                await SignInAsync(loginResult.User, loginResult.Identity, loginModel.RememberMe);
+
+                #region // 原-生成页面水印
+                //var systemName = ConfigurationManager.AppSettings["SysName"];
+                //var waterMark = ToolHelper.CreateWatermark(systemName, loginResult.User.UserName);
+
+                //var filePath = AppDomain.CurrentDomain.BaseDirectory + "/UpFiles/Bg/";
+
+                //if (!Directory.Exists(filePath))
+                //{
+                //    Directory.CreateDirectory(filePath);
+                //}
+
+                //var fileFullName = filePath + loginResult.User.Id + ".jpg";
+                //System.IO.File.WriteAllBytes(fileFullName, waterMark);
+                #endregion
+
+                if (string.IsNullOrWhiteSpace(returnUrl) || returnUrl == @"/")
+                {
+                    //returnUrl = Request.ApplicationPath;
+                    returnUrl = Url.Content("~/Home/Index");
+                }
+
+                if (!string.IsNullOrWhiteSpace(returnUrlHash))
+                {
+                    returnUrl = returnUrl + returnUrlHash;
+                }
+                err.IsError = false;
+                err.Message = returnUrl;
+                return Json(err);
+                //return Json(new AjaxResponse { TargetUrl = returnUrl });
             }
-
-            var loginResult = await GetLoginResultAsync(
-                       loginModel.UsernameOrEmailAddress,
-                       loginModel.Password,
-                       loginModel.TenancyName
-                       );
-
-            ValidateCycleAndComplex(loginModel, loginResult);//密码复杂度和周期校验
-
-            await SignInAsync(loginResult.User, loginResult.Identity, loginModel.RememberMe);
-
-
-            #region // 原-生成页面水印
-            //var systemName = ConfigurationManager.AppSettings["SysName"];
-            //var waterMark = ToolHelper.CreateWatermark(systemName, loginResult.User.UserName);
-
-            //var filePath = AppDomain.CurrentDomain.BaseDirectory + "/UpFiles/Bg/";
-
-            //if (!Directory.Exists(filePath))
-            //{
-            //    Directory.CreateDirectory(filePath);
-            //}
-
-            //var fileFullName = filePath + loginResult.User.Id + ".jpg";
-            //System.IO.File.WriteAllBytes(fileFullName, waterMark);
-            #endregion
-
-            if (string.IsNullOrWhiteSpace(returnUrl) || returnUrl == @"/")
+            catch (Exception e)
             {
-                //returnUrl = Request.ApplicationPath;
-                returnUrl = Url.Content("~/Home/Index");
+                err.IsError = true;
+                err.Message = e.Message;
+                err.Excep = e;
+                return Json(err);
             }
-
-            if (!string.IsNullOrWhiteSpace(returnUrlHash))
-            {
-                returnUrl = returnUrl + returnUrlHash;
-            }
-
-            return Json(new AjaxResponse { TargetUrl = returnUrl });
         }
 
         [HttpPost]

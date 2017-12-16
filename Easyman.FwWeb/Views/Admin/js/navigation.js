@@ -94,7 +94,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增菜单",
-        url: "/Admin/CreateNavigation",
+        url: bootPATH + "/Admin/CreateNavigation",
         width: 850,
         height: 620,
         fullscreen: false,
@@ -108,7 +108,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑菜单",
-        url: "/Admin/NavigationEdit?&navId=" + id,
+        url: bootPATH + "/Admin/NavigationEdit?&navId=" + id,
         width: 850,
         height: 600,
         fullscreen: false,

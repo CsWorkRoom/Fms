@@ -39,12 +39,13 @@ namespace Easyman.Web.Controllers
         #region 字典类型
         public ActionResult EditDictionaryType(long? id)
         {
-            if (id == null || id == 0)
+           
+            var data = new DictionaryTypeModel();
+            if (id != null)
             {
-                return View(new DictionaryTypeModel());
+                data = _DictionaryTypeAppService.GetDictionaryType(id.Value);
             }
-            var entObj = _DictionaryTypeAppService.GetDictionaryType(id.Value);
-            return View("Easyman.FwWeb.Views.Dictionary.EditDictionaryType", entObj);
+            return View("Easyman.FwWeb.Views.Dictionary.EditDictionaryType", data);
         }
         #endregion
 

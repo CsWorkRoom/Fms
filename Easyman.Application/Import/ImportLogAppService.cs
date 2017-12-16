@@ -371,7 +371,7 @@ namespace Easyman.Import
             var fileLists = System.Web.HttpContext.Current.Request.Files;
             if (fileLists.Count <= 0)
             {
-                SendData(0);
+                //SendData(0);
                 return;
             }
             long FilesId = 0;
@@ -381,7 +381,17 @@ namespace Easyman.Import
                 {
                     HttpPostedFile fileItem = fileLists[i];
                     string strFileName = fileItem.FileName;
-                    string strSaveFile = ConfigurationManager.AppSettings["SaveFile"].ToString();
+                    string strSaveFile = "";
+                    //判断根目录
+                    if (System.Web.HttpContext.Current.Request.ApplicationPath == "/")
+                    {
+                         strSaveFile = ConfigurationManager.AppSettings["SaveFile"].ToString();
+                    }
+                    else
+                    {
+                        strSaveFile = System.Web.HttpContext.Current.Request.ApplicationPath + ConfigurationManager.AppSettings["SaveFile"].ToString();
+                    }
+
                     string strUrl = strSaveFile + "/" + DateTime.Now.Month;
                     string strPath = HttpContext.Current.Server.MapPath(strUrl);
                     if (!Directory.Exists(strPath))
@@ -413,7 +423,7 @@ namespace Easyman.Import
             }
             catch (Exception ex)
             {
-                SendData(0);
+                //SendData(0);
             }
             SendData(FilesId);
         }

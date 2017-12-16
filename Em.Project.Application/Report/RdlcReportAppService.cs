@@ -107,7 +107,7 @@ namespace Easyman.Service
 
                     child.ChildReportId = ent.Id;
                     child.IsOpen = ent.IsOpen;
-                    child.ChildReportType = 4;
+                    child.ChildReportType = (short)ReportEnum.ReportType.Rdlc;
                     child.ApplicationType = ent.ApplicationType;
 
                     child.ChildReportJson = JSON.DecodeToStr(ent);

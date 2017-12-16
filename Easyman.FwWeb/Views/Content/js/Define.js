@@ -87,7 +87,7 @@ function InitEvent() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑内容定义",
-        url: "/Content/EditContentDefine?&navId=" + id,
+        url: bootPATH + "/Content/EditContentDefine?&navId=" + id,
         width: 850,
         height: 600,
         fullscreen: false,
@@ -102,7 +102,7 @@ function onedit(id) {
 function onAdd() {
     DiyModal.window({
         title: "新增内容定义",
-        url: "/Content/Add",
+        url: bootPATH + "/Content/Add",
         width: 850,
         height: 600,
         fullscreen: false,

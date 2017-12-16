@@ -138,7 +138,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增APP版本",
-        url: "/Admin/CreateAppVersion",
+        url: bootPATH + "/Admin/CreateAppVersion",
         width: 850,
         height: 620,
         fullscreen: false,
@@ -152,7 +152,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑APP版本",
-        url: "/Admin/AppVersionEdit?&versionId=" + id,
+        url: bootPATH + "/Admin/AppVersionEdit?&versionId=" + id,
         width: 850,
         height: 600,
         fullscreen: false,

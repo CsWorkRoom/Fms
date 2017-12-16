@@ -54,7 +54,7 @@
 
         function GetPageTotal() {
             $.ajax({
-                url: "/Content/GetTotalPage",
+                url: bootPATH + "/Content/GetTotalPage",
                 type: 'get',
                 data: { pageIndex: 1, searchName: name, code:$("#Code").val() },
                 dataType: 'json',
@@ -115,7 +115,7 @@
             
             name = $("#SearchName").val();
             $.ajax({
-                url: "/Content/NewIndexSearch",
+                url: bootPATH + "/Content/NewIndexSearch",
                 type: 'get',
                 data: { pageIndex: 1, searchName: name, code: $("#Code").val() },
                 dataType: 'html',

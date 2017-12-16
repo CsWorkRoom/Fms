@@ -1,16 +1,10 @@
 ﻿
 //#region 页面入口
 $(document).ready(function () {
-    InitPage();
     InitEvent();
 })
 //#endregion
 
-//#region 初始化页面
-function InitPage() {
-   
-}
-//#endregion 
 
 //#region 初始化事件
 function InitEvent() {
@@ -18,18 +12,7 @@ function InitEvent() {
 }
 //#endregion
 
-//#region 自定义项
-//点击显示模态窗口，模态窗使用分部视图显示类型小图标
-function MyModelTypeIcon() {
-    var divicon = $("#divTypeIcon");
 
-    if (divicon.is(':hidden')) {
-        divicon.show();
-
-    } else {
-        divicon.hide();
-    }
-}
 
 $(document).click(function (e) {
     var _con = $('#divTypeIcon');   // 设置目标区域

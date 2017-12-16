@@ -107,7 +107,7 @@ function onAdd() {
     var dbTypeId = $("#dbTypeId").val();
     DiyModal.window({
         title: "新增字段",
-        url: "/Import/EditImpTbField?impTbId=" + impTbId + "&dbTypeId=" + dbTypeId,
+        url: bootPATH + "/Import/EditImpTbField?impTbId=" + impTbId + "&dbTypeId=" + dbTypeId,
         width: 850,
         height: 550,
         fullscreen: false,
@@ -122,7 +122,7 @@ function onedit(id, impTbId) {
     var dbTypeId = $("#dbTypeId").val();
     DiyModal.window({
         title: "修改字段",
-        url: "/Import/EditImpTbField?id=" + id + "&impTbId=" + impTbId + "&dbTypeId=" + dbTypeId,
+        url: bootPATH + "/Import/EditImpTbField?id=" + id + "&impTbId=" + impTbId + "&dbTypeId=" + dbTypeId,
         width: 850,
         height: 550,
         fullscreen: false,

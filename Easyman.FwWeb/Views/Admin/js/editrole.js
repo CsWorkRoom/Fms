@@ -79,7 +79,7 @@ function InitEvent() {
 
 function handleSubmitForm() {
     setFun();
-    $("#saveForm").submit();
+    $("#sumbit-btn").attr("type", "submit");
 }
 
 function setFun() {

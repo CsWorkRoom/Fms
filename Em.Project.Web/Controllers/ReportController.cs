@@ -1,4 +1,5 @@
-﻿using Easyman.Common;
+﻿using Abp.UI;
+using Easyman.Common;
 using Easyman.Common.Mvc;
 using Easyman.Domain;
 using Easyman.Dto;
@@ -29,13 +30,16 @@ namespace Easyman.FwWeb.Controllers
         private readonly IModulesAppService _moduleAppService;
         private readonly IExportAppService _exportAppService;
         private readonly IRdlcReportAppService _rdlcAppService;
+        private readonly IChartReportAppService _ChartAppService;
+
 
         public ReportController(IReportAppService reportAppService,
             ITbReportAppService tbReportAppService,
             IDbServerAppService dbServerAppService,
             IModulesAppService moduleAppService,
             IExportAppService exportAppService,
-            IRdlcReportAppService rdlcAppService)
+            IRdlcReportAppService rdlcAppService,
+            IChartReportAppService ChartAppService)
         {
             _reportAppService = reportAppService;
             _tbReportAppService = tbReportAppService;
@@ -43,6 +47,7 @@ namespace Easyman.FwWeb.Controllers
             _moduleAppService = moduleAppService;
             _exportAppService = exportAppService;
             _rdlcAppService = rdlcAppService;
+            _ChartAppService = ChartAppService;
         }
 
         #endregion
@@ -435,6 +440,115 @@ namespace Easyman.FwWeb.Controllers
         }
         #endregion
 
+        #region Echart
+        public Task<ActionResult> ChartReport(string code)
+        {
+            //string controllerName = Request.RequestContext.RouteData.Values["controller"].ToString();
+            //string actionName = Request.RequestContext.RouteData.Values["action"].ToString();
+            return Task.Factory.StartNew(() =>
+            {
+                var urlQuery = Request.Url.GetLeftPart(UriPartial.Query).ToString();
+                var urlRoot = urlQuery.Split(new[] { "/Report/ChartReport" }, StringSplitOptions.None)[0];
+                //UrlDecode解码中文
+                var curUrl = System.Web.HttpUtility.UrlDecode(urlQuery).Substring(urlRoot.Length + 1);
+                var urlToLower = curUrl.ToLower();
+
+                long moduleId = GetModuleIdByParentPage(urlToLower, curUrl);//获取当前链接的模版
+
+                //按当前用户权限返回报表信息（目前只服务于表格报表，其他类报表未实现）
+                var report = _reportAppService.GetReport(code, moduleId, true);
+                //得到url中的参数信息
+                var kvList = GetDefParams(curUrl);
+                if (kvList != null && kvList.Count > 0)
+                {
+                    report.KVJson = JSON.DecodeToStr(kvList);//默认参数赋值
+                }
+
+                if (report != null)
+                {
+                    if (report.ChildReportListJson != null && report.ChildReportListJson != "" && report.ChildReportListJson != "[]")
+                    {
+                        var childRpList = JSON.EncodeToEntity<List<ChildReportModel>>(report.ChildReportListJson);
+                        if (childRpList != null && childRpList.Count > 0)
+                        {
+                            return View(report);//当具有子报表时返回
+                        }
+                    }
+                }
+                return View("");//未找到子报表
+            }).ContinueWith<ActionResult>(task =>
+            {
+                return task.Result;
+            });
+        }
+
+        public ActionResult GetChartData()
+        {
+            //获得参数
+            string code = Request["code"].Trim();
+            //int rows = Convert.ToInt32(Request["rows"].Trim());
+            //int page = Convert.ToInt32(Request["page"].Trim());
+            string queryParams = Request["queryParams"];//查询条件
+            //string sidx = Request["sidx"];//排序条件
+            //string sord = Request["sord"];//最后个字段排序方式
+            EasyMan.Dtos.ErrorInfo err = new EasyMan.Dtos.ErrorInfo();
+            err.IsError = false;
+
+            DataTable dt = new DataTable();
+
+            //取消获取报表的语句。原因：既然能进这个页面肯定是已具有code代码
+            //var report = _reportAppService.GetReport(code);
+            //执行sql语句
+            try
+            {
+                dt = _reportAppService.GetDataTableFromCode(code, queryParams, ref err);
+                //result = _reportAppService.ExcuteReportSql(code, rows, page, queryParams, sidx, sord, ref err);
+                if (err.IsError)
+                {
+                    throw new Exception(err.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return Content(JSON.DecodeToStr(dt));
+        }
+        #endregion
+
+        #region 图表种类
+        public ActionResult EditChartType(long? id)
+        {
+            if (id == null || id == 0)
+            {
+                return View(new ChartTypeModel());
+            }
+            try
+            {
+                var entObj = _ChartAppService.GetChartType(id.Value);
+                return View(entObj);
+            }
+            catch (Exception ex)
+            {
+                throw new UserFriendlyException(ex.Message);
+            }
+        }
+        #endregion
+
+        #region 图表模版
+        public ActionResult EditChartTemp(long? id)
+        {
+            var entObj = new ChartTempModel();//初始化基础数据
+
+            if (id != null && id != 0)
+            {
+                entObj = _ChartAppService.GetChartTemp(id.Value);
+            }
+            entObj.ChartTypeList = _ChartAppService.ChartTypeSelectList();
+            return View(entObj);
+        }
+        #endregion
+
         /// <summary>
         /// 在指定库中解析sql语句,得到字段json串
         /// </summary>
@@ -530,7 +644,7 @@ namespace Easyman.FwWeb.Controllers
             string url = Request["url"];//页面url
             url = System.Web.HttpUtility.UrlDecode(url);
             string bootUrl = Request["bootUrl"];//网站根目录（含虚拟层级）
-           string strHost = bootUrl.Substring(0, bootUrl.IndexOf(Request.Url.Authority.ToLower())+ Request.Url.Authority.Length);//http头
+            string strHost = bootUrl.Substring(0, bootUrl.IndexOf(Request.Url.Authority.ToLower()) + Request.Url.Authority.Length);//http头
             string exportWay = Request["exportWay"];//导出方式
             string fileFormat = Request["fileFormat"];//文件格式
             EasyMan.Dtos.ErrorInfo err = new EasyMan.Dtos.ErrorInfo();
@@ -556,21 +670,24 @@ namespace Easyman.FwWeb.Controllers
                 if (expCfg.ValidDay == null || expCfg.ValidDay <= 0)
                     expCfg.ValidDay = intValidDay;
                 if (expCfg.Path == null || expCfg.Path.Trim() == "")
-                    expCfg.Path = (bootUrl.Replace(strHost, "") + strPath).Replace("\\", "/").Replace("//", "/"); 
+                    expCfg.Path = (bootUrl.Replace(strHost, "") + strPath).Replace("\\", "/").Replace("//", "/");
                 else
                     expCfg.Path = (bootUrl.Replace(strHost, "") + expCfg.Path).Replace("\\", "/").Replace("//", "/");
                 #endregion
-                    sql = _reportAppService.GetSqlForField(code, queryParams, tbReportId, ref err);
+                sql = _reportAppService.GetSqlForField(code, queryParams, tbReportId, ref err);
 
                 if (err.IsError)
                 {
                     throw new Exception(err.Message);
                 }
+                int intCountSize = IntDataSize(sql, (long)(report == null || report.DbServerId == null ? 0 : report.DbServerId));//返回当前集合条数
+                if (intCountSize <= 0)
+                {
+                    return Content("暂无无数据导出！");
+                }
                 #region 抽样数据
                 double WaitTime = (double)expCfg.WaitTime;
-                
                 DateTime datEndDate = DateTime.Now.AddMilliseconds(WaitTime);//最大等待时长
-                int intCountSize = IntDataSize(sql, (long)(report == null || report.DbServerId==null ? 0 : report.DbServerId));//返回当前集合条数
                 if (DateTime.Now > datEndDate && exportWay == "在线")
                 {
                     return Content("在线导出时，由于数据量过大，在统计数据时超出在线最大等待时长，请转为离线导出。是否转为离线导出？");
@@ -587,6 +704,7 @@ namespace Easyman.FwWeb.Controllers
                 {
                     return Content("在线导出最大支持" + expCfg.MaxRowNum + "条数据及" + expCfg.DataSize + "KB字节,是否转为离线导出？");
                 }
+
                 object objTopFields = "";
                 if (tbReportId != 0)
                 {
@@ -602,9 +720,9 @@ namespace Easyman.FwWeb.Controllers
                 var module = _moduleAppService.GetModuleByUrl(url);
                 string strExt = GetExtend(fileFormat.ToLower());
                 ExportDataModel exp = new ExportDataModel
-                {                   
-                    ReportCode= code,
-                    DisplayName = (module.Name == null|| module.Name.Trim()=="" ? "" : module.Name + "_" )+ DateTime.Now.Ticks,
+                {
+                    ReportCode = code,
+                    DisplayName = (module.Name == null || module.Name.Trim() == "" ? "" : module.Name + "_") + DateTime.Now.Ticks,
                     ExportWay = exportWay,
                     FromUrl = url,
                     FileFormat = strExt,
@@ -613,15 +731,15 @@ namespace Easyman.FwWeb.Controllers
                     TopFields = objTopFields,//多表头信息
                     ColumnHeader = "",
                     Sql = sql,
-                    DbServerId = report == null|| report.DbServerId == null ? 0 : report.DbServerId,
+                    DbServerId = report == null || report.DbServerId == null ? 0 : report.DbServerId,
                     FileName = (module == null ? "无名称" : module.Name) + "_" + DateTime.Now.Ticks,
                     Status = "生成中",
                     ObjParam = "",
                     IsClose = false
                 };
-                if (module.Id>0) 
+                if (module.Id > 0)
                     exp.ModuleId = module.Id;
-                
+
                 //针对两种形式的导出处理，待完善
                 switch (exportWay)
                 {
@@ -639,8 +757,11 @@ namespace Easyman.FwWeb.Controllers
             catch (Exception ex)
             {
                 err.IsError = false;
-                err.Message = ex.Message;
-                return Content("导出时，程序异常。代码：" + ex.Message + ",请联系管理员。<br/><input type='button' style='color: #fff;background-color: #31b0d5;border: 1px;padding: 5px 10px;margin-top: 10px;cursor: pointer;}' name='button1' value='《----返回列表' onclick='history.go(-1)'>");//为了保护代码泄露，又能达到提示错误的目地，只截取前5个字。
+                string strHtml = "<script src=\"../Scripts/jquery-2.2.4.min.js\"></script>";
+                strHtml += "<script src=\"../Common/rootUrl.js\"></script>";
+                strHtml += "<script src=\"../Common/Scripts/errorPage/error.js\"></script>";
+                strHtml += "<script>$(function () {SendErrorInfo('导出提示','导出时，程序异常。代码：" + ex.Message + ",请联系管理员')})</script>";
+                return Content(strHtml);
             }
             #endregion
             return Content(strResult);
@@ -701,7 +822,11 @@ namespace Easyman.FwWeb.Controllers
             }
             catch (Exception ex)
             {
-                return Content("导出时，程序异常。代码：" + ex.Message + ",请联系管理员。<br/><input type='button' style='color: #fff;background-color: #31b0d5;border: 1px;padding: 5px 10px;margin-top: 10px;cursor: pointer;}' name='button1' value='《----返回列表' onclick='history.go(-1)'>");//为了保护代码泄露，又能达到提示错误的目地，只截取前5个字。
+                string strHtml = "<script src=\"../Scripts/jquery-2.2.4.min.js\"></script>";
+                strHtml += "<script src=\"../Common/rootUrl.js\"></script>";
+                strHtml += "<script src=\"../Common/Scripts/errorPage/error.js\"></script>";
+                strHtml += "<script>$(function () {SendErrorInfo('导出提示1', '导出时，程序异常。代码：" + ex.Message + ",请联系管理员')})</script>";
+                return Content(strHtml);
             }
             return Content("");
         }

@@ -61,8 +61,8 @@ namespace Easyman.Users
         /// <summary>
         /// ÷ÿ÷√”√ªß√‹¬Î
         /// </summary>
-        /// <param name="inout"></param>
-        string ResetPwd(EntityDto<long> inout);
+        /// <param name="id"></param>
+        string ResetPwd(int id);
 
         
 

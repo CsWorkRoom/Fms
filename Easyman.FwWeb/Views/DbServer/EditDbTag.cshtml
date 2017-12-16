@@ -37,9 +37,10 @@
             <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
 
                 <div class="form-group">
-                    <label for="Name" class="col-xs-4 control-label">名称</label>
+                    <label for="Name" class="col-xs-4 control-label">数据库标识名</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "数据库标识名", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "数据库标识名", @Required = "Required", @oninvalid = "setCustomValidity('请输入数据库标识名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                    </div>
                     </div>
                 </div>
 

@@ -7,6 +7,12 @@
     @Styles.Render("~/Bundles/icheck/css")
     @Styles.Render("~/Bundles/ztree/css")
 }
+<style>
+    .form-control{
+        width:100% !important;
+    }
+
+</style>
 <form style="width:100%;padding: 0px 15px 0px 15px;" id="saveForm" class="form-horizontal" action="../api/services/api/User/UpdateOrInserUser" method="post" role="form">
     @Html.HiddenFor(h => h.Id)
     <div class="form-body jarviswidget ">
@@ -25,10 +31,10 @@
                             @Html.DropDownTreeFor(d => d.TenantId, "../api/services/api/Tenant/GetTenantTreeJson")
                         </div>
                     </div>
-                    <div class="form-group marb20">
+                    <div class="form-group col-sm-6 marb20">
                         <label for="UserName" class="col-sm-4 control-label">工号</label>
                         <div class="col-sm-8">
-                            @Html.TextBoxFor(f => f.UserName, new { @class = "form-control", placeholder = "工号", @Required = "Required" })
+                            @Html.TextBoxFor(f => f.UserName, new { @class = "form-control", placeholder = "工号", @Required = "Required", @oninvalid = "setCustomValidity('请输入工号')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
                 </div>
@@ -42,10 +48,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group marb20">
-                        <label for="Name" class="col-sm-4 control-label">名称</label>
+                    <div class="form-group col-sm-6 marb20">
+                        <label for="Name" class="col-sm-4 control-label">姓名</label>
                         <div class="col-sm-8">
-                            @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "姓名", @Required = "Required" })
+                            @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "姓名", @Required = "Required", @oninvalid = "setCustomValidity('请输入姓名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
                 </div>
@@ -58,25 +64,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group marb20">
+                    <div class="form-group col-sm-6 marb20">
                         <label for="PhoneNo" class="col-sm-4 control-label">电话</label>
                         <div class="col-sm-8">
-                            @Html.TextBoxFor(f => f.PhoneNo, new { @class = "form-control", placeholder = "电话", @Required = "Required" })
-                        </div>
-                    </div>
-                </div>
-                <div class="form-inline">
-                    <div class="form-group col-sm-6 marb20">
-                        <label for="IsActive" class="col-sm-4 control-label">是否激活</label>
-                        <div class="col-sm-6">
-                            @Html.CheckBoxFor(f => f.IsActive)
-                        </div>
-                    </div>
-
-                    <div class="form-group marb20">
-                        <label for="IsDeleted" class="col-sm-8 control-label">是否注销</label>
-                        <div class="col-sm-2">
-                            @Html.CheckBoxFor(f => f.IsDeleted)
+                            @Html.TextBoxFor(f => f.PhoneNo, new { @class = "form-control", placeholder = "电话", @Required = "Required", @oninvalid = "setCustomValidity('请输入电话')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
                 </div>
@@ -84,14 +75,16 @@
                     <div class="form-group col-sm-6 marb20">
                         <label for="EmailAddress" class="col-sm-4 control-label">邮箱</label>
                         <div class="col-sm-8">
-                            @Html.TextBoxFor(f => f.EmailAddress, new { @class = "form-control", placeholder = "邮箱", @Required = "Required" })
+                            @Html.TextBoxFor(f => f.EmailAddress, new { @class = "form-control", placeholder = "邮箱", @Required = "Required", @oninvalid = "setCustomValidity('请输入邮箱')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
-
-                    <div class="form-group marb20">
-
+                    <div class="form-group col-sm-6 marb20">
+                        <label for="IsActive" class="col-sm-4 control-label">是否激活</label>
+                        <div class="col-sm-8">
+                            @Html.CheckBoxFor(f => f.IsActive)
+                        </div>
                     </div>
-                </div>
+                </div>                
             </div>
             <div role="tabpanel" class="tab-pane" id="role" style="height: 230px;margin-bottom:50px">
                 @Html.HiddenFor(f => f.RoleIds)

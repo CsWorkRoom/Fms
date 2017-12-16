@@ -11,6 +11,7 @@ bin/
 obj/
 ExportFile/
 UpFiles/
+PublishProfiles/
 
 
 # Compiled Dynamic libraries
@@ -41,3 +42,4 @@ Em.Project.Web/Properties/PublishProfiles/easyman.pubxml.user
 Em.Project.Web/Properties/PublishProfiles/easyman.pubxml
 Em.Project.Web/Properties/PublishProfiles/Easyma3Temp_HTML.pubxml.user
 Em.Project.Web/Properties/PublishProfiles/Easyma3Temp_HTML.pubxml
+Em.Project.Web/Properties/PublishProfiles/gps.pubxml.user

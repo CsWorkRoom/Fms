@@ -115,7 +115,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增标识",
-        url: "/DbServer/InserDbServer",
+        url: bootPATH + "/DbServer/InserDbServer",
         width: 850,
         height: 600,
         fullscreen: false,
@@ -128,7 +128,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑标识",
-        url: "/DbServer/EditDbServer?&dbServerId=" + id,
+        url: bootPATH + "/DbServer/EditDbServer?&dbServerId=" + id,
         width: 850,
         height: 600,
         fullscreen: false,

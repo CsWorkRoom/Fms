@@ -1,5 +1,5 @@
 ﻿using Abp.Modules;
-using Easyman.Common.Data;
+//using Easyman.Common.Data;
 //using Easyman.Common.ViewEngine;
 using System.Reflection;
 using System.Web.Hosting;

@@ -54,7 +54,6 @@
         margin: 0px;
         width: 1140px;
         padding: 0 0 0 35px;
-        overflow-x: hidden;
         line-height: 20px;
     }
 </style>
@@ -160,7 +159,7 @@ function keyUp(){
  var str=obj.value;
  strstr=str.replace(/\r/gi,"");
  strstr=str.split("\n");
- n=str.length;
+ n = strstr.length;
  line(n);
 }
 function line(n){

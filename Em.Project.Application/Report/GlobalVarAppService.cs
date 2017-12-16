@@ -1,6 +1,7 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
 using Abp.UI;
+using Easyman.Common;
 using Easyman.Domain;
 using Easyman.Dto;
 using System;
@@ -65,10 +66,12 @@ namespace Easyman.Service
         /// <param name="gloVar"></param>
         public void SaveGlobalVar(GlobalVarModel gloVar)
         {
-            var global = AutoMapper.Mapper.Map<GlobalVar>(gloVar);
+           // var global = AutoMapper.Mapper.Map<GlobalVar>(gloVar);
             try
             {
-                _globalVarRepository.InsertOrUpdate(global);
+                var type = _globalVarRepository.GetAll().FirstOrDefault(x => x.Id == gloVar.Id) ?? new GlobalVar();
+                type = Fun.ClassToCopy(gloVar, type, (new string[] { "Id" }).ToList());
+                _globalVarRepository.InsertOrUpdate(type);
             }
             catch (Exception ex)
             {

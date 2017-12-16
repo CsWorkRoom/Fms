@@ -161,7 +161,12 @@ namespace Easyman.Service
         [UnitOfWork]
         public void UpdateScript(EditScript input)
         {
-            _script.Update(input.MapTo<Script>());
+            //var model = input.MapTo<Script>();
+            //_script.Update(model);
+            var type = _script.GetAll().FirstOrDefault(x => x.Id == input.Id);
+            type = Fun.ClassToCopy(input, type, (new string[] { "Id" }).ToList());
+            _script.Update(type);
+
             DelNodeLinePosition(input.Id);
             AddNodeLinePosition(input);
         }

@@ -53,7 +53,7 @@ function replySubmit() {
     var file_ids = $("#FileIds").val();
     var contentId = $("#Id").val();
     $.ajax({
-        url: "/Content/CareatReply",
+        url: bootPATH + "/Content/CareatReply",
         type: 'get',
         data: { contentId: contentId, replyInfo: reply, fileIds: file_ids },
         dataType: 'json',
@@ -174,7 +174,7 @@ function ReplyByReplySubmit(id) {
     var file_ids = $("#FileIds").val();
     var contentId = $("#Id").val();
     $.ajax({
-        url: "/Content/CareatReply",
+        url: bootPATH + "/Content/CareatReply",
         type: 'get',
         data: { contentId: contentId, replyInfo: info, fileIds: file_ids, replyId: id },
         dataType: 'json',
@@ -210,7 +210,7 @@ function ReplyByReplySubmitChild(id, fId) {
     var file_ids = $("#FileIds").val();
     var contentId = $("#Id").val();
     $.ajax({
-        url: "/Content/CareatReply",
+        url: bootPATH + "/Content/CareatReply",
         type: 'get',
         data: { contentId: contentId, replyInfo: info, fileIds: file_ids, replyId: id },
         dataType: 'json',
@@ -245,7 +245,7 @@ function ReplyByReplyHtmlSubmit(id) {
     var file_ids = $("#FileIds").val();
     var contentId = $("#Id").val();
     $.ajax({
-        url: "/Content/CareatReply",
+        url: bootPATH + "/Content/CareatReply",
         type: 'get',
         data: { contentId: contentId, replyInfo: info, fileIds: file_ids, replyId: id },
         dataType: 'json',
@@ -276,7 +276,7 @@ function ReplyByReplyHtmlSubmit(id) {
 function GetHuiFu(data) {
     var html = "";
     html = ' <div class="social-comment" id="GetHtmlHuiFu_' + data.id + '"><a href="" class="pull-left">' +
-        '<img alt="' + data.replyUserName + '" title="' + data.replyUserName + '" src="/Views/Content/img/Reply.png" class="userImg"></a><div class="media-body"  id="Reap_File_Div_' + data.id + '"><a href="javascript:">' + data.replyUserName + '</a> ';
+        '<img alt="' + data.replyUserName + '" title="' + data.replyUserName + '" src="' + bootPATH + '/Views/Content/img/Reply.png" class="userImg"></a><div class="media-body"  id="Reap_File_Div_' + data.id + '"><a href="javascript:">' + data.replyUserName + '</a> ';
     if (!IsFrist) {
         html += '<span>回复 ' + data.parentName + '&nbsp;</span> &nbsp;';
     }
@@ -295,7 +295,7 @@ function GetHuiFu(data) {
 
         }
     }
-    html += ' <small class="text-muted">' + data.creationTime + '</small></div>';
+    html += ' <small class="text-muted">' + data.creationTime.replace("T", " ").substring(0,19) + '</small></div>';
     if (data.isReolyFloor) {
         if (data.isReolyFile)
         {
@@ -326,7 +326,7 @@ function GetHuiFu(data) {
 function ContentPraise() {
     var contentId = $("#Id").val();
     $.ajax({
-        url: "/Content/ContentPraise",
+        url: bootPATH + "/Content/ContentPraise",
         type: 'get',
         data: { contentId: contentId },
         dataType: 'json',
@@ -345,7 +345,7 @@ function ContentPraise() {
 
 function GetContentPraise(contentId) {
     $.ajax({
-        url: "/Content/GetContentPraise",
+        url: bootPATH + "/Content/GetContentPraise",
         type: 'get',
         data: { contentId: contentId },
         dataType: 'json',
@@ -371,7 +371,7 @@ function GetContentPraise(contentId) {
 
 function GetReplyPraise(replyId) {
     $.ajax({
-        url: "/Content/GetReplyPraise",
+        url: bootPATH + "/Content/GetReplyPraise",
         type: 'get',
         data: { replyId: replyId },
         dataType: 'json',
@@ -396,7 +396,7 @@ function GetReplyPraise(replyId) {
 
 function ReplyPraise(id) {
     $.ajax({
-        url: "/Content/ReplyPraise",
+        url: bootPATH + "/Content/ReplyPraise",
         type: 'get',
         data: { replyId: id },
         dataType: 'json',
@@ -432,7 +432,7 @@ function BindUploadFile() {
         showUploadedPercent: true,//是否实时显示上传的百分比，如20%
         showUploadedSize: true,
         removeTimeout: 9999999,
-        uploader: bootPATH + 'api/services/api/ImportLog/uploadFile',
+        uploader: bootPATH + '/api/services/api/ImportLog/uploadFile',
         onUploadStart: function () {
             //alert('开始上传');
         },
@@ -440,7 +440,7 @@ function BindUploadFile() {
             //alert('初始化');
         },
         onUploadSuccess: function (file, resultId) {
-
+            debugger;
             var fileListId = $("#FileId").val();
             if (fileListId == "") {
                 $("#FileId").val(resultId);

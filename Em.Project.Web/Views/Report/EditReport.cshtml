@@ -6,15 +6,16 @@
 }
 
 @section Styles{
-@Styles.Render("~/Bundles/ztree/css")
-@Styles.Render("~/Bundles/App/handsontable/css")
-@Styles.Render("~/Bundles/App/jqgrid/css")
-@*@Styles.Render("~/Bundles/App/editReport/css")*@
-
+    @Styles.Render("~/Bundles/ztree/css")
+    @Styles.Render("~/Bundles/App/handsontable/css")
+    @Styles.Render("~/Bundles/App/jqgrid/css")
+    @Styles.Render("~/Bundles/txtIDE/css")
+    <link href="~/Common/css/TypeIcon/TypeIcon.css" rel="stylesheet" />
     <style>
-        html,body{
-            overflow-y:auto
+        html, body {
+            overflow-y: auto;
         }
+
         .Head_BorderB {
             border-bottom: 1px solid #76838f;
         }
@@ -28,26 +29,79 @@
             margin-bottom: 0;
             text-align: right;
         }
+
         .hrSpace {
             margin: 30px 0px 0px 10px;
-            width:99%
+            width: 99%;
         }
-        body{
+
+        body {
             width: 100%;
         }
-        .deletePaddingLR{
-            padding-left:0px;
-            padding-right:0px;
+
+        .deletePaddingLR {
+            padding-left: 0px;
+            padding-right: 0px;
         }
+
         .editable {
-            padding-left:2px;
-            padding-right:2px;
+            padding-left: 2px;
+            padding-right: 2px;
         }
-        .input-group-btn button{
-            color:#000;
+
+        .input-group-btn button {
+            color: #000;
         }
+
         .btn {
             border-radius: 3px;
+        }
+
+        .iconBut {
+            width: 40px;
+            position: absolute !important;
+            right: 0px;
+            height: 100%;
+            top: 0px;
+            padding: 4px 5px !important;
+        }
+
+        .ButStyle {
+            width: 40px;
+            position: absolute !important;
+            right: 0px;
+            height: 100%;
+            top: 0px;
+            padding: 0px !important;
+        }
+
+            .ButStyle .dropdown-toggle {
+                width: 100%;
+                right: 0px;
+                height: 100%;
+                top: 0px;
+                padding: 0px;
+            }
+
+        .dropdown-menu {
+            min-width: initial;
+        }
+
+            .dropdown-menu li {
+                margin-top: 5px;
+            }
+
+            .dropdown-menu .divider {
+                margin: 0px;
+                margin-top: 5px;
+            }
+
+        .noneStyleBut {
+            width: 100%;
+            background-color: #f8f8f8;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 5px;
         }
     </style>
 }
@@ -62,7 +116,7 @@
     <div class="form-body jarviswidget ">
         <!--主报表的基础内容-->
         <div class="tab-content" style="padding-top:12px;">
-            <div role="tabpanel" class="tab-pane active" id="navMenu" >
+            <div role="tabpanel" class="tab-pane active" id="navMenu">
                 <div class="form-group">
                     <label for="Name" class="col-sm-2 control-label ">报表名称</label>
                     <div class="col-sm-4">
@@ -85,7 +139,7 @@
                         @Html.DropDownListFor(p => p.IsPlaceholder, new List<SelectListItem> {
                        new SelectListItem { Text = "否", Value = "false", Selected = true },
                        new SelectListItem { Text = "是", Value = "true" } },
-                        new {@class = "form-control"})
+                        new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -98,7 +152,9 @@
                    {
                        @class = "form-control",
                        placeholder = "请填写sql语句",
-                       @style = "height:100px"
+                       @style = "height:100px",
+                       ondblclick = "MaxSql()",
+                       title = "双击放大"
                    })
                     </div>
                 </div>
@@ -121,13 +177,12 @@
     <!--隐藏控件-子报表集合-->
     @Html.HiddenFor(m => m.ChildReportListJson)
 
-    <div class="form-actions">
-            <div class="col-md-12" style="text-align:center">
-               
-                <button class="btn btn-primary" id="sumbit-btn" type="button" onclick="handleSubmitForm()" title="提交"><i class="fa fa-save"></i> 提交</button>
-            </div>
+    <div class="form-actions" style="display:none">
+        <div class="col-md-12" style="text-align:center">
+            <button class="btn btn-primary" id="sumbit-btn" type="button" onclick="handleSubmitForm()" title="提交"><i class="fa fa-save"></i> 提交</button>
         </div>
-    </form>
+    </div>
+</form>
 
 
 <!--选择添加报表-->
@@ -151,7 +206,7 @@
         </div>
         <div class="form-group SpaceNum">
             <button id="addReportBtn" class="btn btn-success" title="添加"><i class="fa fa-plus"></i> 添加</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> 
+            <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button>
         </div>
     </div>
     <div class="form-group collapsing" id="divSave" style="float:left;">
@@ -161,7 +216,7 @@
 <!--sql解析的字段-->
 <input id="fieldJson" type="text" style="display:none" />
 <br />
-<hr style="float:left"/>
+<hr style="float:left" />
 <!--子报表列表-->
 <div class="row hrSpace" style="width:100%">
     @*<div style="border-top: 1px solid #76838f; margin-bottom: 10px;"></div>*@
@@ -190,7 +245,7 @@
                     <header role="heading">
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#tbBase" aria-controls="home" role="tab" data-toggle="tab">基础属性</a></li>
-                            <li role="presentation"><a href="#tbField" aria-controls="profile"  role="tab" data-toggle="tab">字段配置</a></li>
+                            <li role="presentation"><a href="#tbField" aria-controls="profile" role="tab" data-toggle="tab">字段配置</a></li>
                             <li role="presentation"><a href="#topField" aria-controls="profile" role="tab" data-toggle="tab">多表头配置</a></li>
                             <li role="presentation"><a href="#tbFilter" aria-controls="profile" role="tab" data-toggle="tab">筛选配置</a></li>
                             <li role="presentation"><a href="#tbEvent" aria-controls="profile" role="tab" data-toggle="tab">事件配置</a></li>
@@ -243,7 +298,7 @@
                                 </div>
                                 <label for="isShowFilter" class="col-sm-2 control-label text-right">默认展开筛选区</label>
                                 <div class="col-sm-4">
-                                    <select id="isShowFilter" name="isShowFilter" class="form-control" >
+                                    <select id="isShowFilter" name="isShowFilter" class="form-control">
                                         <option value="false">否</option>
                                         <option value="true">是</option>
                                     </select>
@@ -287,7 +342,7 @@
                             <div class="row form-group has-feedback">
                                 <label for="rowNum" class="col-sm-2 control-label text-right">分页大小</label>
                                 <div class="col-sm-4">
-                                    <input id="rowNum" name="rowNum" type="text" placeholder="正整数" class="form-control" aria-describedby="rowNum"/>
+                                    <input id="rowNum" name="rowNum" type="text" placeholder="正整数" class="form-control" aria-describedby="rowNum" />
                                 </div>
 
                                 <label for="rowList" class="col-sm-2 control-label text-right">分页列表</label>
@@ -348,30 +403,30 @@
                             </div>
                         </div>
                         <!--表格字段配置-->
-                        <div role="tabpanel" class="tab-pane" id="tbField">                            
-                             <table id="fieldGrid"></table>
-                             <div id="fieldGridPager"></div>                            
+                        <div role="tabpanel" class="tab-pane" id="tbField">
+                            <table id="fieldGrid"></table>
+                            <div id="fieldGridPager"></div>
                             <input id="selectRowId" type="text" style="display:none" /><!--临时存储选中的行-->
                         </div>
 
                         <!--多表头配置-->
                         <div role="tabpanel" class="tab-pane" id="topField">
-                                <div class="form-group">
-                                    <button name="refrushField" id="refrushField" class="btn btn-primary"><i class="fa fa-refresh"></i> 获取数据</button>&nbsp;
-                                    <button name="saveTopF" id="saveTopF" class="btn btn-success"><i class="fa fa-upload"></i> 确定</button>
-                                </div>
-                                <input id="tbTopMerge" type="text" style="display:none" /><!--多表头合并数据-->
-                                <input id="tbTopFieldJson" type="text" style="display:none" /><!--多表头隐藏值-->
-                                <div id="topFieldDiv" style="width: 100%; height: 100%; overflow-y: hidden;overflow-x: hidden"></div>
-                                <P><span style="color: red;"><i class="fa fa-info-circle"></i> 注：合并表头要添加在列所在行以上</span></P>
+                            <div class="form-group">
+                                <button name="refrushField" id="refrushField" class="btn btn-primary"><i class="fa fa-refresh"></i> 获取数据</button>&nbsp;
+                                <button name="saveTopF" id="saveTopF" class="btn btn-success"><i class="fa fa-upload"></i> 确定</button>
+                            </div>
+                            <input id="tbTopMerge" type="text" style="display:none" /><!--多表头合并数据-->
+                            <input id="tbTopFieldJson" type="text" style="display:none" /><!--多表头隐藏值-->
+                            <div id="topFieldDiv" style="width: 100%; height: 100%; overflow-y: hidden;overflow-x: hidden"></div>
+                            <P><span style="color: red;"><i class="fa fa-info-circle"></i> 注：合并表头要添加在列所在行以上</span></P>
 
                         </div>
 
                         <!--筛选配置-->
                         <input id="RegularVals" type="text" style="display:none" /><!--正则隐藏-->
                         <div role="tabpanel" class="tab-pane" id="tbFilter">
-                                <table id="tbFilterGrid"></table>
-                                <div id="tbFilterGridPager"></div>
+                            <table id="tbFilterGrid"></table>
+                            <div id="tbFilterGridPager"></div>
                             <!--筛选表格邮件悬浮层-->
                             <div class="contextMenu row" id="contextMenu" style="display:none;">
                                 <ul>
@@ -389,115 +444,139 @@
 
                         <!--事件列表配置-->
                         <div role="tabpanel" class="tab-pane" id="tbEvent">
-                                <div class="row form-group">
-                                    <input id="EventIdentifier" type="text" style="display:none" />
+                            <div class="row form-group">
+                                <input id="EventIdentifier" type="text" style="display:none" />
 
-                                    <label for="eventType" class="col-sm-1 control-label text-right deletePaddingLR">事件类型</label>
-                                    <div class="col-sm-2">
-                                        <select id="eventType" name="eventType" class="form-control">
-                                            <option value="1">行事件</option>
-                                            <option value="2">全局事件</option>
-                                            <option value="3">内容事件</option>
-                                            <option value="4">列事件</option>
-                                            <option value="5">多表头事件</option>
-                                            <option value="6">内容格式化</option>
-                                        </select>
+                                <label for="eventType" class="col-sm-1 control-label text-right deletePaddingLR">事件类型</label>
+                                <div class="col-sm-2">
+                                    <select id="eventType" name="eventType" class="form-control">
+                                        <option value="1">行事件</option>
+                                        <option value="2">全局事件</option>
+                                        <option value="3">内容事件</option>
+                                        <option value="4">列事件</option>
+                                        <option value="5">多表头事件</option>
+                                        <option value="6">内容格式化</option>
+                                    </select>
+                                </div>
+
+                                <label for="eventField" class="col-sm-1 control-label text-right deletePaddingLR">依附字段</label>
+                                <div class="col-sm-2" class="form-control">
+                                    <input id="eventField" name="eventField" type="text" placeholder="填写字段编码" class="form-control" />
+                                </div>
+
+                                <label for="eventDisplayWay" class="col-sm-1 control-label text-right deletePaddingLR">显示形式</label>
+                                <div class="col-sm-2">
+                                    <select id="eventDisplayWay" name="eventDisplayWay" class="form-control">
+                                        <option value="1">超链接</option>
+                                        <option value="2">按钮</option>
+                                    </select>
+                                </div>
+
+                                <label for="eventDisplayName" class="col-sm-1 control-label text-right deletePaddingLR">事件名称</label>
+                                <div class="col-sm-2">
+                                    <input id="eventDisplayName" name="eventDisplayName" type="text" placeholder="事件名称" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+
+                                <label for="eventIcon" class="col-sm-1 control-label text-right deletePaddingLR">按钮图标</label>
+                                <div class="col-sm-2 ">
+                                    <div class="btn-group">
+                                        <input id="eventIcon" name="eventIcon" onchange="ContentIconType($(this).val())" onkeyup="ContentIconType($(this).val())" type="text" placeholder="按钮图标" class="form-control" style="padding-right: 41px;display:initial" />
+                                        <button class="btn btn-default  dropdown-toggle iconBut" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="MyModelTypeIcon('#divTypeIcon')">
+                                            <span class="btn-value"><i id="icon_type_img" class="eventIcon"></i></span> <span class="caret"></span>
+                                        </button>
+                                        <div class="dropdown-menu divTypeIcon" id="divTypeIcon">
+                                            @Html.Partial("~/Views/Shared/Type_Icon.cshtml")
+                                        </div>
                                     </div>
 
-                                    <label for="eventField" class="col-sm-1 control-label text-right deletePaddingLR">依附字段</label>
-                                    <div class="col-sm-2" class="form-control">
-                                        <input id="eventField" name="eventField" type="text" placeholder="填写字段编码" class="form-control" />
-                                    </div>
+                                </div>
 
-                                    <label for="eventDisplayWay" class="col-sm-1 control-label text-right deletePaddingLR">显示形式</label>
-                                    <div class="col-sm-2">
-                                        <select id="eventDisplayWay" name="eventDisplayWay" class="form-control">
-                                            <option value="1">超链接</option>
-                                            <option value="2">按钮</option>
-                                        </select>
-                                    </div>
-
-                                    <label for="eventDisplayName" class="col-sm-1 control-label text-right deletePaddingLR">事件名称</label>
-                                    <div class="col-sm-2">
-                                        <input id="eventDisplayName" name="eventDisplayName" type="text" placeholder="事件名称" class="form-control" />
+                                <label for="eventStyle" class="col-sm-1 control-label text-right deletePaddingLR">按钮样式</label>
+                                <div class="col-sm-2 ">
+                                    <div class="btn-group">
+                                        <input id="eventStyle" name="eventStyle" type="text" placeholder="按钮样式" class="form-control" style="padding-right: 41px;display:initial" />
+                                        <div class="btn-group open ButStyle">
+                                            <button type="button" id="dropdownStyleBut" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">样式<span class="caret"></span></button>
+                                            <ul class="dropdown-menu" role="menu" style="padding:5px;vertical-align:middle;text-align:center;">
+                                                <li><button type="button" class="noneStyleBut">清空样式</button></li>
+                                                <li class="divider"></li>
+                                                <li><button type="button" class="btn btn-default">按钮样式</button></li>
+                                                <li><button type="button" class="btn btn-primary">按钮样式</button></li>
+                                                <li><button type="button" class="btn btn-success">按钮样式</button></li>
+                                                <li><button type="button" class="btn btn-info">按钮样式</button></li>
+                                                <li><button type="button" class="btn btn-warning">按钮样式</button></li>
+                                                <li><button type="button" class="btn btn-danger">按钮样式</button></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="row form-group">
-
-                                    <label for="eventIcon" class="col-sm-1 control-label text-right deletePaddingLR">按钮图标</label>
-                                    <div class="col-sm-2 ">
-                                        <input id="eventIcon" name="eventIcon" type="text" placeholder="按钮图标" class="form-control" />
-                                    </div>
-
-                                    <label for="eventStyle" class="col-sm-1 control-label text-right deletePaddingLR">按钮样式</label>
-                                    <div class="col-sm-2 ">
-                                        <input id="eventStyle" name="eventStyle" type="text" placeholder="按钮样式" class="form-control" />
-                                    </div>
-
-                                    <label for="eventTitle" class="col-sm-1 control-label text-right deletePaddingLR">悬浮提示</label>
-                                    <div class="col-sm-2 ">
-                                        <input id="eventTitle" name="eventTitle" type="text" placeholder="悬浮提示" class="form-control" />
-                                    </div>
-
-                                    <label for="eventOrderNum" class="col-sm-1 control-label text-right deletePaddingLR">序号</label>
-                                    <div class="col-sm-2 ">
-                                        <input id="eventOrderNum" name="eventOrderNum" type="text" placeholder="排序号" class="form-control" />
-                                    </div>
+                                <label for="eventTitle" class="col-sm-1 control-label text-right deletePaddingLR">悬浮提示</label>
+                                <div class="col-sm-2 ">
+                                    <input id="eventTitle" name="eventTitle" type="text" placeholder="悬浮提示" class="form-control" />
                                 </div>
 
-                                <div class="row form-group">
+                                <label for="eventOrderNum" class="col-sm-1 control-label text-right deletePaddingLR">序号</label>
+                                <div class="col-sm-2 ">
+                                    <input id="eventOrderNum" name="eventOrderNum" type="text" placeholder="排序号" class="form-control" />
+                                </div>
+                            </div>
 
-                                    <label for="eventOpenWay" class="col-sm-1 control-label text-right deletePaddingLR">打开方式</label>
-                                    <div class="col-sm-2 ">
-                                        <select id="eventOpenWay" name="eventOpenWay" class="form-control">
-                                            <option value="1">弹出框</option>
-                                            <option value="2">顶级弹出框</option>
-                                            <option value="3">当页跳转</option>
-                                            <option value="4">新开网页</option>
-                                            <option value="5">新开Tab页</option>
-                                            <option value="7">弹子页</option>
-                                            <option value="6">ajax执行Post</option>
-                                            <option value="8">ajax执行Get</option>
-                                            <option value="9">ajax执行Post(含确认提示)</option>
-                                            <option value="10">调用js方法</option>
-                                        </select>
-                                    </div>
+                            <div class="row form-group">
 
-                                    <label for="eventUrl" class="col-sm-1 control-label text-right deletePaddingLR">事件URL</label>
-                                    <div class="col-sm-2 ">
-                                        <input id="eventUrl" name="eventUrl" type="text" placeholder="事件url" class="form-control" />
-                                    </div>
-
-                                    <label for="eventHeight" class="col-sm-1 control-label text-right deletePaddingLR">窗口高</label>
-                                    <div class="col-sm-2 ">
-                                        <input id="eventHeight" name="eventHeight" type="text" placeholder="窗口高" class="form-control" />
-                                    </div>
-
-                                    <label for="eventWidth" class="col-sm-1 control-label text-right deletePaddingLR">窗口宽</label>
-                                    <div class="col-sm-2 ">
-                                        <input id="eventWidth" name="eventWidth" type="text" placeholder="窗口宽" class="form-control" />
-                                    </div>
+                                <label for="eventOpenWay" class="col-sm-1 control-label text-right deletePaddingLR">打开方式</label>
+                                <div class="col-sm-2 ">
+                                    <select id="eventOpenWay" name="eventOpenWay" class="form-control">
+                                        <option value="1">弹出框</option>
+                                        <option value="2">顶级弹出框</option>
+                                        <option value="3">当页跳转</option>
+                                        <option value="4">新开网页</option>
+                                        <option value="5">新开Tab页</option>
+                                        <option value="7">弹子页</option>
+                                        <option value="6">ajax执行Post</option>
+                                        <option value="8">ajax执行Get</option>
+                                        <option value="9">ajax执行Post(含确认提示)</option>
+                                        <option value="10">调用js方法</option>
+                                    </select>
                                 </div>
 
-                                <!--事件参数配置-->
+                                <label for="eventUrl" class="col-sm-1 control-label text-right deletePaddingLR">事件URL</label>
+                                <div class="col-sm-2 ">
+                                    <input id="eventUrl" name="eventUrl" type="text" placeholder="事件url" class="form-control" />
+                                </div>
 
-                                <div class="">
-                                    <table id="eventParamGrid" style="width:100%"></table>
-                                    <div id="eventParamGridPager"></div>
+                                <label for="eventHeight" class="col-sm-1 control-label text-right deletePaddingLR">窗口高</label>
+                                <div class="col-sm-2 ">
+                                    <input id="eventHeight" name="eventHeight" type="text" placeholder="窗口高" class="form-control" />
                                 </div>
-                                <div class="text-right" style="margin-top:10px">
-                                    <button id="SaveTbEvent" class="btn btn-success" onclick="SaveTbEvent()"><i class="fa fa-save"></i> 保存事件</button>
-                                    <button id="ResetTbEvent" class="btn btn-success" onclick="ResetTbEvent()"><i class="fa fa-reply"></i> 重置</button>
+
+                                <label for="eventWidth" class="col-sm-1 control-label text-right deletePaddingLR">窗口宽</label>
+                                <div class="col-sm-2 ">
+                                    <input id="eventWidth" name="eventWidth" type="text" placeholder="窗口宽" class="form-control" />
                                 </div>
+                            </div>
+
+                            <!--事件参数配置-->
+
+                            <div class="">
+                                <table id="eventParamGrid" style="width:100%"></table>
+                                <div id="eventParamGridPager"></div>
+                            </div>
+                            <div class="text-right" style="margin-top:10px">
+                                <button id="SaveTbEvent" class="btn btn-success" onclick="SaveTbEvent()"><i class="fa fa-save"></i> 保存事件</button>
+                                <button id="ResetTbEvent" class="btn btn-success" onclick="ResetTbEvent()"><i class="fa fa-reply"></i> 重置</button>
+                            </div>
                             <hr />
                             <!--事件列表-->
 
-                                <input id="tbEventJson" type="text" style="display:none" />
-                                <div class="">
-                                    <table id="eventGrid" style=" width:100%"></table>
-                                    <div id="eventGridPager"></div>
-                                </div>
+                            <input id="tbEventJson" type="text" style="display:none" />
+                            <div class="">
+                                <table id="eventGrid" style="width:100%"></table>
+                                <div id="eventGridPager"></div>
+                            </div>
                         </div>
 
                     </div>
@@ -512,8 +591,6 @@
     </div>
 </div>
 
-
-<!--预留 图形报表管理-->
 <!--预留 RDLC报表的管理-->
 <div class="modal" id="rdlcReport" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel">
     <!--当前操作rdlc报表-->
@@ -554,7 +631,7 @@
                                     <input id="rdlcRowNum" name="rdlcRowNum" type="text" placeholder="正整数" class="form-control" aria-describedby="rowNum" />
                                 </div>
                             </div>
-                          
+
                             <div class="row form-group">
                                 <label for="rdlcRemark" class="col-sm-2 control-label text-right">报表说明文字</label>
                                 <div class="col-sm-4">
@@ -591,10 +668,94 @@
     </div>
 </div>
 
+<!--预留 图形报表管理-->
+<div class="modal" id="chartReport" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel">
+    <!--当前操作chart报表-->
+    <input id="currChartReport" type="text" style="display:none" />
 
+    <div class="modal-dialog" role="document" style="width:90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel"> <i class="fa fa-cog"></i> Echart报表配置</h4>
+            </div>
+            <div class="modal-body">
+                @*<p>内容部分</p>*@
+                <div class="form-body jarviswidget ">
+                    <header role="heading">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#chartBase" aria-controls="home" role="tab" data-toggle="tab">代码体配置</a></li>
+                            <li role="presentation"><a href="#chartFilter" aria-controls="profile" role="tab" data-toggle="tab">筛选配置</a></li>
+                        </ul>
+                    </header>
+                    <!--chart选项卡内容部分-->
+                    <div class="tab-content" style="padding-top:12px;">
+                        <!--chart的基础xml-->
+                        <div role="tabpanel" class="tab-pane active form-horizontal" id="chartBase">
+                            <div class="row form-group">
+                                <label for="chartIsShowFilter" class="col-sm-1 control-label text-right">展开筛选</label>
+                                <div class="col-sm-2">
+                                    <select id="chartIsShowFilter" name="chartIsShowFilter" class="form-control">
+                                        <option value="true">是</option>
+                                        <option value="false">否</option>
+                                    </select>
+                                </div>
+                                <label for="chartType" class="col-sm-1 control-label text-right">图表种类</label>
+                                <div class="col-sm-2">
+                                    <select id="chartType" name="chartType" class="form-control"></select>
+                                </div>
+                                <label for="chartTemp" class="col-sm-1 control-label text-right">图表模版</label>
+                                <div class="col-sm-2">
+                                    <select id="chartTemp" name="chartTemp" class="form-control"></select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-warning" onclick="ChooseTemp()" title="加载模版"> <i class="fa fa-paste"></i> 加载模版</button>
+                                    @*&nbsp;
+                                    <button type="button" class="btn btn-success" onclick="previewChart()" title="预览"> <i class="fa fa-save"></i> 预览</button>*@
+                                </div> 
+
+                            </div>
+                           
+                            <div class="row form-group">
+                                <div class="col-sm-12">
+                                    <input id="chartId" name="chartId" type="text" style="display:none" />
+                                    <textarea id="chartEndCode" name="chartEndCode" style = "height:330px;display:none" class="form-control" placeholder="代码体" ></textarea>
+                                    <div style="width:100%;height: 550px;text-align:center;padding:0px 0px 0px 0px" id="divContent">
+                                        <iframe style="width:100%;height:100%;border:1px solid #ddd;" id="ifm" src="~/Echart/preview.html"></iframe>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-sm-12">
+                                    <textarea id="chartRemark" name="chartRemark" class="form-control" placeholder="图表说明"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!--chart筛选配置-->
+                        <div role="tabpanel" class="tab-pane" id="chartFilter">
+                            <table id="chartFilterGrid"></table>
+                            <div id="chartFilterGridPager"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" title="关闭"> <i class="fa fa-remove"></i> 关闭</button>
+                    <button type="button" class="btn btn-success" onclick="SaveChartReport()" title="保存"> <i class="fa fa-save"></i> 保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
-@Scripts.Render("~/Bundles/ztree/js")
-@Scripts.Render("~/Bundles/App/jqgrid/js")
-@Scripts.Render("~/Bundles/App/handsontable/js")
-@Scripts.Render("~/Bundles/App/editReport/js")
+    @Scripts.Render("~/Bundles/ztree/js")
+    @Scripts.Render("~/Bundles/App/jqgrid/js")
+    @Scripts.Render("~/Bundles/App/handsontable/js")
+    @Scripts.Render("~/Bundles/App/editReport/js")
+    @Scripts.Render("~/Bundles/txtIDE/js")
+    <script src="~/Common/Scripts/TypeIcon/TypeIcon.js"></script>
+
 }

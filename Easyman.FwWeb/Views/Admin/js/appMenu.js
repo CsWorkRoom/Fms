@@ -94,7 +94,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增菜单",
-        url: "/Admin/CreateAppMenu",
+        url: bootPATH + "/Admin/CreateAppMenu",
         width: 850,
         height: 620,
         fullscreen: false,
@@ -108,7 +108,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑菜单",
-        url: "/Admin/AppMenuEdit?&navId=" + id,
+        url: bootPATH + "/Admin/AppMenuEdit?&navId=" + id,
         width: 850,
         height: 600,
         fullscreen: false,

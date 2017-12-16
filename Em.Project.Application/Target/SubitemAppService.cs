@@ -67,7 +67,9 @@ namespace Easyman.Service
             {
                 throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
             }
-            var entObj =input.MapTo<Subitem>();
+            //var entObj =input.MapTo<Subitem>();
+            var entObj = _SubitemCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new Subitem();
+            entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
             //var entObj= AutoMapper.Mapper.Map<Subitem>(input);
             var resObj= _SubitemCase.InsertOrUpdate(entObj);
             if (resObj == null)

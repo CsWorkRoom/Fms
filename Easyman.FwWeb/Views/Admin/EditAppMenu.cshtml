@@ -45,14 +45,14 @@
                 <div class="form-group">
                     <label for="Name" class="col-sm-4 control-label">名称</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "菜单名称", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "菜单名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="Code" class="col-sm-4 control-label">编码</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "菜单编码", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "菜单编码", @Required = "Required", @oninvalid = "setCustomValidity('请输入编码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                     <div class="col-sm-6">
                         <div class="btn-group">
                             @Html.HiddenFor(f => f.Icon)
-                            <button class="btn btn-default  dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="MyModelTypeIcon()">
+                            <button class="btn btn-default  dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="MyModelTypeIcon('#divTypeIcon')">
                                 <span class="btn-value"><i id="icon_type_img"  class="@Html.Raw(Model.Icon)"></i></span> <span class="caret"></span>
                             </button>
                             <div class="dropdown-menu" id="divTypeIcon" style="display:none;">
@@ -88,7 +88,18 @@
                 <div class="form-group">
                     <label for="Order" class="col-xs-4 control-label">排序</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.Order, new { @class = "form-control", placeholder = "排序" })
+                        @Html.TextBoxFor(f => f.ShowOrder, new { @class = "form-control", placeholder = "排序" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="IsUse" class="col-xs-4 control-label">是否显示</label>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(p => p.IsUse,
+                       new List<SelectListItem> {
+                           new SelectListItem { Text="开启",Value="true",Selected=true},
+                           new SelectListItem { Text="关闭",Value="false"}
+                       },
+                        new { @class = "form-control" })
                     </div>
                 </div>
 
@@ -112,4 +123,5 @@
 
 @section scripts{
     <script src="~/Views/Admin/js/editAppMenu.js"></script>
+<script src="~/Common/Scripts/TypeIcon/TypeIcon.js"></script>
 }

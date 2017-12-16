@@ -35,6 +35,7 @@ namespace Easyman.Migrations.SeedData
                         ApplicationType=e.ApplicationType,
                         Url = e.Url,
                         Icon=e.Icon,
+                        IsUse=e.IsUse,
                         TenantId = e.TenantId };
                     _context.Module.Add(module);
 

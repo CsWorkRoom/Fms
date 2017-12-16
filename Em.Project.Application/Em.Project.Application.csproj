@@ -45,8 +45,9 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Core">
-      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.3.3.0\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.4.0\lib\net45\Castle.Windsor.dll</HintPath>
@@ -94,11 +95,13 @@
     <Compile Include="MonthTarget\MonthBonusAppService.cs" />
     <Compile Include="MonthTarget\MonthTargetAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\ChartReportAppService.cs" />
     <Compile Include="Report\Dto\ChildReportModel.cs" />
     <Compile Include="Report\Dto\ExcelTop.cs" />
     <Compile Include="Report\Dto\GlobalVarModel.cs" />
     <Compile Include="Report\Dto\ParamModel.cs" />
     <Compile Include="Report\Dto\QueryParam.cs" />
+    <Compile Include="Report\Dto\ChartReportModel.cs" />
     <Compile Include="Report\Dto\RdlcReportModel.cs" />
     <Compile Include="Report\Dto\ReportEnum.cs" />
     <Compile Include="Report\Dto\ReportFilterModel.cs" />
@@ -109,6 +112,7 @@
     <Compile Include="Report\Dto\InEventModel.cs" />
     <Compile Include="Report\Dto\TbReportOutEventModel.cs" />
     <Compile Include="Report\GlobalVarAppService.cs" />
+    <Compile Include="Report\IChartReportAppService.cs" />
     <Compile Include="Report\IGlobalVarAppService.cs" />
     <Compile Include="Report\IRdlcReportAppService.cs" />
     <Compile Include="Report\IReportAppService.cs" />
@@ -117,7 +121,9 @@
     <Compile Include="Report\ReportAppService.cs" />
     <Compile Include="Report\TbReportAppService.cs" />
     <Compile Include="Target\Dto\CurTarget.cs" />
+    <Compile Include="Report\Dto\ChartTempModel.cs" />
     <Compile Include="Target\Dto\SubitemScore.cs" />
+    <Compile Include="Report\Dto\ChartTypeModel.cs" />
     <Compile Include="Target\Dto\SubitemTypeModel.cs" />
     <Compile Include="Target\Dto\SubitemModel.cs" />
     <Compile Include="Target\Dto\QxTargetVal.cs" />

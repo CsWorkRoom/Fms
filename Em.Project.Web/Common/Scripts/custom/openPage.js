@@ -25,7 +25,6 @@ var ModeDialogContent = function (strModalId, strTitle, strContent, strFooter, i
         }
     }
     var strStyle = " style='width:" + intWidth + "px;height:" + intHeight + "px;" + strMargin + "'";
-
     var strModalHtml = "<div class='modal fade' id='" + strModalId + "' tabindex='-1' aria-hidden='true' data-backdrop='static' role='dialog' aria-hidden='true'>";
     strModalHtml += "<div class='modal-dialog' " + strStyle + ">";
     strModalHtml += "<div class='modal-content' " + strStyle + ">";
@@ -33,35 +32,18 @@ var ModeDialogContent = function (strModalId, strTitle, strContent, strFooter, i
     strModalHtml += "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>";
     strModalHtml += "<h4 class='modal-title' >" + strTitle + "</h4></div>";
     strModalHtml += "<div class='modal-body' >" + strContent + "</div>";
-    strModalHtml += "<div class='modal-footer'>";
-    strModalHtml += strFooter;
-   // strModalHtml += "<button type='button' class='btn btn-danger' data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button>";
+    if (strFooter != null && strFooter != "") {
+        strModalHtml += "<div class='bottomPage'>";
+        strModalHtml += strFooter;
+        strModalHtml += "</div>";
+    }
     strModalHtml += "</div>";
     strModalHtml += "</div>";
     strModalHtml += "</div>";
-    strModalHtml += "</div>";
-
     var objHtml = $(strModalHtml);
-    objHtml.find(".modal-body").height($(strModalHtml).find(".modal-content").height() - 47);//设置URL地址的高度
+   // objHtml.find(".modal-body").height($(strModalHtml).find(".modal-content").height() - 47);//设置URL地址的高度
     //是否在顶层显示
-    if (blnTop) {
-        $(strModalHtml).appendTo(window.top.$("body"));
-        window.top.$("#" + strModalId).modal("show");
-    }
-    else {
-        $(objHtml).appendTo(this.$("body"));
-        $("#" + strModalId).modal("show");
-        if (window.top.$(".modal-backdrop").length <= 0)
-            return;
-        switch (window.top.$(".modal-backdrop").length) {
-            case 1:
-                window.top.$(".modal-backdrop").eq(0).appendTo(this.$("body"));
-                break;
-            default:
-                window.top.$(".modal-backdrop").eq(1).appendTo(this.$("body"));
-                break;
-        }
-    }
+    ShowModalBackdrop(objHtml, blnTop, strModalId);//背景层显示位置
 }
 
 ///动态生成模态窗体顶层显示
@@ -127,38 +109,19 @@ var ModeDialogObjContent = function (strModalId, strTitle, objContent, objFooter
     strModalHtml += "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>";
     strModalHtml += "<h4 class='modal-title'>" + strTitle + "</h4></div>";
     strModalHtml += "<div class='modal-body' ></div>";
-    strModalHtml += "<div class='modal-footer'>";
-   // strModalHtml += "<button type='button' class='btn btn-default' data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button>";
-    strModalHtml += "</div>";
+    if (objFooter != null && objFooter != "") {
+        strModalHtml += "<div class='bottomPage'>";
+        strModalHtml += "</div>";
+    }
     strModalHtml += "</div>";
     strModalHtml += "</div>";
     strModalHtml += "</div>";
 
     var objHtml = $(strModalHtml);
     objHtml.find(".modal-body").append(objContent);
-    objHtml.find(".modal-footer").append(objFooter);
-    objHtml.find(".modal-body").height($(strModalHtml).find(".modal-content").height() - 47);//设置URL地址的高度
-    //是否在顶层显示
-    if (blnTop) {
-        window.top.$("#" + strModalId).remove();//先移出
-        $(objHtml).appendTo(window.top.$("body"));
-        window.top.$("#" + strModalId).modal("show");
-    }
-    else {
-        $("#" + strModalId).remove();//先移出
-        $(objHtml).appendTo(this.$("body"));
-        $("#" + strModalId).modal("show");
-        if (window.top.$(".modal-backdrop").length <= 0)
-            return;
-        switch (window.top.$(".modal-backdrop").length) {
-            case 1:
-                window.top.$(".modal-backdrop").eq(0).appendTo(this.$("body"));
-                break;
-            default:
-                window.top.$(".modal-backdrop").eq(1).appendTo(this.$("body"));
-                break;
-        }
-    }
+    objHtml.find(".bottomPage").append(objFooter);
+    // objHtml.find(".modal-body").height($(strModalHtml).find(".modal-content").height() - 47);//设置URL地址的高度
+    ShowModalBackdrop(objHtml, blnTop, strModalId);
 }
 
 ///动态生成模态窗体顶层显示（通过对像生成）
@@ -243,27 +206,30 @@ var ModeDialogUrl = function (strModalId, strTitle, strUrl, intWidth, intHeight)
     strModalHtml += "</div>";
     var objHtml = $(strModalHtml);
     objHtml.find(".modal-body").height($(strModalHtml).find(".modal-content").height() - 47);//设置URL地址的高度
+    ShowModalBackdrop(objHtml,blnTop, strModalId);
+}
 
+///背景层显示位置
+var ShowModalBackdrop = function (objHtml, blnTop, strModalId) {
     ////是否在顶层显示
     if (blnTop) {
         window.top.$("#" + strModalId).remove();//先移出
-        $(objHtml).appendTo(window.top.$("body"));       
+        $(objHtml).appendTo(window.top.$("body"));
         window.top.$("#" + strModalId).modal("show");
     }
     else {
         $("#" + strModalId).remove();//先移出
         $(objHtml).appendTo(this.$("body"));
         $("#" + strModalId).modal("show");
-        if (window.top.$(".modal-backdrop").length <= 0)
+        var intBackropLength = window.top.$(".modal-backdrop").length;
+        if (intBackropLength <= 0)
             return;
-        switch (window.top.$(".modal-backdrop").length) {
-            case 1:
-                window.top.$(".modal-backdrop").eq(0).appendTo(this.$("body"));
-                break;
-            default:
-                window.top.$(".modal-backdrop").eq(1).appendTo(this.$("body"));
-                break;
-        }
+        var intBackropLength = window.top.$(".modal-backdrop").length;
+        //if (intBackropLength <= 0)
+        //    return;
+        //if (intBackropLength >= 2) {
+            window.top.$(".modal-backdrop").eq(intBackropLength - 1).appendTo(this.$("body"));
+       // }
     }
 }
 
@@ -576,7 +542,6 @@ var AjaxPostConfirm = function (strUrl, btnObj) {
         abp.message.error(btnName + "异常，提交失败!", btnName + "提示");
         return;
     }
-
     abp.message.confirm(
     '将进行' + btnName, //确认提示
     '确定' + btnName + '?', //确认提示（可选参数）
@@ -588,11 +553,10 @@ var AjaxPostConfirm = function (strUrl, btnObj) {
                 data: GetParamJsonByUrl(strUrl),
                 success: function (result) {
                     if (result != null && result != undefined && result != "") {
-                        window.location.reload();
-                        abp.message.success(btnName + "提交成功!", btnName + "提示");
+                        abp.message.success("提交成功!", "提示");      
+                        window.location.reload();          
                     }
                     else {
-                        swal(btnName + "成功!", "success");
                         abp.message.error(btnName + "提交失败!", btnName + "提示");
                     }
                 },
@@ -602,7 +566,7 @@ var AjaxPostConfirm = function (strUrl, btnObj) {
                     try {
                         if (data.success === false) {
                             if (data.error.validationErrors) {
-                                abp.message.error(data.error.details, data.error.message);
+                                abp.message.success(data.error.details, data.error.message);
                             }
                             else {
                                 abp.message.error(data.error.message, btnName + '失败');

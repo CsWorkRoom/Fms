@@ -13,9 +13,7 @@ function InitEvent() {
 function handleSubmitForm(postUrl) {
     //修改页面Form表单action提交地址，参数
     $("#saveForm").attr("action", postUrl);
-    //IsSubmit();
-    $("#saveForm").submit();
-
+    $("#sumbit-btn").attr("type", "submit");
 }
 //#endregion
 

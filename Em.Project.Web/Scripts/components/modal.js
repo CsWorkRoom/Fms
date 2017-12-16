@@ -36,7 +36,7 @@ var DiyModal = {
             modalHtml += '<button type="button" class="close" title="关闭">&times;</button>';
             //modalHtml += '<button type="button" class="refresh" title="刷新"><i class="fa fa-refresh"></i></button>';
             modalHtml += '<h4 class="modal-title">' + setting.title + '</h4></div>';
-            modalHtml += '<div class="modal-body" style="height:'+(setting.height-60)+'px"><iframe width="100%" height="100%" frameborder="0" >';
+            modalHtml += '<div class="modal-body" style="height:'+(setting.height)+'px"><iframe width="100%" height="100%" frameborder="0" >';
             modalHtml += '</iframe></div></div></div></div>';
 
             var onLoadUrl = function (url) {

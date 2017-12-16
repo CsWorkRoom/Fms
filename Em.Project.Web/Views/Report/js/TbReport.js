@@ -40,7 +40,6 @@ $(document).ready(function () {
             if ($("#spTools").html() != "") {
                 $("#spTools").show();
             }
-            $(this).attr("title", "点击关闭搜索条件区");
         } else {
             $(".fa-chevron-down").show();
             $(".fa-chevron-up").hide();
@@ -53,9 +52,9 @@ $(document).ready(function () {
                 $("#divTools").height(10);
             }
             $('#filterHts').collapse('hide');
-            $(this).attr("title", "点击展开搜索条件区");
         }
-        $(window).resize();
+        SetDefultDataImg("jqGrid");
+        SetShrinkToFit("jqGrid");
     });
 
     //是否显示筛选
@@ -90,14 +89,13 @@ $(document).ready(function () {
         SetPeportSize("jqGrid", "navMenu", "jqGridPager");//重新计算窗体高度
         $("#searchTools").hide();
     });
-   $(window).resize();    
+    $(window).resize();
 });
 
 //随着浏览器的变化而变化
 $(window).resize(function () {
    WinResize("jqGrid", "navMenu", "jqGridPager");
 });
-
 
 var SetSeach = function(){
     //判断条件label高度是否置顶
@@ -112,7 +110,6 @@ var SetSeach = function(){
 
 var ShowWind = function (rowId) {
     ModeDialogContent("", "<i id='icon_type_img' class='fa fa-book'></i> 更多选项", $("#" + rowId).html(), "", 310, $("#" + rowId).height()+60);
-
 }
 
 //获取当前PC端表格报表
@@ -187,7 +184,7 @@ function InitTbReport() {
                 if (ev.EventType == "1")//为行事件时
                 {
                     if (AddNum > 1) {
-                        strLi += '<span style="padding: 10px 0px 0px 10px;float: left;"><i class="fa fa-file-text-o" aria-hidden="true"></i> ' + OutEventForLabel(ev, null, rowObject, cellvalue, null) + '</span>';
+                        strLi += '<span style="padding: 5px 0px 0px 10px;float: left;"><i class="fa fa-file-text-o" aria-hidden="true"></i> ' + OutEventForLabel(ev, null, rowObject, cellvalue, null) + '</span>';
                     } else {
                         lbl += OutEventForLabel(ev, null, rowObject, cellvalue,null) + " ";
                     }
@@ -197,7 +194,7 @@ function InitTbReport() {
         }
         //列表菜单
         //if (strLi != "")
-        //    lbl += '<span class="dropdown"><a style="cursor: pointer;" type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" >更多<span class="caret"></span></a><ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">' + strLi + '</ul></span>';
+        //    lbl += '<span class="dropdown" style="margin-left: 2px;"><a style="cursor: pointer;" type="button" class="aLabel dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" >更多<span class="caret"></span></a><ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">' + strLi + '</ul></span>';
 
         //select下拉式
         //lbl += '<select style="width:40px" id="category" name="category"><option value="">更多</option><option value="1"><i class="fa fa-file-text-o" aria-hidden="true"></i>类别1</option><option value="2"><i class="fa fa-file-text-o" aria-hidden="true"></i>类别2</option>    <option value="3"><i class="fa fa-file-text-o" aria-hidden="true"></i>类别3</option><option value="4"><i class="fa fa-file-text-o" aria-hidden="true"></i>类别4</option></select>';
@@ -685,74 +682,59 @@ function OutEventForLabel(outEvent, fieldName, rowObject, cellvalue, contEventAr
 
     //#region title变量赋值.
     var tit = outEvent.Title;
-    if (outEvent.Title != null && outEvent.Title != "")
-    {
+    if (outEvent.Title != null && outEvent.Title != "") {
         tit = outEvent.Title;
     }
-    else if (cellvalue != null && cellvalue != "")
-    {
+    else if (cellvalue != null && cellvalue != "") {
         tit = cellvalue;
     }
-    else if (fieldName != null && fieldName != "")
-    {
+    else if (fieldName != null && fieldName != "") {
         tit = fieldName;
     }
-    else if (outEvent.DisplayName != null && outEvent.DisplayName != "")
-    {
+    else if (outEvent.DisplayName != null && outEvent.DisplayName != "") {
         tit = outEvent.DisplayName;
     }
     else {
         tit = "";
     }
-    
+
     //设置title属性
     var title = tit == "" || tit == null ? " " : " title='" + tit + "' ";
     //#endregion
 
     //#region val变量显示值
     var val = "";
-    if (eventType == 1 || eventType == 2)
-    {
+    if (eventType == 1 || eventType == 2) {
         val = outEvent.DisplayName;
     }
-    else if (eventType == 4 || eventType == 5)
-    {
+    else if (eventType == 4 || eventType == 5) {
         val = fieldName;
     }
-    else if (eventType == 3)
-    {
+    else if (eventType == 3) {
         //在这个地方加入内容格式化的处理，返回的内容就是格式化的内容
-        if (contEventArr != null && contEventArr.length > 0)
-        {
+        if (contEventArr != null && contEventArr.length > 0) {
             var ress = ContForLabel(contEventArr[0], rowObject);//取一条内容格式化信息
-            if(ress!=null&&ress!="")
-            {
+            if (ress != null && ress != "") {
                 val = ress;
             }
             else val = cellvalue;
         }
-        else
-        {
+        else {
             val = cellvalue;
         }
         title = " title='" + cellvalue + "' "
     }
-    else
-    {
+    else {
         val = "";
     }
 
-    if (outEvent.OpenWay == 10)
-    {
+    if (outEvent.OpenWay == 10) {
         title = " title='" + outEvent.DisplayName + "' "
     }
-    //#endregion
 
-    //#region 按钮图片
-    var strIoc = "fa fa-hand-o-up";
-    if (outEvent.Icon != null && outEvent.Icon != "") {
-        strIoc = outEvent.Icon;
-    }    
+    if (title != null && title != "" && title.length > 20) {
+        title = title.substr(0, 20);//截取20个字符
+    }
     //#endregion
 
     //#region 按钮样式
@@ -762,18 +744,25 @@ function OutEventForLabel(outEvent, fieldName, rowObject, cellvalue, contEventAr
     }
     //#endregion
 
+    //#region 按钮图片
+    var strIoc = "";
+    if (outEvent.Icon != null && outEvent.Icon != "" && $.trim(outEvent.Icon) != "null")
+        strIoc = "<i class='" + outEvent.Icon + "'></i> ";
+
+    //#endregion
+ 
     //对于事件是超链接还是按钮，完全取决于用户配置。
     if (outEvent.DisplayWay == 1)//超链接
     {
-        returnLb = "<a name='hrefLike' href='javascript:void(0)' " + title + openWaylb + ">" + val + "</a>";
+        returnLb = "<a name='hrefLike' class='aLabel'" + title + openWaylb + ">" + strIoc + val + "</a>";
     }
     else if (outEvent.DisplayWay == 2)//按钮
     {
-        returnLb = "<button name='hrefLike' " + title + openWaylb + " class='" + strStyle + "'><i class='" + strIoc + "' aria-hidden='true'></i> " + val + "</button>";
+        returnLb = "<button name='hrefLike' " + title + openWaylb + " class='" + strStyle + "'>" + strIoc + val + "</button>";
     }
     else//默认超链接
     {
-        returnLb = "<a name='hrefLike' style='font-size: 15px;' href='javascript:void(0)' " + title + openWaylb + ">" + val + "</a>";
+        returnLb = "<a name='hrefLike' class='aLabel' " + title + openWaylb + ">" + strIoc + val + "</a>";
     }
     return returnLb;
 }

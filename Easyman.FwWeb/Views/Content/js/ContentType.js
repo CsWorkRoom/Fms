@@ -87,7 +87,7 @@ function InitEvent() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑内容类别",
-        url: "/Content/EditContentType?&navId=" + id,
+        url: bootPATH + "/Content/EditContentType?&navId=" + id,
         width: 850,
         height: 600,
         fullscreen: true,
@@ -102,7 +102,7 @@ function onedit(id) {
 function onAdd() {
     DiyModal.window({
         title: "新增内容类别",
-        url: "/Content/AddContentType",
+        url: bootPATH + "/Content/AddContentType",
         width: 850,
         height: 600,
         fullscreen: false,

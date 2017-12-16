@@ -78,7 +78,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增预设数据类型",
-        url: "/Import/EditPreDataType",
+        url: bootPATH + "/Import/EditPreDataType",
         width: 850,
         height: 550,
         fullscreen: false,
@@ -92,7 +92,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "修改预设数据类型",
-        url: "/Import/EditPreDataType?id=" + id,
+        url: bootPATH + "/Import/EditPreDataType?id=" + id,
         width: 850,
         height: 550,
         fullscreen: false,

@@ -27,7 +27,7 @@
                     <div class="col-sm-6">
 
                         <div class="input-group">
-                            @Html.TextBoxFor(m => m.DataType, new { @class = "form-control", placeholder = "字段类型", @Required = "Required" })
+                            @Html.TextBoxFor(m => m.DataType, new { @class = "form-control", placeholder = "字段类型", @Required = "Required", @oninvalid = "setCustomValidity('请输入字段类型')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                            
                             <div id="dropDownTree_DataTypeId" class="dropdown-menu dropdown-tree col-xs-12">
                                 <ul id="menuTree_DataTypeId" class="ztree" style="-moz-user-select: none;">
@@ -46,14 +46,14 @@
                 <div class="form-group">
                     <label for="Name" class="col-xs-4 control-label">字段别名</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.FieldName, new { @class = "form-control", placeholder = "字段别名", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.FieldName, new { @class = "form-control", placeholder = "字段别名", @Required = "Required", @oninvalid = "setCustomValidity('请输入字段别名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="FieldName" class="col-xs-4 control-label">字段编码</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.FieldCode, new { @class = "form-control", placeholder = "字段编码", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.FieldCode, new { @class = "form-control", placeholder = "字段编码", @Required = "Required", @oninvalid = "setCustomValidity('请输入字段编码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
@@ -61,14 +61,14 @@
                 <div class="form-group">
                     <label for="DataType" class="col-xs-4 control-label">默认值</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.DefaultValue, new { @class = "form-control", placeholder = "默认值", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.DefaultValue, new { @class = "form-control", placeholder = "默认值", @Required = "Required", @oninvalid = "setCustomValidity('请输入默认值')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="DataLength" class="col-xs-4 control-label">字段说明</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", placeholder = "字段说明", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", placeholder = "字段说明", @Required = "Required", @oninvalid = "setCustomValidity('请输入字段说明')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 

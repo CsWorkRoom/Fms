@@ -45,7 +45,7 @@
 
 			this.wait().show();
 			$.ajax({
-				url: "/api/services/Service/" + url,
+			    url: bootPATH + "/api/services/Service/" + url,
 				method: type,
 			    dataType:"json",
 			    contentType:"application/json",

@@ -112,11 +112,7 @@ namespace Easyman.Content
             _replyPraiseAppService = replyPraiseAppService;
         }
         #endregion
-
         
-
-        
-
         #region 基础方法
         public ContentIndexSearchOutput SearchContent(ContentIndexSearchInput input)
         {
@@ -866,20 +862,26 @@ namespace Easyman.Content
         /// <returns></returns>
         public IEnumerable<object> GetNewContents()
         {
+           
+            //查询所有，启用的内容
+            var contAll = _contentRepository.GetAll().Where(x => x.IsUse == true).OrderByDescending(a => a.CreationTime).ToList();
+            //使用权限进行筛选，找出用户有权限的内容
 
-            //获取3条最新内容(阅读过的)
-            var content = _contentRepository.GetAll().Where(a => a.IsUse == true).OrderByDescending(a => a.CreationTime);//查询出全部被启用的内容,降序
-            var contents = content.Select(x => new ContentModelNoRead { id = x.Id, title = x.Title, createTime = x.CreationTime,is_user=1 });
-            //return contents.ToList().Take(3);
-            var listModel = contents.ToList().Take(3);
-            //获取3条未读记录，如果未读记录没有，则取最新3条
+            //循环contAll,加入符合权限的项
+            List<Domain.Content> contAllContent = new List<Domain.Content>();
+            foreach (var temt in contAll)
+            {
+                    var isAllow = GetIsAllow(temt.Id);
+                    //判断权限
+                    if (isAllow)
+                    {
+                        contAllContent.Add(temt);
+                    } 
+            }
 
-            //保存未读记录
-            List<ContentModelNoRead> listUserModel = new List<ContentModelNoRead>();
 
-
-            //1：根据用户ID查询出阅读记录ContentReadLog，AbpSession.UserId.Value;
-            var userID = AbpSession.UserId.Value;
+            //2:根据用户ID查询出阅读记录ContentReadLog，AbpSession.UserId.Value;
+            var userID = AbpSession.UserId.Value;//用户ID
             var contUser = _contentReadLogRepository.GetAll().Where(x => x.UserId == userID).Distinct().ToList();
             //把阅读过的内容ID放入list集合
             List<long> listContent = new List<long>();
@@ -890,18 +892,11 @@ namespace Easyman.Content
                     listContent.Add(contUser[i].ContentId);
                 }
             }
-            //备注：根据传过来的功能定义code查询对应的功能定义_defineRepository
-            var code = "help";
-            var define = _defineRepository.GetAll().FirstOrDefault(x => x.Code == code);
-            var contAllaas = _contentRepository.GetAll().Where(x => x.IsUse == true && x.DefineTypeId== define.Id).OrderByDescending(a => a.CreationTime);
 
-
-            //2：查询所有启用的内容
-            var contAll= _contentRepository.GetAll().Where(x=>x.IsUse==true).OrderByDescending(a => a.CreationTime);
-
+            //保存未读记录
+            List<ContentModelNoRead> listUserModel = new List<ContentModelNoRead>();
             //3：判断contAll中的内容ID,取出没有阅读记录的数据
-
-            foreach (var item in contAll)
+            foreach (var item in contAllContent)
             {
                 if (!listContent.Contains(item.Id))
                 {
@@ -909,31 +904,97 @@ namespace Easyman.Content
                     ContentModelNoRead model3 = new ContentModelNoRead();
                     model3.id = item.Id;
                     model3.title = item.Title;
+                    model3.type = _contentTypeRepository.Get(item.DefineTypeId).Name;
                     model3.createTime = item.CreationTime;
                     model3.is_user = 0;
                     listUserModel.Add(model3);
-                }               
+                }
             }
 
             if (listUserModel.Count() == 0)
             {
                 //没有未阅读记录,返回最新的三条
-                return listModel;
+                var listNewModel = contAllContent.Select(x => new ContentModelNoRead { id = x.Id, title = x.Title, type = _contentTypeRepository.Get(x.DefineTypeId).Name, createTime = x.CreationTime, is_user = 1 });
+                return listNewModel.ToList().Take(3);
             }
             else if (listUserModel.Count() <= 3)
             {
                 //返回未读记录
                 return listUserModel;
             }
-            else if (listUserModel.Count() > 3)
+            else
             {
                 //对listUserModel进行排序，返回最新的3条
                 return listUserModel.OrderByDescending(a => a.createTime).Take(3);
             }
-            else
-            {
-               return  listModel;
-            }
+            #region 丢弃
+            ////获取3条最新内容(没有阅读过的)
+            //var content = _contentRepository.GetAll().Where(a => a.IsUse == true).OrderByDescending(a => a.CreationTime);//查询出全部被启用的内容,降序
+
+            ////获取3条未读记录，如果未读记录没有，则取最新3条
+
+            ////保存未读记录
+            //List<ContentModelNoRead> listUserModel = new List<ContentModelNoRead>();
+
+
+            ////1：根据用户ID查询出阅读记录ContentReadLog，AbpSession.UserId.Value;
+            //var userID = AbpSession.UserId.Value;
+            //var contUser = _contentReadLogRepository.GetAll().Where(x => x.UserId == userID).Distinct().ToList();
+            ////把阅读过的内容ID放入list集合
+            //List<long> listContent = new List<long>();
+            //for (int i = 0; i < contUser.Count(); i++)
+            //{
+            //    if (!listContent.Contains(contUser[i].ContentId))
+            //    {
+            //        listContent.Add(contUser[i].ContentId);
+            //    }
+            //}
+
+            ////2：查询所有启用的内容
+            //var contAll= _contentRepository.GetAll().Where(x=>x.IsUse==true).OrderByDescending(a => a.CreationTime);
+
+            ////3：判断contAll中的内容ID,取出没有阅读记录的数据
+
+            //foreach (var item in contAll)
+            //{
+            //    if (!listContent.Contains(item.Id))
+            //    {
+            //        //加入listUserModel未读记录
+            //        ContentModelNoRead model3 = new ContentModelNoRead();
+            //        model3.id = item.Id;
+            //        model3.title = item.Title;
+            //        model3.createTime = item.CreationTime;
+            //        model3.type = _contentTypeRepository.Get(item.DefineTypeId).Name;
+            //        model3.is_user = 0;
+            //        listUserModel.Add(model3);
+            //    }               
+            //}
+
+            //if (listUserModel.Count() == 0)
+            //{
+            //    //没有未阅读记录,返回最新的三条
+            //    var listNewModel = contAll.Select(x => new ContentModelNoRead { id = x.Id, title = x.Title, type = _contentTypeRepository.Get(x.DefineTypeId).Name, createTime = x.CreationTime, is_user = 1 });
+            //    if (listNewModel.Count() > 3)
+            //    {
+            //        return listNewModel.ToList().Take(3);
+            //    }
+            //    else
+            //    {
+            //        return listNewModel;
+            //    }
+
+            //}
+            //else if (listUserModel.Count() <= 3)
+            //{
+            //    //返回未读记录
+            //    return listUserModel;
+            //}
+            //else 
+            //{
+            //    //对listUserModel进行排序，返回最新的3条
+            //    return listUserModel.OrderByDescending(a => a.createTime).Take(3);
+            //}
+            #endregion
 
         }
 

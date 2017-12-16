@@ -12,28 +12,28 @@
                 <div class="form-group">
                     <label for="Name" class="col-xs-4 control-label">名称</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "名称", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="Regular" class="col-xs-4 control-label">正则表达式</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.Regular, new { @class = "form-control", placeholder = "正则表达式", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.Regular, new { @class = "form-control", placeholder = "正则表达式", @Required = "Required", @oninvalid = "setCustomValidity('请输入正则表达式')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="Regular" class="col-xs-4 control-label">错误信息</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.ErrorMsg, new { @class = "form-control", placeholder = "错误信息", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.ErrorMsg, new { @class = "form-control", placeholder = "错误信息", @Required = "Required", @oninvalid = "setCustomValidity('请输入错误信息')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="Regular" class="col-xs-4 control-label">备注</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", placeholder = "备注", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", placeholder = "备注", @Required = "Required", @oninvalid = "setCustomValidity('请输入备注')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 

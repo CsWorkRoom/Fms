@@ -19,13 +19,13 @@
                 <div class="form-group">
                     <label for="Name" class="col-xs-4 control-label" style="text-align:right">打分项</label>
                     <div class="col-xs-6">
-                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "打分项", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "打分项", @Required = "Required", @oninvalid = "setCustomValidity('请输入打分项')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Weight" class="col-xs-4 control-label" style="text-align:right">权重分</label>
                     <div class="col-xs-6">
-                        @Html.TextBoxFor(f => f.Weight, new { @class = "form-control", placeholder = "权重分", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Weight, new { @class = "form-control", placeholder = "权重分", @Required = "Required", @oninvalid = "setCustomValidity('请输入权重分')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">

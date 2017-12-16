@@ -40,21 +40,21 @@
                 <div class="form-group">
                     <label for="Name" class="col-xs-4 control-label">表别名</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.CnTableName, new { @class = "form-control", placeholder = "表别名", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.CnTableName, new { @class = "form-control", placeholder = "表别名", @Required = "Required", @oninvalid = "setCustomValidity('请输入表别名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="Name" class="col-xs-4 control-label">代码</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "代码", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "代码", @Required = "Required", @oninvalid = "setCustomValidity('请输入代码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="Name" class="col-xs-4 control-label">表名称</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.EnTableName, new { @class = "form-control", placeholder = "表名称", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.EnTableName, new { @class = "form-control", placeholder = "表名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入表名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 

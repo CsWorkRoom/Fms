@@ -89,6 +89,7 @@
                 <li><a href="#" id="setMenu"><i class="fa fa-cog" aria-hidden="true" style="color:#079048"></i> 任务组信息</a></li>
                 <li><a href="#" id="" onclick="handleSubmitForm()"><i class="fa fa-floppy-o" aria-hidden="true" style="color:#209ff9"></i> 保存</a></li>
                 <li><a href="#" id="aHealp" ><i class="fa fa-question-circle" aria-hidden="true" style="color:#1c7851"></i> 帮助</a></li>
+                <button id="sumbit-btn" style="display:none" type="submit">提交</button>
             </ul>
         </header>
 
@@ -102,21 +103,21 @@
                     <div class="form-group">
                         <label for="Name" class="col-xs-4 control-label">任务组名称</label>
                         <div class="col-sm-6">
-                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "任务组名称", @Required = "Required" })
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "任务组名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入任务组名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="ScriptTypeId" class="col-xs-4 control-label">任务组类型</label>
                         <div class="col-sm-6">
-                            @Html.DropDownListFor(m => m.ScriptTypeId, ViewBag.ScriptTypeList as List<SelectListItem>, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.ScriptTypeId, ViewBag.ScriptTypeList as List<SelectListItem>, new { @class = "form-control", @oninvalid = "setCustomValidity('请输入任务组类型')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="Cron" class="col-xs-4 control-label">时间表达式</label>
                         <div class="col-sm-6">
-                            @Html.TextBoxFor(m => m.Cron, new { @class = "form-control", placeholder = "时间表达式", @Required = "Required" })
+                            @Html.TextBoxFor(m => m.Cron, new { @class = "form-control", placeholder = "时间表达式", @Required = "Required", @oninvalid = "setCustomValidity('请输入时间表达式')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
 
@@ -133,7 +134,7 @@
                     <div class="form-group">
                         <label for="RetryTime" class="col-xs-4 control-label">失败重启次数</label>
                         <div class="col-sm-6">
-                            @Html.TextBoxFor(m => m.RetryTime, new { @class = "form-control", placeholder = "失败重启次数", @Required = "Required" })
+                            @Html.TextBoxFor(m => m.RetryTime, new { @class = "form-control", placeholder = "失败重启次数", @Required = "Required", @oninvalid = "setCustomValidity('请输入失败重启次数')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
 
@@ -250,7 +251,7 @@
                 }
                 if (isCheck) {
                     num++;
-                    $(this).append("<div class='node cols'  id='" + id + "' style='position: absolute;background-color:#C1C1C1;'  name='" + $("#" + name).attr("name") + "' title='"+ $("#" + name).attr("title")+"'  option-data='" + $("#" + name).attr("option-data") + "'>" + $(ui.helper).html() + "</div>");
+                    $(this).append("<div class='node cols'  id='" + id + "' style='padding-top:15px;position: absolute;background-color:#C1C1C1;'  name='" + $("#" + name).attr("name") + "' title='" + $("#" + name).attr("title") + "'  option-data='" + $("#" + name).attr("option-data") + "'>" + $(ui.helper).html() + "</div>");
 
                     $("#" + id).css("left", left).css("top", top);
                     var endpoint = jsPlumb.addEndpoint(id, { anchors: "RightMiddle" }, solidCircle);//在 id 的右边设置一个连接点
@@ -488,7 +489,7 @@
                 var id = o.DivId + "_" + (i + 666666);
                 
                 //加载节点，节点名称过长，截取前6个字符 o.name.substr(0, 6)
-                $("#right").append("<div class='node cols' id='" + id + "' title='" + nodeName + "' name='" + nodeid + "' style='position: absolute;' >" + nodeName.substr(0, 14) + "</div>");
+                $("#right").append("<div class='node cols' id='" + id + "' title='" + nodeName + "' name='" + nodeid + "' style='position: absolute;padding-top:15px' >" + nodeName.substr(0, 14) + "</div>");
                 //先加载完成DIV后再加载option-data，有特殊字符
                 $("#" + id).attr("option-data", node);
 
@@ -654,7 +655,7 @@
     //节点加载
     function InitNode(id) {
         var nodeColor = ["#C1C1C1", "#C1C1C1", "#C1C1C1"];
-        $("#left").append("<div class='node' style='color:#030303;border:1px solid #191970' id='left_node_temp' title='新建任务' option-data=''>新建任务</div>");
+        $("#left").append("<div class='node' style='padding-top:15px;color:#030303;border:1px solid #191970' id='left_node_temp' title='新建任务' option-data=''>新建任务</div>");
         abp.services.api.scriptNode.getScriptNodeType(id).done(function (data) {
             //["#e98885", "#5fcc99", "#3f91c9"];
             var isFor = 0;
@@ -662,7 +663,7 @@
                 if (isFor>=3){
                     isFor = 0;
                 }
-                $("#left").append("<div class='node' style='background-color:" + nodeColor[isFor] + "' id='left_node_" + o.id + "' name='" + o.id + "' title='" + o.name + "'>" + o.name.substr(0, 14) + "</div>");
+                $("#left").append("<div class='node' style='padding-top:15px;background-color:" + nodeColor[isFor] + "' id='left_node_" + o.id + "' name='" + o.id + "' title='" + o.name + "'>" + o.name.substr(0, 14) + "</div>");
                 $("#left_node_" + o.id).attr("option-data", JSON.stringify({ id: o.id, name: o.name }));
                 //option-data，有特殊字符,考虑只转换对象的一部分需要的属性
                 //JSON.stringify({ x: 5, y: 6 });"{"x":5,"y":6}"

@@ -1,46 +1,5 @@
-﻿
-@{
-    Layout = "~/Views/Shared/_Master.cshtml";
-}
-
-@section Styles{
-    <style>
-       
-        
-        .padding_icon {
-            width:50px; 
-            height: 50px;
-            float:left;
-            
-        }
-            .padding_icon span {
-                 width:30px; 
-                 height: 30px;
-            }
-            .padding_icon i {
-                 width:28px; 
-                 height: 28px;
-            }
-        .icon-div-a {
-            position:absolute;
-           left:18px;
-           top:260px; 
-             
-        }
-            .icon-div-a a {
-                 width:10px; 
-                 height: 10px;
-            }
-        .pageDivCount {
-                   float:left;
-                 width:20px; 
-                 height: 10px;
-        }
-    </style>
-}
-
+﻿<link href="~/Common/css/TypeIcon/TypeIcon.css" rel="stylesheet" />
 <div>
-    
     <header role='heading'>
         <ul id="typeIconul" class='nav nav-tabs' role='tablist'>
             <button type='button' class='btn btn-default'  title='关闭' style='right: 5px;position: absolute;padding: 0px 8px;margin-top: 10px;' onclick="ContentIconType('')"><i class="fa fa-square-o" aria-hidden="true"></i> 清空</button>
@@ -49,104 +8,11 @@
     <div class='tab-content' style='padding-top:5px;' id="divHtmlTop">
     </div>
 </div>
-
-
-
-@section scripts{ 
-    <script src="~/Views/Script/js/jquery.jsPlumb-1.7.2.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            TopTypeIcons();
-            
-        })
-        function TopTypeIcons() {
-            var list = function (datas, iconsDatas) {
-                //循环图标类型 拼接li
-                for (var i = 0 ; i < datas.length; i++) {
-                    var data = datas[i];
-                    if (i == 0) {
-                        //class='active'默认选择
-                        $("#typeIconul").append("<li role='presentation1' class='active' ><a href='#divType" + data.id + "' aria-controls='home' role='tab' data-toggle='tab'>" + data.value + "</a></li>");
-                        //divHtmls += "<li role='presentation' class='active' ><a href='#divType" + data.id + "' aria-controls='home' role='tab' data-toggle='tab'>" + data.value + "</a></li>";
-                    } else {
-                        $("#typeIconul").append("<li role='presentation1' ><a href='#divType" + data.id + "' aria-controls='home' role='tab' data-toggle='tab'>" + data.value + "</a></li>");
-                    }
-                }
-                //循环图标类型，一个类型对应一个显示层
-                for (var i = 0 ; i < datas.length; i++) {
-                    //根据类型获取数据
-                    var data = datas[i];
-                    var liCount = 0;//当前类型记录条数
-                    //循环判断图标 ，类型相同就加入
-                    var divIconHtml = "";
-                    for (var m = 0; m < iconsDatas.length; m++) {
-                        //在每个分页里面填充数据
-                        //iconsDatas[m].icons[0]["typeId"]
-                        if (data.id == iconsDatas[m]["typeId"]) {
-                            // 这里显示图标，定义样式
-                            //$("#divHtmlTop").append("<div class='padding-10' id='divicon" + liCount + "'><span  onclick='ContentIconType()'><i class='" + iconsDatas[m].icons[0]["value"] + "'>" + iconsDatas[m].icons[0]["type"] + "</i></span></div>");
-                            divIconHtml += "<div style='display:none;' class='padding_icon' id='divicon" + liCount + "' title='" + iconsDatas[m]["type"] + "'><span  onclick='ContentIconType(\"" + iconsDatas[m]["value"] + "\")'><i class='" + iconsDatas[m]["value"] + "'></i></span></div>";
-                            liCount++;
-                        }
-                    }                  
-                    //加入层,数据显示
-                    if (i == 0) {
-                        $("#divHtmlTop").append("<div role='tabpanel' class='tab-pane active' id='divType" + data.id + "'> " + divIconHtml + "</div>");
-                        // divHtmls += "<div role='tabpanel' class='tab-pane active' id='divType" + data.id + "'> " + divIconHtml+"</div>";
-                        //在对应的层显示页数                        
-                    } else {
-                      //  divHtmls += "<div role='tabpanel' class='tab-pane' id='divType" + data.id + "'> " + divIconHtml + "</div>"
-                        $("#divHtmlTop").append("<div role='tabpanel' class='tab-pane' id='divType" + data.id + "'> " + divIconHtml + "</div>");
-                    }                                        
-                    //分页处理
-                    var PageSize = 32;//设置每页，你准备显示几条
-                    //计算总页数
-                    var PageCount = Math.ceil(liCount / PageSize);                    
-                    var currentPage = 1;//当前页，默认为1  
-                    //获取一个层下面的层的显示或者隐藏
-                    //$("#parentDiv").find("#childDiv").hide() or show();
-                    //在每个类型层里添加一个放置分页数字的层
-                    $("#divType" + data.id + "").append("<div class='icon-div-a' id='aicondivType" + data.id + "' ></div>");
-                    //造个简单的分页按钮  
-                    for (var a = 1; a <= PageCount; a++) {
-                        var pageN = '<div class="pageDivCount"><a href="#" iconimgid="' + data.id + '" selectPage="' + a + '" >' + a + '</a></div>';
-                        $("#divType" + data.id + "").find("#aicondivType" + data.id + "").append(pageN);
-                    }
-                    //显示默认页（第一页）  注意：是每个类型层的第一页
-                    for (var b = 0; b < 1 * PageSize; b++) {
-                        //隐藏的层显示到第几个层，根据ID
-                        $("#divType" + data.id + "").find("#divicon" + b + "").show();
-                       // $("#divicon" + b + "").show();
-                    }
-                    $('a').click(function () {
-                        //显示a页对应的层,根据a*PageSize的ID来显示
-                        var selectPage = $(this).attr('selectPage');
-                        var Pageid = $(this).attr('iconimgid');
-                        var aPage = (selectPage - 1) * PageSize;
-                        //隐藏类型层下面所有数据
-                       
-                        $("#divType" + Pageid + "").find(".padding_icon").hide();
-                        
-                        for (var b = aPage; b < selectPage * PageSize; b++) {
-                            //隐藏的层显示到第几个层，根据ID
-                            //$("#divicon" + b + "").show();
-                            $("#divType" + Pageid + "").find("#divicon" + b + "").show();
-                        }
-                    });                  
-                }
-            }
-            $.post("../api/services/api/Icon/GetAllTypeIcons", {}, function (data) {
-                console.log(data);
-                $.post("../api/services/api/Icon/GetAllIconsId", {}, function (dataicon) {
-                    console.log(dataicon);
-                    //等待所有数据执行完成后 再调用方法 生成html
-                    list(data.result, dataicon.result);
-                });
-
-            });
-        }
-    </script>
-}
-
+<script src="~/Common/Scripts/TypeIcon/TypeIcon.js"></script>
+<script>
+    $(function () {
+        TopTypeIcons();
+    });
+</script>
 
 

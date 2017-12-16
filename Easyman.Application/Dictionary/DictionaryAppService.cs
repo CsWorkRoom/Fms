@@ -2,6 +2,7 @@
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.UI;
+using Easyman.Common;
 using Easyman.Domain;
 using Easyman.Dto;
 using Easyman.Managers;
@@ -56,13 +57,28 @@ namespace Easyman.Service
         /// <returns></returns>
         public DictionaryModel InsertOrUpdateDictionary(DictionaryModel input)
         {
-            if(_DictionaryCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
+            
+
+            if (_DictionaryCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
             {
                 throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
             }
-            var entObj =input.MapTo<Dictionary>();
-            //var entObj= AutoMapper.Mapper.Map<Dictionary>(input);
-            var resObj= _DictionaryCase.InsertOrUpdate(entObj);
+            if (input.Id==input.ParentId)
+            {
+                throw new UserFriendlyException("名为【" + input.Name + "】的对象已不能做自身的上级！");
+            }
+            //父级类型要和自身类型一样
+            if (input.DictionaryTypeId!=null && input.ParentId!=null)
+            {
+                if (_DictionaryCase.Get((long)input.ParentId).DictionaryTypeId != input.DictionaryTypeId)
+                {
+                    throw new UserFriendlyException("操作失败！名为【" + input.Name + "】的对象类型和父级的类型不相同！");
+                }
+            }
+            //var entObj =input.MapTo<Dictionary>();
+            var type = _DictionaryCase.GetAll().FirstOrDefault(a => a.Id == input.Id) ?? new Dictionary();
+            type = Fun.ClassToCopy(input, type, (new string[] { "Id" }).ToList());
+            var resObj= _DictionaryCase.InsertOrUpdate(type);
             if (resObj == null)
             {
                 throw new UserFriendlyException("新增或更新失败！");
@@ -79,14 +95,24 @@ namespace Easyman.Service
         /// <param name="input"></param>
         public void DeleteDictionary(EntityDto<long> input)
         {
-            try
-            {
-                _DictionaryCase.Delete(input.Id);
-            }
-            catch (Exception ex)
-            {
-                throw new UserFriendlyException("删除失败：" + ex.Message);
-            }
+           
+                var type = _DictionaryCase.Get(input.Id);
+                if (type == null)
+                {
+                    throw new UserFriendlyException("操作出错，对象或已被删除！");
+                }
+                var content = _DictionaryCase.GetAll().Count(a => a.ParentId == input.Id);
+                if (content > 0)
+                {
+                    throw new UserFriendlyException("删除出错，该字典下有子级，请先删除子级字典，在执行此删除操作！");
+
+                }
+                else
+                {
+                    _DictionaryCase.Delete(type);
+
+                }
+           
         }
         /// <summary>
         /// 获取字典json

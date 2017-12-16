@@ -1,4 +1,4 @@
-// SweetAlert
+Ôªø// SweetAlert
 // 2014 (c) - Tristan Edwards
 // github.com/t4t5/sweetalert
 ;(function(window, document, undefined) {
@@ -14,9 +14,9 @@
         showCancelButton: false,
         closeOnConfirm: true,
         closeOnCancel: true,
-        confirmButtonText: '»∑∂®',
+        confirmButtonText: 'Á°ÆÂÆö',
         confirmButtonColor: '#AEDEF4',
-        cancelButtonText: '»°œ˚',
+        cancelButtonText: 'ÂèñÊ∂à',
         imageUrl: null,
         imageSize: null,
         timer: null,

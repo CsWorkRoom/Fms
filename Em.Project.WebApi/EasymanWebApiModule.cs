@@ -1,8 +1,10 @@
 ﻿using Abp.Application.Services;
 using Abp.Configuration.Startup;
 using Abp.Modules;
+using Abp.Web;
 using Abp.WebApi;
 using Easyman;
+using Easyman.Service;
 using Swashbuckle.Application;
 using System;
 using System.IO;
@@ -33,8 +35,13 @@ namespace Easyman.Api
 
             Configuration.Modules.AbpWebApi().DynamicApiControllerBuilder
                .ForAll<IApplicationService>(typeof(EmProjectAppModule).Assembly, "api")
-               //.WithConventionalVerbs()  //请求类型取决于方法开头 缺省值POST
+               .WithConventionalVerbs()  //请求类型取决于方法开头 缺省值POST
                .Build();
+
+            //        Configuration.Modules.AbpWebApi().DynamicApiControllerBuilder
+            //.For<IChartReportAppService>("Easyman.Service/ChartReport")
+            //.ForMethod("GetChartTempJsonByType").WithVerb(HttpVerb.Get)
+            //.Build();
 
             Configuration.Modules.AbpWebApi().HttpConfiguration.Filters.Add(new HostAuthenticationFilter("Bearer"));
             //调用SwaggerUi

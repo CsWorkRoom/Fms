@@ -16,21 +16,15 @@
                 <div class="form-group">
                     <label for="Name" class="col-xs-4 control-label">名称</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "名称", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Name" class="col-xs-4 control-label">代码</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "代码", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "代码", @Required = "Required", @oninvalid = "setCustomValidity('请输入代码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
-                @*<div class="form-group">
-                        <label for="Name" class="col-xs-4 control-label">推送方式</label>
-                        <div class="col-sm-6">
-                            @Html.DropDownTreeFor(d => d.PushTypeId, "../api/services/api/Content/GetPushTreeJson")
-                        </div>
-                    </div>*@
                 <div class="form-group">
                     <label for="Name" class="col-xs-4 control-label">权限配置</label>
                     <div class="col-sm-6" id="CheckBoxDiv" style="margin-left: -20px;">

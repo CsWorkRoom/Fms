@@ -2,6 +2,7 @@
 //strTitle：错误标题
 //strMessage：错误消息
 var SendErrorInfo = function (strTitle, strMessage) {
+    
     if ($.trim(strTitle) == "") {
         strTitle = "error页面有误";
     }
@@ -23,7 +24,7 @@ var SendErrorInfo = function (strTitle, strMessage) {
     strStyle += ' .main .content {position: relative;background: white;-moz-box-shadow: 0 0 0 3px #ededed inset, 0 0 0 1px #a2a2a2, 0 0 20px rgba(0,0,0,.15);-webkit-box-shadow: 0 0 0 3px #ededed inset, 0 0 0 1px #a2a2a2, 0 0 20px rgba(0,0,0,.15);box-shadow: 0 0 0 3px #ededed inset, 0 0 0 1px #a2a2a2, 0 0 20px rgba(0,0,0,.15);-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;z-index: 5;width:100%;}';
     strStyle += ' .main .content p {position: relative;padding: 15px;font-size: 16px;line-height: 1.6em;color: #555;}';
     strStyle += '</style>';
-    strStyle += ''
+    strStyle += '<script>window.onerror=function(){return true;}</script>'//屏蔽改JS强行注入引起的其它JS报错，仅限于此页面使用，其它页面，不建议使用
 
     var strHtml = '<div class="main zh" >';
     strHtml += '<table><tr><td width: 80%;> <header class="header"><h1><span class="icon">!</span>' + strTitle + '</h1></header>';
@@ -34,10 +35,10 @@ var SendErrorInfo = function (strTitle, strMessage) {
     strHtml += '<img src="' + bootPATH + 'Common/images/errorPage/Error.png" style="width: 100%;" />';
     strHtml += '</td></tr></table>';
     strHtml += '</div>'
-
     $("head").empty();//清除当前页面的head内容
-    $("body").empty();//清除当前页面的BODY内容
-    
+    $("body").empty();//清除当前页面的BODY内
     $(strStyle).appendTo("head");//添加显示内容至head中
     $(strHtml).appendTo("body");//添加显示内容至BODY中
+    
+    window.stop();
 }

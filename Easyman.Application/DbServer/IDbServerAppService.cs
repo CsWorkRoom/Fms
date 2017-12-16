@@ -32,7 +32,7 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        DbServerOutput InsertOrUpdateDbServer(DbServerInput input);
+        void InsertOrUpdateDbServer(DbServerInput input);
         /// <summary>
         /// 删除一条数据库
         /// </summary>

@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label for="Name" class="col-sm-4 control-label">图标类型名称</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "图标类型名称", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "图标类型名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <label for="Name" class="col-sm-4 control-label">备注</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", placeholder = "备注", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", placeholder = "备注", @Required = "Required", @oninvalid = "setCustomValidity('请输入备注')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
             </div>

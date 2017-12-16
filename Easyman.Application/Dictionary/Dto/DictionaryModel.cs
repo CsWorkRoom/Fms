@@ -27,7 +27,8 @@ namespace Easyman.Dto
         /// <summary>
         /// 名称
         /// </summary>
-        public string Name { get; set; }
+        [Required(ErrorMessage = "字典名称不能为空")]
+        public virtual string Name { get; set; }
         /// <summary>
         /// 备注
         /// </summary>

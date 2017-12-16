@@ -87,7 +87,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增部门",
-        url: "/Admin/InserDepart",
+        url: bootPATH + "/Admin/InserDepart",
         width: 850,
         height: 600,
         fullscreen: false,
@@ -100,7 +100,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑部门",
-        url: "/Admin/EditDepart?&departId="+id,
+        url: bootPATH + "/Admin/EditDepart?&departId=" + id,
         width: 850,
         height: 600,
         fullscreen: false,

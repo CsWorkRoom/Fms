@@ -1,0 +1,47 @@
+﻿.padding_icon {
+    width: 50px;
+    height: 50px;
+    float: left;
+}
+
+    .padding_icon span {
+        width: 30px;
+        height: 30px;
+    }
+
+    .padding_icon i {
+        width: 28px;
+        height: 28px;
+    }
+
+.icon-div-a {
+    position: absolute;
+    left: 18px;
+    top: 260px;
+}
+
+    .icon-div-a a {
+        width: 10px;
+        height: 10px;
+    }
+
+.pageDivCount {
+    float: left;
+    width: 20px;
+    height: 10px;
+}
+
+.divTypeIcon {
+    width: 440px;
+    height: 285px;
+    background-color: #FFFFFF;
+}
+
+.divTypeIcon span {
+    padding: 5px;
+    margin: 5px 10px;
+    font-size: 22px;
+    cursor: pointer;
+    display: inline-block;
+    border: 1px solid transparent;
+}

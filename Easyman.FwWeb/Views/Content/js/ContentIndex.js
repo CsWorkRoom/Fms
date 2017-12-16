@@ -89,7 +89,7 @@ function InitEvent() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑内容",
-        url: "/Content/EditContentIndex?&navId=" + id,
+        url: bootPATH + "/Content/EditContentIndex?&navId=" + id,
         width: 850,
         height: $(window).height() * 0.9,
         fullscreen: false,
@@ -102,7 +102,7 @@ function onedit(id) {
 function getcontentinfo(id) {
     DiyModal.window({
         title: "查看详情",
-        url: "/Content/ContentInfo?&navId=" + id,
+        url: bootPATH + "/Content/ContentInfo?&navId=" + id,
         width: 850,
         height: $(window).height() * 0.9,
         fullscreen: false,

@@ -306,7 +306,7 @@ function BindUploadFile() {
     $('#upload').Huploadify({
         auto: true,
         fileTypeExts: '*.xls;*.xlsx;*.csv;*.docx;*.doc;*.jpg;*.gif;*.txt',
-        multi: false,
+        multi: true,
         fileSizeLimit: 9999,
         showUploadedPercent: true,//是否实时显示上传的百分比，如20%
         showUploadedSize: true,
@@ -318,8 +318,7 @@ function BindUploadFile() {
         onInit: function () {
             //alert('初始化');
         },
-        onUploadSuccess: function (file, resultId) {
-           
+        onUploadSuccess: function (file, resultId) {           
             var fileListId = $("#FileId").val();
             if (fileListId == "") {
                 $("#FileId").val(resultId);
@@ -431,7 +430,8 @@ function InitEvent() {
 
     $("#sumbit-btn").click(function () {
         GetCheckboxCount();
-        $("#saveForm").submit();
+        //$("#saveForm").submit();
+        $("#sumbit-btn").attr("type", "submit");
     });
     SubmitFormData("#saveForm", "#sumbit-btn");//提交数据
 }

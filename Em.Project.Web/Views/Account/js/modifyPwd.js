@@ -29,9 +29,9 @@ function InitEvent() {
         aesEncryptPassword();
 
         $("#modifyPwdForm").ajaxSubmit({
-            url: "/Account/SaveModifiedPwd",
+            url: bootPATH + "/Account/SaveModifiedPwd",
             success: function (data) {
-                
+
                 var result = data.result;
 
                 if (result.isError) {
@@ -55,10 +55,10 @@ function InitEvent() {
                     return;
                 } else {
                     abp.message.success("系统将自动跳转至登录页面，请重新登录", "修改成功");
-                    setTimeout(function () { top.location.href = "/Account/Logout"; }, 3000);
+                    setTimeout(function () { top.location.href = bootPATH + "/Account/Logout"; }, 3000);
                 }
             },
-            error:function(data) {
+            error: function (data) {
                 abp.message.error(data.result.message, "错误");
             }
         });

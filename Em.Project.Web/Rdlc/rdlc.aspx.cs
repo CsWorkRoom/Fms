@@ -58,7 +58,6 @@ namespace Easyman.Web.Rdlc
             ReportDataSource reportDataSource = new ReportDataSource("DataSet1",dt);
             reportViewer1.LocalReport.DataSources.Add(reportDataSource);//赋值新数据
             reportViewer1.LocalReport.Refresh();
-            
         }
     }
 }

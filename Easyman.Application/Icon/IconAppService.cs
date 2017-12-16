@@ -178,23 +178,8 @@ namespace Easyman.Sys
         /// <param name="input"></param>
         public void UpdateOrInserIconType(IconTypeInput input)
         {
+           
             var type = _iconTypeRepository.GetAll().FirstOrDefault(a => a.Id == input.Id) ?? new IconType();
-
-
-            //if (input.Id == 0)
-            //{
-            //    //新增判断
-            //    var typeCount = _iconTypeRepository.GetAll().Count(a => a.Name == input.Name);
-            //    if (typeCount >= 1)
-            //        throw new UserFriendlyException("类别名称已存在");
-            //}
-            //else
-            //{
-            //    //修改
-            //    var typeCounts = _iconTypeRepository.GetAll().Where(x=>x.Id!=input.Id).Count(a => a.Name == input.Name);
-            //    if (typeCounts >= 1)
-            //        throw new UserFriendlyException("类别名称已存在");
-            //}
             if (_iconTypeRepository.GetAll().Any(p => p.Id != input.Id && p.Name == input.Name))
             {
                 throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
@@ -202,10 +187,13 @@ namespace Easyman.Sys
 
             type.Name = input.Name;
             type.Remark = input.Remark;
-            _iconTypeRepository.InsertOrUpdate(type);
+            var res= _iconTypeRepository.InsertOrUpdate(type);
+            if (res == null)
+            {
+                throw new UserFriendlyException("新增或更新失败！");
+            }
+            
 
-            //var data = input.MapTo<IconType>();
-            //_iconTypeRepository.InsertOrUpdate(data);
         }
 
 

@@ -153,7 +153,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增用户",
-        url: "/Admin/Createuser",
+        url: bootPATH + "/Admin/Createuser",
         width: 850,
         height: 600,
         fullscreen: false,
@@ -166,7 +166,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "编辑用户",
-        url: "/Admin/EditUser?&navId=" + id,
+        url: bootPATH + "/Admin/EditUser?&navId=" + id,
         width: 850,
         height: 600,
         fullscreen: false,

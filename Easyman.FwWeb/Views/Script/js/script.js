@@ -107,7 +107,7 @@ function onquery(id) {
 function onAdd() {
     //DiyModal.window({
     //    title: "新增脚流本",
-    //    url: "/Script/EditScript",
+    //    url: bootPATH +"/Script/EditScript",
     //    width: 850,
     //    height: 550,
     //    fullscreen: false,
@@ -122,7 +122,7 @@ function onAdd() {
 function onedit(id) {
     //DiyModal.window({
     //    title: "修改脚本流",
-    //    url: "/Script/EditScript?ScriptId=" + id,
+    //    url: bootPATH +"/Script/EditScript?ScriptId=" + id,
     //    width: 850,
     //    height: 550,
     //    fullscreen: false,

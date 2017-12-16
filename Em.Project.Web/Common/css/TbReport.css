@@ -137,3 +137,18 @@ th.ui-th-column div {
 .popover-content {
     padding: 9px 14px 9px 14px;
 }
+
+.aLabel{
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+.dropdown-menu {
+    padding-bottom: 8px;
+    min-width: 150px;
+}
+
+th{
+    vertical-align:middle !important;
+}

@@ -1,0 +1,37 @@
+﻿textarea {
+    border: 1px solid #7f9db9;
+    font-size: 9pt;
+    width: 100%;
+}
+
+.txtLiNum {
+    position: absolute;
+    background: #ecf0f5;
+    height: 100%;
+    overflow: hidden;
+    width: 32px;
+    border-right: 0;
+    line-height: 20px;
+    margin: 1px;
+    padding: 0px;
+    text-align: center;
+    z-index: 1;
+    border: 0px;
+    resize: none;
+}
+
+.txtIDEContent {
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    margin: 0px;
+    width: 100%;
+    padding: 0 0 0 35px;
+    /*overflow-x: hidden;*/
+    line-height: 20px;
+    color: #393737;
+}
+
+.divTxt {
+    height: 100%;
+    width: 99.7%;
+}

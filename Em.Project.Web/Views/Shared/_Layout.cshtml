@@ -19,10 +19,10 @@
     <link href="~/Common/css/_main.css" rel="stylesheet" />
     <link href="~/Content/themes/base/all.css" rel="stylesheet" />
     @Styles.Render("~/Bundles/bootstrap/css")
-                @Styles.Render("~/Bundles/common/css")
-                    @Styles.Render("~/Bundles/alert/css")
-                        @Styles.Render("~/Bundles/iconfont/css")
-                        @Styles.Render("~/Bundles/Scroll/css")
+    @Styles.Render("~/Bundles/common/css")
+    @Styles.Render("~/Bundles/alert/css")
+    @Styles.Render("~/Bundles/iconfont/css")
+    @Styles.Render("~/Bundles/Scroll/css")
 
     <link href="~/Common/css/urlExtend.css" rel="stylesheet" />
 
@@ -33,11 +33,11 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-        @Html.IncludeScript("~/Scripts/others/html5shiv.js")
-        @Html.IncludeScript("~/Scripts/others/respond.min.js")
+    @Html.IncludeScript("~/Scripts/others/html5shiv.js")
+    @Html.IncludeScript("~/Scripts/others/respond.min.js")
     <![endif]-->
-        @Scripts.Render("~/Bundles/jquery/js")
-        <script src="~/Common/rootUrl.js"></script>
+    @Scripts.Render("~/Bundles/jquery/js")
+    <script src="~/Common/rootUrl.js"></script>
     @Scripts.Render("~/Bundles/bootstrap/js")
     @Scripts.Render("~/Bundles/alert/js")
     @Scripts.Render("~/Bundles/abp/js")
@@ -89,8 +89,8 @@
                     <li style="display:none">
                         <a id="change-menu" class="fa fa-exchange"></a>
                     </li>
-                    <li class="dropdown">
-                        <a class="fa fa-bell-o" data-toggle="dropdown"><span class="badge" id="newConeentCount"></span></a>
+                    @*<li class="dropdown">
+                        <a class="fa fa-bell-o" data-toggle="dropdown" title="最新信息"><span class="badge" id="newConeentCount"></span></a>
                         <ul class="dropdown-menu changecolor" id="newConeent3" style="width: 460px;">
                             <li><a style='padding: 3px 10px;float: right;' id='AllContents'>查看全部</a></li>
                             
@@ -98,9 +98,9 @@
                     </li>
                    
                     <li>
-                        @*<a class="fa fa-envelope-o"><span class="badge">6</span></a>*@
-                        <a class="fa fa-question-circle-o" id="fa_help"></a>
-                    </li>
+                             
+                        <a class="fa fa-book" id="fa_help" title="帮助文档"></a>
+                    </li>*@
                     <li class="dropdown">
                         <a class="icon iconfont" data-toggle="dropdown" title="更换主题">&#xe64f;</a>
                         <ul class="dropdown-menu changecolor">
@@ -115,9 +115,9 @@
                     <li class="dropdown">
                         <a href="" data-toggle="dropdown"><img class="user-image" src="~/Views/Account/img/user3.jpg" alt="Alternate Text" /> <span id="userInfo"></span> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li class="bd"><a target="_blank" href="http://www.easyman.com.cn"><i class="fa fa-user-circle"></i> 联系我们</a></li>
-                            <li class="bd"><a href="javascript:void(0);" onclick="TopModeDialogUrl(null, '密码修改', 'Account/ModifyPassword', 399, 286)"><i class="fa fa-expeditedssl"></i> 密码修改</a></li>
-                            <li class="bd"><a target="_blank" href="http://www.easyman.com.cn"><i class="fa fa-info-circle" ></i> 关于我们</a></li>
+                            <li class="bd"><a target="_blank" href="#"><i class="fa fa fa-user"></i> 联系我们</a></li>
+                            <li class="bd"><a href="javascript:void(0);" onclick="TopModeDialogUrl(null, '密码修改', 'Account/ModifyPassword', 600, 450)"><i class="fa fa-expeditedssl"></i> 密码修改</a></li>
+                            <li class="bd"><a target="_blank" href="#"><i class="fa fa-info-circle" ></i> 关于我们</a></li>
                             <li class="bd"><a href="@Url.Action("Logout", "Account")"><i class="fa fa-power-off"></i> 退出登录</a></li>
                             <li><a><i class="fa fa-clock-o"></i>上次登录时间：<span id="lastLoginTime"></span></a></li>
                         </ul>
@@ -223,20 +223,22 @@
 
     <script type="text/javascript">
         $(function () {
-           // TopTypeContent();
-            $("#fa_help").on("click", function () {
-                var urlCode = bootPATH + "Report/TbReport?code=contentHelp&helpCode=help";
-                TopModeDialogUrl("h33333", "帮助文档", urlCode);
-            });
-            $("#AllContents").on("click", function () {
-                var urlContent = bootPATH + "Report/TbReport?code=content_list";
-                TopModeDialogUrl("h33334", "查看全部", urlContent);
-            });
+            //TopTypeContent();
+            //$("#fa_help").on("click", function () {
+            //    var urlCode = bootPATH + "/Report/TbReport?code=contentHelp&helpCode=help";
+            //    TopModeDialogUrl("h33333", "帮助文档", urlCode);
+            //});
+            //$("#AllContents").on("click", function () {
+            //    var urlContent = bootPATH + "/Report/TbReport?code=content_list";
+            //    TopModeDialogUrl("h33334", "查看全部", urlContent);
+            //});
         });
         function TopTypeContent() {
             //功能定义code，传入参数,以,隔开.zxxx最新消息xtgg系统公告
-            var codes = "zxxx,xtgg";
-            var urlContents = bootPATH + "/api/services/api/Content/GetDefineNewContents?codes=" + codes;
+            //var codes = "zxxx,xtgg"; 
+            //var urlContents = bootPATH + "/api/services/api/Content/GetDefineNewContents?codes=" + codes;
+            //获取最新的未读的3条，或者最新3条消息
+            var urlContents = bootPATH + "/api/services/api/Content/GetNewContents";
             $.post(urlContents, {}, function (data) {
                 console.log(data);
                 var datas = data.result;
@@ -250,7 +252,7 @@
                     }
                     //显示数据
                     var htmlli = "";
-                    //加入最新，为读的3条信息
+                    //加入最新，未读的3条信息
                     for (var i = 0 ; i < datas.length; i++) {
                         var urlClick = "~/Content/ContentInfo?navId=" + datas[i].id;
                         htmlli += "<li>";
@@ -259,7 +261,7 @@
                         
                         htmlli += "【" + datas[i].type + "】" + datas[i].title.substr(0, 12);
                         htmlli += "</a>";
-                        htmlli += "<span style='float: right;height:26px;line-height:26px;'>【" + datas[i].createTime + "】</span>";
+                        htmlli += "<span style='float: right;height:26px;line-height:26px;'>【" + datas[i].createTime.replace("T", " ").substring(0,19) + "】</span>";
                         htmlli += "</li>";
                     }
                     //加入，查看全部                  
@@ -268,6 +270,28 @@
                 }
             });
         }
+
+        //是否显示
+        var IsNavbarShow = function () {
+            var intNavbar = $(".navbar-fixed-top").width() - $(".navbar-right").width() - $(".logo").width() - 20;//菜单栏有效长度
+            var intLeftBar = $(".left-bar").width();
+            var strClass = $("#tabLRBut span").attr("class");
+            if ($(".navbar-toggle").is(":visible") || intNavbar <= intLeftBar) {
+                return false
+            }
+
+            if ($(".navbar-toggle").is(":hidden") && intNavbar >= intLeftBar && strClass.indexOf("fa-chevron-left") < 0) {
+                return true;
+            }
+        }
+        //随着浏览器的变化而变化
+        $(window).resize(function () {
+            if (IsNavbarShow())
+                $(".left-bar").show();
+            else
+                $(".left-bar").hide();
+        });
+        $(window).resize();
     </script>
 
 </body>

@@ -45,18 +45,18 @@
                     <label for="TargetTypeId" class="col-xs-2 control-label">指标类型</label>
                     <div class="col-sm-4">
                         @Html.DropDownListFor(p => p.TargetTypeId, Model.TargetTypeList as List<SelectListItem>,
-                        new { @class = "form-control" })
+                        new { @class = "form-control", @Required = "Required", @oninvalid = "setCustomValidity('请输入指标类型')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                     <label for="TargetTagId" class="col-xs-2 control-label">指标标识</label>
                     <div class="col-sm-4">
                         @Html.DropDownListFor(p => p.TargetTagId, Model.TargetTagList as List<SelectListItem>,
-                        new { @class = "form-control" })
+                        new { @class = "form-control", @Required = "Required", @oninvalid = "setCustomValidity('请输入指标标识')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                      </div>
                 </div>
                 <div class="form-group">
                     <label for="Name" class="col-xs-2 control-label">指标名</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "指标名", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "指标名", @Required = "Required", @oninvalid = "setCustomValidity('请输入指标名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                     <label for="ChooseType" class="col-xs-2 control-label">是否可选</label>
                     <div class="col-sm-4">
@@ -71,7 +71,7 @@
                 <div class="form-group">
                     <label for="Weight" class="col-xs-2 control-label">权重分</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.Weight, new { @class = "form-control", placeholder = "权重分", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.Weight, new { @class = "form-control", placeholder = "权重分", @Required = "Required", @oninvalid = "setCustomValidity('请输入权重分')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                     <label for="IsUse" class="col-xs-2 control-label">是否在用</label>
                     <div class="col-sm-4">
@@ -86,17 +86,17 @@
                 <div class="form-group">
                     <label for="EndTable" class="col-xs-2 control-label">结果表</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.EndTable, new { @class = "form-control", placeholder = "结果表", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.EndTable, new { @class = "form-control", placeholder = "结果表", @Required = "Required", @oninvalid = "setCustomValidity('请输入结果表')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                     <label for="MainField" class="col-xs-2 control-label">主字段</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.MainField, new { @class = "form-control", placeholder = "主字段", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.MainField, new { @class = "form-control", placeholder = "主字段", @Required = "Required", @oninvalid = "setCustomValidity('请输入主字段')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="CrisisValue" class="col-xs-2 control-label">计分门槛值</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.CrisisValue, new { @class = "form-control", placeholder = "计分门槛值", @Required = "Required" })
+                        @Html.TextBoxFor(f => f.CrisisValue, new { @class = "form-control", placeholder = "计分门槛值", @Required = "Required", @oninvalid = "setCustomValidity('请输入计分门槛值')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                   
                 </div>

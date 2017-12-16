@@ -14,6 +14,7 @@ namespace Easyman
     //    typeof(AbpAutoMapperModule)
     //    //,typeof(EasymanDataModule),
     //    )]
+    //[DependsOn(typeof(AbpZeroEntityFrameworkModule))]
     public class EmProjectDataModule : AbpModule
     {
         public override void PreInitialize()

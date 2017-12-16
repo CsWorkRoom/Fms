@@ -66,7 +66,7 @@ function InitEvent() {
 function onAdd() {
     DiyModal.window({
         title: "新增数据库类型",
-        url: "/Import/EditDbType",
+        url: bootPATH + "/Import/EditDbType",
         width: 850,
         height: 550,
         fullscreen: false,
@@ -80,7 +80,7 @@ function onAdd() {
 function onedit(id) {
     DiyModal.window({
         title: "修改数据库类型",
-        url: "/Import/EditDbType?id=" + id,
+        url: bootPATH + "/Import/EditDbType?id=" + id,
         width: 850,
         height: 550,
         fullscreen: false,

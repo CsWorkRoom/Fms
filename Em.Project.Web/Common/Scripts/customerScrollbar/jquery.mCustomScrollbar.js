@@ -903,8 +903,10 @@ plugin home: http://manos.malihu.gr/jquery-custom-content-scroller
 	$.support.touch=!!('ontouchstart' in window); /*touch*/
 	$.support.msPointer=window.navigator.msPointerEnabled; /*MSPointer support*/
 	/*plugin dependencies*/
-	var _dlp=("https:"==document.location.protocol) ? "https:" : "http:";
-	$.event.special.mousewheel || document.write('<script src="'+_dlp+'//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.0.6/jquery.mousewheel.min.js"><\/script>');
+	//var _dlp = ("https:" == document.location.protocol) ? "https:" : "http:";
+	//$.event.special.mousewheel || document.write('<script src="' + _dlp + '//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.0.6/jquery.mousewheel.min.js"><\/script>');
+
+	//$.event.special.mousewheel || document.write('<script src="' + bootPATH + '/Common/Scripts/customerScrollbar/jquery.mousewheel.min.js"><\/script>');
 	/*plugin fn*/
 	$.fn.mCustomScrollbar=function(method){
 		if(methods[method]){

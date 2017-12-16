@@ -47,10 +47,10 @@
     <![endif]-->
     @Scripts.Render("~/Bundles/jquery/js")
     @Scripts.Render("~/Bundles/bootstrap/js")
+    <script src="~/Common/rootUrl.js"></script>
     @Scripts.Render("~/Bundles/alert/js")
     @Scripts.Render("~/Bundles/abp/js")
     @Scripts.Render("~/Bundles/common/js")
-    @Scripts.Render("~/Bundles/bootBack/js")
     @Scripts.Render("~/Bundles/index/js")
     @Scripts.Render("~/Bundles/iconfont/js")
     @Scripts.Render("~/Bundles/Scroll/js")
@@ -58,6 +58,7 @@
     @Scripts.Render("~/Bundles/icheck/js")
     @Scripts.Render("~/Bundles/App/multipleselect/js")   
     @Scripts.Render("~/Bundles/ztree/js")
+    @Scripts.Render("~/Bundles/bootBack/js")
     <!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
     <script src="~/api/AbpServiceProxies/GetAll?v=@(Clock.Now.Ticks)"></script>
     <script src="~/AbpScripts/GetScripts?v=@(Clock.Now.Ticks)" type="text/javascript"></script>

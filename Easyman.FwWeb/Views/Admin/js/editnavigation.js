@@ -87,7 +87,7 @@ function InitEvent() {
             names.push(this.id);
         });
         $("#RoleIds").val(names.splice(","));
-        $("#saveForm").submit();
+        $("#sumbit-btn").attr("type", "submit");
     });
 
     SubmitFormData("#saveForm", "#sumbit-btn");//提交数据
@@ -95,22 +95,6 @@ function InitEvent() {
 
 //#endregion
 
-//点击显示模态窗口，模态窗使用分部视图显示类型小图标
-function MyModelTypeIcon() {
-    var divicon = $("#divTypeIcon");
-    
-    if (divicon.is(':hidden')) {
-        divicon.show();
-       
-    } else {
-        divicon.hide();
-       
-    }
-    //$(document).ready(function () {
-    //    //$("#divTypeIcon").modal("show");
-    //  $("#divTypeIcon").show();
-    //})
-}
 
 $(document).click(function(e){
     var _con = $('#divTypeIcon');   // 设置目标区域

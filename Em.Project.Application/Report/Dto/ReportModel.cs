@@ -15,8 +15,6 @@ namespace Easyman.Dto
 
         public virtual long? DbServerId { get; set; }
 
-        public virtual DbServer DbServer { get; set; }
-
         [Required(ErrorMessage = "报表名称不能为空")]
         [Display(Name = "报表名称")]
         public virtual string Name { get; set; }

@@ -24,13 +24,6 @@ function InitPage() {
 
 //#endregion 
 
-//#region 初始化事件
-
-function InitEvent() {
-    SubmitFormData("#saveForm", "#sumbit-btn");//提交数据
-}
-
-//#endregion
 
 //#region 自定义项
 function submitDb()

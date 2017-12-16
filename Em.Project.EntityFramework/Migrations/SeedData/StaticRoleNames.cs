@@ -21,7 +21,7 @@ namespace Easyman.DefaultData
 
         public static class Tenants
         {
-            public static readonly DefaultDataModel Tenant = new DefaultDataModel("Crq", "监控平台");
+            public static readonly DefaultDataModel Tenant = new DefaultDataModel("Crq", "管理后台");
         }
 
         public static class Departments
@@ -51,7 +51,8 @@ namespace Easyman.DefaultData
                             Name = "APP后台管理",
                             Code = "appBackM",
                             ApplicationType="APP",
-                            TenantId = tenantId
+                            TenantId = tenantId,
+                            IsUse=false
                         },
                         new Module//3
                         {
@@ -175,12 +176,21 @@ namespace Easyman.DefaultData
                             ParentId = 3,
                             TenantId = tenantId
                         },
+                         new Module
+                        {
+                            Name = "组织管理_new",
+                            Code = "district",
+                            Url = "Report/TbReport?code=district",
+                            ShowOrder = 7,
+                            ParentId = 3,
+                            TenantId = tenantId
+                        },
                         new Module
                         {
                             Name = "菜单管理_new",
                             Code = "module_new",
                             Url = "Report/TbReport?code=module_new",
-                            ShowOrder = 7,
+                            ShowOrder = 8,
                             ParentId = 3,
                             TenantId = tenantId
                         },
@@ -189,7 +199,7 @@ namespace Easyman.DefaultData
                             Name = "角色管理_new",
                             Code = "role_new",
                             Url = "Report/TbReport?code=role_new",
-                            ShowOrder = 8,
+                            ShowOrder = 9,
                             ParentId = 3,
                             TenantId = tenantId
                         },
@@ -198,7 +208,7 @@ namespace Easyman.DefaultData
                             Name = "菜单管理APP_new",
                             Code = "moduleApp_new",
                             Url = "Report/TbReport?code=moduleApp_new",
-                            ShowOrder = 9,
+                            ShowOrder = 10,
                             ParentId = 3,
                             TenantId = tenantId
                         },
@@ -207,7 +217,7 @@ namespace Easyman.DefaultData
                             Name = "图标类型管理_new",
                             Code = "iconType_new",
                             Url = "Report/TbReport?code=iconType_new",
-                            ShowOrder = 10,
+                            ShowOrder = 11,
                             ParentId = 3,
                             TenantId = tenantId
                         },
@@ -216,7 +226,7 @@ namespace Easyman.DefaultData
                             Name = "图标管理_new",
                             Code = "icon_new",
                             Url = "Report/TbReport?code=icon_new",
-                            ShowOrder = 11,
+                            ShowOrder = 12,
                             ParentId = 3,
                             TenantId = tenantId
                         },
@@ -225,7 +235,7 @@ namespace Easyman.DefaultData
                             Name = "全局变量管理_new",
                             Code = "globalvar_new",
                             Url = "Report/TbReport?code=globalvar_new",
-                            ShowOrder = 12,
+                            ShowOrder = 13,
                             ParentId = 3,
                             TenantId = tenantId
                         },
@@ -234,7 +244,7 @@ namespace Easyman.DefaultData
                             Name = "文件下载_new",
                             Code = "down_File",
                             Url = "Report/TbReport?code=down_File",
-                            ShowOrder = 13,
+                            ShowOrder = 14,
                             ParentId = 3,
                             TenantId = tenantId
                         },
@@ -243,7 +253,7 @@ namespace Easyman.DefaultData
                             Name = "APP版本管理_new",
                             Code = "globalvar_new",
                             Url = "Report/TbReport?code=globalvar_new",
-                            ShowOrder = 14,
+                            ShowOrder = 15,
                             ParentId = 3,
                             TenantId = tenantId
                         },
@@ -252,8 +262,18 @@ namespace Easyman.DefaultData
                             Name = "APP请求测试",
                             Code = "AppRequest",
                             Url = "AppRequest/Index",
-                            ShowOrder = 15,
+                            ShowOrder = 16,
                             ParentId = 3,
+                            TenantId = tenantId
+                        },
+                        new Module
+                        {
+                            Name = "文件下载列表",
+                            Code = "downLoad_file",
+                            Url = "Report/TbReport?code=downLoad_file",
+                            ShowOrder = 17,
+                            ParentId = 3,
+                            IsUse=false,
                             TenantId = tenantId
                         },
                         #endregion
@@ -334,6 +354,26 @@ namespace Easyman.DefaultData
                             ParentId = 5,
                             TenantId = tenantId
                         },
+                        new Module
+                        {
+                            Name = "任务实例日志",
+                            Code = "RW_LOG",
+                            Url = "Report/TbReport?code=RW_LOG",
+                            ShowOrder = 6,
+                            ParentId = 5,
+                            IsUse=false,
+                            TenantId = tenantId
+                        },
+                        new Module
+                        {
+                            Name = "任务组实例日志",
+                            Code = "RWZ_LOG",
+                            Url = "Report/TbReport?code=RWZ_LOG",
+                            ShowOrder = 7,
+                            ParentId = 5,
+                            IsUse=false,
+                            TenantId = tenantId
+                        },
                         #endregion
 
                         #region 内容管理-6  还缺标签管理
@@ -380,6 +420,16 @@ namespace Easyman.DefaultData
                             Url = "Report/TbReport?code=content_list",
                             ShowOrder = 5,
                             ParentId = 6,
+                            TenantId = tenantId
+                        },
+                          new Module
+                        {
+                            Name = "帮助文档",
+                            Code = "contentHelp",
+                            Url = "Report/TbReport?code=contentHelp",
+                            ShowOrder = 6,
+                            ParentId = 6,
+                            IsUse=false,
                             TenantId = tenantId
                         },
                         #endregion

@@ -127,7 +127,6 @@ function InitFilter() {
             fieldArr = $fieldGrid.getRowData();
             break;
         case "3":
-            break;
         case "4":
             var fields = $("#FieldJson").val();
             if(fields!=null&&fields!=""&&fields!="[]")
@@ -245,6 +244,7 @@ function LoadFilterGrid(newFilterArr,  filterGrid, filterGridPager) {
     //$.jgrid.gridUnload(filterGrid);//先卸载
     $.jgrid.gridUnload("tbFilterGrid");//先卸载
     $.jgrid.gridUnload("rdlcFilterGrid");//先卸载
+    $.jgrid.gridUnload("chartFilterGrid");//先卸载
 
     //var $container = $("#" + filterGrid.split("Grid")[0]);
 
@@ -562,6 +562,7 @@ function GetFilterGrid()
             $gridCase = $("#tbFilterGrid");
             break;
         case "3":
+            $gridCase = $("#chartFilterGrid");
             break;
         case "4":
             $gridCase = $("#rdlcFilterGrid");
@@ -592,6 +593,10 @@ function GetFilterControlNames()
             controls.currChildReport = "currTbReport";
             break;
         case "3":
+            controls.fieldGrid = "";
+            controls.filterGrid = "chartFilterGrid";
+            controls.filterGridPager = "chartFilterGridPager";
+            controls.currChildReport = "currChartReport";
             break;
         case "4":
             controls.fieldGrid = "";

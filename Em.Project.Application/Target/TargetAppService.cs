@@ -2,6 +2,7 @@
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.UI;
+using Easyman.Common;
 using Easyman.Domain;
 using Easyman.Dto;
 using Easyman.Managers;
@@ -60,7 +61,9 @@ namespace Easyman.Service
             {
                 throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
             }
-            var entObj =input.MapTo<Target>();
+            //var entObj =input.MapTo<Target>();
+            var entObj = _TargetCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new Target();
+            entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
             //var entObj= AutoMapper.Mapper.Map<Target>(input);
             var resObj= _TargetCase.InsertOrUpdate(entObj);
             if (resObj == null)

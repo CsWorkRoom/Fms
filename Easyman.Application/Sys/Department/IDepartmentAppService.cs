@@ -23,6 +23,10 @@ namespace Easyman.Sys
         #region 操作（新增，编辑，删除）
         void SavePost(DepartmentInput input);
 
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="input"></param>
         void DeletePost(EntityDto<long> input);
 
         #endregion

@@ -8025,7 +8025,7 @@
         'widgets/widget'
     ], function( Base, Uploader ) {
         var $ = Base.$,
-            logUrl = ' http://static.tieba.baidu.com/tb/pms/img/st.gif??',
+            logUrl = bootPATH+'/Echart/images/st.gif??',
             product = (location.hostname || location.host || 'protected').toLowerCase(),
     
             // 只针对 baidu 内部产品用户做统计功能。

@@ -315,7 +315,10 @@ $.fn.Huploadify = function(opts){
 		  
 		  //删除对应的文件
 		  funDeleteFile: function (index) {
-		      var removeItem = index-1;
+		      //根据index找到对应的层，取出option-data中的ID，循环文件ID集合，把对应的ID修改为删除
+		      var dataFile = $("#fileupload_1_" + index).attr("option-data");
+		      var dataId = JSON.parse(dataFile).id;
+		      //var removeItem = index-1;
 		      var fileListId = $("#FileId").val();
 		      var fileIds = fileListId.split(',');
               //删除对应ID
@@ -323,14 +326,14 @@ $.fn.Huploadify = function(opts){
 		      //    return value != fileIds[removeItem];
 		      //});
 		      //修改对应ID
-		      fileIds[removeItem] = "删除";
+		      //fileIds[removeItem] = "删除";
 		      var fileListIds = "";
 		      if (fileIds.length == 0) { $("#FileId").val(); }
-		      else if (fileIds.length == 1) { $("#FileId").val(fileIds); }
+		      else if (fileIds.length == 1) { $("#FileId").val("删除"); }
 		      else {
 		          for (var i = 0; i < fileIds.length; i++) {
-		              if (i == 0) {
-		                  fileListIds = fileIds[i];
+		              if (fileIds[i] == dataId.toString()) {
+		                  fileListIds = fileListIds + "," + "删除";
 		              } else {
 		                  fileListIds = fileListIds + "," + fileIds[i];
 		              }
@@ -338,17 +341,6 @@ $.fn.Huploadify = function(opts){
 		          $("#FileId").val(fileListIds);
 		      }
 		      
-		      //    for (var i = 1; i <= fileIds.length ; i++) {
-		      //    if (index == i) {
-
-		      //    } else {
-		      //        if (fileListIds = "") {
-		      //            fileListIds = fileIds[i];
-		      //        } else {
-		      //            fileListIds = fileListIds + "," + fileIds[i];
-		      //        }
-		      //    }
-		      //}
 		     
 
 			  for (var i = 0,len=this.fileFilter.length; i<len; i++) {

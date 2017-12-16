@@ -85,35 +85,34 @@ input[type=radio] {
     height: 14px;
 }
 
-    input[type=checkbox]:checked, input[type=radio]:checked {
-        background: #fff;
-    }
+input[type=checkbox]:checked, input[type=radio]:checked {
+    background: #fff;
+}
+input[type=radio]:checked::after {
+    content: '';
+    display: block;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    width: 12px;
+    height: 12px;
+    background: #666;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    border-radius: 1em;
+}
 
-        input[type=radio]:checked::after {
-            content: '';
-            display: block;
-            position: relative;
-            top: 0px;
-            left: 0px;
-            width: 12px;
-            height: 12px;
-            background: #666;
-            -webkit-border-radius: 1em;
-            -moz-border-radius: 1em;
-            border-radius: 1em;
-        }
-
-        input[type=checkbox]:checked::after {
-            display: block;
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAtklEQVQ4y2P4//8/A7Ux1Q0cxoaCADIbCUgCMTvVXAoE5kA8CYidyXYpGrAH4iVAHIXiCwoMDQTimUBcBsRMlBrKCsTpUANzkC0j11BuIK6EGlgKsoAkQ4FgChD7AzELVI8YEDdDDawDYk6YQaQY6gg1oAqILYC4D8oHGcyLbBAphoJAKtQgGO4EYiHk2CLHUJAXm6AG9gCxNHoSIMdQEJCFGqiALaGSayjMxQwUGzq0S6nhZygA2ojsbh6J67kAAAAASUVORK5CYII=);
-        }
+input[type=checkbox]:checked::after {
+    display: block;
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAtklEQVQ4y2P4//8/A7Ux1Q0cxoaCADIbCUgCMTvVXAoE5kA8CYidyXYpGrAH4iVAHIXiCwoMDQTimUBcBsRMlBrKCsTpUANzkC0j11BuIK6EGlgKsoAkQ4FgChD7AzELVI8YEDdDDawDYk6YQaQY6gg1oAqILYC4D8oHGcyLbBAphoJAKtQgGO4EYiHk2CLHUJAXm6AG9gCxNHoSIMdQEJCFGqiALaGSayjMxQwUGzq0S6nhZygA2ojsbh6J67kAAAAASUVORK5CYII=);
+}
     /*input[type=checkbox]:checked::after{display:block;position:absolute;top:-4px;left:-4px;content:url("../Images/checkbox/check.png")}*/
-    input[type=checkbox]:focus, input[type=radio]:focus {
-        outline: none;
-    }
+input[type=checkbox]:focus, input[type=radio]:focus {
+    outline: none;
+}
 
 .ztree li span.button.file_ico_docu {
     background-image: url("../Images/ztree/file.png");
@@ -272,6 +271,43 @@ label {
 }
 
 .sweet-alert .icon {
-        margin: 5px auto;
+        margin: 5px auto !important;
 }
 /*弹出提示框end*/
+
+.iRequired {
+    color: #ff0000;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.navbar-toggle {
+    position: relative;
+    float: right;
+    padding: 9px 10px;
+    margin-top: 8px;
+    margin-right: 15px;
+    margin-bottom: 8px;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.sweet-alert {
+    width: 300px !important;
+    left: 62% !important;
+    padding: 0px 0px 10px 0px !important;
+}
+.sweet-alert h2 {
+    font-size: 20px !important;
+    margin: 5px 0 !important;
+}
+.sweet-alert button {
+    padding: 10px 32px !important;
+    margin: 10px 5px 0 !important;
+}
+.sweet-alert p {
+   font-size: 15px !important;
+}

@@ -8,13 +8,13 @@ namespace Easyman.Web.Models.Account
 {
     public class ModifyPwdViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "旧密码不能为空")]
         public string OldPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "新密码不能为空")]
         public string NewPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "新确认密码不能为空")]
         public string ConfirmPassword { get; set; }
 
         public int UserId { get; set; }

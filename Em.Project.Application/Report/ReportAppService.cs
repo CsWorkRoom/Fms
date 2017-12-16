@@ -25,6 +25,7 @@ namespace Easyman.Service
         private readonly ITbReportAppService _tbReportApp;
         private readonly IGlobalVarAppService _globalVarApp;
         private readonly IRdlcReportAppService _rdlcReportApp;
+        private readonly IChartReportAppService _chartReportApp;
 
         /// <summary>
         /// 构造函数（注入仓储）
@@ -38,14 +39,15 @@ namespace Easyman.Service
             IDbServerAppService dbServerApp,
             ITbReportAppService tbReportApp,
             IGlobalVarAppService globalVarApp,
-            IRdlcReportAppService rdlcReportApp
-            )
+            IRdlcReportAppService rdlcReportApp,
+            IChartReportAppService chartReportApp)
         {
             _reportRepository = reportRepository;
             _dbServerApp = dbServerApp;
             _tbReportApp = tbReportApp;
             _globalVarApp = globalVarApp;
             _rdlcReportApp = rdlcReportApp;
+            _chartReportApp = chartReportApp;
         }
 
         #endregion
@@ -151,7 +153,10 @@ namespace Easyman.Service
                     throw new System.Exception("报表名称或编码重复");
                 }
 
-                var ent = AutoMapper.Mapper.Map<Report>(report);
+                // var ent = AutoMapper.Mapper.Map<Report>(report);
+                var ent = _reportRepository.GetAll().FirstOrDefault(x => x.Id == report.Id) ?? new Report();
+                ent = Fun.ClassToCopy(report, ent, (new string[] { "Id" }).ToList());
+
 
                 //var currReport = _reportRepository.InsertOrUpdate(ent);
                 //更新主报表（基础信息）
@@ -180,12 +185,11 @@ namespace Easyman.Service
                                 _rdlcReportApp.SaveRdlcReport(rp, reportId, report.Code);
                             }
 
-                            //RDLC报表保存--待补充
-                            //else if()
-                            //{ }
-                            //图像报表保存--待补充
-                            //else if()
-                            //{ }
+                            //图形报表保存
+                            else if (rp.ChildReportType == (short)ReportEnum.ReportType.Chart)
+                            {
+                                _chartReportApp.SaveChartReport(rp, reportId, report.Code);
+                            }
                         }
                     }
                 }
@@ -832,7 +836,12 @@ namespace Easyman.Service
                 ChildReportList= ChildReportList.Concat(tbList).ToList();
             }
 
-            //获取图形报表(待补充)
+            //获取图形报表
+            var chartList = _chartReportApp.GetChildListFromChartReport(reportId, moduleId, checkRole);
+            if (chartList != null && chartList.Count > 0)
+            {
+                ChildReportList = ChildReportList.Concat(chartList).ToList();
+            }
 
             //获取RDLC报表
             var rdlcList= _rdlcReportApp.GetChildListFromRdlcReport(reportId, moduleId, checkRole);

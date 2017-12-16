@@ -42,6 +42,10 @@ function InitPage() {
         SaveTopField();
     });
     SetRegularHt();//正则隐藏赋值
+
+    $("#chartType").change(function () {
+        LoadSelect("chartTemp", '~/api/services/api/ChartReport/GetChartTempJsonByType?chartTypeId=' + $(this).val(), "", "get");
+    });
 }
 //#endregion 
 
@@ -178,10 +182,13 @@ function OpenReportDiv() {
         
         InitTbReportModel();
     }
-        //以下两种报表待开发
         //图形报表
     else if (rpType == 3)
-    { }
+    {
+        //初始化新增报表
+        $("#currChartReport").val(JSON.stringify(childRp));
+        InitChartReportModel();
+    }
         //RDLC报表
     else if (rpType == 4)
     {
@@ -329,7 +336,11 @@ function EditReport(ChildReportId, ChildReportType, ApplicationType) {
                 }
                 //图形报表
                 else if (ChildReportType == 3)
-                { }
+                {
+                    //给子报表隐藏区域赋值
+                    $("#currChartReport").val(JSON.stringify(child));
+                    InitChartReportModel();//打开rdlc模态，并加载相关数据
+                }
                 //RDLC报表
                 else if (ChildReportType == 4) {
                     //给子报表隐藏区域赋值
@@ -344,3 +355,25 @@ function EditReport(ChildReportId, ChildReportType, ApplicationType) {
 //#endregion
 
 //#endregion
+
+//放大SQL编辑区
+var strModalId = "";//记录模态框ID
+function MaxSql() {
+    if (strModalId != "") {
+        $("#" + strModalId).remove();
+    }
+    var intWidth = $(window).width();
+    var intHeight = $(window).height();
+    var strContent = '<div class="sqlIde" style="width:' + (intWidth - 71) + 'px;height:' + (intHeight - 150) + 'px"></div>';
+    var strFooter = "<button class='btn btn-primary' type='button' title='将显示修改后的值，但并未保存数据。' onclick='RefreshSql()'><i class='fa fa-save'></i> 确定</button>";
+    strModalId = "id" + new Date().getTime()
+    ModeDialogContent(strModalId, "查看SQL", strContent, strFooter, (intWidth - 30), (intHeight - 30));
+    LoadTxtIde("#" + strModalId + " .sqlIde", $("#Sql").val());
+}
+//刷新SQL
+var RefreshSql = function () {
+    var strSql = GetTxtIdeVal("#" + strModalId + " .sqlIde");
+    $("#Sql").val(strSql);
+    $("#" + strModalId).modal("hide");
+}
+//End放大SQL编辑区

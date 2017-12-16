@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="Name" class="col-sm-4 control-label">图标名称</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.DisplyName, new { @class = "form-control", placeholder = "图标名称", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.DisplyName, new { @class = "form-control", placeholder = "图标名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
             </div>
@@ -31,19 +31,32 @@
         <div class="tab-content" style="padding-top:12px;">
             <div role="tabpanel" class="tab-pane active" id="navMenu">
                 <div class="form-group">
-                    <label for="Name" class="col-sm-4 control-label">图标</label>
+                    <label for="Name" class="col-sm-4 control-label">图标值</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.ClassName, new { @class = "form-control", placeholder = "图标", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.ClassName, new { @class = "form-control", placeholder = "图标值", @Required = "Required", @oninvalid = "setCustomValidity('请输入图标值')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="tab-content" style="padding-top:12px;">
+    <div role="tabpanel" class="tab-pane active" id="navMenu">
+        <div class="form-group">
+            <label for="Name" class="col-sm-4 control-label">图标</label>
+            <div class="col-sm-6">
+              <span><i id="icon_type_img"></i></span>
+                
+            </div>
+        </div>
+    </div>
+   </div>
+
         <div class="tab-content" style="padding-top:12px;">
             <div role="tabpanel" class="tab-pane active" id="navMenu">
                 <div class="form-group">
                     <label for="Name" class="col-sm-4 control-label">备注</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", placeholder = "备注", @Required = "Required" })
+                        @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", placeholder = "备注" })
                     </div>
                 </div>
             </div>
@@ -52,6 +65,24 @@
 @section scripts{
   @*放页面自定义js*@
 <script type="text/javascript">
+    
+    $(document).ready(function () {
+        //初始化
+        var cNames = $("#ClassName").val();
+        if (cNames != null || cNames != "") {
+
+            $("#icon_type_img").addClass("fa-2x " + cNames);
+        }
+
+        //图标，鼠标失去焦点事件
+        $("#ClassName").blur(function () {//失去焦点
+            var cName = $("#ClassName").val();
+            //removeClass()
+            $("#icon_type_img").removeClass();
+            $("#icon_type_img").addClass("fa-2x " + cName);
+        });
+    });
+
     //母版页调用提交方法
     function SubmitForm() {
         //from表单提交路径

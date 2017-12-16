@@ -50,29 +50,28 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-        @Html.IncludeScript("~/Scripts/others/html5shiv.js")
-        @Html.IncludeScript("~/Scripts/others/respond.min.js")
+     @Html.IncludeScript("~/Scripts/others/html5shiv.js")
+     @Html.IncludeScript("~/Scripts/others/respond.min.js")
     <![endif]-->
-            @Scripts.Render("~/Bundles/jquery/js")
-            <script src="~/Common/rootUrl.js"></script>
+    @Scripts.Render("~/Bundles/jquery/js")
+    <script src="~/Common/rootUrl.js"></script>
     @Scripts.Render("~/Bundles/bootstrap/js")
-        @Scripts.Render("~/Bundles/alert/js")
-                        @Scripts.Render("~/Bundles/abp/js")
-                        @Scripts.Render("~/Bundles/controller/js")
-                        @Scripts.Render("~/Bundles/common/js")
-                        @Scripts.Render("~/Bundles/bootBack/js")
+    @Scripts.Render("~/Bundles/alert/js")
+    @Scripts.Render("~/Bundles/abp/js")
+    @Scripts.Render("~/Bundles/controller/js")
+    @Scripts.Render("~/Bundles/common/js")
+    @Scripts.Render("~/Bundles/bootBack/js")
     @*@Scripts.Render("~/Bundles/index/js")*@
     @Scripts.Render("~/Bundles/iconfont/js")
     @Scripts.Render("~/Bundles/Scroll/js")
     @*@Scripts.Render("~/Bundles/icheck/js")
     @Scripts.Render("~/Bundles/App/multipleselect/js")*@
-
     @Scripts.Render("~/Bundles/ztree/js")
     
     <!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
-    <script src="~/api/AbpServiceProxies/GetAll?v=@(Clock.Now.Ticks)">
+   
     <script src="~/AbpScripts/GetScripts?v=@(Clock.Now.Ticks)" type="text/javascript"></script>
-
+    <script src="~/api/AbpServiceProxies/GetAll?v=@(Clock.Now.Ticks)"></script>
 
     @RenderSection("Scripts", false)
 </head>
