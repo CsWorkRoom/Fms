@@ -78,6 +78,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Computer\Dto\ComputerTypeModel.cs" />
+    <Compile Include="Computer\IComputerTypeAppService.cs" />
+    <Compile Include="Computer\ComputerTypeAppService.cs" />
     <Compile Include="EmProjectAppModule.cs" />
     <Compile Include="Export\Dto\ExportConfigModel.cs" />
     <Compile Include="Export\Dto\ExportDataModel.cs" />

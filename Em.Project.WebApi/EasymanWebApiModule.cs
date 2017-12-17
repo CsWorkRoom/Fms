@@ -35,7 +35,7 @@ namespace Easyman.Api
 
             Configuration.Modules.AbpWebApi().DynamicApiControllerBuilder
                .ForAll<IApplicationService>(typeof(EmProjectAppModule).Assembly, "api")
-               .WithConventionalVerbs()  //请求类型取决于方法开头 缺省值POST
+               //.WithConventionalVerbs()  //请求类型取决于方法开头 缺省值POST
                .Build();
 
             //        Configuration.Modules.AbpWebApi().DynamicApiControllerBuilder

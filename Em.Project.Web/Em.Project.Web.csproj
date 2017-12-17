@@ -2014,6 +2014,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\MonthTargetController.cs" />
     <Compile Include="Controllers\SubitemController.cs" />
+    <Compile Include="Controllers\ComputerController.cs" />
     <Compile Include="Controllers\TargetController.cs" />
     <Compile Include="Controllers\GlobalVarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -2078,6 +2079,7 @@
     <Content Include="Views\Report\EditChartType.cshtml" />
     <Content Include="Views\Report\ChartReport1.cshtml" />
     <Content Include="Views\Report\ChartReport.cshtml" />
+    <Content Include="Views\Computer\EditComputerType.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

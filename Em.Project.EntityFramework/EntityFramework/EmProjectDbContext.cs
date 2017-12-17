@@ -14,7 +14,7 @@ namespace Easyman.EntityFramework
     //[DbConfigurationType(typeof(MyDbConfiguration))]
     public class EmProjectDbContext : AbpZeroDbContext<Tenant, Role, User>
     {
-        #region 框架映射
+        #region 一级框架映射
 
         /*-----------------------------Admin----------------------*/
         public virtual IDbSet<District> Districts { get; set; }
@@ -120,7 +120,7 @@ namespace Easyman.EntityFramework
 
         #endregion
 
-        #region 映射
+        #region 二级框架映射
 
         /*-----------------------------Report----------------------*/
         public virtual IDbSet<Param> Param { get; set; }
@@ -164,6 +164,13 @@ namespace Easyman.EntityFramework
         public virtual IDbSet<SubitemType> SubitemType { get; set; }
         public virtual IDbSet<Subitem> Subitem { get; set; }
         public virtual IDbSet<MonthSubitemScore> MonthSubitemScore { get; set; }
+
+
+        #endregion
+
+        #region 业务系统映射
+        /*-----------------------------Computer----------------------*/
+        public virtual IDbSet<ComputerType> ComputerType { get; set; }
 
 
         #endregion
