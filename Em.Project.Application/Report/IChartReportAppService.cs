@@ -83,7 +83,7 @@ namespace Easyman.Service
         /// 获取所有 List<ChartTempModel>
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         string GetChartTempJsonByType(long? chartTypeId);
         #endregion
 

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Easyman.Dto;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using System.Web.Http;
 using System.Web.Mvc;
+//using System.Web.Mvc;
 
 namespace Easyman.Service
 {
@@ -30,6 +32,7 @@ namespace Easyman.Service
         /// 删除一条终端类型
         /// </summary>
         /// <param name="input"></param>
+        //[System.Web.Http.HttpPost]
         void DeleteComputerType(EntityDto<long> input);
         /// <summary>
         /// 获取终端类型json

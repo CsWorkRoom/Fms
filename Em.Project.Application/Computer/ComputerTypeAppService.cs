@@ -80,6 +80,7 @@ namespace Easyman.Service
         /// 删除一条终端类型
         /// </summary>
         /// <param name="input"></param>
+        //[System.Web.Http.HttpPost]
         public void DeleteComputerType(EntityDto<long> input)
         {
             try

@@ -265,7 +265,7 @@ namespace Easyman.Service
         /// 获取所有类型 List<ChartTempModel>
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         public string GetChartTempJsonByType(long? chartTypeId)
         {
             var objList = _ChartTempCase.GetAllList(p => 
