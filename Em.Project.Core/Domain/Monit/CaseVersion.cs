@@ -18,10 +18,10 @@ namespace Easyman.Domain
         public override long Id { get; set; }
 
         /// <summary>
-        /// 所属实例
+        /// 所属实例ID
         /// </summary>
-        [ForeignKey("CASE_ID")]
-        public virtual long? CaseId { get; set; }
+        [ForeignKey("SCRIPT_NODE_CASE_ID")]
+        public virtual long? ScriptNodeCaseId { get; set; }
 
         /// <summary>
         /// 文件版本批次ID
