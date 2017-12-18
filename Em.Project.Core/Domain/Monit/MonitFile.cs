@@ -44,8 +44,8 @@ namespace Easyman.Domain
         /// </summary>
         [Column("RELY_MONIT_FILE_ID")]
         public virtual long? RelyMonitFileId { get; set; }
-        [ForeignKey("RelyMonitFileId")]
-        public virtual MonitFile RelyMonitFile { get; set; }
+        //[ForeignKey("RelyMonitFileId")]
+        //public virtual MonitFile RelyMonitFile { get; set; }
 
         /// <summary>
         /// 父级ID
@@ -70,7 +70,7 @@ namespace Easyman.Domain
         public virtual FileFormat FileFormat { get; set; }
 
         /// <summary>
-        /// 文件格式ID
+        /// 文件库ID
         /// </summary>
         [Column("FILE_LIBRARY_ID")]
         public virtual long? FileLibraryId { get; set; }

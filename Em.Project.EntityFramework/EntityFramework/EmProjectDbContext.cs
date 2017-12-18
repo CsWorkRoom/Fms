@@ -172,7 +172,7 @@ namespace Easyman.EntityFramework
         /*-----------------------------Computer----------------------*/
         public virtual IDbSet<ComputerType> ComputerType { get; set; }
         public virtual IDbSet<Computer> Computer { get; set; }
-        public virtual IDbSet<ComputerFolder> ComputerShareFolder { get; set; }
+        public virtual IDbSet<Folder> Folder { get; set; }
         public virtual IDbSet<Attr> Attr { get; set; }
         public virtual IDbSet<AttrType> AttrType { get; set; }
         public virtual IDbSet<FileAttr> FileAttr { get; set; }

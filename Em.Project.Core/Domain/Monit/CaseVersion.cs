@@ -20,13 +20,11 @@ namespace Easyman.Domain
         /// <summary>
         /// 所属实例ID
         /// </summary>
-        [ForeignKey("SCRIPT_NODE_CASE_ID")]
         public virtual long? ScriptNodeCaseId { get; set; }
 
         /// <summary>
         /// 文件版本批次ID
         /// </summary>
-        [ForeignKey("FOLDER_VERSION_ID")]
         public virtual long? FolderVersionId { get; set; }
 
     }

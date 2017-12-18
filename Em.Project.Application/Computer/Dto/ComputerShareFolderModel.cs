@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Easyman.Dto
 {
-    [AutoMap(typeof(ComputerFolder))]
+    [AutoMap(typeof(Folder))]
     public class ComputerShareFolderModel : EntityDto<long>
     {
 

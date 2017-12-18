@@ -60,7 +60,5 @@ namespace Easyman.Domain
         [Column("REMARK"), StringLength(200)]
         public virtual string Remark { get; set; }
 
-
-        public virtual ICollection<ComputerFolder> ComputerShareFolder { get; set; }
     }
 }

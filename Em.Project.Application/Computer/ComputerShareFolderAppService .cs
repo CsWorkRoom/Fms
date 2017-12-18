@@ -24,12 +24,12 @@ namespace Easyman.Service
     {
         #region 初始化
 
-        private readonly IRepository<ComputerFolder,long> _ComputerShareFolderCase;
+        private readonly IRepository<Folder,long> _ComputerShareFolderCase;
         /// <summary>
         /// 构造函数注入ComputerShareFolder仓储
         /// </summary>
         /// <param name="dbTagManager"></param>
-        public ComputerShareFolderAppService(IRepository<ComputerFolder, long> ComputerShareFolderCase)
+        public ComputerShareFolderAppService(IRepository<Folder, long> ComputerShareFolderCase)
         {
             _ComputerShareFolderCase = ComputerShareFolderCase;
         }
@@ -62,7 +62,7 @@ namespace Easyman.Service
                 throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
             }
             //var entObj =input.MapTo<ComputerShareFolder>();
-            var entObj = _ComputerShareFolderCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new ComputerFolder();
+            var entObj = _ComputerShareFolderCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new Folder();
             entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
             //var entObj= AutoMapper.Mapper.Map<ComputerShareFolder>(input);
             var resObj= _ComputerShareFolderCase.InsertOrUpdate(entObj);
