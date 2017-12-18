@@ -63,7 +63,7 @@
     <Compile Include="Domain\Attr\Attr.cs" />
     <Compile Include="Domain\Attr\AttrType.cs" />
     <Compile Include="Domain\Computer\Computer.cs" />
-    <Compile Include="Domain\Computer\ComputerFolder.cs" />
+    <Compile Include="Domain\Computer\Folder.cs" />
     <Compile Include="Domain\Computer\ComputerType.cs" />
     <Compile Include="Domain\Export\DownData.cs" />
     <Compile Include="Domain\Export\ExportData.cs" />
