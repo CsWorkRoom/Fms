@@ -17,14 +17,20 @@ namespace Easyman.Domain
         public override long Id { get; set; }
 
         /// <summary>
+        /// 是否为文件夹
+        /// </summary>
+        [Column("IS_FOLDER")]
+        public virtual bool? IsFolder { get; set; }
+
+        /// <summary>
         /// 文件格式类型名
         /// </summary>
-        [Column("NAME"), StringLength(50),Required]
+        [Column("NAME"), StringLength(50)]
         public virtual string Name { get; set; }
         /// <summary>
         /// 文件图标
         /// </summary>
-        [Column("ICON"), StringLength(50), Required]
+        [Column("ICON"), StringLength(50)]
         public virtual string Icon { get; set; }
         
         /// <summary>

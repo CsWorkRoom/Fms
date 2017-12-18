@@ -11,72 +11,90 @@ namespace Easyman.Domain
     /// 文件夹及文件管理
     /// </summary>
     [Table("FM_MONIT_FILE")]
-    public class MonitFile : CommonEntityHelper
+    public class MonitFile : NotDeleteEntityHelper
     {
         
         [Key, Column("ID")]
         public override long Id { get; set; }
 
         /// <summary>
-        /// 版本更新批次号ID
+        /// 文件夹及文件ID
         /// </summary>
-        [ForeignKey("FOLDER_VERSION_ID")]
+        [Column("FOLDER_VERSION_ID")]
+        public virtual long? FolderVersionId { get; set; }
+        [ForeignKey("FolderVersionId")]
         public virtual FolderVersion FolderVersion { get; set; }
-       /// <summary>
+
+        /// <summary>
         /// 所属终端ID
         /// </summary>
         [Column("COMPUTER_ID")]
-        public virtual long ComputerId { get; set; }
+        public virtual long? ComputerId { get; set; }
+
         /// <summary>
-        /// FOLDER_ID
+        /// 所属终端ID
         /// </summary>
         [Column("FOLDER_ID")]
-        public virtual long FolderId { get; set; }
+        public virtual long? FolderId { get; set; }
+        [ForeignKey("FolderId")]
+        public virtual Folder Folder { get; set; }
+
         /// <summary>
         /// 上个依赖ID
         /// </summary>
-        [Column("MONIT_FILE_ID")]
-        public virtual long MonitFileId { get; set; }
+        [Column("RELY_MONIT_FILE_ID")]
+        public virtual long? RelyMonitFileId { get; set; }
+        [ForeignKey("RelyMonitFileId")]
+        public virtual MonitFile RelyMonitFile { get; set; }
+
         /// <summary>
         /// 父级ID
         /// </summary>
         [Column("PARENT_ID")]
-        public virtual long ParentMonitFileId { get; set; }
+        public virtual long? ParentId { get; set; }
+        [ForeignKey("ParentId")]
+        public virtual MonitFile Parent { get; set; }
+
         /// <summary>
         /// 文件名
         /// </summary>
-        [Column("NAME")]
+        [Column("NAME"),StringLength(100)]
         public virtual string Name { get; set; }
+
         /// <summary>
         /// 文件格式ID
         /// </summary>
-        [ForeignKey("FILE_FORMAT_ID")]
+        [Column("FILE_FORMAT_ID")]
+        public virtual long? FileFormatId { get; set; }
+        [ForeignKey("FileFormatId")]
         public virtual FileFormat FileFormat { get; set; }
+
         /// <summary>
-        /// FILE_LIBRARY_ID
+        /// 文件格式ID
         /// </summary>
         [Column("FILE_LIBRARY_ID")]
-        public virtual long FileLibraryId { get; set; }
+        public virtual long? FileLibraryId { get; set; }
+
         /// <summary>
         /// 客户端路径
         /// </summary>
-        [Column("CLIENT_PATH")]
+        [Column("CLIENT_PATH"), StringLength(100)]
         public virtual string ClientPath { get; set; }
         /// <summary>
         /// 服务器路径
         /// </summary>
-        [Column("SERVER_PATH")]
+        [Column("SERVER_PATH"), StringLength(100)]
         public virtual string ServerPath { get; set; }
         /// <summary>
         /// MD5
         /// </summary>
-        [Column("MD5")]
+        [Column("MD5"), StringLength(100)]
         public virtual string MD5 { get; set; }
         /// <summary>
         /// 状态
         /// </summary>
         [Column("STATUS")]
-        public virtual FileStatus FileStatus { get; set; }
+        public virtual short? Status { get; set; }
         /// <summary>
         /// 备注
         /// </summary>

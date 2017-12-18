@@ -18,28 +18,32 @@ namespace Easyman.Domain
 
         [Key, Column("ID")]
         public override long Id { get; set; }
-        /// <summary>
-        /// 文件ID
-        /// </summary>
-        [ForeignKey("FILE_LIBRARY_ID")]
-        public virtual FileLibrary FileLibrary { get; set; }
-
-        [ForeignKey("USER_ID")]
-        public virtual User User { get; set; }
 
         /// <summary>
-        /// 
+        /// 文件夹及文件ID
         /// </summary>
-        [Column("USER_NAME")]
+        [Column("MONIT_FILE_ID")]
+        public virtual long? MonitFileId { get; set; }
+        [ForeignKey("MonitFileId")]
+        public virtual MonitFile MonitFile { get; set; }
+
+        /// <summary>
+        /// 认领人
+        /// </summary>
+        [Column("USER_ID")]
+        public virtual long? UserId { get; set; }
+
+        /// <summary>
+        /// 认领人名
+        /// </summary>
+        [Column("USER_NAME"),StringLength(50)]
         public virtual string UserName { get; set; }
 
         /// <summary>
-        /// 认领时间
+        /// 认领人名
         /// </summary>
-        [Column("CREATE_TIME")]
-        public virtual DateTime CreateTime { get; set; }
-
-
+        [Column("REMARK"), StringLength(200)]
+        public virtual string Remark { get; set; }
 
     }
 }

@@ -18,23 +18,24 @@ namespace Easyman.Domain
         public override long Id { get; set; }
 
         /// <summary>
-        /// 共享文件夹ID
+        /// 共享文件夹
         /// </summary>
-        [ForeignKey("FOLDER_ID")]
-        public virtual ComputerFolder ComputerFolder { get; set; }
+        [Column("FOLDER_ID")]
+        public virtual long? FolderId { get; set; }
+        [ForeignKey("FolderId")]
+        public virtual Folder Folder { get; set; }
 
         /// <summary>
         /// 开始时间
         /// </summary>
         [Column("BEGIN_TIME")]
-        public virtual DateTime BeginTime { get; set; }
+        public virtual DateTime? BeginTime { get; set; }
 
         /// <summary>
         /// 结束时间
         /// </summary>
         [Column("END_TIME")]
-        public virtual DateTime EndTime { get; set; }
-
+        public virtual DateTime? EndTime { get; set; }
 
         /// <summary>
         /// 备注

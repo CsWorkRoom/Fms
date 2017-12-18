@@ -17,17 +17,18 @@ namespace Easyman.Domain
         public override long Id { get; set; }
 
         /// <summary>
-        /// 属性名
+        /// 属性类型ID
         /// </summary>
-        [ForeignKey("ATTR_ID")]
+        [Column("ATTR_TYPE_ID")]
+        public virtual long? AttrTypeId { get; set; }
+        [ForeignKey("AttrTypeId")]
         public virtual AttrType AttrType { get; set; }
 
         /// <summary>
-        /// 文件夹类型名
+        /// 属性名
         /// </summary>
-        [Column("NAME"), StringLength(100),Required]
+        [Column("NAME"), StringLength(50)]
         public virtual string Name { get; set; }
-
 
         /// <summary>
         /// 备注

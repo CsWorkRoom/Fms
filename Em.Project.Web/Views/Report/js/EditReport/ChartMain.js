@@ -156,6 +156,13 @@ function SaveChartReport() {
 
 //加载模版
 function ChooseTemp() {
+    var temp = $("#chartTemp").val();
+    if (temp == null || temp == "")
+    {
+        alert("未选中模版对象！");
+        return;
+    }
+
     var code = $("#chartEndCode").val();
     if (code != null && code.length > 0) {
         abp.message.confirm(

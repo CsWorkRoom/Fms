@@ -19,7 +19,7 @@ namespace Easyman.Domain
         /// <summary>
         /// 属性类型名
         /// </summary>
-        [Column("NAME"), StringLength(50),Required]
+        [Column("NAME"), StringLength(50)]
         public virtual string Name { get; set; }
 
         /// <summary>

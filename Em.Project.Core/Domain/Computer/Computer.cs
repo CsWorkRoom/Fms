@@ -16,30 +16,44 @@ namespace Easyman.Domain
 
         [Key, Column("ID")]
         public override long Id { get; set; }
+       
         /// <summary>
         /// 终端类型ID
         /// </summary>
-        [ForeignKey("COMPUTER_TYPE_ID")]
+        [Column("COMPUTER_TYPE_ID")]
+        public virtual long? ComputerTypeId { get; set; }
+        [ForeignKey("ComputerTypeId")]
         public virtual ComputerType ComputerType { get; set; }
-        [ForeignKey("DISTRICT_ID")]
+
+        /// <summary>
+        /// 归属组织ID
+        /// </summary>
+        [Column("DISTRICT_ID")]
+        public virtual long? DistrictId { get; set; }
+        [ForeignKey("DistrictId")]
         public virtual District District { get; set; }
+
         /// <summary>
         /// 终端名称
         /// </summary>
-        [Column("NAME")]
+        [Column("NAME"), StringLength(50)]
         public virtual string Name { get; set; }
-        [Column("CODE")]
+        [Column("CODE"), StringLength(50)]
         public virtual string Code { get; set; }
       
-        [Required]
-        [Column("IP"), StringLength(50)]
+        [Column("IP"), StringLength(20)]
         public virtual string Ip { get; set; }
 
-        [Column("USER_NAME"), StringLength(20)]
+        [Column("USER_NAME"), StringLength(50)]
         public virtual string UserName { get; set; }
 
-        [Column("PWD")]
+        [Column("PWD"), StringLength(100)]
         public virtual string Pwd { get; set; }
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        [Column("IS_USE")]
+        public virtual bool? IsUse { get; set; }
         /// <summary>
         /// 终端说明
         /// </summary>

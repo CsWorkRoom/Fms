@@ -17,25 +17,26 @@ namespace Easyman.Domain
 
         [Key, Column("ID")]
         public override long Id { get; set; }
+
         /// <summary>
         /// 文件类型ID
         /// </summary>
-        [ForeignKey("FILE_FORMAT_ID")]
+        [Column("FILE_FORMAT_ID")]
+        public virtual long? FileFormatId { get; set; }
+        [ForeignKey("FileFormatId")]
         public virtual FileFormat FileFormat { get; set; }
-      /// <summary>
+
+        /// <summary>
         /// 文件名称
         /// </summary>
-        [Column("NAME")]
+        [Column("NAME"), StringLength(100)]
         public virtual string Name { get; set; }
-        [Column("MD5")]
-        public virtual string MD5 { get; set; }
-      
-      
-        [Column("SIZE")]
-        public virtual long? Size { get; set; }
 
-        [Column("CREATE_TIME"), StringLength(20)]
-        public virtual DateTime CreateTime { get; set; }
+        [Column("MD5"), StringLength(100)]
+        public virtual string MD5 { get; set; }
+
+        [Column("SIZE")]
+        public virtual double? Size { get; set; }
 
         /// <summary>
         /// 文件说明
@@ -43,7 +44,5 @@ namespace Easyman.Domain
         [Column("REMARK"), StringLength(200)]
         public virtual string Remark { get; set; }
 
-
-       
     }
 }

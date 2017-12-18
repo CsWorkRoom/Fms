@@ -17,20 +17,28 @@ namespace Easyman.Domain
 
         [Key, Column("ID")]
         public override long Id { get; set; }
+
         /// <summary>
-        /// 文件ID
+        /// 文件库ID
         /// </summary>
-        [ForeignKey("FILE_LIBRARY_ID")]
+        [Column("FILE_LIBRARY_ID")]
+        public virtual long? FileLibraryId { get; set; }
+        [ForeignKey("FileLibraryId")]
         public virtual FileLibrary FileLibrary { get; set; }
 
-        [ForeignKey("ATTR_ID")]
+        /// <summary>
+        /// 文件库ID
+        /// </summary>
+        [Column("ATTR_ID")]
+        public virtual long? AttrId { get; set; }
+        [ForeignKey("AttrId")]
         public virtual Attr Attr { get; set; }
 
         /// <summary>
         /// 文件属性值
         /// </summary>
-        [Column("VALUE")]
-        public virtual string Value { get; set; }
+        [Column("ATTR_VAL"), StringLength(300)]
+        public virtual string AttrValue { get; set; }
        
        
     }

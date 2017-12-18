@@ -21,12 +21,13 @@ namespace Easyman.Domain
         /// 所属实例
         /// </summary>
         [ForeignKey("CASE_ID")]
-        public virtual long CaseId { get; set; }
+        public virtual long? CaseId { get; set; }
+
         /// <summary>
-        /// 所属版本
+        /// 文件版本批次ID
         /// </summary>
         [ForeignKey("FOLDER_VERSION_ID")]
-        public virtual FolderVersion FolderVersion { get; set; }
+        public virtual long? FolderVersionId { get; set; }
 
     }
 }
