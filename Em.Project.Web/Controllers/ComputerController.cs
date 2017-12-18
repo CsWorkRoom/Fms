@@ -22,12 +22,17 @@ namespace Easyman.Web.Controllers
         #region 初始化
 
         private readonly IComputerTypeAppService _ComputerTypeAppService;
-       
+        private readonly IComputerAppService _ComputerAppService;
+        private readonly IComputerShareFolderAppService _ComputerShareFolderAppService;
 
-        public ComputerController(IComputerTypeAppService ComputerTypeAppService)
+        public ComputerController(IComputerTypeAppService ComputerTypeAppService,
+                                    IComputerAppService ComputerAppService,
+                                    IComputerShareFolderAppService ComputerShareFolderAppService)
         {
 
             _ComputerTypeAppService = ComputerTypeAppService;
+            _ComputerAppService = ComputerAppService;
+            _ComputerShareFolderAppService = ComputerShareFolderAppService;
         }
 
         #endregion
@@ -45,6 +50,28 @@ namespace Easyman.Web.Controllers
         }
         #endregion
 
-       
+        #region 终端管理
+        public ActionResult EditComputer(long? id)
+        {
+            if (id == null || id == 0)
+            {
+                return View(new ComputerModel());
+            }
+            var entObj = _ComputerAppService.GetComputer(id.Value);
+            return View(entObj);
+        }
+        #endregion
+
+        #region 终端管理
+        public ActionResult EditComputerShareFolder(long? id)
+        {
+            if (id == null || id == 0)
+            {
+                return View(new ComputerModel());
+            }
+            var entObj = _ComputerShareFolderAppService.GetComputerShareFolder(id.Value);
+            return View(entObj);
+        }
+        #endregion
     }
 }

@@ -12,6 +12,7 @@ obj/
 ExportFile/
 UpFiles/
 PublishProfiles/
+.vs/
 
 
 # Compiled Dynamic libraries

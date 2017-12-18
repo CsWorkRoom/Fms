@@ -78,7 +78,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Computer\ComputerShareFolderAppService .cs" />
+    <Compile Include="Computer\ComputerAppService.cs" />
+    <Compile Include="Computer\Dto\ComputerShareFolderModel.cs" />
+    <Compile Include="Computer\Dto\ComputerModel .cs" />
     <Compile Include="Computer\Dto\ComputerTypeModel.cs" />
+    <Compile Include="Computer\IComputerShareFolderAppService.cs" />
+    <Compile Include="Computer\IComputerAppService.cs" />
     <Compile Include="Computer\IComputerTypeAppService.cs" />
     <Compile Include="Computer\ComputerTypeAppService.cs" />
     <Compile Include="EmProjectAppModule.cs" />

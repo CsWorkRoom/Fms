@@ -1,0 +1,103 @@
+﻿@using Easyman.Common.Mvc.Controls
+@model Easyman.Dto.ComputerModel
+@{
+    Layout = "~/Views/Shared/_CommonEdite.cshtml";
+}
+@section Styles{
+    <style>
+        #iconMenuDiv {
+            width: 400px;
+        }
+
+            #iconMenuDiv span {
+                padding: 5px;
+                margin: 5px 10px;
+                font-size: 22px;
+                cursor: pointer;
+                display: inline-block;
+                border: 1px solid transparent;
+            }
+
+                #iconMenuDiv span:hover {
+                    transform: scale(1.02);
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+
+            #iconMenuDiv h5 {
+                margin-left: 10px;
+                padding-bottom: 4px;
+                border-bottom: solid 1px #707070;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+}
+
+@Html.HiddenFor(h => h.Id)
+
+<div class="tab-content" style="padding-top:12px;">
+    <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
+
+        <div class="form-group">
+            <label for="Name" class="col-xs-2 control-label">终端名称</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "终端名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+            </div>
+            <label for="Code" class="col-xs-2 control-label">终端编码</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "终端编码", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端编码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ComputerTypeId" class="col-xs-2 control-label">终端类型</label>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(p => p.ComputerTypeId, Model.ComputerTypeList as List<SelectListItem>,
+                        new { @class = "form-control", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端类型')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+            </div>
+            <label for="DistrictId" class="col-xs-2 control-label">终端归属</label>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(p => p.DistrictId, Model.DistrictList as List<SelectListItem>,
+                        new { @class = "form-control", @Required = "Required", @oninvalid = "setCustomValidity('请输入指标标识')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="UserName" class="col-xs-2 control-label">登陆账户</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(f => f.UserName, new { @class = "form-control", placeholder = "登陆账户", @Required = "Required", @oninvalid = "setCustomValidity('请输入登陆账户')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+            </div>
+            <label for="Pwd" class="col-xs-2 control-label">登陆密码</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(f => f.Pwd, new { @class = "form-control", placeholder = "账户密码", @Required = "Required", @oninvalid = "setCustomValidity('请输入账户密码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Ip" class="col-xs-2 control-label">终端IP</label>
+            <div class="col-sm-10">
+                @Html.TextBoxFor(f => f.Ip, new { @class = "form-control", placeholder = "终端IP", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端IP')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Remark" class="col-xs-2 control-label">说明</label>
+            <div class="col-sm-10">
+                @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "描述说明" })
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    @*放页面自定义js*@
+    <script type="text/javascript">
+    //母版页调用提交方法
+    function SubmitForm() {
+        //from表单提交路径
+        var postUrl = "../api/services/api/computer/InsertOrUpdateComputer";
+        //提交方法-JS里面
+        handleSubmitForm(postUrl);
+    }
+    </script>
+}

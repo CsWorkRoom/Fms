@@ -27,6 +27,7 @@
     <TypeScriptToolsVersion>2.5</TypeScriptToolsVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -2080,6 +2081,8 @@
     <Content Include="Views\Report\ChartReport1.cshtml" />
     <Content Include="Views\Report\ChartReport.cshtml" />
     <Content Include="Views\Computer\EditComputerType.cshtml" />
+    <Content Include="Views\Computer\EditComputer.cshtml" />
+    <Content Include="Views\Computer\EditComputerShareFolder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

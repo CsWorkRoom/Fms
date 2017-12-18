@@ -171,8 +171,17 @@ namespace Easyman.EntityFramework
         #region 业务系统映射
         /*-----------------------------Computer----------------------*/
         public virtual IDbSet<ComputerType> ComputerType { get; set; }
-
-
+        public virtual IDbSet<Computer> Computer { get; set; }
+        public virtual IDbSet<ComputerFolder> ComputerShareFolder { get; set; }
+        public virtual IDbSet<Attr> Attr { get; set; }
+        public virtual IDbSet<AttrType> AttrType { get; set; }
+        public virtual IDbSet<FileAttr> FileAttr { get; set; }
+        public virtual IDbSet<FileClaim> FileClaim { get; set; }
+        public virtual IDbSet<FileFormat> FileFormat { get; set; }
+        public virtual IDbSet<FileLibrary> FileLibrary { get; set; }
+        public virtual IDbSet<CaseVersion> CaseVersion { get; set; }
+        public virtual IDbSet<FolderVersion> FolderVersion { get; set; }
+        public virtual IDbSet<MonitFile> MonitFile { get; set; }
         #endregion
 
         #region 配置
