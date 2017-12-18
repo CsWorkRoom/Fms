@@ -56,6 +56,7 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [System.Web.Http.HttpGet]
         ChartTempModel GetChartTemp(long id);
         /// <summary>
         /// 更新和新增图表模版

@@ -177,6 +177,7 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [System.Web.Http.HttpGet]
         public ChartTempModel GetChartTemp(long id)
         {
             var entObj = _ChartTempCase.FirstOrDefault(id);
