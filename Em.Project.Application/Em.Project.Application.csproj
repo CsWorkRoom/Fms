@@ -78,6 +78,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attr\AttrTypeAppService.cs" />
+    <Compile Include="Attr\AttrAppService.cs" />
+    <Compile Include="Attr\Dto\AttrTypeModel.cs" />
+    <Compile Include="Attr\Dto\AttrModel .cs" />
+    <Compile Include="Attr\IAttrTypeAppService.cs" />
+    <Compile Include="Attr\IAttrAppService.cs" />
     <Compile Include="Computer\ComputerShareFolderAppService .cs" />
     <Compile Include="Computer\ComputerAppService.cs" />
     <Compile Include="Computer\Dto\ComputerShareFolderModel.cs" />
@@ -92,6 +98,9 @@
     <Compile Include="Export\Dto\ExportDataModel.cs" />
     <Compile Include="Export\ExportAppService.cs" />
     <Compile Include="Export\IExportAppService.cs" />
+    <Compile Include="File\FileFormatAppService.cs" />
+    <Compile Include="File\Dto\FileFormatModel .cs" />
+    <Compile Include="File\IFileFormatAppService.cs" />
     <Compile Include="Formula\Dto\TargetFormulaModel.cs" />
     <Compile Include="Formula\ITargetFormulaAppService.cs" />
     <Compile Include="Formula\TargetFormulaAppService.cs" />

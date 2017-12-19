@@ -1806,6 +1806,7 @@
     <Content Include="Abp\abp.css.map" />
     <Content Include="Common\Scripts\html5uploader\upload.php" />
     <Content Include="Echart\javascripts\api.map.js" />
+    <Content Include="Views\File\EditFileFormat.cshtml" />
     <Content Include="Views\Report\js\EditReport\ChartMain.js" />
     <Content Include="Views\Report\js\ChartReport.js" />
     <Content Include="Echart\data\asset\data\aqi-beijing.json" />
@@ -2013,6 +2014,8 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\ValidateUrl.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\AttrController.cs" />
     <Compile Include="Controllers\MonthTargetController.cs" />
     <Compile Include="Controllers\SubitemController.cs" />
     <Compile Include="Controllers\ComputerController.cs" />
@@ -2083,6 +2086,8 @@
     <Content Include="Views\Computer\EditComputerType.cshtml" />
     <Content Include="Views\Computer\EditComputer.cshtml" />
     <Content Include="Views\Computer\EditComputerShareFolder.cshtml" />
+    <Content Include="Views\Attr\EditAttrType.cshtml" />
+    <Content Include="Views\Attr\EditAttr.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
