@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace Easyman.Dto
 {
     [AutoMap(typeof(Folder))]
-    public class ComputerShareFolderModel : EntityDto<long>
+    public class FolderModel : EntityDto<long>
     {
 
         public new long Id { get; set; }

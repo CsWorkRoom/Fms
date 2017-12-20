@@ -10,7 +10,7 @@ namespace Easyman.Service
     /// <summary>
     /// 终端共享文件夹管理
     /// </summary>
-    public interface IComputerShareFolderAppService : IApplicationService
+    public interface IFolderAppService : IApplicationService
     {
 
         /// <summary>
@@ -18,28 +18,28 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        ComputerShareFolderModel GetComputerShareFolder(long id);
+        FolderModel GetFolder(long id);
         /// <summary>
         /// 更新和新增终端共享文件夹
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        ComputerShareFolderModel InsertOrUpdateComputerShareFolder(ComputerShareFolderModel input);
+        FolderModel InsertOrUpdateFolder(FolderModel input);
 
         /// <summary>
         /// 删除一条终端共享文件夹
         /// </summary>
         /// <param name="input"></param>
-        void DeleteComputerShareFolder(EntityDto<long> input);
+        void DeleteFolder(EntityDto<long> input);
         /// <summary>
         /// 获取终端共享文件夹json
         /// </summary>
         /// <returns></returns>
-        IEnumerable<object> GetComputerShareFolderTreeJson();
+        IEnumerable<object> GetFolderTreeJson();
         /// <summary>
         /// 获取所有类型List
         /// </summary>
         /// <returns></returns>
-        List<SelectListItem> ComputerShareFolderList();
+        List<SelectListItem> FolderList();
     }
 }

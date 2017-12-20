@@ -23,16 +23,19 @@ namespace Easyman.Web.Controllers
 
         private readonly IComputerTypeAppService _ComputerTypeAppService;
         private readonly IComputerAppService _ComputerAppService;
-        private readonly IComputerShareFolderAppService _ComputerShareFolderAppService;
+        private readonly IFolderAppService _FolderAppService;
+        private readonly IDistrictAppService _DistrictAppService;
 
         public ComputerController(IComputerTypeAppService ComputerTypeAppService,
                                     IComputerAppService ComputerAppService,
-                                    IComputerShareFolderAppService ComputerShareFolderAppService)
+                                    IFolderAppService FolderAppService,
+                                    IDistrictAppService DistrictAppService)
         {
 
             _ComputerTypeAppService = ComputerTypeAppService;
             _ComputerAppService = ComputerAppService;
-            _ComputerShareFolderAppService = ComputerShareFolderAppService;
+            _FolderAppService = FolderAppService;
+            _DistrictAppService = DistrictAppService;
         }
 
         #endregion
@@ -53,23 +56,25 @@ namespace Easyman.Web.Controllers
         #region 终端管理
         public ActionResult EditComputer(long? id)
         {
-            if (id == null || id == 0)
+            var entObj = new ComputerModel { IsUse=true};
+
+            if (id != null && id != 0)
             {
-                return View(new ComputerModel());
+                entObj = _ComputerAppService.GetComputer(id.Value);
             }
-            var entObj = _ComputerAppService.GetComputer(id.Value);
+            entObj.ComputerTypeList = _ComputerTypeAppService.ComputerTypeList();        
             return View(entObj);
         }
         #endregion
 
         #region 终端管理
-        public ActionResult EditComputerShareFolder(long? id)
+        public ActionResult EditFolder(long? id)
         {
             if (id == null || id == 0)
             {
                 return View(new ComputerModel());
             }
-            var entObj = _ComputerShareFolderAppService.GetComputerShareFolder(id.Value);
+            var entObj = _FolderAppService.GetFolder(id.Value);
             return View(entObj);
         }
         #endregion

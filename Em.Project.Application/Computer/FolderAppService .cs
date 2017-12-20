@@ -20,18 +20,18 @@ namespace Easyman.Service
     /// <summary>
     /// 终端共享文件夹管理
     /// </summary>
-    public class ComputerShareFolderAppService : EasymanAppServiceBase, IComputerShareFolderAppService
+    public class FolderAppService : EasymanAppServiceBase, IFolderAppService
     {
         #region 初始化
 
-        private readonly IRepository<Folder,long> _ComputerShareFolderCase;
+        private readonly IRepository<Folder,long> _FolderCase;
         /// <summary>
-        /// 构造函数注入ComputerShareFolder仓储
+        /// 构造函数注入Folder仓储
         /// </summary>
         /// <param name="dbTagManager"></param>
-        public ComputerShareFolderAppService(IRepository<Folder, long> ComputerShareFolderCase)
+        public FolderAppService(IRepository<Folder, long> FolderCase)
         {
-            _ComputerShareFolderCase = ComputerShareFolderCase;
+            _FolderCase = FolderCase;
         }
         #endregion
 
@@ -41,12 +41,12 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ComputerShareFolderModel GetComputerShareFolder(long id)
+        public FolderModel GetFolder(long id)
         {
-            var entObj= _ComputerShareFolderCase.FirstOrDefault(id);
+            var entObj= _FolderCase.FirstOrDefault(id);
             if (entObj != null)
             {
-               return AutoMapper.Mapper.Map<ComputerShareFolderModel>(entObj);
+               return AutoMapper.Mapper.Map<FolderModel>(entObj);
             }
             throw new UserFriendlyException("未找到编号为【"+id.ToString()+"】的对象！");
         }
@@ -55,24 +55,24 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public ComputerShareFolderModel InsertOrUpdateComputerShareFolder(ComputerShareFolderModel input)
+        public FolderModel InsertOrUpdateFolder(FolderModel input)
         {
-            if(_ComputerShareFolderCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
+            if(_FolderCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
             {
                 throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
             }
-            //var entObj =input.MapTo<ComputerShareFolder>();
-            var entObj = _ComputerShareFolderCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new Folder();
+            //var entObj =input.MapTo<Folder>();
+            var entObj = _FolderCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new Folder();
             entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
-            //var entObj= AutoMapper.Mapper.Map<ComputerShareFolder>(input);
-            var resObj= _ComputerShareFolderCase.InsertOrUpdate(entObj);
+            //var entObj= AutoMapper.Mapper.Map<Folder>(input);
+            var resObj= _FolderCase.InsertOrUpdate(entObj);
             if (resObj == null)
             {
                 throw new UserFriendlyException("新增或更新失败！");
             }
             else
             {
-                return resObj.MapTo<ComputerShareFolderModel>();
+                return resObj.MapTo<FolderModel>();
             }
         }
 
@@ -80,11 +80,11 @@ namespace Easyman.Service
         /// 删除一条终端共享文件夹
         /// </summary>
         /// <param name="input"></param>
-        public void DeleteComputerShareFolder(EntityDto<long> input)
+        public void DeleteFolder(EntityDto<long> input)
         {
             try
             {
-                _ComputerShareFolderCase.Delete(input.Id);
+                _FolderCase.Delete(input.Id);
             }
             catch (Exception ex)
             {
@@ -95,9 +95,9 @@ namespace Easyman.Service
         /// 获取终端共享文件夹json
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<object> GetComputerShareFolderTreeJson()
+        public IEnumerable<object> GetFolderTreeJson()
         {
-            var objList= _ComputerShareFolderCase.GetAllList();
+            var objList= _FolderCase.GetAllList();
             if(objList!=null&& objList.Count>0)
             {
                 return objList.Select(s => new
@@ -114,9 +114,9 @@ namespace Easyman.Service
         /// 获取所有类型List
         /// </summary>
         /// <returns></returns>
-        public List<SelectListItem> ComputerShareFolderList()
+        public List<SelectListItem> FolderList()
         {
-            var objList = _ComputerShareFolderCase.GetAllList();
+            var objList = _FolderCase.GetAllList();
             if (objList != null && objList.Count > 0)
             {
                 return objList.Select(p => new SelectListItem

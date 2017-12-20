@@ -55,12 +55,11 @@
             <label for="ComputerTypeId" class="col-xs-2 control-label">终端类型</label>
             <div class="col-sm-4">
                 @Html.DropDownListFor(p => p.ComputerTypeId, Model.ComputerTypeList as List<SelectListItem>,
-                        new { @class = "form-control", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端类型')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                          new { @class = "form-control", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端类型')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
             </div>
             <label for="DistrictId" class="col-xs-2 control-label">终端归属</label>
             <div class="col-sm-4">
-                @Html.DropDownListFor(p => p.DistrictId, Model.DistrictList as List<SelectListItem>,
-                        new { @class = "form-control", @Required = "Required", @oninvalid = "setCustomValidity('请输入指标标识')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                @Html.DropDownTreeForUser(d => d.DistrictId, "../api/services/api/District/GetDistrictTreeJson")
             </div>
         </div>
         <div class="form-group">
@@ -74,11 +73,17 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="Ip" class="col-xs-2 control-label">终端IP</label>
-            <div class="col-sm-10">
+            <label for="Ip" class="col-xs-2 control-label">IP地址</label>
+            <div class="col-sm-4">
                 @Html.TextBoxFor(f => f.Ip, new { @class = "form-control", placeholder = "终端IP", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端IP')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
             </div>
+            <label for="IsUse" class="col-xs-2 control-label">是否启用</label>
+            <div class="col-sm-4">
+                @Html.CheckBoxFor(f => f.IsUse)
+            </div>
         </div>
+        
+       
         <div class="form-group">
             <label for="Remark" class="col-xs-2 control-label">说明</label>
             <div class="col-sm-10">

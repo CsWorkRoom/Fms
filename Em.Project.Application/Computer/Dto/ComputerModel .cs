@@ -42,12 +42,13 @@ namespace Easyman.Dto
 
         public virtual long? DistrictId { get; set; }
 
+        public virtual bool IsUse { get; set; }
+
 
         [Display(Name ="备注")]
         public virtual string Remark { get; set; }
 
         public List<SelectListItem> ComputerTypeList { get; set; }
 
-        public List<SelectListItem> DistrictList { get; set; }
     }
 }
