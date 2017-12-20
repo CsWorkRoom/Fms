@@ -368,7 +368,7 @@ var SubmitFormData = function (fromID, subButId) {
                 abp.message.error(data.result.message, "保存失败");
             $(subButId).button('reset');
         },
-        error: function () {
+        error: function (dt) {
             $(subButId).button('reset');
         }
     })
