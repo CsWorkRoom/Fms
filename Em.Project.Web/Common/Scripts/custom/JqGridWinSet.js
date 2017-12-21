@@ -1,22 +1,23 @@
 ﻿
 //设置列表高宽
 var WinResize = function (jqGrid, navMenu, jqGridPager) {
-    $(".Nodata").remove();//移除暂无数据层
-    var columnNames = $("#" + jqGrid + " tr").eq(0).find("td:visible");//过虑隐藏的列，得到真实的列数
-    //var bolShrinkToFit = $("#" + jqGrid).jqGrid("getGridParam", "shrinkToFit");
-    //if (bolShrinkToFit == true && columnNames.length * 100 > window.innerWidth) {//如果每列平均最小宽度小于100px时，停止用自适应
-    //    bolShrinkToFit = false;
-    //}
+    var fieldWds = 0;
     var bolShrinkToFit = true;//默认自适应
-    if (columnNames.length * 100 > window.innerWidth) {//如果每列平均最小宽度小于100px时，停止用自适应
+    if ($("#columnSumWidth") != null) {//检查是否有宽度保存
+        fieldWds = parseInt($("#columnSumWidth").val());
+    } else {
+        var columnNames = $("#" + jqGrid + " tr").eq(0).find("td:visible");//过虑隐藏的列，得到真实的列数
+        fieldWds = columnNames.length * 60;
+    }
+    if (fieldWds > window.innerWidth) {//如果每列平均最小宽度小于60px时，停止用自适应
         bolShrinkToFit = false;
     }
-    
+
     //向JQGrid动态注入事件
     $("#" + jqGrid).jqGrid('setGridParam', {  // 重新加载数据
         shrinkToFit: bolShrinkToFit,
-        loadError: function (xhr, status, error) {            
-                abp.message.error("信息加载有异常，请联系管理员", "错误信息");
+        loadError: function (xhr, status, error) {
+            abp.message.error("信息加载有异常，请联系管理员", "错误信息");
         },
         gridComplete: function () {
             $("#" + jqGrid + " .ui-row-ltr:first").focus();//加载完数据滚动条置顶
@@ -39,6 +40,9 @@ var WinResize = function (jqGrid, navMenu, jqGridPager) {
         },
         onPaging: function () {
             SetFrozenTr(jqGrid, navMenu, jqGridPager);
+        },
+        beforeRequest: function () {
+            $(".Nodata").remove();//移除暂无数据层
         }
     });
     //End向JQGrid动态注入事件

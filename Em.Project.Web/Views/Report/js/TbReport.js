@@ -97,6 +97,19 @@ $(window).resize(function () {
    WinResize("jqGrid", "navMenu", "jqGridPager");
 });
 
+var GetEventArrLength = function (EventArr) {
+    if (EventArr.length == 1 && EventArr[0].DisplayName.length <= 2) {
+        return 40;
+    }
+    var intReturnNum = 0;
+    $.each(EventArr, function () {
+        var intTemp = $(this)[0].DisplayName.length;
+        if (intTemp > 0)
+            intReturnNum += intTemp * 10;
+    });
+    return intReturnNum;
+}
+
 var SetSeach = function(){
     //判断条件label高度是否置顶
     $("#filterHts .control-label").each(function () {
@@ -168,10 +181,9 @@ function InitTbReport() {
         hidden: false,//是否隐藏
         frozen: true,//是否冻结
         // width: 80,//列宽度
-        width: outEventArr.length * 30,//列宽度
+        width: GetEventArrLength(outEventArr),//列宽度
         formatter: function (cellvalue, options, rowObject) { return cellvalue; }
     };
-
     var intRowNum = 0;
     var formatRowFun = function (cellvalue, options, rowObject) {
 
@@ -316,7 +328,6 @@ function InitTbReport() {
                     //#endregion
                 }
             }
-
             if (contentEventFun != null)
             {
                 curField.formatter = contentEventFun;
@@ -532,15 +543,20 @@ function InitTbReport() {
     }
 
     //获取分页下拉
-    var rowArr = [tbreport.RowNum, tbreport.RowNum * 2, tbreport.RowNum * 3];
+    var rowArr = [];
     if (tbreport.RowList != null && tbreport.RowList.length > 0) {
         var rows = $.parseJSON(tbreport.RowList);
         if (rows != null && rows.length > 0) {
             rowArr = rows;
         }
     }
+    else {
+        rowArr = [tbreport.RowNum, tbreport.RowNum * 2, tbreport.RowNum * 3];
+    }
+
     //目前取得是页面宽-屏幕可用工作区宽度
     var winWidth = window.screen.availWidth;
+    $("#columnSumWidth").val(fieldWds);
     //是否自适应列宽度
     var skTofit = false;
     if (fieldWds < winWidth) {
@@ -727,6 +743,10 @@ function OutEventForLabel(outEvent, fieldName, rowObject, cellvalue, contEventAr
     else {
         val = "";
     }
+    if (val == null || $.trim(val)=="") {
+        return " ";
+    }
+
 
     if (outEvent.OpenWay == 10) {
         title = " title='" + outEvent.DisplayName + "' "
@@ -907,18 +927,6 @@ function ClickOpenWay(ev, rowObject) {
 //生成多表头(包含多表头事件)
 function GenerateTopField(fieldArr, topFieldArr, outEventArr)
 {
-    var colHeadArr = [];
-    //fieldArr = fieldArr.sort(compare("OrderNum"));//根据字段序号排序-降序
-    //#region 生成colHeadArr
-    if (fieldArr != null && fieldArr.length > 0)//如果没有多表头topFieldArr为空，则从fieldArr入手
-    {
-        for (var i = 0; i < fieldArr.length; i++) {
-            var fd = fieldArr[i];
-            colHeadArr.push(fd.FieldCode);//hot设置表头名
-        }
-    }
-    //#endregion
-
     //#region 得到当前多表头的深度-maxNum
     var maxNum = 1;//默认一层
     if (topFieldArr != null && topFieldArr.length > 0) {
@@ -938,6 +946,19 @@ function GenerateTopField(fieldArr, topFieldArr, outEventArr)
             {
                 maxNum = num;
             }
+        }
+    }
+    else { return;}
+    //#endregion
+
+    var colHeadArr = [];
+    //fieldArr = fieldArr.sort(compare("OrderNum"));//根据字段序号排序-降序
+    //#region 生成colHeadArr
+    if (fieldArr != null && fieldArr.length > 0)//如果没有多表头topFieldArr为空，则从fieldArr入手
+    {
+        for (var i = 0; i < fieldArr.length; i++) {
+            var fd = fieldArr[i];
+            colHeadArr.push(fd.FieldCode);//hot设置表头名
         }
     }
     //#endregion

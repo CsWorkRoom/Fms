@@ -166,6 +166,7 @@ function GetContentCheck(id) {
         type: 'get',
         data: { id: id },
         dataType: 'json',
+        async: true,
         success: function (data) {
            
                 data = data.result.data;
@@ -247,6 +248,7 @@ function GetDefineTree(id) {
         type: 'get',
         data: { id: id, conntentTypeId: $("#ContentTypeId").val() },
         dataType: 'json',
+        async: true,
         success: function (data) {
             if (data.result.contentEncoding)
                 data = data.result.data;
@@ -468,7 +470,7 @@ function InsertHtml() {
                 dataType: "json",
                 url: bootPATH+'Content/GetUserBUserId',
                 data: { uId: uId },
-                async: false,
+                async: true,
                 success: function (data) {
                     //$(".modal-body").html(data);
                     var result = data.result.data;
@@ -501,7 +503,7 @@ function InsertHtml() {
                 dataType: "json",
                 url: bootPATH + 'Content/GetUserBUserId',
                 data: { uId: uId },
-                async: false,
+                async: true,
                 success: function (data) {
                     
                     var result = data.result.data;
@@ -547,6 +549,7 @@ function GetUserAutocomplete() {
         scrollHeight: 300,   //提示的高度，溢出显示滚动条
         matchContains: true,    //包含匹配，就是data参数里的数据，是否只要包含文本框里的数据就显示
         autoFill: false,    //自动填充
+        async: true,
         source: function (request, response) {
             var term = request.term;
             if (term in cache) {
@@ -602,7 +605,7 @@ function GetLimiUser() {
         dataType: "json",
         url: bootPATH+'Content/GetUserByName',
         data: { uName: uName },
-        async: false,
+        async: true,
         success: function (data) {
             //$(".modal-body").html(data);
             var result = data.result.data;
@@ -639,7 +642,7 @@ function GetLimitUser() {
                 dataType: "json",
                 url: bootPATH + 'Content/GetUserBUserId',
                 data: { uId: uId },
-                async: false,
+                async: true,
                 success: function (data) {
                     userListHtmlNo += GetLimiUserHtml(data.result.data.userId, data.result.data.userName, "");
                 }
@@ -723,6 +726,7 @@ function GetLimitUser() {
             scrollHeight: 300,   //提示的高度，溢出显示滚动条
             matchContains: true,    //包含匹配，就是data参数里的数据，是否只要包含文本框里的数据就显示
             autoFill: false,    //自动填充
+            async: true,
             source: function (request, response) {
                 var term = request.term;
                 if (term in cache) {
@@ -777,7 +781,7 @@ function GetLimitUser() {
             dataType: "json",
             url: bootPATH + 'Content/GetUserByName',
             data: { uName: uName },
-            async: false,
+            async: true,
             success: function (data) {
                 //$(".modal-body").html(data);
                 var result = data.result.data;
@@ -813,7 +817,7 @@ function GetLimitUser() {
                     dataType: "json",
                     url: bootPATH + 'Content/GetUserBUserId',
                     data: { uId: uId },
-                    async: false,
+                    async: true,
                     success: function (data) {
                         userListHtmlYes += GetLimiUserHtmlYes(data.result.data.userId, data.result.data.userName, "");
                     }

@@ -157,8 +157,7 @@ function SaveChartReport() {
 //加载模版
 function ChooseTemp() {
     var temp = $("#chartTemp").val();
-    if (temp == null || temp == "")
-    {
+    if (temp == null || temp == "") {
         alert("未选中模版对象！");
         return;
     }

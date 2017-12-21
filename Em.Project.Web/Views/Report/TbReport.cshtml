@@ -8,11 +8,8 @@
 @section Styles{
     @Styles.Render("~/Bundles/App/jqgrid/css")
     @Styles.Render("~/Bundles/App/TbReport/css")
-    @Styles.Render("~/Bundles/icheck/css")
-    @Styles.Render("~/Common/css/multipleselect/css")
-    @Styles.Render("~/Bundles/ztree/css")
 }
-
+<link href="~/fonts/iconfont/iconfont.css" rel="stylesheet" />
 <!--按钮区域-->
 <!--查询区域-->
 <form style="width:95%" id="saveForm" class="form-horizontal" action="" method="post" role="form"></form>
@@ -26,7 +23,7 @@
     @Html.HiddenFor(m => m.ChildReportListJson)
     @Html.HiddenFor(m => m.KVJson)
     @Html.HiddenFor(m => m.EmId)
-
+    <input type="hidden" id="columnSumWidth" value="0" />
     <div class="tab-content" style="width:100%;height:100%">
         <!--筛选区域-->
         <div role="tabpanel" class="tab-pane active" id="navMenu" style="padding-top: 4px;padding-bottom: 1px;">
@@ -53,12 +50,8 @@
     @Scripts.Render("~/Bundles/App/TbReport/js")
 @Scripts.Render("~/Bundles/ztree/js")
     
-
+<script src="~/fonts/iconfont/iconfont.js"></script>
 <script src="~/Common/Scripts/calendar/WdatePicker.js"></script>
 <script src="~/Common/Scripts/calendar/lang/zh-cn.js"></script>
     <script type="text/javascript" id="dynamicScript"></script>
-
-<script>
-   
-    </script>
 }

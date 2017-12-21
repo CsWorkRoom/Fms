@@ -53,6 +53,12 @@ namespace Easyman.Web
             //关闭跨站脚本攻击
             Configuration.Modules.AbpWeb().AntiForgery.IsEnabled = false;
 
+            //为所有缓存配置有效期
+            Configuration.Caching.ConfigureAll(cache =>
+            {
+                cache.DefaultSlidingExpireTime = System.TimeSpan.FromHours(8);//8小时
+            });
+
             //Configure Hangfire - ENABLE TO USE HANGFIRE INSTEAD OF DEFAULT JOB MANAGER
             //Configuration.BackgroundJobs.UseHangfire(configuration =>
             //{

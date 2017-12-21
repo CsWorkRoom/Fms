@@ -39,7 +39,7 @@
         }
         .node {
             -moz-border-radius: 0.5em;
-            border-radius: 0.5em;
+            border-radius: 0.2em;
             opacity: 0.8;
             filter: alpha(opacity=80);
             width: 100px;
@@ -50,7 +50,7 @@
             font-size: 1em;
             cursor: pointer;
             color: #030303;
-            border: 1px solid #191970;
+            border: 1px solid #9a9a9c;
         }
         .form-body{
             height:100%;
@@ -251,7 +251,7 @@
                 }
                 if (isCheck) {
                     num++;
-                    $(this).append("<div class='node cols'  id='" + id + "' style='padding-top:15px;position: absolute;background-color:#C1C1C1;'  name='" + $("#" + name).attr("name") + "' title='" + $("#" + name).attr("title") + "'  option-data='" + $("#" + name).attr("option-data") + "'>" + $(ui.helper).html() + "</div>");
+                    $(this).append("<div class='node cols'  id='" + id + "' style='padding-top:15px;position: absolute;background-color:#f0ad4e;'  name='" + $("#" + name).attr("name") + "' title='" + $("#" + name).attr("title") + "'  option-data='" + $("#" + name).attr("option-data") + "'>" + $(ui.helper).html() + "</div>");
 
                     $("#" + id).css("left", left).css("top", top);
                     var endpoint = jsPlumb.addEndpoint(id, { anchors: "RightMiddle" }, solidCircle);//在 id 的右边设置一个连接点
@@ -328,7 +328,7 @@
                         endpoint: "Blank",//端点
                         paintStyle: {
                             //连接线颜色
-                            strokeStyle: "#C7C7C7", lineWidth: 1
+                            strokeStyle: "#c5852b", lineWidth: 1
                         },
                         overlays: [["Label",
                             {
@@ -442,8 +442,8 @@
         //实心圆样式
         var solidCircle = {
             endpoint: ["Dot", { radius: 8 }],  //端点的形状
-            paintStyle: { fillStyle: "#C1C1C1", radius: 3 },	//端点的颜色样式
-            connectorStyle: { strokeStyle: "#1e8151", strokeStyle: "#C7C7C7", lineWidth: 1 },	  //连接线的颜色，大小样式
+            paintStyle: { fillStyle: "#f0ad4e", radius: 3 },	//端点的颜色样式
+            connectorStyle: { strokeStyle: "#1e8151", strokeStyle: "#c5852b", lineWidth: 1 },	  //连接线的颜色，大小样式
             isSource: true,	//是否可以拖动（作为连线起点）
             connector: ["Straight"], //连接线的样式种类有[Bezier],[Flowchart],[StateMachine ],[Straight ]       ,{ stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true }
             isTarget: true,		//是否可以放置（连线终点）
@@ -489,7 +489,7 @@
                 var id = o.DivId + "_" + (i + 666666);
                 
                 //加载节点，节点名称过长，截取前6个字符 o.name.substr(0, 6)
-                $("#right").append("<div class='node cols' id='" + id + "' title='" + nodeName + "' name='" + nodeid + "' style='position: absolute;padding-top:15px' >" + nodeName.substr(0, 14) + "</div>");
+                $("#right").append("<div class='node cols' id='" + id + "' title='" + nodeName + "' name='" + nodeid + "' style='position: absolute;padding-top:15px;background-color:#f0ad4e;' >" + nodeName.substr(0, 14) + "</div>");
                 //先加载完成DIV后再加载option-data，有特殊字符
                 $("#" + id).attr("option-data", node);
 
@@ -547,7 +547,7 @@
                     endpoint: "Blank",//端点
                     paintStyle: {
                         //连接线颜色
-                        strokeStyle: "#C7C7C7", lineWidth: 1
+                        strokeStyle: "#c5852b", lineWidth: 1
                     },
                     overlays: [["Label",
                         {
@@ -654,8 +654,8 @@
     }
     //节点加载
     function InitNode(id) {
-        var nodeColor = ["#C1C1C1", "#C1C1C1", "#C1C1C1"];
-        $("#left").append("<div class='node' style='padding-top:15px;color:#030303;border:1px solid #191970' id='left_node_temp' title='新建任务' option-data=''>新建任务</div>");
+        var nodeColor = ["#f0ad4e", "#f0ad4e", "#f0ad4e"];
+        $("#left").append("<div class='node' style='padding-top:15px;color:#030303;' id='left_node_temp' title='新建任务' option-data=''>新建任务</div>");
         abp.services.api.scriptNode.getScriptNodeType(id).done(function (data) {
             //["#e98885", "#5fcc99", "#3f91c9"];
             var isFor = 0;

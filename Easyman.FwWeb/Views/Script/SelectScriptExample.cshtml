@@ -29,7 +29,7 @@
         }
         .node {
             -moz-border-radius: 0.5em;
-            border-radius: 0.5em;
+            border-radius: 0.2em;
             opacity: 0.8;
             filter: alpha(opacity=80);
             width: 110px;
@@ -37,8 +37,7 @@
             text-align: center;
             font-family: helvetica;
             padding: 0.5em;
-            font-size: 1em;
-            cursor: pointer;
+            font-size: 1em;            
             color: #ffffff;
         }
         #comment_bubble {
@@ -53,13 +52,12 @@
             color: #ffffff;
             padding:5px;
             background-color:#989898;
+            cursor:default
         }
         #node_info {
             z-index:1001;
         }
         .start {
-            /*display:block;*/
-            /*padding-top:2px;*/
             /*手工启动样式*/
            top: 10px;
            position: relative;
@@ -111,7 +109,6 @@
         <header role="heading" class="header">
             <ul class="nav nav-tabs" role="tablist" style="background-color:#fafafa;">
                 <li><a href="#" id="aSetConfig"><i class="fa fa-cog" aria-hidden="true" style="color:#079048"></i> 任务组属性</a></li>
-                @*<li><a href="#" id="start_script"><i class="fa fa-play" aria-hidden="true" style="color:#1aa3f4"></i> 启动任务组</a></li>*@
                 <li><a href="#" id="NodeTypeList"><i class="fa fa-file-text" aria-hidden="true" style="color: #ec9a22;"></i> 任务组日志</a></li>
                 <li><a href="#" id="aHealp"><i class="fa fa-question-circle" aria-hidden="true" style="color:#1c7851"></i> 帮助</a></li>
                 <li style="float:right"><i class="fa fa-share-alt" aria-hidden="true" style="color:#e35341;padding: 10px 15px;"></i>
@@ -265,32 +262,12 @@
             }
             $.post("../api/services/api/Script/StartExampSelect?StartType=2&ExampleId=" + data_CODE.SCRIPT_CASE_ID + "&ExampleNode=" + data_CODE.LOG_NODE_ID, {}, function (dataicon) {
                 console.log(dataicon);
-                //dataicon.result
-                
                 if (dataicon.result == true || dataicon.result == "ture") {
                     abp.message.info("启动成功", "提示");
                 }
 
             });
-            // abp.services.api.script.StartExampSelect(2, data_CODE.SCRIPT_CASE_ID, data_CODE.LOG_NODE_ID).done(function (data) {
-            ////abp.services.api.script.startExamp(2, data_CODE.SCRIPT_CASE_ID, data_CODE.LOG_NODE_ID).done(function (data) {
-            //    if (data == true || data == "true") {
-            //        abp.message.info("启动成功","提示");
-            //    }
-            //});
         });
-        // 手动启动任务组
-        /*$("#start_script").click(function (e) {
-            var id = $("#Id").val();
-           
-
-            abp.services.api.script.startExamp(1, id ).done(function (data) {
-                if (data == true || data == "true") {
-                    abp.message.info("启动成功", "提示");
-                }
-            });
-        });*/
-
         //基本连接线样式
         var connectorPaintStyle = {
             lineWidth: 4,
@@ -315,11 +292,10 @@
         var solidCircle = {
             endpoint: ["Dot", { radius: 8 }],  //端点的形状
             paintStyle: { fillStyle: "#C1C1C1", radius: 3 },	//端点的颜色样式
-            connectorStyle: { strokeStyle: "#1e8151", strokeStyle: "#C7C7C7", lineWidth: 1},	  //连接线的颜色，大小样式
+            connectorStyle: { strokeStyle: "#1e8151", strokeStyle: "#c5852b", lineWidth: 1},	  //连接线的颜色，大小样式
             isSource: true,	//是否可以拖动（作为连线起点）
             connector: ["Straight"], //连接线的样式种类有[Bezier],[Flowchart],[StateMachine ],[Straight ]       ,{ stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true }
             isTarget: true,		//是否可以放置（连线终点）
-            //anchor: [0.2,0,0,-1],定义连接点的位置
             maxConnections: 5,	// 设置连接点最多可以连接几条线
             connectorOverlays: [["Arrow", { width: 10, length: 10, location: 1 }]]
         };
@@ -371,7 +347,7 @@
                 strHtml+="          <div class='node' id='" + divId + "' style='position: absolute;background-color:" + node_color + "'>"+o.NODE_NAME.substr(0, 6);
                 strHtml+="              <div id='faStylefa' style='width: 100%;float: left;text-align: center;'>";
                 strHtml += "                  <input type='button' value='日志' style='position: relative; top: 2px;left: 0px;' class='log'/>";
-                strHtml += "                 <lable class='fa-2x fa fa-play-circle-o start'/>";
+                strHtml += "                 <lable class='fa-2x fa fa-play-circle-o start' style='cursor: pointer;'/>";
                 strHtml += "            </div>";
                 strHtml += "          </div>";
                 strHtml += "   </div>";
@@ -393,7 +369,6 @@
                             return "";
                         } return v;
                     });
-                    //var html = "<div><lable>任务名称：</lable>" + node_date.NODE_NAME + "</div><div><lable>执行状态：</lable>" + node_date.RUN_STATUS_STR + "</div><div><lable>执行结果：</lable>" + node_date.RETURN_CODE_STR + "</div>";
                         var html = "<div><lable>任务名称：</lable>" + o.NODE_NAME.substr(0, 25) + "</div><div><lable>执行状态：</lable>" + o.RUN_STATUS_STR + "</div><div><lable>执行结果：</lable>" + o.RETURN_CODE_STR + "</div>";
                     $("#comment_bubble").html(html);
                     $("#node_info").css("left", $(this).offset().left + 93);
@@ -429,7 +404,6 @@
                         yyy = o.Y;
                     }
                 });
-               // $("#right").height(yyy + 100);
                 jsPlumb.draggable(divId);
             });
 

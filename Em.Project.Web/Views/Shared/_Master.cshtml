@@ -30,13 +30,11 @@
     @Styles.Render("~/Bundles/bootstrap/css")
     @Styles.Render("~/Bundles/common/css")
     @Styles.Render("~/Bundles/alert/css")
-    @Styles.Render("~/Bundles/iconfont/css")
     @Styles.Render("~/Bundles/Scroll/css")
-    @*@Styles.Render("~/Bundles/icheck/css")
-    @Styles.Render("~/Common/css/multipleselect/css")*@
-
+    @Styles.Render("~/Bundles/icheck/css")
+    @Styles.Render("~/Common/css/multipleselect/css")
     @Styles.Render("~/Bundles/ztree/css")
-
+    <link href="~/fonts/css/font-awesome.css" rel="stylesheet" />
     <link href="~/Common/css/urlExtend.css" rel="stylesheet" />
 
         @RenderSection("Styles", false)
@@ -45,7 +43,6 @@
         //This is used to get the application's root path from javascript. It's useful if you're running application in a virtual directory under IIS.
         var abp = abp || {};
         abp.appPath = '@ApplicationPath';
-
     </script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -53,23 +50,21 @@
      @Html.IncludeScript("~/Scripts/others/html5shiv.js")
      @Html.IncludeScript("~/Scripts/others/respond.min.js")
     <![endif]-->
-    @Scripts.Render("~/Bundles/jquery/js")
+        @Scripts.Render("~/Bundles/jquery/js")
     <script src="~/Common/rootUrl.js"></script>
+    @Scripts.Render("~/Bundles/bootBack/js")
     @Scripts.Render("~/Bundles/bootstrap/js")
     @Scripts.Render("~/Bundles/alert/js")
     @Scripts.Render("~/Bundles/abp/js")
     @Scripts.Render("~/Bundles/controller/js")
     @Scripts.Render("~/Bundles/common/js")
-    @Scripts.Render("~/Bundles/bootBack/js")
-    @*@Scripts.Render("~/Bundles/index/js")*@
-    @Scripts.Render("~/Bundles/iconfont/js")
+
     @Scripts.Render("~/Bundles/Scroll/js")
-    @*@Scripts.Render("~/Bundles/icheck/js")
-    @Scripts.Render("~/Bundles/App/multipleselect/js")*@
+    @Scripts.Render("~/Bundles/icheck/js")
+    @Scripts.Render("~/Bundles/App/multipleselect/js")
     @Scripts.Render("~/Bundles/ztree/js")
     
-    <!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
-   
+    <!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->   
     <script src="~/AbpScripts/GetScripts?v=@(Clock.Now.Ticks)" type="text/javascript"></script>
     <script src="~/api/AbpServiceProxies/GetAll?v=@(Clock.Now.Ticks)"></script>
 

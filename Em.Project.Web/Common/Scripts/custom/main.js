@@ -544,11 +544,9 @@
                     userInfo = appSession.user.userName;
                 } else {
                     if (tenant) {
-                        //userInfo = tenant.tenancyName + '\\' + user.userName;//原含有租户，现不考虑租户
-                        userInfo = ' ' + user.userName;
+                        userInfo = tenant.tenancyName + '\\' + user.userName;
                     } else {
-                        //userInfo = '.\\' + user.userName;
-                        userInfo = ' ' + user.userName;
+                        userInfo = '.\\' + user.userName;
                     }
                 }
                 $('#userInfo').html(userInfo);

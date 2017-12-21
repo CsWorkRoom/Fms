@@ -119,7 +119,6 @@ namespace Easyman.Web
                    .Include("~/Content/bootstrapValidator.css", new CssRewriteUrlTransform())//表单验证
                    .Include("~/Content/flags/famfamfam-flags.css", new CssRewriteUrlTransform())//国旗图标
                    .Include("~/Common/css/content.css", new CssRewriteUrlTransform())//主要针对ztree兼容处理
-                   .Include("~/fonts/css/font-awesome.css", new CssRewriteUrlTransform()) //矢量图标
                );
             #endregion
             #endregion
@@ -128,7 +127,7 @@ namespace Easyman.Web
             bundles.Add(
               new ScriptBundle("~/Bundles/controller/js")
                     .Include("~/Scripts/json2.js")
-                    .Include("~/Scripts/modernizr-2.8.3.js")
+                    //.Include("~/Scripts/modernizr-2.8.3.js")
                     .Include("~/Scripts/moment-with-locales.js")//轻量的日期控件
                     .Include("~/Scripts/others/spinjs/spin.js")
                     .Include("~/Scripts/others/spinjs/jquery.spin.js")
@@ -186,18 +185,7 @@ namespace Easyman.Web
                     );
             #endregion
             #endregion
-
-            #region 字体图库-阿里巴巴
-            bundles.Add(
-               new ScriptBundle("~/Bundles/iconfont/js")
-                    .Include("~/fonts/iconfont/iconfont.js")
-                    );
-            bundles.Add(
-                new StyleBundle("~/Bundles/iconfont/css")
-                     .Include("~/fonts/iconfont/iconfont.css", new CssRewriteUrlTransform())//字体图库-阿里巴巴
-                    );
-            #endregion
-
+            
             #region 树插件
             bundles.Add(
                new ScriptBundle("~/Bundles/ztree/js")

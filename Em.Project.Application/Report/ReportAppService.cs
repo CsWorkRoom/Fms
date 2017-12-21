@@ -430,7 +430,7 @@ namespace Easyman.Service
                             foreach (var fd in fieldList)
                             {
                                 if (fd.IsShow)
-                                    fields += fd.FieldCode + " as " + fd.FieldName + ",";
+                                    fields += fd.FieldCode + " as \"" + fd.FieldName + "\",";
                             }
                             if (!string.IsNullOrEmpty(fields) && fields.Length > 0)
                             {

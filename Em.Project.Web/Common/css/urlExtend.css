@@ -10,6 +10,13 @@
 .ms-choice > div.open {
     background: url('multipleselect/multipleselect.png') right top no-repeat;
 }
+
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('../../fonts/glyphicons-halflings-regular.eot');
+    src: url('../../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
 .ms-search input {
     width: 100%;
     height: auto !important;
@@ -62,15 +69,6 @@ span.tmpzTreeMove_arrow {width:16px; height:16px; display: inline-block; padding
 	background-color:transparent; background-repeat:no-repeat; background-attachment: scroll;
 	background-position:-110px -80px; background-image:url("../../Scripts/components/ztree/zTreeStyle/img/zTreeStandard.png"); *background-image:url("../../Scripts/components/ztree/zTreeStyle/img/zTreeStandard.gif")}
 
-/*from iconfont.css 阿里巴巴字体样式 for url*/
-@font-face {font-family: "iconfont";
-  src: url('../../fonts/iconfont/iconfont.eot?t=1494298093205'); /* IE9*/
-  src: url('../../fonts/iconfont/iconfont.eot?t=1494298093205#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('../../fonts/iconfont/iconfont.woff?t=1494298093205') format('woff'), /* chrome, firefox */
-  url('../../fonts/iconfont/iconfont.ttf?t=1494298093205') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('../../fonts/iconfont/iconfont.svg?t=1494298093205#iconfont') format('svg'); /* iOS 4.1- */
-}
-
 /*from jquery.mCustomScrollbar.css 滚动条 for url*/
 .mCSB_scrollTools .mCSB_buttonRight{
 	background-image:url('../Scripts/customerScrollbar/mCSB_buttons.png');
@@ -105,18 +103,14 @@ span.tmpzTreeMove_arrow {width:16px; height:16px; display: inline-block; padding
     cursor: pointer;
 }
 
-/*fontawesome */
-@font-face {
-  font-family: 'FontAwesome';
-  src: url('../../fonts/fontawesome-webfont.eot?v=4.7.0');
-  src: url('../../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'), url('../../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url('../../fontawesome-webfont.woff?v=4.7.0') format('woff'), url('../../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'), url('../../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
+.Wdate{
+	border:#999 1px solid;
+	height:20px;
+	background:#fff url(../Scripts/calendar/skin/datePicker.gif) no-repeat right;
 }
+.Wdate::-ms-clear{display:none;}
 
-/*Glyphicons */
-@font-face {
-    font-family: 'Glyphicons Halflings';
-    src: url('../../fonts/glyphicons-halflings-regular.eot');
-    src: url('../../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+.WdateFmtErr{
+	font-weight:bold;
+	color:red;
 }

@@ -440,7 +440,6 @@ function BindUploadFile() {
             //alert('初始化');
         },
         onUploadSuccess: function (file, resultId) {
-            debugger;
             var fileListId = $("#FileId").val();
             if (fileListId == "") {
                 $("#FileId").val(resultId);

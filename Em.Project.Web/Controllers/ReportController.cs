@@ -82,7 +82,7 @@ namespace Easyman.FwWeb.Controllers
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        [ValidateUrl]//开启了双重验证
+        //[ValidateUrl]//开启了双重验证
         public Task<ActionResult> TbReport(string code)
         {
             return Task.Factory.StartNew(() =>

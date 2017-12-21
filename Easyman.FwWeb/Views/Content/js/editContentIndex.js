@@ -169,32 +169,37 @@ function GetUrl() {
 }
 
 function onGetCheckedValue_NavIds(event, treeId, parentNode) {
+
     var treeObj = $.fn.zTree.getZTreeObj('zTreeMilti_NavIds');
-    var checkNodes = treeObj.getCheckedNodes(true);
-    var ids = [];
-    var parentIds = [];
-    var childIds = [];
-    $(checkNodes).each(function () {
-        ids.push(this.id);
-    });
-    $('#NavIds').val(ids.splice(','));
-  
+    try {
+        var checkNodes = treeObj.getCheckedNodes(true);
+        var ids = [];
+        var parentIds = [];
+        var childIds = [];
+        $(checkNodes).each(function () {
+            ids.push(this.id);
+        });
+        $('#NavIds').val(ids.splice(','));
+
+    } catch (e) {
+
+    }
 }
 
 function onGetCheckedValue_NavIdsNo(event, treeId, parentNode) {
     var treeObj = $.fn.zTree.getZTreeObj('zTreeMilti_NavIdsNo');
-    var checkNodes = treeObj.getCheckedNodes(true);
-    var ids = [];
-    var parentIds = [];
-    var childIds = [];
-    $(checkNodes).each(function () {
-        ids.push(this.id);
-    });
-    $('#NavIdsNo').val(ids.splice(','));
-
+    try {
+        var checkNodes = treeObj.getCheckedNodes(true);
+        var ids = [];
+        var parentIds = [];
+        var childIds = [];
+        $(checkNodes).each(function () {
+            ids.push(this.id);
+        });
+        $('#NavIdsNo').val(ids.splice(','));
+    } catch (e) {
+    }
 }
-
-
 //#endregion
 
 

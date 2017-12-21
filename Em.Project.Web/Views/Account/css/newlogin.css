@@ -172,3 +172,11 @@ hr.hr20 {
     padding: 0px;
     width: 100%;
 }
+.pwsShow{
+    float: left;
+    color: #000;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 3px;
+}

@@ -222,7 +222,7 @@ var ShowModalBackdrop = function (objHtml, blnTop, strModalId) {
         $(objHtml).appendTo(this.$("body"));
         $("#" + strModalId).modal("show");
         var intBackropLength = window.top.$(".modal-backdrop").length;
-        if (intBackropLength <= 0)
+        if (intBackropLength <= 1)
             return;
         var intBackropLength = window.top.$(".modal-backdrop").length;
         //if (intBackropLength <= 0)

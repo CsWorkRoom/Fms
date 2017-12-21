@@ -19,6 +19,15 @@ namespace Easyman
                 //Add your custom AutoMapper mappings here...
                 //mapper.CreateMap<,>()
             });
+            //Configuration.Caching.Configure("singleRequireCache",cache=> {
+            //    cache.DefaultSlidingExpireTime = System.TimeSpan.FromSeconds(5);
+            //});
+
+            //为所有缓存配置有效期
+            Configuration.Caching.ConfigureAll(cache =>
+            {
+                cache.DefaultSlidingExpireTime = System.TimeSpan.FromHours(8);//8小时
+            });
         }
 
         public override void Initialize()

@@ -54,22 +54,39 @@ function InitBgWatermarkByCanvas(target) {
     // 声明画布
     var convas = '<canvas class="watermark" width = "200px"  height = "150px" style="display:none;"></canvas>' + '<canvas class="repeat-watermark"></canvas>';
 
-    var sysNameResponse = $.ajax({
-        url: bootPATH + "api/services/api/User/GetCurrentSysName",
-        type: "post",
-        async: false
-    });
-
-    var userNameResponse = $.ajax({
-        url: bootPATH + "api/services/api/User/GetCurrentUserName",
-        type: "post",
-        async: false
-    });
-
-    sysName = sysNameResponse.responseJSON.result;
-
+    //系统名称
+    var sysNameObj = parent.top.$("#sysName");
+    if (sysNameObj == null || sysNameObj.val()==null || sysNameObj.val() == "") {
+        var sysNameResponse = $.ajax({
+            url: bootPATH + "api/services/api/User/GetCurrentSysName",
+            type: "post",
+            async: false
+        });
+        sysName = sysNameResponse.responseJSON.result;
+        if (sysNameObj != null)
+            sysNameObj.val(sysName);
+    } else {
+        sysName = sysNameObj.val();
+    }
+    //登录名称
+    var userNameObj = parent.top.$("#LgUName");
+    if (userNameObj == null || userNameObj.val()==null || userNameObj.val() == "") {
+        var userNameResponse = $.ajax({
+            url: bootPATH + "api/services/api/User/GetCurrentUserName",
+            type: "post",
+            async: false
+        });
+        userName = userNameResponse.responseJSON.result;
+        if (userName != null)
+            userNameObj.val(userName);
+    } else {
+        userName = userNameObj.val();
+    }
+    sysName = $.trim(sysName);
+    userName = $.trim(userName);
+    
     var currentTime = new Date();
-    userName = userNameResponse.responseJSON.result + "  "
+    userName +="  "
         + currentTime.getFullYear() + "-"
         + (currentTime.getMonth() + 1) + "-"
         + currentTime.getDate();
