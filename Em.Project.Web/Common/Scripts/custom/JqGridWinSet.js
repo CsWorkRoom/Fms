@@ -31,12 +31,14 @@ var WinResize = function (jqGrid, navMenu, jqGridPager) {
             $("#gview_" + jqGrid + " .frozen-bdiv").css("top", $("#gview_" + jqGrid + " .ui-jqgrid-hdiv").height());
             SetShrinkToFit(jqGrid);
             SetDefultDataImg(jqGrid);
+
         },
         resizeStop: function () {//改变列宽度后引发
             SetFrozenTr(jqGrid, navMenu, jqGridPager);
         },
         loadComplete: function () {
             SetDefultDataImg(jqGrid);
+
         },
         onPaging: function () {
             SetFrozenTr(jqGrid, navMenu, jqGridPager);
@@ -97,7 +99,6 @@ var SetFrozenTr = function (jqGrid, navMenu, jqGridPager) {
     for (var i = 0; i < jagridHeadTr.length; i++) {
         $(jqGridFrozenHeadTr[i]).height($(jagridHeadTr[i]).height());
     }
-    $("#gview_" + jqGrid + " .frozen-bdiv").css("top", $("#gview_" + jqGrid + " .ui-jqgrid-hdiv").height());
     //End设置标题栏
 }
 
@@ -133,18 +134,11 @@ var SetShrinkToFit = function (jqGrid) {
         $("#gview_" + jqGrid + " .ui-jqgrid-hdiv").css("top", "-1px");
         $("#gview_" + jqGrid + " .ui-jqgrid-bdiv").eq(0).css("top", "-1px");
         var strTop = $("#gview_" + jqGrid + " .frozen-bdiv").css("top");
-       // var intTop = $("#gview_" + jqGrid + " .frozen-bdiv").position().top;//此种获取位标的方式，有部份浏览器下，可能出现不兼容的情况。
-        if (strTop != null && $.trim(strTop) !="") {
+        if (strTop != null && $.trim(strTop) != "") {
             var intTop = parseInt(strTop.replace("px", ""));
             var frozenBdivTop = intTop - 1;
             $("#gview_" + jqGrid + " .frozen-bdiv").css("top", frozenBdivTop + "px");
         }
     }
-   //针对不同浏览器的处理
-    //var BrowserType = GetBrowser();//得到浏览器版本
-    //switch (BrowserType) {
-    //    case "firefox"://针对火狐浏览器做特殊处理
-    //      //  $("#gview_" + jqGrid + " .ui-jqgrid-bdiv").css("left", "1px");
-    //        break;
-    //}
+
 }

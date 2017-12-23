@@ -151,6 +151,42 @@ namespace Easyman.Sys
             return _moduleRepository.GetAllListAsync(predicate);
         }
 
+        public Module GetModuleByUrlAndCode(string url)
+        {
+            var urlPaArr = url.Split(new[] { '?', '&' });
+            var codes = urlPaArr.FirstOrDefault(p => p.ToLower().Contains("code"));
+            var rootUrl = urlPaArr[0];
+
+            //p => p.Url.ToLower().Contains(\"" + urlPaArr[0] + "\")&&p.Url.Split(new[] { '?', '&' }).Skip(1).Intersect(" + urlPaArr.Skip(1) + ").Any(p=>p.ToLower().Contains(\"code\"))
+            //return _moduleRepository.GetAllList(p => p.Url.ToLower().Contains(rootUrl) &&p.Url.Split(new[] { '?', '&' }).Skip(1).Intersect(urlPaArr.Skip(1)).Any(x=>x.ToLower().Contains("code")));
+            var mdList = _moduleRepository.GetAllList(p => p.Url.Contains(rootUrl + "?" + codes));
+
+            int num = 0;
+            Module module = null;
+
+            if (mdList != null && mdList.Count > 0)
+            {
+                if (mdList.Count > 1)
+                {
+                    foreach (var md in mdList)
+                    {
+                        int curNum = md.Url.Split(new[] { '?', '&' }).Skip(1).Intersect(urlPaArr.Skip(1)).Count();
+                        if (curNum > num)
+                        {
+                            num = curNum;
+                            module = md;
+                        }
+                    }
+                }
+                else
+                {
+                    module = mdList[0];
+                }
+            }
+
+            return module;
+        }
+
         public List<ModuleEvent> GetModuleEventList(Expression<Func<ModuleEvent, bool>> predicate)
         {
             return _moduleManage.GetModuleEventList(predicate);

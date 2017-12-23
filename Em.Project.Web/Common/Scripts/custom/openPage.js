@@ -211,7 +211,7 @@ var ModeDialogUrl = function (strModalId, strTitle, strUrl, intWidth, intHeight)
 
 ///背景层显示位置
 var ShowModalBackdrop = function (objHtml, blnTop, strModalId) {
-    ////是否在顶层显示
+    //是否在顶层显示
     if (blnTop) {
         window.top.$("#" + strModalId).remove();//先移出
         $(objHtml).appendTo(window.top.$("body"));
@@ -221,15 +221,6 @@ var ShowModalBackdrop = function (objHtml, blnTop, strModalId) {
         $("#" + strModalId).remove();//先移出
         $(objHtml).appendTo(this.$("body"));
         $("#" + strModalId).modal("show");
-        var intBackropLength = window.top.$(".modal-backdrop").length;
-        if (intBackropLength <= 1)
-            return;
-        var intBackropLength = window.top.$(".modal-backdrop").length;
-        //if (intBackropLength <= 0)
-        //    return;
-        //if (intBackropLength >= 2) {
-            window.top.$(".modal-backdrop").eq(intBackropLength - 1).appendTo(this.$("body"));
-       // }
     }
 }
 

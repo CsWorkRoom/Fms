@@ -104,16 +104,23 @@ namespace Easyman.FwWeb.Controllers
                     report.KVJson = JSON.DecodeToStr(kvList);//默认参数赋值
                 }
 
-                if (report != null)
+                #region 作废
+                //if (report != null)
+                //{
+                //    if (report.ChildReportListJson != null && report.ChildReportListJson != "" && report.ChildReportListJson != "[]")
+                //    {
+                //        var childRpList = JSON.EncodeToEntity<List<ChildReportModel>>(report.ChildReportListJson);
+                //        if (childRpList != null && childRpList.Count > 0)
+                //        {
+                //            return View(report);//当具有子报表时返回
+                //        }
+                //    }
+                //}
+                #endregion
+
+                if (report != null&&!string.IsNullOrEmpty(report.ChildReportListJson)&& report.ChildReportListJson != "[]")
                 {
-                    if (report.ChildReportListJson != null && report.ChildReportListJson != "" && report.ChildReportListJson != "[]")
-                    {
-                        var childRpList = JSON.EncodeToEntity<List<ChildReportModel>>(report.ChildReportListJson);
-                        if (childRpList != null && childRpList.Count > 0)
-                        {
-                            return View(report);//当具有子报表时返回
-                        }
-                    }
+                    return View(report);//当具有子报表时返回
                 }
                 return View("");//未找到子报表
             }).ContinueWith<ActionResult>(task =>
@@ -129,7 +136,7 @@ namespace Easyman.FwWeb.Controllers
         /// <param name="urlToLower"></param>
         /// <param name="curUrl"></param>
         /// <returns></returns>
-        private long GetModuleIdByParentPage(string urlToLower,string curUrl)
+        private long GetModuleIdByParentPage1(string urlToLower,string curUrl)
         {
             #region 获取当前路径对应的模版 --moduleId
             long moduleId = 0;//初始化
@@ -175,6 +182,17 @@ namespace Easyman.FwWeb.Controllers
                 }
             }
             #endregion
+            return moduleId;
+        }
+
+        private long GetModuleIdByParentPage(string urlToLower, string curUrl)
+        {
+            long moduleId = 0;//初始化
+            var md= _moduleAppService.GetModuleByUrlAndCode(curUrl);
+            if(md!=null)
+            {
+                moduleId = md.Id;
+            }
             return moduleId;
         }
 

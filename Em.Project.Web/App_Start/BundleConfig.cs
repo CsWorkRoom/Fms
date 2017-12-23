@@ -352,7 +352,7 @@ namespace Easyman.Web
 
             //启用压缩：true 或 删除该行代码
             //禁用压缩：false
-            //BundleTable.EnableOptimizations = true;
+            BundleTable.EnableOptimizations = false;
         }
     }
 }

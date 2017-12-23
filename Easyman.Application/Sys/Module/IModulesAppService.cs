@@ -29,6 +29,8 @@ namespace Easyman.Sys
 
         Task<List<Module>> GetModuleList(Expression<Func<Module, bool>> predicate);
 
+        Module GetModuleByUrlAndCode(string url);
+
         List<ModuleEvent> GetModuleEventList(Expression<Func<ModuleEvent, bool>> predicate);
 
         IEnumerable<RoleModuleEvent> GetRoleModuleEvent(long eventId);

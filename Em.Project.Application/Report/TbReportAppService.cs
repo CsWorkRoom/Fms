@@ -296,6 +296,7 @@ namespace Easyman.Service
         /// <returns></returns>
         private IList<TbReportOutEventModel> GetOutEventList(TbReport ent, long tbReportId, long moduleId, bool checkRole)
         {
+            //if (moduleId == 0) return null;
             var outEventList = _tbReportOutEventRepository.GetAllList(p => p.TbReportId == tbReportId);
             if (outEventList != null && outEventList.Count > 0)
             {
@@ -308,12 +309,16 @@ namespace Easyman.Service
                 }).ToList();
                 if (checkRole)//验证用户权限（只返回权限内的事件）
                 {
-                    Users.User user = GetCurrentUserAsync().Result;
-                    var roleids = user.Roles.Select(p => Convert.ToInt64(p.RoleId)).ToList();
-                    var evids = _roleModuleEventRepository.GetAllList(p => roleids.Contains(p.RoleId) && p.ModuleId == moduleId).Select(p => p.EventId);
-                    var tbEvs = _moduleEventRepository.GetAllList(p => evids.Contains(p.Id)).Select(p => p.SourceTableId);
-
-                    eventOutputList = eventOutputList.Where(p => tbEvs.Contains(p.Id)).ToList();
+                    if (moduleId != 0)
+                    {
+                        Users.User user = GetCurrentUserAsync().Result;
+                        var roleids = user.Roles.Select(p => Convert.ToInt64(p.RoleId)).ToList();
+                        var evids = _roleModuleEventRepository.GetAllList(p => roleids.Contains(p.RoleId) && p.ModuleId == moduleId).Select(p => p.EventId);
+                        var tbEvs = _moduleEventRepository.GetAllList(p => evids.Contains(p.Id)).Select(p => p.SourceTableId);
+                        eventOutputList = eventOutputList.Where(p => tbEvs.Contains(p.Id)).ToList();
+                    }
+                    else
+                        eventOutputList = null;
                 }
                 //循环获取每个事件的参数列表
                 foreach (var ev in eventOutputList)

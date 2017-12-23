@@ -67,7 +67,7 @@ namespace Easyman.Web.Controllers
         }
         #endregion
 
-        #region 终端管理
+        #region 终端共享目录
         public ActionResult EditFolder(long? id)
         {
             if (id == null || id == 0)
@@ -76,6 +76,14 @@ namespace Easyman.Web.Controllers
             }
             var entObj = _FolderAppService.GetFolder(id.Value);
             return View(entObj);
+        }
+        #endregion
+
+        #region 资源管理器（终端、目录、文件查看）
+        public ActionResult Explorer()
+        {
+            //根据当前用户返回对应树结构（先同步、暂不考虑异步）
+            return View();
         }
         #endregion
     }
