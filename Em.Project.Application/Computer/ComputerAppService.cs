@@ -127,6 +127,31 @@ namespace Easyman.Service
             }
             return null;
         }
+
+        /// <summary>
+        /// 根据组织获得终端列表
+        /// </summary>
+        /// <param name="districtId"></param>
+        /// <returns></returns>
+        public List<ComputerModel> GetComputerListByDistrict(long districtId)
+        {
+            return _ComputerCase.GetAllList(p => p.DistrictId == districtId).MapTo<List<ComputerModel>>();
+        }
+        /// <summary>
+        /// 根据用户获得终端列表
+        /// </summary>
+        /// <returns></returns>
+        public List<ComputerModel> GetComputerListByCurUser()
+        {
+            Users.User user = GetCurrentUserAsync().Result;
+            if (user != null && user.DistrictId != null)
+            {
+                return GetComputerListByDistrict(user.DistrictId.Value);
+            }
+            return null;
+        }
+
         #endregion
+
     }
 }

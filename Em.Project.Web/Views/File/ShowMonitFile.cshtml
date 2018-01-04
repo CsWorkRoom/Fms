@@ -1,0 +1,516 @@
+﻿@using Easyman.Common.Mvc.Controls
+@using System.Web.Optimization;
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+@section Styles{
+    @*@Styles.Render("~/Bundles/App/jqgrid/css")*@
+<link href="~/Views/File/css/showMonitFile.css" rel="stylesheet" />
+<link href="~/Common/plugins/ContextMenu/jquery.contextMenu.css" rel="stylesheet" />
+    @*@Styles.Render("~/Bundles/ContextMenu/css")*@
+    <style>
+        .form-control {
+            padding: 0px;
+        }
+
+     </style>
+}
+@*<input id="managerJson" type="text" value="@ViewData["managerJson"]" style="display:none" />
+<input id="month" type="text" value="@ViewData["month"]" style="display:none" />
+<input id="targetTagId" type="text" value="@ViewData["targetTagId"]" style="display:none" />
+<input id="districtId" type="text" value="@ViewData["districtId"]" style="display:none" />
+<input id="districtName" type="text" value="@ViewData["districtName"]" style="display:none" />*@
+
+<h1>用户[@ViewData["userName"]]的资源管理器</h1>
+<h6>[ 包含管辖终端、共享目录以及目录下的文件结构 ]</h6>
+<div class="content_wrap">
+    <div class="zTreeDemoBackground left">
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+    <div class="right" id="fileModule">
+       @*<div style="cursor:pointer;float:left;width:70px;margin-left:35px" ><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>*@
+
+
+        @*<div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder fa-4x'></i><br/>文件一</span></div>*@
+        @*<div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
+        <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
+        <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
+        <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
+        <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>*@
+    </div>
+</div>
+
+<div class="modal" id="attrs" tabindex="-1" role="dialog" style="width:70%" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel">
+    <!--属性集合-->
+    <input id="currRdlcReport" type="text" style="display:none" />
+
+    <div class="modal-dialog" role="document" style="width:90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel"> <i class="fa fa-cog"></i> 文件属性</h4>
+            </div>
+            <div class="modal-body">
+                @*<p>内容部分</p>*@
+                <div class="form-body jarviswidget ">
+                    <header role="heading">
+                        <ul id="attrTabHeader" class="nav nav-tabs" role="tablist">
+                            @*<li role="presentation" class="active"><a href="#attrOne" aria-controls="home" role="tab" data-toggle="tab">属性一</a></li>
+                            <li role="presentation"><a href="#attrTwo" aria-controls="profile" role="tab" data-toggle="tab">属性二</a></li>*@
+                        </ul>
+                    </header>
+                    <!--选项卡内容部分-->
+                    <div class="tab-content" id="attrTabBody" style="padding-top:12px;">
+                        <!--属性类-->
+                        @*<div role="tabpanel" class="tab-pane active form-horizontal" id="attrOne">
+                            <div class="form-group">
+                                <label for="Name1" class="col-xs-4 control-label" style="text-align:right">打分类型名123</label>
+                                <div class="col-xs-6">
+                                    <label for="Name1" class="control-label" style="text-align:right">打分类型名123</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Remark2" class="col-xs-4 control-label" style="text-align:right">描述说明123</label>
+                                <div class="col-xs-6">
+                                    <label for="Name2" class="control-label" style="text-align:right">打分类型名123</label>
+                                </div>
+                            </div>
+                        </div>*@
+                        <!--属性类二-->
+                        @*<div role="tabpanel" class="tab-pane form-horizontal" id="attrTwo">
+                            <div class="form-group">
+                                <label for="Name" class="col-xs-4 control-label" style="text-align:right">打分类型名</label>
+                                <div class="col-xs-6">
+                                    <label for="Name" class="control-label" style="text-align:right">打分类型名</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Remark" class="col-xs-4 control-label" style="text-align:right">描述说明</label>
+                                <div class="col-xs-6">
+                                    <label for="Name" class="control-label" style="text-align:right">打分类型名</label>
+                                </div>
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" title="关闭"> <i class="fa fa-remove"></i> 关闭</button>
+                    @*<button type="button" class="btn btn-success" onclick="SaveRdlcReport()" title="保存"> <i class="fa fa-save"></i> 保存</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @*@Scripts.Render("~/Bundles/ContextMenu/js")*@
+    <script type="text/javascript" src="~/Common/plugins/ContextMenu/jquery.contextMenu.js"></script>
+<script type="text/javascript" src="~/Common/plugins/ContextMenu/jquery.ui.position.js"></script>
+    <script type="text/javascript">
+        <!--
+          var setting = {
+              view: {
+                  selectedMulti: false
+              },
+              data: {
+                  key: {
+                      title:"title"
+                  },
+                  simpleData: {
+                      enable: true
+                  }
+              },
+              callback: {
+                  //beforeClick: beforeClick,
+                  //beforeCollapse: beforeCollapse,
+                  //beforeExpand: beforeExpand,
+                  //onCollapse: onCollapse,
+                  //onExpand: onExpand
+                  onClick: zTreeOnClick
+              }
+          };
+
+        //点击节点后触发
+          function zTreeOnClick(event, treeId, treeNode) {
+              //debugger;
+              //根据当前节点获取对应的内容
+              switch (treeNode.nodeType)
+              {
+                  case "computer"://终端
+                      //debugger;
+                      getChildByComputer(treeNode.id.substring(treeNode.id.indexOf("_") + 1));
+                      break;
+                  case "folder"://共享目录
+                      getChildByFolder(treeNode.id.substring(treeNode.id.indexOf("_") + 1));
+                      break;
+                  case "file"://文件
+                      if (treeNode.isFolder)//为文件夹时
+                      {
+                          getChildByFile(treeNode.id.substring(treeNode.id.indexOf("_") + 1));
+                      }
+                      else
+                      {
+                          alert("当前不为文件夹");
+                      }
+                      break;
+              }
+
+          };
+
+        //双击文件或目录的下钻操作
+          function openModel(id,nodeType,isFolder)
+          {
+              switch (nodeType)
+              {
+                  case "computer":
+                      getChildByComputer(id);
+                      break;
+                  case "folder":
+                      getChildByFolder(id);
+                      break;
+                  case "file"://文件夹
+                      if (isFolder) {
+                          getChildByFile(id);
+                      }
+                      else alert("无子项");
+                      break;
+              }
+          }
+
+        //获取终端列表
+          function getComputerList() {
+              $.ajax({
+                  url: "GetComputerListByCurUser",
+                  type: 'post',
+                  success: function (data) {
+                      //debugger;
+                      zNodes = data.result;
+                      //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                      loadHtml(data.result, "first");
+                  },
+                  error: function (xhr) {
+                      //debugger;
+                      abp.ui.clearBusy();
+
+                  }
+              });
+          }
+        //根据终端获取共享目录
+          function getChildByComputer(computerId)
+          {
+              $.ajax({
+                  url: bootPATH + "/api/services/api/Folder/GetFolderListByComputer?computerId=" + computerId,
+                  type: 'get',
+                  success: function (data) {
+                      //debugger;
+                      zNodes = data.result;
+                      //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                      loadHtml(data.result, "computer");
+                  },
+                  error: function (xhr) {
+                      //debugger;
+                      abp.ui.clearBusy();
+
+                  }
+              });
+          }
+
+          //function getChildByFolder(folderId) {
+          //    $.ajax({
+          //        url: bootPATH + "/api/services/api/File/GetCurFileListByFolder?folderId=" + folderId,
+          //        type: 'get',
+          //        success: function (data) {
+          //            //debugger;
+          //            zNodes = data.result;
+          //            //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+          //            loadHtml(data.result, "folder");
+          //        },
+          //        error: function (xhr) {
+          //            //debugger;
+          //            abp.ui.clearBusy();
+          //        }
+          //    });
+          //}
+
+        //根据共享目录获得子文件（夹）
+          function getChildByFolder(folderId) {
+              //$.ajax({
+              //    url: bootPATH + "/api/services/api/File/GetCurFileListByFolder?folderId=" + folderId,
+              //    type: 'get',
+              //    success: function (data) {
+              //        //debugger;
+              //        zNodes = data.result;
+              //        //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+              //        loadHtml(data.result, "folder");
+              //    },
+              //    error: function (xhr) {
+              //        //debugger;
+              //        abp.ui.clearBusy();
+              //    }
+              //});
+
+              $.ajax({
+                  url: "GetFileListByFolder",
+                  data: { folderId:folderId},
+                  type: 'post',
+                  success: function (data) {
+                      //debugger;
+                      zNodes = data.result;
+                      //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                      loadHtml(data.result, "folder");
+                  },
+                  error: function (xhr) {
+                      //debugger;
+                      abp.ui.clearBusy();
+
+                  }
+              });
+          }
+
+        //根据文件id获取子项
+          function getChildByFile(fileId) {
+             
+              $.ajax({
+                  url: "GetFileListByFile",
+                  data: { fileId: fileId },
+                  type: 'post',
+                  success: function (data) {
+                      //debugger;
+                      zNodes = data.result;
+                      //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                      loadHtml(data.result, "file");
+                  },
+                  error: function (xhr) {
+                      //debugger;
+                      abp.ui.clearBusy();
+
+                  }
+              });
+          }
+
+        //根据集合和类型拼凑内容
+          function loadHtml(dataArr, nodeType) {
+              var htm = "";
+              if (dataArr != null && dataArr.length > 0) {
+                  for (var i = 0; i < dataArr.length; i++) {
+                      switch (nodeType) {
+                          case "first":
+                              htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'computer\',false)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                              break;
+                          case "computer":
+                              htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id + ',\'folder\',false)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                              break;
+                          case "folder":
+                              //是否为文件夹的判断
+                              if (dataArr[i].isFolder) {
+                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                              }
+                              else {
+                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                              }
+                              break;
+                          case "file"://文件夹
+                              if (dataArr[i].isFolder) {
+                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                              }
+                              else {
+                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                              }
+                              break;
+                      }
+                  }
+              }
+              $("#fileModule").empty();//清理子元素
+              $("#fileModule").html(htm);
+          }
+
+        //获取当前时间点
+        function getTime() {
+            var now= new Date(),
+			h=now.getHours(),
+			m=now.getMinutes(),
+			s=now.getSeconds(),
+			ms=now.getMilliseconds();
+            return (h+":"+m+":"+s+ " " +ms);
+        }
+
+        //首次加载当前用户左边树形菜单，管辖的终端列表
+        $(document).ready(function () {
+            $.ajax({
+                url: "GetNodesByCurUser",
+                type: 'post',
+                success: function (data) {
+                    //debugger;
+                    zNodes = data.result;
+                    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                },
+                error: function (xhr) {
+                    //debugger;
+                    abp.ui.clearBusy();
+                }
+            });
+            getComputerList();//获取终端管辖终端列表
+        });
+
+        //右键内容菜单
+        $(function () {
+            $.contextMenu({
+                selector: '.context-menu-one',
+                callback: function (key, options) {
+                    var curItem = $(this);
+                    var dbClickAttr = curItem.attr("ondblclick");//获取双击属性值openModel(1,'file',true)
+                    //获取文件编号
+                    var monitFileId = dbClickAttr.substring(10, dbClickAttr.indexOf(','));
+                    //做该右击事件对应的事
+                    switch (key)
+                    {
+                        case "history"://历史记录
+                            var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
+                            //打开监控历史记录报表
+                            ModeDialogUrl('modalId' + modalId, '历史记录', 'Report/TbReport?code=monitFileHis&CUR_MONIT_FILE_ID=' + monitFileId, 800, 600);
+                            break;
+                        case "open"://打开
+                            break;
+                        case "attr"://属性
+                            $("#attrTabHeader").empty();//清空头部
+                            $("#attrTabBody").empty();//清空包体
+
+                            $.ajax({
+                                url: "GetAttrListByMonitFile",
+                                data: { monitFileId: monitFileId },
+                                type: 'post',
+                                success: function (data) {
+                                    debugger;
+                                    if (data != null && data != "") {
+                                        MakeTabs(data);//拼凑各属性类的属性tabs，并添加到模态框attrs
+
+                                        //#region 打开模态框
+                                        $('#attrs').modal('show');//打开tb的模态框
+                                        //给上级模态窗的关闭按钮，添加下级模态窗口关闭事件 
+                                        parent.$(".close").click(function () {
+                                            $('#attrs').modal('hide');
+                                        });
+                                        //show完毕前执行
+                                        $('#attrs').on('shown', function () {
+                                            //加上下面这句！解决了~
+                                            $(document).off('focusin.modal');
+                                        });
+                                        //#endregion
+                                    }
+                                },
+                                error: function (xhr) {
+                                    //debugger;
+                                    abp.ui.clearBusy();
+                                    alert("获取属性信息失败！");
+                                }
+                            });
+                            break;
+                    }
+
+                    //var m = "clicked: " + key;
+                    //window.console && console.log(m) || alert(m);
+                },
+                items: {
+                    "history": { name: "History", icon: "history" },
+                    "open": { name: "Open", icon: "open" },
+                    "attr": { name: "Attr", icon: "attr" }
+                    //"edit": { name: "Edit", icon: "edit" },
+                    //"cut": { name: "Cut", icon: "cut" },
+                    //"copy": { name: "Copy", icon: "copy" },
+                    //"paste": { name: "Paste", icon: "paste" },
+                    //"delete": { name: "Delete", icon: "delete" },
+                    //"sep1": "---------",
+                    //"quit": { name: "Quit", icon: "quit" }
+                }
+            });
+
+            //$('.context-menu-one').on('click', function (e) {
+            //    console.log('clicked', this);
+            //})
+        });
+
+        //拼凑各属性类的属性tabs
+        function MakeTabs(data)
+        {
+            var attrArr = $.parseJSON(data);
+            var attrTypeNameArr = GetAttrTypeArr(attrArr);//根据属性集合获取属性大类
+
+            if (attrTypeNameArr != null && attrTypeNameArr.length > 0) {
+                var headTab = "";
+                var bodyTab = "";
+                for (var i = 0; i < attrTypeNameArr.length; i++) {
+                    //拼凑头部
+                    if (i == 0) {
+                        headTab += '<li role="presentation" class="active"><a href="#attrTab_' + i.toString() + '" aria-controls="home" role="tab" data-toggle="tab">' + attrTypeNameArr[i] + '</a></li>';
+                    }
+                    else {
+                        headTab += '<li role="presentation"><a href="#attrTab_' + i.toString() + '"  aria-controls="profile" role="tab" data-toggle="tab">' + attrTypeNameArr[i] + '</a></li>';
+                    }
+
+                    var tab = "";//初始化
+                    for (var j = 0; j < attrArr.length; j++) {
+                        //拼凑包体
+                        if (attrArr[j].ATTR_TYPE_NAME == attrTypeNameArr[i]) {
+                            tab += '<div class="form-group">';
+                            tab += '   <label for="Name1" class="col-xs-4 control-label" style="text-align:right">' + attrArr[j].ATTR_NAME + '</label>';
+                            tab += '  <div class="col-xs-6">';
+                            tab += '  <label for="Name1" class="control-label" style="text-align:right">' + attrArr[j].ATTR_VAL + '</label>';
+                            tab += '  </div>';
+                            tab += '  </div>';
+                        }
+                    }
+                    if (tab != "" && tab.length > 0) {
+                        if (i == 0) {
+                            bodyTab += ' <div role="tabpanel" class="tab-pane active form-horizontal" id="attrTab_' + i.toString() + '">';
+                            bodyTab += tab;
+                            bodyTab += ' </div>';
+                        }
+                        else {
+                            bodyTab += ' <div role="tabpanel" class="tab-pane form-horizontal" id="attrTab_' + i.toString() + '">';
+                            bodyTab += tab;
+                            bodyTab += ' </div>';
+                        }
+                    }
+                }
+                $("#attrTabHeader").append(headTab);//添加tab头部
+                $("#attrTabBody").append(bodyTab);//添加tab包体
+            }
+        }
+
+        //根据属性集合获取属性大类
+        function GetAttrTypeArr(attrArr)
+        {
+            var attrTypeNameArr = []//初始化属性类型集合
+            if (attrArr != null && attrArr.length > 0) {
+                for (var i = 0; i < attrArr.length; i++) {
+                    //未找到元素时，添加
+                    if ($.inArray(attrArr[i].ATTR_TYPE_NAME, attrTypeNameArr) == -1) {
+                        attrTypeNameArr.push(attrArr[i].ATTR_TYPE_NAME);
+                    }
+                }
+            }
+            return attrTypeNameArr;
+        }
+    </script>
+}

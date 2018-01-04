@@ -98,8 +98,11 @@
     <Compile Include="Export\Dto\ExportDataModel.cs" />
     <Compile Include="Export\ExportAppService.cs" />
     <Compile Include="Export\IExportAppService.cs" />
+    <Compile Include="File\Dto\FileFormatModel.cs" />
+    <Compile Include="File\FileAppService.cs" />
     <Compile Include="File\FileFormatAppService.cs" />
-    <Compile Include="File\Dto\FileFormatModel .cs" />
+    <Compile Include="File\Dto\MonitFileModel.cs" />
+    <Compile Include="File\IFileAppService.cs" />
     <Compile Include="File\IFileFormatAppService.cs" />
     <Compile Include="Formula\Dto\TargetFormulaModel.cs" />
     <Compile Include="Formula\ITargetFormulaAppService.cs" />

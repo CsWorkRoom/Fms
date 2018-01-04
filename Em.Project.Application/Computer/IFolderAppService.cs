@@ -41,5 +41,12 @@ namespace Easyman.Service
         /// </summary>
         /// <returns></returns>
         List<SelectListItem> FolderList();
+        /// <summary>
+        /// 根据终端编号获取共享目录
+        /// </summary>
+        /// <param name="computerId"></param>
+        /// <returns></returns>
+        [System.Web.Http.HttpGet]
+        List<FolderModel> GetFolderListByComputer(long computerId);
     }
 }

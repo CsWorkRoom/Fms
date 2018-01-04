@@ -127,6 +127,16 @@ namespace Easyman.Service
             }
             return null;
         }
+        /// <summary>
+        /// 根据终端编号获取共享目录
+        /// </summary>
+        /// <param name="computerId"></param>
+        /// <returns></returns>
+        [System.Web.Http.HttpGet]
+        public List<FolderModel> GetFolderListByComputer(long computerId)
+        {
+            return _FolderCase.GetAllList(p => p.ComputerId == computerId).MapTo<List<FolderModel>>();
+        }
         #endregion
     }
 }
