@@ -13,20 +13,25 @@ namespace Easyman.Domain
     public enum MonitStatus
     {
         /// <summary>
+        /// 无变化
+        /// </summary>
+        [Description("无变化")]
+        UnChanged = 0,
+        /// <summary>
         /// 文件删除
         /// </summary>
         [Description("文件被删除")]
-        Delete = 0,
+        Delete = 1,
         /// <summary>
         /// 新增文件
         /// </summary>
         [Description("新增文件")]
-        Add = 1,
+        Add = 2,
         /// <summary>
         /// 修改文件
         /// </summary>
         [Description("文件被修改")]
-        Modify = 2
+        Modify = 3
     }
     /// <summary>
     /// 拷贝状态
