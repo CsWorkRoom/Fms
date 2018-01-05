@@ -26,5 +26,7 @@ namespace Easyman.Service
         /// </summary>
         /// <returns></returns>
         User GetCurrentUser();
+        [System.Web.Http.HttpGet]
+        void CopyFile(string fromPath, string toPath);
     }
 }

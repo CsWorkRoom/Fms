@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.IO;
 
 namespace Easyman.Service
 {
@@ -61,6 +62,31 @@ namespace Easyman.Service
         {
             return GetCurrentUserAsync().Result;
         }
+        [System.Web.Http.HttpGet]
+        public void CopyFile(string fromPath, string toPath)
+        {
+            ErrorInfo err = new ErrorInfo();
+            if (File.Exists(fromPath))
+            {
+                string userName = "cs1";// computer.UserName.Trim();//lcz2016
+                string pwd = "1";// computer.Pwd.Trim();//lcz201314
+                string ip = "10.108.226.76";
+                // 通过IP 用户名 密码 访问远程目录  不需要权限
+                using (SharedTool tool = new SharedTool(userName, pwd, ip))
+                {
+                    //参数1：要复制的源文件路径，
+                    //参数2：复制后的目标文件路径，
+                    //参数3：是否覆盖相同文件名
+                    File.Copy(fromPath, toPath, false);
+                }
+            }
+            else
+            {
+                err.IsError = true;
+                err.Message = "源路径【" + fromPath + "】不存在";
+            }
+        }
+
 
     }
 }

@@ -57,6 +57,9 @@
         <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
         <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>*@
     </div>
+    <input type="text" name="fromPath" id="fromPath" />
+    <input type="text" name="toPath" id="toPath" />
+    <button type="button" id="btnCopy" onclick="copyFile()">复制</button>
 </div>
 
 <div class="modal" id="attrs" tabindex="-1" role="dialog" style="width:70%" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel">
@@ -128,7 +131,28 @@
     <script type="text/javascript" src="~/Common/plugins/ContextMenu/jquery.contextMenu.js"></script>
 <script type="text/javascript" src="~/Common/plugins/ContextMenu/jquery.ui.position.js"></script>
     <script type="text/javascript">
-        <!--
+
+        function copyFile() {
+            var fromPath = $("#fromPath").val();
+            var toPath = $("#toPath").val();
+
+            $.ajax({
+                url: bootPATH + "/api/services/api/File/CopyFile?fromPath=" + fromPath + "&toPath=" + toPath,
+                type: 'get',
+                success: function (data) {
+                    //debugger;
+                    //zNodes = data.result;
+                    ////$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                    //loadHtml(data.result, "folder");
+                },
+                error: function (xhr) {
+                    //debugger;
+                    abp.ui.clearBusy();
+                }
+            });
+        }
+
+        
           var setting = {
               view: {
                   selectedMulti: false
@@ -290,7 +314,7 @@
 
         //根据文件id获取子项
           function getChildByFile(fileId) {
-             
+
               $.ajax({
                   url: "GetFileListByFile",
                   data: { fileId: fileId },
@@ -407,7 +431,7 @@
 
                                         //#region 打开模态框
                                         $('#attrs').modal('show');//打开tb的模态框
-                                        //给上级模态窗的关闭按钮，添加下级模态窗口关闭事件 
+                                        //给上级模态窗的关闭按钮，添加下级模态窗口关闭事件
                                         parent.$(".close").click(function () {
                                             $('#attrs').modal('hide');
                                         });
