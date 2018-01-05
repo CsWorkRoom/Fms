@@ -48,5 +48,12 @@ namespace Easyman.Service
         /// <param name="name"></param>
         /// <returns></returns>
         MonitFileModel GetMonitFileByPath(string path);
+
+        /// <summary>
+        /// 根据版本获取目录结构
+        /// </summary>
+        /// <param name="versionId"></param>
+        /// <returns></returns>
+        List<MonitFileModel> GetMonitFileByVersion(long versionId);
     }
 }
