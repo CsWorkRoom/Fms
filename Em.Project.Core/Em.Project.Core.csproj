@@ -74,7 +74,7 @@
     <Compile Include="Domain\File\FileLibrary.cs" />
     <Compile Include="Domain\Formula\MonthTargetFormula.cs" />
     <Compile Include="Domain\Formula\TargetFormula.cs" />
-    <Compile Include="Domain\Monit\FileStatus.cs" />
+    <Compile Include="Domain\Monit\MonitEnum.cs" />
     <Compile Include="Domain\Monit\MonitFile.cs" />
     <Compile Include="Domain\Monit\CaseVersion.cs" />
     <Compile Include="Domain\Monit\FolderVersion.cs" />
