@@ -127,6 +127,20 @@ namespace Easyman.Service
             }
             return null;
         }
+
+        public AttrModel GetAttrByName(string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                var Attr = _AttrCase.FirstOrDefault(p => p.Name == name.Trim());
+                if (Attr != null)
+                    return Attr.MapTo<AttrModel>();
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
         #endregion
     }
 }

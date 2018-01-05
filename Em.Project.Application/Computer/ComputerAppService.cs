@@ -10,6 +10,7 @@ using EasyMan;
 using EasyMan.Dtos;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -127,6 +128,24 @@ namespace Easyman.Service
             }
             return null;
         }
+
+        public ComputerModel GetComputerByIp(string ip)
+        {
+
+            if (!string.IsNullOrEmpty(ip))
+            {
+                var computer = _ComputerCase.FirstOrDefault(p => p.Ip == ip.Trim());
+                if (computer != null)
+                    return computer.MapTo<ComputerModel>();
+                else
+                    return null;
+            }
+            else
+                return null;
+           
+        }
         #endregion
+
+    
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using Easyman.Common;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -35,6 +36,10 @@ namespace Easyman.Domain
         /// </summary>
         [Column("REMARK"), StringLength(200)]
         public virtual string Remark { get; set; }
-
+        /// <summary>
+        /// 采集时间
+        /// </summary>
+        [Column("CREATE_TIME")]
+        public virtual DateTime CreateTime { get; set; }
     }
 }

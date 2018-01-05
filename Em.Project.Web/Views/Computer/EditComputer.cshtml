@@ -54,7 +54,7 @@
         <div class="form-group">
             <label for="ComputerTypeId" class="col-xs-2 control-label">终端类型</label>
             <div class="col-sm-4">
-                @Html.DropDownListFor(p => p.ComputerTypeId, Model.ComputerTypeList as List<SelectListItem>,
+                @Html.DropDownListFor(p => p.ComputerTypeId, Model.ComputerTypeList == null ? new List<SelectListItem> { new SelectListItem { Text = "无选项", Value = "" } } : (Model.ComputerTypeList as List<SelectListItem>),
                           new { @class = "form-control", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端类型')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
             </div>
             <label for="DistrictId" class="col-xs-2 control-label">终端归属</label>

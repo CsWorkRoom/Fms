@@ -18,73 +18,73 @@ using System.Web.Mvc;
 namespace Easyman.Service
 {
     /// <summary>
-    /// 文件格式管理
+    /// 文件库管理
     /// </summary>
-    public class FileFormatAppService : EasymanAppServiceBase, IFileFormatAppService
+    public class FileLibraryAppService : EasymanAppServiceBase, IFileLibraryAppService
     {
         #region 初始化
 
-        private readonly IRepository<FileFormat,long> _FileFormatCase;
+        private readonly IRepository<FileLibrary,long> _FileLibraryCase;
         /// <summary>
-        /// 构造函数注入FileFormat仓储
+        /// 构造函数注入FileLibrary仓储
         /// </summary>
         /// <param name="dbTagManager"></param>
-        public FileFormatAppService(IRepository<FileFormat, long> FileFormatCase)
+        public FileLibraryAppService(IRepository<FileLibrary, long> FileLibraryCase)
         {
-            _FileFormatCase = FileFormatCase;
+            _FileLibraryCase = FileLibraryCase;
         }
         #endregion
 
         #region 公共方法
         /// <summary>
-        /// 根据ID获取某个文件格式
+        /// 根据ID获取某个文件库
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public FileFormatModel GetFileFormat(long id)
+        public FileLibraryModel GetFileLibrary(long id)
         {
-            var entObj= _FileFormatCase.FirstOrDefault(id);
+            var entObj= _FileLibraryCase.FirstOrDefault(id);
             if (entObj != null)
             {
-               return AutoMapper.Mapper.Map<FileFormatModel>(entObj);
+               return AutoMapper.Mapper.Map<FileLibraryModel>(entObj);
             }
             throw new UserFriendlyException("未找到编号为【"+id.ToString()+"】的对象！");
         }
         /// <summary>
-        /// 更新和新增文件格式
+        /// 更新和新增文件库
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public FileFormatModel InsertOrUpdateFileFormat(FileFormatModel input)
+        public FileLibraryModel InsertOrUpdateFileLibrary(FileLibraryModel input)
         {
-            if(_FileFormatCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
+            if(_FileLibraryCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
             {
                 throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
             }
-            //var entObj =input.MapTo<FileFormat>();
-            var entObj = _FileFormatCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileFormat();
+            //var entObj =input.MapTo<FileLibrary>();
+            var entObj = _FileLibraryCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileLibrary();
             entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
-            //var entObj= AutoMapper.Mapper.Map<FileFormat>(input);
-            var resObj= _FileFormatCase.InsertOrUpdate(entObj);
+            //var entObj= AutoMapper.Mapper.Map<FileLibrary>(input);
+            var resObj= _FileLibraryCase.InsertOrUpdate(entObj);
             if (resObj == null)
             {
                 throw new UserFriendlyException("新增或更新失败！");
             }
             else
             {
-                return resObj.MapTo<FileFormatModel>();
+                return resObj.MapTo<FileLibraryModel>();
             }
         }
 
         /// <summary>
-        /// 删除一条文件格式
+        /// 删除一条文件库
         /// </summary>
         /// <param name="input"></param>
-        public void DeleteFileFormat(EntityDto<long> input)
+        public void DeleteFileLibrary(EntityDto<long> input)
         {
             try
             {
-                _FileFormatCase.Delete(input.Id);
+                _FileLibraryCase.Delete(input.Id);
             }
             catch (Exception ex)
             {
@@ -92,12 +92,12 @@ namespace Easyman.Service
             }
         }
         /// <summary>
-        /// 获取文件格式json
+        /// 获取文件库json
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<object> GetFileFormatTreeJson()
+        public IEnumerable<object> GetFileLibraryTreeJson()
         {
-            var objList= _FileFormatCase.GetAllList();
+            var objList= _FileLibraryCase.GetAllList();
             if(objList!=null&& objList.Count>0)
             {
                 return objList.Select(s => new
@@ -114,9 +114,9 @@ namespace Easyman.Service
         /// 获取所有类型List
         /// </summary>
         /// <returns></returns>
-        public List<SelectListItem> FileFormatList()
+        public List<SelectListItem> FileLibraryList()
         {
-            var objList = _FileFormatCase.GetAllList();
+            var objList = _FileLibraryCase.GetAllList();
             if (objList != null && objList.Count > 0)
             {
                 return objList.Select(p => new SelectListItem
@@ -127,26 +127,21 @@ namespace Easyman.Service
             }
             return null;
         }
-
-        public FileFormatModel GetFileFormatByName(string name)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="md5"></param>
+        /// <returns></returns>
+        public FileLibraryModel GetFileLibraryByMD5(string md5)
         {
-            if (!string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(md5))
             {
-                var fileFormat = _FileFormatCase.FirstOrDefault(p => p.Name == name.Trim());
-                if (fileFormat != null)
-                    return fileFormat.MapTo<FileFormatModel>();
+                var FileLibrary = _FileLibraryCase.FirstOrDefault(p => p.MD5 == md5.Trim());
+                if (FileLibrary != null)
+                    return FileLibrary.MapTo<FileLibraryModel>();
                 else
                     return null;
             }
-            else
-                return null;
-        }
-
-        public FileFormatModel GetFileFormatByDir()
-        {
-            var fileFormat = _FileFormatCase.FirstOrDefault(p => p.IsFolder==true);
-            if (fileFormat != null)
-                return fileFormat.MapTo<FileFormatModel>();
             else
                 return null;
         }

@@ -8,50 +8,45 @@ using System.Web.Mvc;
 namespace Easyman.Service
 {
     /// <summary>
-    /// 文件格式管理
+    /// FM_Case_VERSION(版本关联）
     /// </summary>
-    public interface IFileFormatAppService : IApplicationService
+    public interface ICaseVersionAppService : IApplicationService
     {
 
         /// <summary>
-        /// 根据ID获取某个文件格式
+        /// 根据ID获取某个文件夹及文件管理
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        FileFormatModel GetFileFormat(long id);
+        CaseVersionModel GetCaseVersion(long id);
         /// <summary>
-        /// 更新和新增文件格式
+        /// 更新和新增文件夹及文件管理
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        FileFormatModel InsertOrUpdateFileFormat(FileFormatModel input);
+        CaseVersionModel InsertOrUpdateCaseVersion(CaseVersionModel input);
 
         /// <summary>
-        /// 删除一条文件格式
+        /// 删除一条文件夹及文件管理
         /// </summary>
         /// <param name="input"></param>
-        void DeleteFileFormat(EntityDto<long> input);
+        void DeleteCaseVersion(EntityDto<long> input);
         /// <summary>
-        /// 获取文件格式json
+        /// 获取文件夹及文件管理json
         /// </summary>
         /// <returns></returns>
-        IEnumerable<object> GetFileFormatTreeJson();
+        IEnumerable<object> GetCaseVersionTreeJson();
         /// <summary>
         /// 获取所有类型List
         /// </summary>
         /// <returns></returns>
-        List<SelectListItem> FileFormatList();
+        List<SelectListItem> CaseVersionList();
 
         /// <summary>
-        /// 根据类型名称获取文件类型
+        /// 根据共享文件夹获版本号查询文件信息
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="folderId"></param>
         /// <returns></returns>
-        FileFormatModel GetFileFormatByName(string name);
-        /// <summary>
-        /// 获取文件夹选项
-        /// </summary>
-        /// <returns></returns>
-        FileFormatModel GetFileFormatByDir();
+        CaseVersionModel GetCaseVersionByFolder(long folderId);
     }
 }

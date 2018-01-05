@@ -8,50 +8,45 @@ using System.Web.Mvc;
 namespace Easyman.Service
 {
     /// <summary>
-    /// 文件格式管理
+    /// 文件库管理
     /// </summary>
-    public interface IFileFormatAppService : IApplicationService
+    public interface IFileLibraryAppService : IApplicationService
     {
 
         /// <summary>
-        /// 根据ID获取某个文件格式
+        /// 根据ID获取某个文件库
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        FileFormatModel GetFileFormat(long id);
+        FileLibraryModel GetFileLibrary(long id);
         /// <summary>
-        /// 更新和新增文件格式
+        /// 更新和新增文件库
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        FileFormatModel InsertOrUpdateFileFormat(FileFormatModel input);
+        FileLibraryModel InsertOrUpdateFileLibrary(FileLibraryModel input);
 
         /// <summary>
-        /// 删除一条文件格式
+        /// 删除一条文件库
         /// </summary>
         /// <param name="input"></param>
-        void DeleteFileFormat(EntityDto<long> input);
+        void DeleteFileLibrary(EntityDto<long> input);
         /// <summary>
-        /// 获取文件格式json
+        /// 获取文件库json
         /// </summary>
         /// <returns></returns>
-        IEnumerable<object> GetFileFormatTreeJson();
+        IEnumerable<object> GetFileLibraryTreeJson();
         /// <summary>
         /// 获取所有类型List
         /// </summary>
         /// <returns></returns>
-        List<SelectListItem> FileFormatList();
+        List<SelectListItem> FileLibraryList();
 
         /// <summary>
-        /// 根据类型名称获取文件类型
+        /// 根据文件MD5值获取libirary
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        FileFormatModel GetFileFormatByName(string name);
-        /// <summary>
-        /// 获取文件夹选项
-        /// </summary>
-        /// <returns></returns>
-        FileFormatModel GetFileFormatByDir();
+        FileLibraryModel GetFileLibraryByMD5(string md5);
     }
 }

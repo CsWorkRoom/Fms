@@ -23,6 +23,10 @@ namespace Easyman.Dto
         [Required(ErrorMessage = "所属终端不能为空")]
         public virtual long? ComputerId { get; set; }
 
+
+        [Display(Name = "是否在用")]
+        public virtual long? InUse { get; set; }
+
         [Display(Name = "权限信息")]
         public virtual string PowerMsg { get; set; }
 

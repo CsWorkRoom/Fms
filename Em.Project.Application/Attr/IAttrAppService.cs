@@ -41,5 +41,11 @@ namespace Easyman.Service
         /// </summary>
         /// <returns></returns>
         List<SelectListItem> AttrList();
+        /// <summary>
+        /// 根据名称获取属性
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        AttrModel GetAttrByName(string name);
     }
 }

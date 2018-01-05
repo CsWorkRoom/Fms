@@ -8,50 +8,45 @@ using System.Web.Mvc;
 namespace Easyman.Service
 {
     /// <summary>
-    /// 文件格式管理
+    /// 文件夹及文件管理管理
     /// </summary>
-    public interface IFileFormatAppService : IApplicationService
+    public interface IMonitFileAppService : IApplicationService
     {
 
         /// <summary>
-        /// 根据ID获取某个文件格式
+        /// 根据ID获取某个文件夹及文件管理
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        FileFormatModel GetFileFormat(long id);
+        MonitFileModel GetMonitFile(long id);
         /// <summary>
-        /// 更新和新增文件格式
+        /// 更新和新增文件夹及文件管理
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        FileFormatModel InsertOrUpdateFileFormat(FileFormatModel input);
+        MonitFileModel InsertOrUpdateMonitFile(MonitFileModel input);
 
         /// <summary>
-        /// 删除一条文件格式
+        /// 删除一条文件夹及文件管理
         /// </summary>
         /// <param name="input"></param>
-        void DeleteFileFormat(EntityDto<long> input);
+        void DeleteMonitFile(EntityDto<long> input);
         /// <summary>
-        /// 获取文件格式json
+        /// 获取文件夹及文件管理json
         /// </summary>
         /// <returns></returns>
-        IEnumerable<object> GetFileFormatTreeJson();
+        IEnumerable<object> GetMonitFileTreeJson();
         /// <summary>
         /// 获取所有类型List
         /// </summary>
         /// <returns></returns>
-        List<SelectListItem> FileFormatList();
+        List<SelectListItem> MonitFileList();
 
         /// <summary>
-        /// 根据类型名称获取文件类型
+        /// 根据路径查询文件信息
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        FileFormatModel GetFileFormatByName(string name);
-        /// <summary>
-        /// 获取文件夹选项
-        /// </summary>
-        /// <returns></returns>
-        FileFormatModel GetFileFormatByDir();
+        MonitFileModel GetMonitFileByPath(string path);
     }
 }

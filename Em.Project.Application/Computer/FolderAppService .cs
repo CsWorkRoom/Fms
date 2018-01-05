@@ -127,6 +127,20 @@ namespace Easyman.Service
             }
             return null;
         }
+
+        public FolderModel GetFolderByComputerAndName(long cid, string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                var folder = _FolderCase.FirstOrDefault(p => p.ComputerId== cid&& p.Name==name);
+                if (folder != null)
+                    return folder.MapTo<FolderModel>();
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
         #endregion
     }
 }

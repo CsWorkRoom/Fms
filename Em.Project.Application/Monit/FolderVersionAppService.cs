@@ -18,73 +18,70 @@ using System.Web.Mvc;
 namespace Easyman.Service
 {
     /// <summary>
-    /// 文件格式管理
+    /// FM_FOLDER_VERSION(更新版本批次)
     /// </summary>
-    public class FileFormatAppService : EasymanAppServiceBase, IFileFormatAppService
+    public class FolderVersionAppService : EasymanAppServiceBase, IFolderVersionAppService
     {
         #region 初始化
 
-        private readonly IRepository<FileFormat,long> _FileFormatCase;
+        private readonly IRepository<FolderVersion,long> _FolderVersionCase;
         /// <summary>
-        /// 构造函数注入FileFormat仓储
+        /// 构造函数注入FolderVersion仓储
         /// </summary>
         /// <param name="dbTagManager"></param>
-        public FileFormatAppService(IRepository<FileFormat, long> FileFormatCase)
+        public FolderVersionAppService(IRepository<FolderVersion, long> FolderVersionCase)
         {
-            _FileFormatCase = FileFormatCase;
+            _FolderVersionCase = FolderVersionCase;
         }
         #endregion
 
         #region 公共方法
         /// <summary>
-        /// 根据ID获取某个文件格式
+        /// 根据ID获取某个版本
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public FileFormatModel GetFileFormat(long id)
+        public FolderVersionModel GetFolderVersion(long id)
         {
-            var entObj= _FileFormatCase.FirstOrDefault(id);
+            var entObj= _FolderVersionCase.FirstOrDefault(id);
             if (entObj != null)
             {
-               return AutoMapper.Mapper.Map<FileFormatModel>(entObj);
+               return AutoMapper.Mapper.Map<FolderVersionModel>(entObj);
             }
             throw new UserFriendlyException("未找到编号为【"+id.ToString()+"】的对象！");
         }
         /// <summary>
-        /// 更新和新增文件格式
+        /// 更新和新增文件库
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public FileFormatModel InsertOrUpdateFileFormat(FileFormatModel input)
+        public FolderVersionModel InsertOrUpdateFolderVersion(FolderVersionModel input)
         {
-            if(_FileFormatCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
-            {
-                throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
-            }
-            //var entObj =input.MapTo<FileFormat>();
-            var entObj = _FileFormatCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileFormat();
+           
+            //var entObj =input.MapTo<FolderVersion>();
+            var entObj = _FolderVersionCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FolderVersion();
             entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
-            //var entObj= AutoMapper.Mapper.Map<FileFormat>(input);
-            var resObj= _FileFormatCase.InsertOrUpdate(entObj);
+            //var entObj= AutoMapper.Mapper.Map<FolderVersion>(input);
+            var resObj= _FolderVersionCase.InsertOrUpdate(entObj);
             if (resObj == null)
             {
                 throw new UserFriendlyException("新增或更新失败！");
             }
             else
             {
-                return resObj.MapTo<FileFormatModel>();
+                return resObj.MapTo<FolderVersionModel>();
             }
         }
 
         /// <summary>
-        /// 删除一条文件格式
+        /// 删除一条文件库
         /// </summary>
         /// <param name="input"></param>
-        public void DeleteFileFormat(EntityDto<long> input)
+        public void DeleteFolderVersion(EntityDto<long> input)
         {
             try
             {
-                _FileFormatCase.Delete(input.Id);
+                _FolderVersionCase.Delete(input.Id);
             }
             catch (Exception ex)
             {
@@ -92,18 +89,17 @@ namespace Easyman.Service
             }
         }
         /// <summary>
-        /// 获取文件格式json
+        /// 获取版本json
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<object> GetFileFormatTreeJson()
+        public IEnumerable<object> GetFolderVersionTreeJson()
         {
-            var objList= _FileFormatCase.GetAllList();
+            var objList= _FolderVersionCase.GetAllList();
             if(objList!=null&& objList.Count>0)
             {
                 return objList.Select(s => new
                 {
                     id = s.Id,
-                    name = s.Name,
                     open = false,
                     iconSkin = "menu"
                 }).ToList();
@@ -114,42 +110,31 @@ namespace Easyman.Service
         /// 获取所有类型List
         /// </summary>
         /// <returns></returns>
-        public List<SelectListItem> FileFormatList()
+        public List<SelectListItem> FolderVersionList()
         {
-            var objList = _FileFormatCase.GetAllList();
+            var objList = _FolderVersionCase.GetAllList();
             if (objList != null && objList.Count > 0)
             {
                 return objList.Select(p => new SelectListItem
                 {
-                    Text = p.Name,
+                    Text = p.Id.ToString(),
                     Value = p.Id.ToString()
                 }).ToList();
             }
             return null;
         }
 
-        public FileFormatModel GetFileFormatByName(string name)
+        public FolderVersionModel GetFolderVersionByFolder(long folderId)
         {
-            if (!string.IsNullOrEmpty(name))
-            {
-                var fileFormat = _FileFormatCase.FirstOrDefault(p => p.Name == name.Trim());
-                if (fileFormat != null)
-                    return fileFormat.MapTo<FileFormatModel>();
-                else
-                    return null;
-            }
+            var FolderVersion = _FolderVersionCase.FirstOrDefault(p => p.FolderId == folderId);
+            if (FolderVersion != null)
+                return FolderVersion.MapTo<FolderVersionModel>();
             else
                 return null;
+
         }
 
-        public FileFormatModel GetFileFormatByDir()
-        {
-            var fileFormat = _FileFormatCase.FirstOrDefault(p => p.IsFolder==true);
-            if (fileFormat != null)
-                return fileFormat.MapTo<FileFormatModel>();
-            else
-                return null;
-        }
+
         #endregion
     }
 }

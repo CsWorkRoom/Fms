@@ -1,45 +1,37 @@
-﻿using Abp.Domain.Entities;
-using Abp.Domain.Entities.Auditing;
-using Easyman.Common;
+﻿using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
+using Easyman.Domain;
+using EasyMan.Dtos;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
-namespace Easyman.Domain
+namespace Easyman.Dto
 {
-    /// <summary>
-    /// 监控版本
-    /// </summary>
-    [Table("FM_CASE_VERSION")]
-    public class CaseVersion : CommonEntityHelper
+    [AutoMap(typeof(CaseVersion))]
+    public class CaseVersionModel : EntityDto<long>
     {
-        
-        [Key, Column("ID")]
-        public override long Id { get; set; }
-
+        public new long Id { get; set; }
         /// <summary>
         /// 所属实例ID
         /// </summary>
-        [Column("SCRIPT_NODE_CASE_ID")]
         public virtual long? ScriptNodeCaseId { get; set; }
 
         /// <summary>
         /// 文件版本批次ID
         /// </summary>
-        [Column("FOLDER_VERSION_ID")]
         public virtual long? FolderVersionId { get; set; }
 
 
         /// <summary>
         /// 开始时间
         /// </summary>
-        [Column("BEGIN_TIME")]
         public virtual DateTime? BeginTime { get; set; }
 
         /// <summary>
         /// 结束时间
         /// </summary>
-        [Column("END_TIME")]
         public virtual DateTime? EndTime { get; set; }
 
     }

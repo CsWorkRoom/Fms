@@ -18,73 +18,73 @@ using System.Web.Mvc;
 namespace Easyman.Service
 {
     /// <summary>
-    /// 文件格式管理
+    /// 文件夹及文件管理
     /// </summary>
-    public class FileFormatAppService : EasymanAppServiceBase, IFileFormatAppService
+    public class MonitFileAppService : EasymanAppServiceBase, IMonitFileAppService
     {
         #region 初始化
 
-        private readonly IRepository<FileFormat,long> _FileFormatCase;
+        private readonly IRepository<MonitFile,long> _MonitFileCase;
         /// <summary>
-        /// 构造函数注入FileFormat仓储
+        /// 构造函数注入MonitFile仓储
         /// </summary>
         /// <param name="dbTagManager"></param>
-        public FileFormatAppService(IRepository<FileFormat, long> FileFormatCase)
+        public MonitFileAppService(IRepository<MonitFile, long> MonitFileCase)
         {
-            _FileFormatCase = FileFormatCase;
+            _MonitFileCase = MonitFileCase;
         }
         #endregion
 
         #region 公共方法
         /// <summary>
-        /// 根据ID获取某个文件格式
+        /// 根据ID获取某个文件库
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public FileFormatModel GetFileFormat(long id)
+        public MonitFileModel GetMonitFile(long id)
         {
-            var entObj= _FileFormatCase.FirstOrDefault(id);
+            var entObj= _MonitFileCase.FirstOrDefault(id);
             if (entObj != null)
             {
-               return AutoMapper.Mapper.Map<FileFormatModel>(entObj);
+               return AutoMapper.Mapper.Map<MonitFileModel>(entObj);
             }
             throw new UserFriendlyException("未找到编号为【"+id.ToString()+"】的对象！");
         }
         /// <summary>
-        /// 更新和新增文件格式
+        /// 更新和新增文件库
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public FileFormatModel InsertOrUpdateFileFormat(FileFormatModel input)
+        public MonitFileModel InsertOrUpdateMonitFile(MonitFileModel input)
         {
-            if(_FileFormatCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
+            if(_MonitFileCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
             {
                 throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
             }
-            //var entObj =input.MapTo<FileFormat>();
-            var entObj = _FileFormatCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileFormat();
+            //var entObj =input.MapTo<MonitFile>();
+            var entObj = _MonitFileCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new MonitFile();
             entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
-            //var entObj= AutoMapper.Mapper.Map<FileFormat>(input);
-            var resObj= _FileFormatCase.InsertOrUpdate(entObj);
+            //var entObj= AutoMapper.Mapper.Map<MonitFile>(input);
+            var resObj= _MonitFileCase.InsertOrUpdate(entObj);
             if (resObj == null)
             {
                 throw new UserFriendlyException("新增或更新失败！");
             }
             else
             {
-                return resObj.MapTo<FileFormatModel>();
+                return resObj.MapTo<MonitFileModel>();
             }
         }
 
         /// <summary>
-        /// 删除一条文件格式
+        /// 删除一条文件库
         /// </summary>
         /// <param name="input"></param>
-        public void DeleteFileFormat(EntityDto<long> input)
+        public void DeleteMonitFile(EntityDto<long> input)
         {
             try
             {
-                _FileFormatCase.Delete(input.Id);
+                _MonitFileCase.Delete(input.Id);
             }
             catch (Exception ex)
             {
@@ -92,12 +92,12 @@ namespace Easyman.Service
             }
         }
         /// <summary>
-        /// 获取文件格式json
+        /// 获取文件库json
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<object> GetFileFormatTreeJson()
+        public IEnumerable<object> GetMonitFileTreeJson()
         {
-            var objList= _FileFormatCase.GetAllList();
+            var objList= _MonitFileCase.GetAllList();
             if(objList!=null&& objList.Count>0)
             {
                 return objList.Select(s => new
@@ -114,9 +114,9 @@ namespace Easyman.Service
         /// 获取所有类型List
         /// </summary>
         /// <returns></returns>
-        public List<SelectListItem> FileFormatList()
+        public List<SelectListItem> MonitFileList()
         {
-            var objList = _FileFormatCase.GetAllList();
+            var objList = _MonitFileCase.GetAllList();
             if (objList != null && objList.Count > 0)
             {
                 return objList.Select(p => new SelectListItem
@@ -128,28 +128,24 @@ namespace Easyman.Service
             return null;
         }
 
-        public FileFormatModel GetFileFormatByName(string name)
+        public MonitFileModel GetMonitFileByPath(string path)
         {
-            if (!string.IsNullOrEmpty(name))
-            {
-                var fileFormat = _FileFormatCase.FirstOrDefault(p => p.Name == name.Trim());
-                if (fileFormat != null)
-                    return fileFormat.MapTo<FileFormatModel>();
+           
+                if (!string.IsNullOrEmpty(path))
+                {
+                    var MonitFile = _MonitFileCase.FirstOrDefault( p => p.ClientPath==path.Trim());
+                    if (MonitFile != null)
+                        return MonitFile.MapTo<MonitFileModel>();
+                    else
+                        return null;
+                }
                 else
                     return null;
-            }
-            else
-                return null;
+   
+
         }
 
-        public FileFormatModel GetFileFormatByDir()
-        {
-            var fileFormat = _FileFormatCase.FirstOrDefault(p => p.IsFolder==true);
-            if (fileFormat != null)
-                return fileFormat.MapTo<FileFormatModel>();
-            else
-                return null;
-        }
+
         #endregion
     }
 }

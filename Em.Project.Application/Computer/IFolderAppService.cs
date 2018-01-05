@@ -41,5 +41,7 @@ namespace Easyman.Service
         /// </summary>
         /// <returns></returns>
         List<SelectListItem> FolderList();
+
+        FolderModel GetFolderByComputerAndName(long? cid,string name);
     }
 }
