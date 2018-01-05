@@ -367,6 +367,16 @@
     <Content Include="Common\Images\selectScript\error.png" />
     <Content Include="Common\Images\selectScript\executing.png" />
     <Content Include="Common\Images\selectScript\start.png" />
+    <Content Include="Common\plugins\ContextMenu\images\cut.png" />
+    <Content Include="Common\plugins\ContextMenu\images\door.png" />
+    <Content Include="Common\plugins\ContextMenu\images\page_white_add.png" />
+    <Content Include="Common\plugins\ContextMenu\images\page_white_copy.png" />
+    <Content Include="Common\plugins\ContextMenu\images\page_white_delete.png" />
+    <Content Include="Common\plugins\ContextMenu\images\page_white_edit.png" />
+    <Content Include="Common\plugins\ContextMenu\images\page_white_paste.png" />
+    <Content Include="Common\plugins\ContextMenu\jquery.contextMenu.css" />
+    <Content Include="Common\plugins\ContextMenu\jquery.contextMenu.js" />
+    <Content Include="Common\plugins\ContextMenu\jquery.ui.position.js" />
     <Content Include="Common\rootUrl.js" />
     <Content Include="Common\Scripts\bootstrap-switch\bootstrap-switch.js" />
     <Content Include="Common\Scripts\bootstrap-switch\bootstrap-switch.min.js" />
@@ -1806,6 +1816,7 @@
     <Content Include="Abp\abp.css.map" />
     <Content Include="Common\Scripts\html5uploader\upload.php" />
     <Content Include="Echart\javascripts\api.map.js" />
+    <Content Include="Views\File\css\showMonitFile.css" />
     <Content Include="Views\File\EditFileFormat.cshtml" />
     <Content Include="Views\Report\js\EditReport\ChartMain.js" />
     <Content Include="Views\Report\js\ChartReport.js" />
@@ -2034,6 +2045,8 @@
     <Compile Include="Models\Account\RegisterResultViewModel.cs" />
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\TenantSelectionViewModel.cs" />
+    <Compile Include="Models\File\FileDetail.cs" />
+    <Compile Include="Models\File\TreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rdlc\rdlc.aspx.cs">
       <DependentUpon>rdlc.aspx</DependentUpon>
@@ -2088,6 +2101,7 @@
     <Content Include="Views\Computer\EditComputerShareFolder.cshtml" />
     <Content Include="Views\Attr\EditAttrType.cshtml" />
     <Content Include="Views\Attr\EditAttr.cshtml" />
+    <Content Include="Views\File\ShowMonitFile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2168,7 +2182,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>6234</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:6234/</IISUrl>
+          <IISUrl>http://localhost:6235/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

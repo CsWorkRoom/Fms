@@ -31,7 +31,10 @@ namespace Easyman.Dto
         /// </summary>
         public virtual string Remark { get; set; }
 
-        public virtual DateTime CreateTime { get; set; }
+        /// <summary>
+        /// 属性类型名
+        /// </summary>
+        public virtual string AttrTypeName { get; set; }
 
         public List<SelectListItem> AttrTypeList { get; set; }
 

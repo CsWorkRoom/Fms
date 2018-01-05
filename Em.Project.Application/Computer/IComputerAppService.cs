@@ -41,12 +41,16 @@ namespace Easyman.Service
         /// </summary>
         /// <returns></returns>
         List<SelectListItem> ComputerList();
-       
         /// <summary>
-        /// 根据终端IP获取终端
+        /// 根据组织获得终端列表
         /// </summary>
-        /// <param name="ip"></param>
+        /// <param name="districtId"></param>
         /// <returns></returns>
-        ComputerModel GetComputerByIp(string ip);
+        List<ComputerModel> GetComputerListByDistrict(long districtId);
+        /// <summary>
+        /// 根据用户获得终端列表
+        /// </summary>
+        /// <returns></returns>
+        List<ComputerModel> GetComputerListByCurUser();
     }
 }

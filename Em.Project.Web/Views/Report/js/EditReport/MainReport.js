@@ -19,7 +19,7 @@ function InitPage() {
         //$("#Code").attr("disabled", true);//禁用code
         $("#Code").attr("readonly", "readonly");//禁用code
         ///是否显示保存数据
-        $('#divSave').collapse("show");
+        $('#saveAllReport').show();
     }
 
     //默认加载隐藏项
@@ -52,7 +52,38 @@ function InitPage() {
 
 //#region 初始化页面表单事件
 function InitEvent() {
-    SubmitFormData("#saveForm", "#sumbit-btn");//提交数据
+    $("#saveForm").submitForm({
+        beforeSubmit: function () {
+            $("#sumbit-btn").button('loading');
+            $("#addReportBtn").button('loading');
+            $("#closeModel").button('loading');
+            $("#saveAllReport").button('loading');
+            $("#analysis-sql").button('loading');
+            $("#jqGrid a").button('loading');
+
+        },
+        success: function (data) {
+            if (data.success)
+                SavaSuccessData();//刷新父级窗口
+            else
+                abp.message.error(data.result.message, "保存失败");
+            $("#sumbit-btn").button('reset');
+            $("#addReportBtn").button('reset');
+            $("#closeModel").button('reset');
+            $("#saveAllReport").button('reset');
+            $("#analysis-sql").button('reset');
+            $("#jqGrid a").button('reset');
+        },
+        error: function () {
+            $("#sumbit-btn").button('reset');
+            $("#addReportBtn").button('reset');
+            $("#closeModel").button('reset');
+            $("#saveAllReport").button('reset');
+            $("#analysis-sql").button('reset');
+            $("#jqGrid a").button('reset');
+        }
+    })
+
 }
 //触发Form
 function SaveReport() {
@@ -112,7 +143,7 @@ function AnalysisSql() {
                 var err = $.parseJSON(e);
                 if (err.IsError) {
                     $('#divAnalysis').collapse("hide");
-                    $('#divSave').collapse("hide");
+                    $('#saveAllReport').hide();
                     if (err.Message.indexOf("<title>") != -1)
                     {
                         var start = err.Message.indexOf("<title>");
@@ -135,6 +166,7 @@ function AnalysisSql() {
                     $("#FieldJson").val(JSON.stringify(nowFieldList));
                     abp.message.success("", "解析成功");
                     $('#divAnalysis').collapse("show");
+                    $('#saveAllReport').show();
                     $("#analysis-sql").button('reset');
                 }
             }
@@ -148,6 +180,7 @@ function AnalysisSql() {
             }
             else
                 abp.message.error(e.responseText, "解析失败");
+            $('#saveAllReport').hide();
             $("#analysis-sql").button('reset');
         }
     });
@@ -198,7 +231,7 @@ function OpenReportDiv() {
     }
 
     //显示保存提交事件
-    $('#divSave').collapse("show");
+    $('#saveAllReport').show();
 }
 
 

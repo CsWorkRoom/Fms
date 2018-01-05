@@ -310,7 +310,7 @@ namespace Easyman.Web
 
             #endregion
 
-            #region TbReport 报表配置
+            #region TbReport 表格报表
             //css
             bundles.Add(
                 new StyleBundle("~/Bundles/App/TbReport/css")
@@ -350,9 +350,22 @@ namespace Easyman.Web
                     );
             #endregion
 
+            #region 右键内容插件 ContextMenu
+            //css
+            bundles.Add(
+                new StyleBundle("~/Bundles/ContextMenu/css")
+                    .Include("~/Content/jquery.contextMenu.css", new CssRewriteUrlTransform())
+                    );
+            //script
+            bundles.Add(
+                new ScriptBundle("~/Bundles/ContextMenu/js")
+                    .Include("~/Scripts/jquery.contextMenu.js")
+                    );
+            #endregion
+
             //启用压缩：true 或 删除该行代码
             //禁用压缩：false
-            //BundleTable.EnableOptimizations = true;
+            BundleTable.EnableOptimizations = false;
         }
     }
 }

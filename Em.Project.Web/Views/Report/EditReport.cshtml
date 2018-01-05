@@ -11,8 +11,9 @@
     @Styles.Render("~/Bundles/txtIDE/css")
     <link href="~/Common/css/TypeIcon/TypeIcon.css" rel="stylesheet" />
     <style>
-        html, body {
+        html,body {
             overflow-y: auto;
+            padding-bottom: 35px;
         }
 
         .Head_BorderB {
@@ -36,6 +37,7 @@
 
         body {
             width: 100%;
+            padding-bottom: 5px;
         }
 
         .deletePaddingLR {
@@ -102,6 +104,20 @@
             border-radius: 3px;
             padding: 5px;
         }
+
+        .modal-footer {
+            bottom: 0;
+            text-align: right;
+            border: 1px solid #ddd;
+            width: 100%;
+            background-color: #f8f8f8;
+            padding: 3px;
+            border-radius: 3px;
+            height: 38px;
+        }
+        .tab-content > .tab-pane {
+            margin-bottom: 10px;
+        }
     </style>
 }
 
@@ -144,7 +160,7 @@
                 <div class="form-group">
                     <label for="Content" class="col-sm-2 control-label">
                         SQL文<br />
-                        <button id="analysis-sql" data-loading-text="Loading..." autocomplete="off" onclick="AnalysisSql()" type="button" class="btn btn-primary"><i class="fa fa-cog" title="解析sql"></i> 解析</button>
+                        <button id="analysis-sql" data-loading-text="解析中..." autocomplete="off" onclick="AnalysisSql()" type="button" class="btn btn-primary"><i class="fa fa-cog" title="解析sql"></i> 解析</button>
                     </label>
                     <div class="col-sm-10">
                         @Html.TextAreaFor(m => m.Sql, new
@@ -204,13 +220,10 @@
             </select>
         </div>
         <div class="form-group SpaceNum">
-            <button id="addReportBtn" class="btn btn-success" title="添加"><i class="fa fa-plus"></i> 添加</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button>
+            <button id="addReportBtn" class="btn btn-success" title="添加" style="margin-right:30px"><i class="fa fa-plus"></i> 添加</button>           
         </div>
     </div>
-    <div class="form-group collapsing" id="divSave" style="float:left;">
-        <button class="btn btn-success" onclick="SaveReport()" data-loading-text="保存中..." id="saveAllReport" type="button" title="保存所有配置"><i class="fa fa-save"></i> 保存所有配置</button>
-    </div>
+   
 </div>
 <!--sql解析的字段-->
 <input id="fieldJson" type="text" style="display:none" />
@@ -222,6 +235,11 @@
     <table id="jqGrid" style="width:110%"></table>
     <div id="jqGridPager"></div>
     <input id="curReportType" type="text" style="display:none" />
+</div>
+
+<div class="bottomPage">
+    <button class="btn btn-primary" onclick="SaveReport()" data-loading-text="保存中..." id="saveAllReport" type="button" title="保存所有配置" style="float: right;margin-right: 5px"><i class="fa fa-save"></i> 保存所有配置</button>
+    <button id="closeModel" class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal' style="float: right;margin-right: 10px;"><i class='fa fa-times'></i> 关闭</button>
 </div>
 
 <!--表格报表的配置 模态框-->

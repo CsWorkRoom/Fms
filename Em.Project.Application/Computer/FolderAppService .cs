@@ -127,19 +127,15 @@ namespace Easyman.Service
             }
             return null;
         }
-
-        public FolderModel GetFolderByComputerAndName(long cid, string name)
+        /// <summary>
+        /// 根据终端编号获取共享目录
+        /// </summary>
+        /// <param name="computerId"></param>
+        /// <returns></returns>
+        [System.Web.Http.HttpGet]
+        public List<FolderModel> GetFolderListByComputer(long computerId)
         {
-            if (!string.IsNullOrEmpty(name))
-            {
-                var folder = _FolderCase.FirstOrDefault(p => p.ComputerId== cid&& p.Name==name);
-                if (folder != null)
-                    return folder.MapTo<FolderModel>();
-                else
-                    return null;
-            }
-            else
-                return null;
+            return _FolderCase.GetAllList(p => p.ComputerId == computerId).MapTo<List<FolderModel>>();
         }
         #endregion
     }

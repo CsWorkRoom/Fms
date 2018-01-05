@@ -1107,7 +1107,7 @@ if (typeof jQuery === 'undefined') {
       var fatherBody = $(window.top.document.body);//获取父BODY
       this.$backdrop = $(document.createElement('div'))
         .addClass('modal-backdrop ' + animate)
-        .appendTo(fatherBody == null ? this.$body : fatherBody)//.appendTo(this.$body),  这里判断是否有父级窗口存在，如果有就在父级窗口中加入遮罩如果没有就在当前页面加
+        .appendTo(this.$body),  
 
       this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
         if (this.ignoreBackdropClick) {

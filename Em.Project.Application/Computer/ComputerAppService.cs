@@ -10,7 +10,6 @@ using EasyMan;
 using EasyMan.Dtos;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -129,23 +128,30 @@ namespace Easyman.Service
             return null;
         }
 
-        public ComputerModel GetComputerByIp(string ip)
+        /// <summary>
+        /// 根据组织获得终端列表
+        /// </summary>
+        /// <param name="districtId"></param>
+        /// <returns></returns>
+        public List<ComputerModel> GetComputerListByDistrict(long districtId)
         {
-
-            if (!string.IsNullOrEmpty(ip))
-            {
-                var computer = _ComputerCase.FirstOrDefault(p => p.Ip == ip.Trim());
-                if (computer != null)
-                    return computer.MapTo<ComputerModel>();
-                else
-                    return null;
-            }
-            else
-                return null;
-           
+            return _ComputerCase.GetAllList(p => p.DistrictId == districtId).MapTo<List<ComputerModel>>();
         }
+        /// <summary>
+        /// 根据用户获得终端列表
+        /// </summary>
+        /// <returns></returns>
+        public List<ComputerModel> GetComputerListByCurUser()
+        {
+            Users.User user = GetCurrentUserAsync().Result;
+            if (user != null && user.DistrictId != null)
+            {
+                return GetComputerListByDistrict(user.DistrictId.Value);
+            }
+            return null;
+        }
+
         #endregion
 
-    
     }
 }
