@@ -4,6 +4,7 @@ using Easyman.Dto;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using System.Web.Mvc;
+using EasyMan.Dtos;
 
 namespace Easyman.Service
 {
@@ -57,7 +58,7 @@ namespace Easyman.Service
         void Log(MonitLogModel log);
 
         //从客户端拷贝文件
-
+        void UpFileByMonitFile(long? monitFileId,ref ErrorInfo err);
 
         //从服务端还原文件
         #endregion

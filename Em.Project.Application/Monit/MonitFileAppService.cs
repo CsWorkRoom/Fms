@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.IO;
 
 namespace Easyman.Service
 {
@@ -29,10 +30,13 @@ namespace Easyman.Service
         /// <summary>
         /// 构造函数注入MonitFile仓储
         /// </summary>
-        /// <param name="dbTagManager"></param>
-        public MonitFileAppService(IRepository<MonitFile, long> MonitFileCase)
+        /// <param name="MonitFileCase"></param>
+        /// <param name="MonitLogCase"></param>
+        public MonitFileAppService(IRepository<MonitFile, long> MonitFileCase,
+            IRepository<MonitLog, long> MonitLogCase)
         {
             _MonitFileCase = MonitFileCase;
+            _MonitLogCase = MonitLogCase;
         }
         #endregion
 
@@ -183,6 +187,204 @@ namespace Easyman.Service
             curLog.LogTime = DateTime.Now;
             _MonitLogCase.Insert(curLog);//插入日志
         }
+        /// <summary>
+        /// 插入一条监控日志
+        /// </summary>
+        /// <param name="caseVersionId"></param>
+        /// <param name="mointFileId"></param>
+        /// <param name="logType"></param>
+        /// <param name="logMsg"></param>
+        public void Log(long? caseVersionId,long? mointFileId,short? logType,string logMsg)
+        {
+            var log = new MonitLog {
+                CaseVersionId=caseVersionId,
+                MonitFileId=mointFileId,
+                LogType=logType,
+                LogMsg=logMsg,
+                LogTime=DateTime.Now
+            };
+            _MonitLogCase.Insert(log);//插入日志
+        }
+        /// <summary>
+        /// 上传文件到服务器
+        /// </summary>
+        /// <param name="monitFileId"></param>
+        public void UpFileByMonitFile(long? monitFileId)
+        {
+            long? caseVersionId = null;
+            short logType = (short)LogType.UpLog;
+            if (monitFileId == null)
+            {
+                Log(caseVersionId, monitFileId, logType, "传入的监控文件编号[monitFileId]为空值");
+            }
+            else
+            {
+                var monitFile= _MonitFileCase.FirstOrDefault(monitFileId.Value);
+                if (monitFile == null)
+                {
+                    Log(caseVersionId, monitFileId, logType, "未找到编号为[" + monitFileId.ToString() + "]的监控文件");
+                }
+                else
+                {
+                    caseVersionId = monitFile.CaseVersionId;//赋值
+                    switch (monitFile.CopyStatus.Value)
+                    {
+                        case (short)CopyStatus.Fail:
+                        case (short)CopyStatus.Wait:
+                            Log(caseVersionId, monitFileId, logType, "开始把monitFileId[" + monitFileId.ToString() + "]文件从终端拷贝到服务端");
+                            CopyFile(monitFile, LogType.UpLog);
+                            break;
+                        case (short)CopyStatus.Excuting:
+                        case (short)CopyStatus.Success:
+                            break;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 还原服务端的文件到客户端
+        /// </summary>
+        /// <param name="monitFileId"></param>
+        public void DownFileByMonitFile(long? monitFileId)
+        {
+            long? caseVersionId = null;
+            short logType = (short)LogType.DownLog;
+            if (monitFileId == null)
+            {
+                Log(caseVersionId, monitFileId, logType, "传入的监控文件编号[monitFileId]为空值");
+            }
+            else
+            {
+                var monitFile = _MonitFileCase.FirstOrDefault(monitFileId.Value);
+                if (monitFile == null)
+                {
+                    Log(caseVersionId, monitFileId, logType, "未找到编号为[" + monitFileId.ToString() + "]的监控文件");
+                }
+                else
+                {
+                    caseVersionId = monitFile.CaseVersionId;//赋值
+                    Log(caseVersionId, monitFileId, logType, "开始把monitFileId[" + monitFileId.ToString() + "]文件从服务端拷贝到客户端");
+                    CopyFile(monitFile, LogType.DownLog);
+                }
+            }
+        }
 
+        //还原文件的方法-待写
+
+        /// <summary>
+        /// 根据LogType拷贝文件
+        /// </summary>
+        /// <param name="monitFile"></param>
+        /// <param name="logType"></param>
+        private void CopyFile(MonitFile monitFile,LogType logType)
+        {
+            //考虑让这个方法返回bool类型，用于在还原时的判断依据
+            if (monitFile != null)
+            {
+                string fromPath ="";//初始化
+                string toPath = "";//初始化
+                switch (logType)
+                {
+                    case LogType.UpLog:
+                        fromPath = monitFile.ClientPath;
+                        toPath = monitFile.ServerPath;
+                        break;
+                    case LogType.DownLog:
+                        fromPath = monitFile.ServerPath;
+                        toPath = monitFile.ClientPath;
+                        break;
+                }
+                string userName = monitFile.Folder.Computer.UserName;// 
+                string pwd = monitFile.Folder.Computer.Pwd;// 
+                string ip = monitFile.Folder.Computer.Ip;
+
+                // 通过IP 用户名 密码 访问远程目录  不需要权限
+                using (SharedTool tool = new SharedTool(userName, pwd, ip))
+                {
+                    if (File.Exists(fromPath))
+                    {
+                        switch (logType)
+                        {
+                            case LogType.UpLog:
+                                //注意：修改FM_FILE_LIBRARY的IS_COPY字段；修改FM_MONIT_FILE的COPY_STATUS字段（待处理）
+
+
+                                //参数1：要复制的源文件路径，
+                                //参数2：复制后的目标文件路径，
+                                //参数3：是否覆盖相同文件名
+                                Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "开始把编号monitFileId[" + monitFile.Id.ToString() + "]的文件从客户端["+ fromPath + "]迁移到服务端["+ toPath + "]");
+                                try
+                                {
+                                    File.Copy(fromPath, toPath, true);//从客户端拷贝文件到服务端(覆盖式拷贝)
+                                }
+                                catch (Exception e)
+                                {
+                                    Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从客户端[" + fromPath + "]迁移到服务端[" + toPath + "]拷贝失败：" + e.Message);
+                                }
+                                break;
+                            case LogType.DownLog:
+                                Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "开始把编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]");
+                                SaveMonitFile(monitFile, CopyStatus.Excuting);
+
+                                //先重命名客户端原来文件
+                                var repVar = toPath.Substring(toPath.LastIndexOf('.'));
+                                //重命名其实就可以是服务端的名称，不用时间ticks
+                                var renamePath= toPath.Replace(repVar, DateTime.Now.Ticks.ToString() + repVar);
+                                try
+                                {
+                                    RemaneFile(toPath, renamePath);//重命名
+                                    Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "把客户端文件重命名成功:从[" + toPath + "]到[" + renamePath + "]拷贝成功");
+                                    try
+                                    {
+                                        File.Copy(fromPath, toPath, true);//从服务端拷贝文件到客户端(非覆盖式拷贝)
+                                        SaveMonitFile(monitFile, CopyStatus.Success);
+                                        try
+                                        {
+                                            File.Delete(renamePath);//删除重命名的文件
+                                            Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "删除客户端重命名的文件[" + renamePath + "]成功");
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "删除客户端重命名的文件[" + renamePath + "]失败:"+e.Message);
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]拷贝失败：" + e.Message);
+                                    }
+                                }
+                                catch(Exception e)
+                                {
+                                    Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "把客户端文件重命名失败:从[" + toPath + "]到[" + renamePath + "]拷贝失败：" + e.Message);
+                                }
+                                //再拷贝
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "源文件[" + fromPath + "]不存在");
+                    }
+                }
+            }
+        }
+
+        private void SaveMonitFile(MonitFile monitFile,CopyStatus status)
+        {
+            monitFile.CopyStatus = (short)status;
+            _MonitFileCase.Update(monitFile);//修改复制状态
+            CurrentUnitOfWork.SaveChanges();//保存
+        }
+
+        /// <summary>
+        /// 重命名文件
+        /// </summary>
+        /// <param name="oldPath"></param>
+        /// <param name="newPath"></param>
+        private void RemaneFile(string oldPath,string newPath)
+        {
+            FileInfo fileInfo = new FileInfo(oldPath);
+            fileInfo.MoveTo(newPath);
+        }
     }
 }
