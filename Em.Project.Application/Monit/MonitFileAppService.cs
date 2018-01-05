@@ -150,6 +150,26 @@ namespace Easyman.Service
 
         }
 
+        /// <summary>
+        ///  根据版本获取上一个目录
+        /// </summary>
+        /// <param name="versionId"></param>
+        /// <returns></returns>       
+
+        public List<MonitFileModel> GetMonitFileByVersion(long versionId)
+        {
+            if (versionId != null)
+            {
+                var MonitFile = _MonitFileCase.GetAllList(p => p.FolderVersionId == versionId);
+                if (MonitFile != null)
+                    return MonitFile.MapTo<List<MonitFileModel>>();
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
 
         #endregion
 

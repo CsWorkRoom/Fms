@@ -63,8 +63,9 @@ namespace Easyman.Dto
         /// </summary>
         public virtual bool IsChange { get; set; }
 
-
         public virtual double? Size { get; set; }
+
+        public virtual MonitStatus FileStatus { get; set; }
 
         public Dictionary<string, string> Properties { get; set; }
 

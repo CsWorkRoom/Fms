@@ -16,7 +16,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Linq;
-
+using Easyman.Domain;
 
 namespace Easyman.Web.Controllers
 {
@@ -103,6 +103,7 @@ namespace Easyman.Web.Controllers
         #endregion
 
         public static List<MonitFileTemp> waitFiles = new List<MonitFileTemp>();
+        public static List<MonitFileModel> monitFileModels = new List<MonitFileModel>();
         public string masterPath = "D:\\";
         #region 开始监听
         /// <summary>
@@ -135,6 +136,14 @@ namespace Easyman.Web.Controllers
                 Logger.Info("不存在此IP！");
                 return;
             }
+
+            //获取上一个最新版本
+            FolderVersionModel folderVersionOld= _FolderVersionAppService.GetFolderVersionByFolder(folder.Id);
+            if (folderVersionOld != null)
+            {
+                monitFileModels = _MonitFileAppService.GetMonitFileByVersion(folderVersionOld.Id);
+            }
+           
             string userName = "lcz2016";// computer.UserName.Trim();//lcz2016
             string pwd = "lcz201314";// computer.Pwd.Trim();//lcz201314
             // 通过IP 用户名 密码 访问远程目录  不需要权限
@@ -152,18 +161,21 @@ namespace Easyman.Web.Controllers
                     if (files != null && files.Count() > 0)
                     {
                         FolderVersionModel folderVersion = CheckFolderVersion(folder.Id, "add");
-                        SaveCaseVersion(folderVersion, scriptNodeCaseId);
+                        CaseVersionModel caseVersionModel=SaveCaseVersion(folderVersion, scriptNodeCaseId);
                         foreach (MonitFileTemp f in waitFiles)
                         {
-                            //检查文件类型
-                            FileFormatModel fileFormat = CheckFileFormat(f.FormatName, f.IsDir);
-                            //检查保存FM_FILE_LIBRARY
-                            FileLibraryModel fileLibrary =CheckFileLibrary(f, fileFormat);
-                            //保存属性 和对应关系
-                            CheckAttr( fileLibrary, f.ClientPath);
-                            //保存monitFile
-                            SaveMonitFile(f, folderVersion, fileLibrary);
-                        } 
+                            if (string.IsNullOrEmpty(f.ParentId))
+                            {
+                                RecursionSaveMonitFile(null, f, folderVersion, caseVersionModel);
+                            }
+                          
+                        }
+                        var deleteFileModels = monitFileModels.Where(p => p.IsDelete !=false);
+                        foreach (MonitFileModel f in deleteFileModels)
+                        {
+                            f.Status = (short)MonitStatus.Delete;
+                            _MonitFileAppService.InsertOrUpdateMonitFile(f);
+                        }
                     }
                     else
                     {
@@ -174,6 +186,28 @@ namespace Easyman.Web.Controllers
             }
 
         }
+
+        private void RecursionSaveMonitFile(long? parentId, MonitFileTemp f, FolderVersionModel folderVersion, CaseVersionModel caseVersionModel)
+        {
+            //检查文件类型
+            FileFormatModel fileFormat = CheckFileFormat(f.FormatName, f.IsDir);
+            //检查保存FM_FILE_LIBRARY
+            FileLibraryModel fileLibrary = CheckFileLibrary(f, fileFormat);
+            //保存属性 和对应关系
+            CheckAttr(fileLibrary, f.ClientPath);
+            //保存monitFile
+            MonitFileModel pfileModel= SaveMonitFile(parentId,f, folderVersion, fileLibrary, caseVersionModel);
+            if (fileFormat.IsFolder == true)
+            {
+                 var files= waitFiles.Where(p => p.ParentId == f.Id);
+                foreach (MonitFileTemp p in files)
+                {
+                    RecursionSaveMonitFile(pfileModel.Id, p, folderVersion, caseVersionModel);
+                }
+                 
+            }
+        }
+
         /// <summary>
         /// 判断文件夹是都存在，不存在建立
         /// </summary>
@@ -195,7 +229,14 @@ namespace Easyman.Web.Controllers
         /// <returns></returns>
         public MonitFileModel GetPMonitFile(string filePath)
         {
-            return _MonitFileAppService.GetMonitFileByPath(filePath);
+            MonitFileModel fileModel= monitFileModels.FirstOrDefault(p=>p.ClientPath== filePath);
+            if (fileModel != null)
+            {
+                int index = monitFileModels.FindIndex(m => m == fileModel);
+                monitFileModels[index].IsDelete = false;               
+            }
+            return fileModel;
+            //return _MonitFileAppService.GetMonitFileByPath(filePath);
         }
         /// <summary>
         /// 判断文件上一个版本比较
@@ -261,15 +302,16 @@ namespace Easyman.Web.Controllers
             _monitFile.Id = Guid.NewGuid().ToString();
             _monitFile.ComputerId = computer.Id;
             _monitFile.IsDir = isDir;
-            _monitFile.ParentId =pguid;
+            _monitFile.ParentId = pguid;
             _monitFile.Name = fileName;
             _monitFile.ClientPath = fullName;
             _monitFile.FormatName = fileFormat;
-            _monitFile.ServerPath = computer.Ip+"\\"+folder.Name;
+            _monitFile.ServerPath = computer.Ip + "\\" + folder.Name;
             if (isDir)
             {
                 MonitFileModel relyMonitFile = GetPMonitFile(fullName);
-                _monitFile.IsChange = relyMonitFile!=null?false:true;
+                _monitFile.IsChange = relyMonitFile != null ? false : true;
+                _monitFile.FileStatus = relyMonitFile != null ? MonitStatus.UnChanged : MonitStatus.Add;
                 _monitFile.Properties = FileTool.GetDictionaryByDir(fullName);
             }
             else
@@ -277,10 +319,23 @@ namespace Easyman.Web.Controllers
                 MonitFileModel relyMonitFile = GetPMonitFile(fullName);
                 _monitFile.RelyMonitFileId = relyMonitFile != null ? relyMonitFile.Id : 0;
                 _monitFile.MD5 = FileTool.GetFileHash(fullName);
-                _monitFile.IsChange = CheckFile(relyMonitFile, _monitFile.MD5);                
+                _monitFile.IsChange = CheckFile(relyMonitFile, _monitFile.MD5);
+                if (relyMonitFile == null)
+                {
+                    _monitFile.FileStatus = MonitStatus.Add;
+                }
+                else if (_monitFile.IsChange)
+                {
+                    _monitFile.FileStatus = MonitStatus.Modify;
+                }
+                else
+                {
+                    _monitFile.FileStatus = MonitStatus.UnChanged;
+                }
+
                 _monitFile.Properties = FileTool.GetProperties(fullName);
             }
-           
+
             return _monitFile;
         }
 
@@ -292,7 +347,7 @@ namespace Easyman.Web.Controllers
         /// 保存FM_MONIT_FILE(文件夹及文件管理)
         /// </summary>
         /// <param name="monitFile"></param>
-        private void SaveMonitFile(MonitFileTemp monitFile, FolderVersionModel folderVersion, FileLibraryModel fileLibrary)
+        private MonitFileModel SaveMonitFile(long? parentId, MonitFileTemp monitFile, FolderVersionModel folderVersion, FileLibraryModel fileLibrary, CaseVersionModel caseVersionModel)
         {
             MonitFileModel monitFileModel = new MonitFileModel();
 
@@ -300,13 +355,16 @@ namespace Easyman.Web.Controllers
             monitFileModel.FolderId = monitFile.FolderId;
             monitFileModel.RelyMonitFileId = monitFile.RelyMonitFileId;
             monitFileModel.Name = monitFile.Name;
+            monitFileModel.ParentId = parentId;
             monitFileModel.MD5 = monitFile.MD5;
-            monitFileModel.Status = 0;
+            monitFileModel.Status = (short)monitFile.FileStatus;
             monitFileModel.ClientPath = monitFile.ClientPath;
             monitFileModel.ServerPath = monitFile.ServerPath;
             monitFileModel.FolderVersionId = folderVersion.Id;
             monitFileModel.FileLibraryId = fileLibrary.Id;
-            _MonitFileAppService.InsertOrUpdateMonitFile(monitFileModel);
+            monitFileModel.CaseVersionId = caseVersionModel.Id;
+            monitFileModel.CopyStatus = monitFile.IsChange ? (short)1 : (short)0;
+            return _MonitFileAppService.InsertOrUpdateMonitFile(monitFileModel);
         }
 
         /// <summary>
@@ -314,12 +372,13 @@ namespace Easyman.Web.Controllers
         /// </summary>
         /// <param name="folderVersion"></param>
         /// <param name="nodeCaseId"></param>
-        private void SaveCaseVersion(FolderVersionModel folderVersion,long nodeCaseId)
+        private CaseVersionModel SaveCaseVersion(FolderVersionModel folderVersion, long nodeCaseId)
         {
             CaseVersionModel caseVersionModel = new CaseVersionModel();
             caseVersionModel.FolderVersionId = folderVersion.Id;
             caseVersionModel.ScriptNodeCaseId = nodeCaseId;
-            _CaseVersionAppService.InsertOrUpdateCaseVersion(caseVersionModel);
+            caseVersionModel.BeginTime = DateTime.Now;
+            return _CaseVersionAppService.InsertOrUpdateCaseVersion(caseVersionModel);
         }
 
         /// <summary>
