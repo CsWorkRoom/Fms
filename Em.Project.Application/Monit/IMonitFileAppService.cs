@@ -57,9 +57,16 @@ namespace Easyman.Service
         void Log(MonitLogModel log);
 
         //从客户端拷贝文件
-        
+
 
         //从服务端还原文件
         #endregion
+
+        /// <summary>
+        /// 根据版本获取文件目录
+        /// </summary>
+        /// <param name="versionId"></param>
+        /// <returns></returns>
+        List<MonitFileModel> GetMonitFileByVersion(long versionId);
     }
 }
