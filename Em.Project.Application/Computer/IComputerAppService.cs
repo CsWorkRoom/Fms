@@ -52,5 +52,12 @@ namespace Easyman.Service
         /// </summary>
         /// <returns></returns>
         List<ComputerModel> GetComputerListByCurUser();
+
+        /// <summary>
+        /// 根据IP获取终端
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <returns></returns>
+        ComputerModel GetComputerByIp(string ip);
     }
 }

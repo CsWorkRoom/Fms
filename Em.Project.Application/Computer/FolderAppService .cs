@@ -137,6 +137,25 @@ namespace Easyman.Service
         {
             return _FolderCase.GetAllList(p => p.ComputerId == computerId).MapTo<List<FolderModel>>();
         }
-        #endregion
-    }
+        /// <summary>
+        /// 根据终端，文件夹名称获取共享文件夹
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public FolderModel GetFolderByComputerAndName(long cid, string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                var folder = _FolderCase.FirstOrDefault(p => p.ComputerId == cid && p.Name == name);
+                if (folder != null)
+                    return folder.MapTo<FolderModel>();
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+            #endregion
+        }
 }

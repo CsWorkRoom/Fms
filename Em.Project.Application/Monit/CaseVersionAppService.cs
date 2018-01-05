@@ -126,10 +126,10 @@ namespace Easyman.Service
 
         public CaseVersionModel GetCaseVersionByFolder(long folderId)
         {
-            var CaseVersion = _CaseVersionCase.FirstOrDefault(p => p.FolderId == folderId);
-            if (CaseVersion != null)
-                return CaseVersion.MapTo<CaseVersionModel>();
-            else
+            //var CaseVersion = _CaseVersionCase.FirstOrDefault(p => p.FolderId == folderId);
+            //if (CaseVersion != null)
+            //    return CaseVersion.MapTo<CaseVersionModel>();
+            //else
                 return null;
 
         }

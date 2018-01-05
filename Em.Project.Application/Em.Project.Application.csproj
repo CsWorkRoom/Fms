@@ -52,6 +52,10 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.4.0\lib\net45\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.Shell32">
+      <HintPath>..\dlls\Shell32\Interop.Shell32.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
@@ -88,26 +92,42 @@
     <Compile Include="Computer\Dto\ComputerModel .cs" />
     <Compile Include="Computer\Dto\ComputerTypeModel.cs" />
     <Compile Include="Computer\Dto\FolderModel.cs" />
+    <Compile Include="Computer\Dto\MonitFileTemp.cs" />
+    <Compile Include="Computer\FileTool.cs" />
     <Compile Include="Computer\FolderAppService .cs" />
     <Compile Include="Computer\IComputerAppService.cs" />
     <Compile Include="Computer\IComputerTypeAppService.cs" />
     <Compile Include="Computer\ComputerTypeAppService.cs" />
     <Compile Include="Computer\IFolderAppService.cs" />
+    <Compile Include="Computer\SharedTool.cs" />
     <Compile Include="EmProjectAppModule.cs" />
     <Compile Include="Export\Dto\ExportConfigModel.cs" />
     <Compile Include="Export\Dto\ExportDataModel.cs" />
     <Compile Include="Export\ExportAppService.cs" />
     <Compile Include="Export\IExportAppService.cs" />
+    <Compile Include="File\Dto\FileAttrModel.cs" />
     <Compile Include="File\Dto\FileFormatModel.cs" />
-    <Compile Include="File\Dto\SharedTool.cs" />
+    <Compile Include="File\Dto\FileLibraryModel.cs" />
     <Compile Include="File\FileAppService.cs" />
+    <Compile Include="File\FileAttrAppService.cs" />
     <Compile Include="File\FileFormatAppService.cs" />
-    <Compile Include="File\Dto\MonitFileModel.cs" />
+    <Compile Include="File\FileLibraryAppService.cs" />
     <Compile Include="File\IFileAppService.cs" />
+    <Compile Include="File\IFileAttrAppService.cs" />
     <Compile Include="File\IFileFormatAppService.cs" />
+    <Compile Include="File\IFileLibraryAppService.cs" />
     <Compile Include="Formula\Dto\TargetFormulaModel.cs" />
     <Compile Include="Formula\ITargetFormulaAppService.cs" />
     <Compile Include="Formula\TargetFormulaAppService.cs" />
+    <Compile Include="Monit\CaseVersionAppService.cs" />
+    <Compile Include="Monit\Dto\CaseVersionModel.cs" />
+    <Compile Include="Monit\Dto\FolderVersionModel.cs" />
+    <Compile Include="Monit\Dto\MonitFileModel.cs" />
+    <Compile Include="Monit\FolderVersionAppService.cs" />
+    <Compile Include="Monit\ICaseVersionAppService.cs" />
+    <Compile Include="Monit\IFolderVersionAppService.cs" />
+    <Compile Include="Monit\IMonitFileAppService.cs" />
+    <Compile Include="Monit\MonitFileAppService.cs" />
     <Compile Include="MonthTarget\Dto\MonthBillConst.cs" />
     <Compile Include="MonthTarget\Dto\MonthBonusModel.cs" />
     <Compile Include="MonthTarget\Dto\MarkScore.cs" />

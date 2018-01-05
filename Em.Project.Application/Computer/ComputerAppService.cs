@@ -151,6 +151,26 @@ namespace Easyman.Service
             return null;
         }
 
+        /// <summary>
+        /// 根据IP获取终端
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <returns></returns>
+        public ComputerModel GetComputerByIp(string ip)
+        {
+
+            if (!string.IsNullOrEmpty(ip))
+            {
+                var computer = _ComputerCase.FirstOrDefault(p => p.Ip == ip.Trim());
+                if (computer != null)
+                    return computer.MapTo<ComputerModel>();
+                else
+                    return null;
+            }
+            else
+                return null;
+
+        }
         #endregion
 
     }
