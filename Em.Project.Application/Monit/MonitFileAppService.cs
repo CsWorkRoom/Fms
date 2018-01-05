@@ -269,8 +269,6 @@ namespace Easyman.Service
             }
         }
 
-        //还原文件的方法-待写
-
         /// <summary>
         /// 根据LogType拷贝文件
         /// </summary>

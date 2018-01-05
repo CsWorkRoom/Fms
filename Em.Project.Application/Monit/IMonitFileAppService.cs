@@ -56,11 +56,26 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="log">日志实例</param>
         void Log(MonitLogModel log);
+        /// <summary>
+        /// 插入一条监控日志
+        /// </summary>
+        /// <param name="caseVersionId"></param>
+        /// <param name="mointFileId"></param>
+        /// <param name="logType"></param>
+        /// <param name="logMsg"></param>
+        void Log(long? caseVersionId, long? mointFileId, short? logType, string logMsg);
 
-        //从客户端拷贝文件
-        void UpFileByMonitFile(long? monitFileId,ref ErrorInfo err);
+        /// <summary>
+        /// 上传文件到服务器
+        /// </summary>
+        /// <param name="monitFileId"></param>
+        void UpFileByMonitFile(long? monitFileId);
 
-        //从服务端还原文件
+        /// <summary>
+        /// 还原服务端的文件到客户端
+        /// </summary>
+        /// <param name="monitFileId"></param>
+        void DownFileByMonitFile(long? monitFileId);
         #endregion
 
         /// <summary>
