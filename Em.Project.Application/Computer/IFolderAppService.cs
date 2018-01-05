@@ -48,5 +48,12 @@ namespace Easyman.Service
         /// <returns></returns>
         [System.Web.Http.HttpGet]
         List<FolderModel> GetFolderListByComputer(long computerId);
+        /// <summary>
+        /// 根据终端，文件夹名称获取共享文件夹
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        FolderModel GetFolderByComputerAndName(long cid, string name);
     }
 }

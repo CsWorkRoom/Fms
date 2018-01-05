@@ -123,10 +123,14 @@ namespace Easyman.Service
             }
             return null;
         }
-
+        /// <summary>
+        /// 根据文件ID获取文件版本
+        /// </summary>
+        /// <param name="folderId"></param>
+        /// <returns></returns>
         public FolderVersionModel GetFolderVersionByFolder(long folderId)
         {
-            var FolderVersion = _FolderVersionCase.FirstOrDefault(p => p.FolderId == folderId);
+            var FolderVersion = _FolderVersionCase.GetAllList().OrderByDescending(p=>p.Id).FirstOrDefault(p => p.FolderId == folderId);
             if (FolderVersion != null)
                 return FolderVersion.MapTo<FolderVersionModel>();
             else

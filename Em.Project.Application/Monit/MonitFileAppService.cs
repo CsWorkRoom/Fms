@@ -127,21 +127,25 @@ namespace Easyman.Service
             }
             return null;
         }
-
+        /// <summary>
+        /// 根据文件目录获取文件
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public MonitFileModel GetMonitFileByPath(string path)
         {
-           
-                if (!string.IsNullOrEmpty(path))
-                {
-                    var MonitFile = _MonitFileCase.FirstOrDefault( p => p.ClientPath==path.Trim());
-                    if (MonitFile != null)
-                        return MonitFile.MapTo<MonitFileModel>();
-                    else
-                        return null;
-                }
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                var MonitFile = _MonitFileCase.GetAllList().OrderByDescending(p => p.Id).FirstOrDefault(p => p.ClientPath == path.Trim());
+                if (MonitFile != null)
+                    return MonitFile.MapTo<MonitFileModel>();
                 else
                     return null;
-   
+            }
+            else
+                return null;
+
 
         }
 
