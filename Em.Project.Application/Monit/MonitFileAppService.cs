@@ -25,6 +25,7 @@ namespace Easyman.Service
         #region 初始化
 
         private readonly IRepository<MonitFile,long> _MonitFileCase;
+        private readonly IRepository<MonitLog, long> _MonitLogCase;
         /// <summary>
         /// 构造函数注入MonitFile仓储
         /// </summary>
@@ -151,5 +152,17 @@ namespace Easyman.Service
 
 
         #endregion
+
+        /// <summary>
+        /// 插入一条监控日志
+        /// </summary>
+        /// <param name="log">日志实例</param>
+        public void Log(MonitLogModel log)
+        {
+            var curLog = log.MapTo<MonitLog>();
+            curLog.LogTime = DateTime.Now;
+            _MonitLogCase.Insert(curLog);//插入日志
+        }
+
     }
 }

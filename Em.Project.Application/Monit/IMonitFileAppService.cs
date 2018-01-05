@@ -48,5 +48,18 @@ namespace Easyman.Service
         /// <param name="name"></param>
         /// <returns></returns>
         MonitFileModel GetMonitFileByPath(string path);
+
+        #region 扩展方法
+        /// <summary>
+        /// 插入一条监控日志
+        /// </summary>
+        /// <param name="log">日志实例</param>
+        void Log(MonitLogModel log);
+
+        //从客户端拷贝文件
+        
+
+        //从服务端还原文件
+        #endregion
     }
 }
