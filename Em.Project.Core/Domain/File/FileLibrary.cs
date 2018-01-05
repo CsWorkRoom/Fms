@@ -39,6 +39,12 @@ namespace Easyman.Domain
         public virtual double? Size { get; set; }
 
         /// <summary>
+        /// 是否拷贝（1=拷贝、0=未拷贝）
+        /// </summary>
+        [Column("IS_COPY")]
+        public virtual bool? IsCopy { get; set; }
+
+        /// <summary>
         /// 文件说明
         /// </summary>
         [Column("REMARK"), StringLength(200)]

@@ -125,6 +125,10 @@
     <Compile Include="Migrations\201712190129526_initfms4.Designer.cs">
       <DependentUpon>201712190129526_initfms4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801050914224_initfms5.cs" />
+    <Compile Include="Migrations\201801050914224_initfms5.Designer.cs">
+      <DependentUpon>201801050914224_initfms5.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AbpZeroDbMigrator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SeedData\DefaultEditionsCreator.cs" />
@@ -178,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712190129526_initfms4.resx">
       <DependentUpon>201712190129526_initfms4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801050914224_initfms5.resx">
+      <DependentUpon>201801050914224_initfms5.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

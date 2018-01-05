@@ -34,6 +34,11 @@ namespace Easyman.Dto
         public virtual double? Size { get; set; }
 
         /// <summary>
+        /// 是否拷贝（1=拷贝、0=未拷贝）
+        /// </summary>
+        public virtual bool? IsCopy { get; set; }
+
+        /// <summary>
         /// 文件备注
         /// </summary>
         public virtual string Remark { get; set; }

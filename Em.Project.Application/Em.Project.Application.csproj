@@ -122,6 +122,7 @@
     <Compile Include="Monit\CaseVersionAppService.cs" />
     <Compile Include="Monit\Dto\CaseVersionModel.cs" />
     <Compile Include="Monit\Dto\FolderVersionModel.cs" />
+    <Compile Include="Monit\Dto\MonitLogModel.cs" />
     <Compile Include="Monit\Dto\MonitFileModel.cs" />
     <Compile Include="Monit\FolderVersionAppService.cs" />
     <Compile Include="Monit\ICaseVersionAppService.cs" />
