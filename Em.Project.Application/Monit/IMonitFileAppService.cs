@@ -69,7 +69,8 @@ namespace Easyman.Service
         /// 上传文件到服务器
         /// </summary>
         /// <param name="monitFileId"></param>
-        void UpFileByMonitFile(long? monitFileId);
+        [System.Web.Http.HttpGet]
+        string UpFileByMonitFile(long? monitFileId);
 
         /// <summary>
         /// 还原服务端的文件到客户端

@@ -60,6 +60,9 @@
     <input type="text" name="fromPath" id="fromPath" />
     <input type="text" name="toPath" id="toPath" />
     <button type="button" id="btnCopy" onclick="copyFile()">复制</button>
+
+    <button type="button" id="btnCopy" onclick="offlineCopy()">离线拷贝</button>
+
 </div>
 
 <div class="modal" id="attrs" tabindex="-1" role="dialog" style="width:70%" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel">
@@ -141,6 +144,24 @@
                 type: 'get',
                 success: function (data) {
                     //debugger;
+                    //zNodes = data.result;
+                    ////$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                    //loadHtml(data.result, "folder");
+                },
+                error: function (xhr) {
+                    //debugger;
+                    abp.ui.clearBusy();
+                }
+            });
+        }
+
+        function offlineCopy()
+        {
+            $.ajax({
+                url: bootPATH + "/api/services/api/MonitFile/UpFileByMonitFile?monitFileId="+53,
+                type: 'get',
+                success: function (data) {
+                    debugger;
                     //zNodes = data.result;
                     ////$.fn.zTree.init($("#treeDemo"), setting, zNodes);
                     //loadHtml(data.result, "folder");
