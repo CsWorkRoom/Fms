@@ -25,7 +25,7 @@ namespace Easyman.Dto
 
 
         [Display(Name = "是否在用")]
-        public virtual long? InUse { get; set; }
+        public virtual bool? IsUse { get; set; }
 
         [Display(Name = "权限信息")]
         public virtual string PowerMsg { get; set; }

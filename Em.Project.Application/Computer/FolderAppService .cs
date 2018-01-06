@@ -55,24 +55,30 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public FolderModel InsertOrUpdateFolder(FolderModel input)
+        public FolderModel InsertOrUpdateFolder(FolderModel input,ref ErrorInfo err)
         {
-            if(_FolderCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
+            err.IsError = false;
+            try
             {
-                throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
+
+
+                if (_FolderCase.GetAll().Any(p => p.Id != input.Id && p.Name == input.Name))
+                {
+                    throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
+                }
+                //var entObj =input.MapTo<Folder>();
+                var entObj = _FolderCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new Folder();
+                entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
+                //var entObj= AutoMapper.Mapper.Map<Folder>(input);
+                var id = _FolderCase.InsertAndGetId(entObj);
+                return entObj.MapTo<FolderModel>();
             }
-            //var entObj =input.MapTo<Folder>();
-            var entObj = _FolderCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new Folder();
-            entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
-            //var entObj= AutoMapper.Mapper.Map<Folder>(input);
-            var resObj= _FolderCase.InsertOrUpdate(entObj);
-            if (resObj == null)
+            catch(Exception ex)
             {
-                throw new UserFriendlyException("新增或更新失败！");
-            }
-            else
-            {
-                return resObj.MapTo<FolderModel>();
+                err.IsError = true;
+                err.Message = ex.Message;
+                err.Excep = ex;
+                return null;
             }
         }
 
@@ -156,6 +162,7 @@ namespace Easyman.Service
             else
                 return null;
         }
-            #endregion
-        }
+
+        #endregion
+    }
 }

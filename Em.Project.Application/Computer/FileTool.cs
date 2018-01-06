@@ -27,9 +27,7 @@ namespace Easyman.Service
                     throw new FileNotFoundException("指定的文件不存在。", filePath);
                 }
 
-            System.Diagnostics.FileVersionInfo info = System.Diagnostics.FileVersionInfo.GetVersionInfo(filePath);
-           
-            //初始化Shell接口 
+                  //初始化Shell接口 
             Shell32.Shell shell = new Shell32.ShellClass();
             //获取文件所在父目录对象 
             Folder folder = shell.NameSpace(Path.GetDirectoryName(filePath));
@@ -50,7 +48,7 @@ namespace Easyman.Service
                 //获取属性值 
                 string value = folder.GetDetailsOf(item, i);
                 //保存属性 
-                if (Properties.Where(e => e.Key == key).Count() == 0)
+                if (Properties.Where(e => e.Key == key).Count() == 0 && !string.IsNullOrEmpty(value) && value != "")
                     Properties.Add(key, value);
                 i++;
             }
@@ -161,16 +159,24 @@ namespace Easyman.Service
         /// <returns>文件hash值</returns>
         public static string GetFileHash(string filePath)
         {
-            //创建一个哈希算法对象 
-            using (HashAlgorithm hash = HashAlgorithm.Create())
+            try
             {
-                using (FileStream file = new FileStream(filePath, FileMode.Open))
+                FileStream file = new FileStream(filePath, FileMode.Open);
+                System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+                var hash = System.Security.Cryptography.HashAlgorithm.Create();
+                byte[] retVal = md5.ComputeHash(file);
+                file.Close();
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < retVal.Length; i++)
                 {
-                    //哈希算法根据文本得到哈希码的字节数组 
-                    byte[] hashByte = hash.ComputeHash(file);
-                    //将字节数组装换为字符串  
-                    return BitConverter.ToString(hashByte);
+                    sb.Append(retVal[i].ToString("x2"));
                 }
+                return sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("GetMD5HashFromFile() fail,error:" + ex.Message);
             }
         }
     }
