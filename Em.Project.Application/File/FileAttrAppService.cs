@@ -24,7 +24,7 @@ namespace Easyman.Service
     {
         #region 初始化
 
-        private readonly IRepository<FileAttr,long> _FileAttrCase;
+        private readonly IRepository<FileAttr, long> _FileAttrCase;
         /// <summary>
         /// 构造函数注入FileAttr仓储
         /// </summary>
@@ -43,12 +43,12 @@ namespace Easyman.Service
         /// <returns></returns>
         public FileAttrModel GetFileAttr(long id)
         {
-            var entObj= _FileAttrCase.FirstOrDefault(id);
+            var entObj = _FileAttrCase.FirstOrDefault(id);
             if (entObj != null)
             {
-               return AutoMapper.Mapper.Map<FileAttrModel>(entObj);
+                return AutoMapper.Mapper.Map<FileAttrModel>(entObj);
             }
-            throw new UserFriendlyException("未找到编号为【"+id.ToString()+"】的对象！");
+            throw new UserFriendlyException("未找到编号为【" + id.ToString() + "】的对象！");
         }
         /// <summary>
         /// 更新和新增文件属性
@@ -57,21 +57,22 @@ namespace Easyman.Service
         /// <returns></returns>
         public FileAttrModel InsertOrUpdateFileAttr(FileAttrModel input)
         {
-            
-            //var entObj =input.MapTo<FileAttr>();
-            var entObj = _FileAttrCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileAttr();
-            entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
-            //var entObj= AutoMapper.Mapper.Map<FileAttr>(input);
-            var resObj= _FileAttrCase.InsertOrUpdate(entObj);
-            if (resObj == null)
+
+            try
             {
-                throw new UserFriendlyException("新增或更新失败！");
-            }
-            else
+                //var entObj =input.MapTo<FileAttr>();
+                var entObj = _FileAttrCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileAttr();
+                entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
+                //var entObj= AutoMapper.Mapper.Map<FileAttr>(input);
+                var id = _FileAttrCase.InsertAndGetId(entObj);
+
+                return entObj.MapTo<FileAttrModel>();
+            } catch (Exception ex)
             {
-                return resObj.MapTo<FileAttrModel>();
+                return null;
+                throw ex;
             }
-        }
+        } 
 
         /// <summary>
         /// 删除一条文件属性

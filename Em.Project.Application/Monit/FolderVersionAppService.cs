@@ -57,19 +57,22 @@ namespace Easyman.Service
         /// <returns></returns>
         public FolderVersionModel InsertOrUpdateFolderVersion(FolderVersionModel input)
         {
-           
-            //var entObj =input.MapTo<FolderVersion>();
-            var entObj = _FolderVersionCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FolderVersion();
-            entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
-            //var entObj= AutoMapper.Mapper.Map<FolderVersion>(input);
-            var resObj= _FolderVersionCase.InsertOrUpdate(entObj);
-            if (resObj == null)
+
+            try
             {
-                throw new UserFriendlyException("新增或更新失败！");
+
+                //var entObj =input.MapTo<FolderVersion>();
+                var entObj = _FolderVersionCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FolderVersion();
+                entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
+                //var entObj= AutoMapper.Mapper.Map<FolderVersion>(input);
+                var id = _FolderVersionCase.InsertAndGetId(entObj);
+                return entObj.MapTo<FolderVersionModel>();
+
             }
-            else
+            catch (Exception ex)
             {
-                return resObj.MapTo<FolderVersionModel>();
+                return null;
+                throw ex;
             }
         }
 

@@ -57,19 +57,22 @@ namespace Easyman.Service
         /// <returns></returns>
         public CaseVersionModel InsertOrUpdateCaseVersion(CaseVersionModel input)
         {
-           
-            //var entObj =input.MapTo<CaseVersion>();
-            var entObj = _CaseVersionCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new CaseVersion();
-            entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
-            //var entObj= AutoMapper.Mapper.Map<CaseVersion>(input);
-            var resObj= _CaseVersionCase.InsertOrUpdate(entObj);
-            if (resObj == null)
+
+            try
             {
-                throw new UserFriendlyException("新增或更新失败！");
+                //var entObj =input.MapTo<CaseVersion>();
+                var entObj = _CaseVersionCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new CaseVersion();
+                entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
+                //var entObj= AutoMapper.Mapper.Map<CaseVersion>(input);
+                var id = _CaseVersionCase.InsertAndGetId(entObj);
+
+                return entObj.MapTo<CaseVersionModel>();
+
             }
-            else
+            catch (Exception ex)
             {
-                return resObj.MapTo<CaseVersionModel>();
+                return null;
+                throw ex;
             }
         }
 

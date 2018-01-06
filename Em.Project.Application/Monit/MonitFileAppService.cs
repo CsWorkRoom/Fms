@@ -65,22 +65,21 @@ namespace Easyman.Service
         /// <returns></returns>
         public MonitFileModel InsertOrUpdateMonitFile(MonitFileModel input)
         {
-            if(_MonitFileCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
-            {
-                throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
+            try
+            {               
+                //var entObj =input.MapTo<MonitFile>();
+                var entObj = _MonitFileCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new MonitFile();
+                entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
+                //var entObj= AutoMapper.Mapper.Map<MonitFile>(input);
+                var id = _MonitFileCase.InsertAndGetId(entObj);
+
+                return entObj.MapTo<MonitFileModel>();
+
             }
-            //var entObj =input.MapTo<MonitFile>();
-            var entObj = _MonitFileCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new MonitFile();
-            entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
-            //var entObj= AutoMapper.Mapper.Map<MonitFile>(input);
-            var resObj= _MonitFileCase.InsertOrUpdate(entObj);
-            if (resObj == null)
+            catch (Exception ex)
             {
-                throw new UserFriendlyException("新增或更新失败！");
-            }
-            else
-            {
-                return resObj.MapTo<MonitFileModel>();
+                return null;
+                throw ex;
             }
         }
 
@@ -167,7 +166,7 @@ namespace Easyman.Service
         {
             if (versionId != null)
             {
-                var MonitFile = _MonitFileCase.GetAllList(p => p.FolderVersionId == versionId);
+                var MonitFile = _MonitFileCase.GetAllList(p => p.FolderVersionId == versionId&&p.Status!=(short)MonitStatus.Delete);
                 if (MonitFile != null)
                     return MonitFile.MapTo<List<MonitFileModel>>();
                 else
@@ -442,5 +441,9 @@ namespace Easyman.Service
             FileInfo fileInfo = new FileInfo(oldPath);
             fileInfo.MoveTo(newPath);
         }
+
+
+
+
     }
 }

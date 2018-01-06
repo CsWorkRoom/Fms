@@ -57,22 +57,25 @@ namespace Easyman.Service
         /// <returns></returns>
         public FileLibraryModel InsertOrUpdateFileLibrary(FileLibraryModel input)
         {
-            if(_FileLibraryCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
+            try
             {
-                throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
+                if (_FileLibraryCase.GetAll().Any(p => p.Id != input.Id && p.Name == input.Name))
+                {
+                    return _FileLibraryCase.GetAll().FirstOrDefault(x => x.MD5 == input.MD5).MapTo<FileLibraryModel>();
+
+                }
+                //var entObj =input.MapTo<FileLibrary>();
+                var entObj = _FileLibraryCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileLibrary();
+                entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
+                //var entObj= AutoMapper.Mapper.Map<FileLibrary>(input);
+                var id = _FileLibraryCase.InsertAndGetId(entObj);
+
+                return entObj.MapTo<FileLibraryModel>();
             }
-            //var entObj =input.MapTo<FileLibrary>();
-            var entObj = _FileLibraryCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileLibrary();
-            entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
-            //var entObj= AutoMapper.Mapper.Map<FileLibrary>(input);
-            var resObj= _FileLibraryCase.InsertOrUpdate(entObj);
-            if (resObj == null)
+            catch (Exception ex)
             {
-                throw new UserFriendlyException("新增或更新失败！");
-            }
-            else
-            {
-                return resObj.MapTo<FileLibraryModel>();
+                return null;
+                throw ex;
             }
         }
 

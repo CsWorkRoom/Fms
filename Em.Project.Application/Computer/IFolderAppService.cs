@@ -4,6 +4,7 @@ using Easyman.Dto;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using System.Web.Mvc;
+using EasyMan.Dtos;
 
 namespace Easyman.Service
 {
@@ -24,7 +25,7 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        FolderModel InsertOrUpdateFolder(FolderModel input);
+        FolderModel InsertOrUpdateFolder(FolderModel input, ref ErrorInfo err);
 
         /// <summary>
         /// 删除一条终端共享文件夹

@@ -57,22 +57,24 @@ namespace Easyman.Service
         /// <returns></returns>
         public FileFormatModel InsertOrUpdateFileFormat(FileFormatModel input)
         {
-            if(_FileFormatCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
+            try
             {
-                throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
+                if (_FileFormatCase.GetAll().Any(p => p.Id != input.Id && p.Name == input.Name))
+                {
+                    throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
+                }
+                //var entObj =input.MapTo<FileFormat>();
+                var entObj = _FileFormatCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileFormat();
+                entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
+                //var entObj= AutoMapper.Mapper.Map<FileFormat>(input);
+                var id = _FileFormatCase.InsertAndGetId(entObj);
+
+                return entObj.MapTo<FileFormatModel>();
             }
-            //var entObj =input.MapTo<FileFormat>();
-            var entObj = _FileFormatCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileFormat();
-            entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
-            //var entObj= AutoMapper.Mapper.Map<FileFormat>(input);
-            var resObj= _FileFormatCase.InsertOrUpdate(entObj);
-            if (resObj == null)
+            catch (Exception ex)
             {
-                throw new UserFriendlyException("新增或更新失败！");
-            }
-            else
-            {
-                return resObj.MapTo<FileFormatModel>();
+                return null;
+                throw ex;
             }
         }
 
