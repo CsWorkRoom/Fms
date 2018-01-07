@@ -67,6 +67,8 @@ namespace Easyman.Dto
 
         public virtual MonitStatus FileStatus { get; set; }
 
+        public virtual CopyStatus CopyStatus { get; set; }
+
         public Dictionary<string, string> Properties { get; set; }
 
     }

@@ -222,7 +222,7 @@ namespace Easyman.Web.Controllers
             CheckAttr(fileLibrary, f);
 
             //保存monitFile
-            MonitFileModel pfileModel= SaveMonitFile(parentId,f, folderVersion, fileLibrary, caseVersionModel);
+            MonitFileModel pfileModel= SaveMonitFile(parentId,f, folderVersion, fileLibrary, caseVersionModel, fileFormat);
             MonitLogModel monitLogInfo = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:保存文件信息"), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id , MonitFileId= pfileModel.Id};
             _MonitFileAppService.Log(monitLogInfo);
             if (fileFormat.IsFolder == true)
@@ -337,6 +337,7 @@ namespace Easyman.Web.Controllers
             _monitFile.FolderId = folder.Id;
             if (isDir)
             {
+                _monitFile.CopyStatus = CopyStatus.Success;
                 _monitFile.ServerPath = masterPath + computer.Ip + "\\" + folder.Name + "\\" + fileName;
                 MonitFileModel relyMonitFile = GetPMonitFile(fullName);
                 _monitFile.IsChange = relyMonitFile != null ? false : true;
@@ -364,6 +365,22 @@ namespace Easyman.Web.Controllers
                     _monitFile.FileStatus = MonitStatus.UnChanged;
                 }
 
+                if (_monitFile.IsChange)
+                {
+                    var mf = from f in waitFiles
+                             where f.MD5 == _monitFile.MD5
+                             select f;
+                    if (mf != null && mf.Count() > 0)
+                    {
+                        _monitFile.CopyStatus = CopyStatus.Success;
+                    }
+                    else
+                    {
+                        _monitFile.CopyStatus = CopyStatus.Wait;
+                    }
+                }
+
+
                 _monitFile.Properties = FileTool.GetProperties(fullName);
             }
 
@@ -378,7 +395,7 @@ namespace Easyman.Web.Controllers
         /// 保存FM_MONIT_FILE(文件夹及文件管理)
         /// </summary>
         /// <param name="monitFile"></param>
-        private MonitFileModel SaveMonitFile(long? parentId, MonitFileTemp monitFile, FolderVersionModel folderVersion, FileLibraryModel fileLibrary, CaseVersionModel caseVersionModel)
+        private MonitFileModel SaveMonitFile(long? parentId, MonitFileTemp monitFile, FolderVersionModel folderVersion, FileLibraryModel fileLibrary, CaseVersionModel caseVersionModel, FileFormatModel fileFormat)
         {
             MonitFileModel monitFileModel = new MonitFileModel();
 
@@ -394,12 +411,9 @@ namespace Easyman.Web.Controllers
             monitFileModel.FolderVersionId = folderVersion.Id;
             monitFileModel.FileLibraryId = fileLibrary.Id;
             monitFileModel.CaseVersionId = caseVersionModel.Id;
-            if (monitFile.IsDir)
-                monitFileModel.CopyStatus = (short)CopyStatus.Success;
-            else if (monitFile.IsChange)
-                monitFileModel.CopyStatus = (short)CopyStatus.Wait;
-            else
-                monitFileModel.CopyStatus = (short)CopyStatus.Success;
+            monitFileModel.FileFormatId = fileFormat.Id;
+            monitFileModel.CopyStatus = (short)monitFile.CopyStatus;
+          
             return _MonitFileAppService.InsertOrUpdateMonitFile(monitFileModel);
         }
 
