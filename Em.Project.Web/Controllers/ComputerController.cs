@@ -198,13 +198,13 @@ namespace Easyman.Web.Controllers
                         _MonitFileAppService.Log(monitLogErr);
                     }
                    
-                   return string.Format("监控提示:对{0}的{1}监控完成!",ip,folderName);
+                   return string.Format("结果:true;监控提示:对{0}的{1}监控完成!",ip,folderName);
                 }
                 catch (Exception ex)
                 {
                     MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控异常:此{0}的{1}监控发生异常,{2}", ip, folderName, ex.Message), LogTime = DateTime.Now };
                     _MonitFileAppService.Log(monitLogErr);
-                    return string.Format("监控提示:对{0}的{1}监控发生异常,{2}", ip, folderName,ex.Message.ToString());
+                    return string.Format("结果:false;监控提示:对{0}的{1}监控发生异常,{2}", ip, folderName,ex.Message.ToString());
                 }
             }
 

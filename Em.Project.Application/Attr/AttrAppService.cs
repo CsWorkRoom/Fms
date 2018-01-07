@@ -57,7 +57,7 @@ namespace Easyman.Service
         /// <returns></returns>
         public AttrModel InsertOrUpdateAttr(AttrModel input)
         {
-            if(_AttrCase.GetAll().Any(p=>p.Id!=input.Id&&p.Name==input.Name))
+            if (_AttrCase.GetAll().Any(p => p.Id != input.Id && p.Name == input.Name))
             {
                 throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
             }
@@ -65,15 +65,8 @@ namespace Easyman.Service
             var entObj = _AttrCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new Attr();
             entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
             //var entObj= AutoMapper.Mapper.Map<Attr>(input);
-            var resObj= _AttrCase.InsertOrUpdate(entObj);
-            if (resObj == null)
-            {
-                throw new UserFriendlyException("新增或更新失败！");
-            }
-            else
-            {
-                return resObj.MapTo<AttrModel>();
-            }
+            var id = _AttrCase.InsertOrUpdateAndGetId(entObj);
+            return entObj.MapTo<AttrModel>();
         }
 
         /// <summary>
