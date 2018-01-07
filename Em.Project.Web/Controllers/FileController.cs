@@ -272,6 +272,7 @@ namespace Easyman.Web.Controllers
                     fileNode.isFolder = dr["IS_FOLDER"].ToString() == "1" ? true : false;
                     fileNode.isParent = fileNode.isFolder.Value;//文件夹才有子项
                     fileNode.iconSkin = fileNode.isParent ? "pIcon010" : "";
+                    fileNode.fileFormatIcon = dr["FILE_ICON"].ToString();
                     nodeList.Add(fileNode);
                 }
             }
