@@ -274,7 +274,7 @@
                 },
                 function () {
                     $(this).children(".treeview-menu").css("display", "none");
-                    $(this).children(".treeview-menu").css("position", "initial");
+                    $(this).children(".treeview-menu").css("position", "static");
                 }
             );
             // End左边菜单在缩进状态显示列表
@@ -312,7 +312,6 @@
             });
         }
     };
-    var objMenu = $("#sidebar-menu > .active a:first");//记录被打开的菜单
     $.learunindex = {
         load: function () {
             $("body").removeClass("hold-transition")
@@ -321,44 +320,24 @@
                 $("#content-wrapper").find('.mainContent').height($(window).height() - 91);
             });
             $(".sidebar-toggle").click(function () {
+                var objMenu = $("#sidebar-menu > .active a:first");//记录被打开的菜单
                 if (!$("body").hasClass("sidebar-collapse")) {
                     objMenu = $("#sidebar-menu > .active a:first");
                     objMenu.click();
                     $("body").addClass("sidebar-collapse");
                     $(".fa-chevron-left").removeClass("fa-chevron-left").addClass("fa-chevron-right");
+                    
                 } else {
                     $("body").removeClass("sidebar-collapse");
                     $(".fa-chevron-right").removeClass("fa-chevron-right").addClass("fa-chevron-left");
-                    objMenu.click();
+                    objMenu.click();                    
                 }
             })
             $(window).load(function () {
                 window.setTimeout(function () {
                     $('#ajax-loader').fadeOut();
                 }, 300);
-            });
-
-           
-            //顶部菜单点击事件
-            $("#tabLRBut").click(function () {
-                if (IsNavbarShow()) {
-                    $(".left-bar").show();
-                    SetCookie("topMenu", true, null);//存入cookie
-                    $.learuntab.LeftMenu();
-                } else {
-                    $(".left-bar").hide();
-                    SetCookie("topMenu", false, null);//存入cookie                   
-                    //移出左边菜单缩进状态列表
-                    $("#sidebar-menu .treeview").unbind("mouseenter").unbind("mouseleave");
-                }
-            });
-
-            //是否显示顶部菜单
-            var isShowTopMenu = GetCookie("topMenu");
-            if (isShowTopMenu != null && isShowTopMenu != undefined && (isShowTopMenu == true || isShowTopMenu.toLowerCase() == "true")) {
-                $("#tabLRBut").click();
-                $(".left-bar").show();
-            }
+            }); 
         },
         jsonWhere: function (data, action) {
             if (action == null) return;
@@ -490,10 +469,41 @@
                     $("#sidebar-menu").append(_html);
                     $.learunindex.loadTopMenu(data);//添加顶部菜单
                     //是否加载左边菜单的滑动菜单
-                    var isShowTopMenu = GetCookie("topMenu");
-                    if (isShowTopMenu != null && isShowTopMenu != undefined && (isShowTopMenu == true || isShowTopMenu.toLowerCase() == "true")) {
-                        $.learuntab.LeftMenu();
+                    var isShowLeftMenu = GetCookie("showLeftMenu");
+                    if (isShowLeftMenu != null && isShowLeftMenu != undefined && (isShowLeftMenu == true || isShowLeftMenu.toLowerCase() == "true")) {
+                        $("body").removeClass("sidebar-collapse");
+                        $(".fa-chevron-right").removeClass("fa-chevron-right").addClass("fa-chevron-left");          
+                    } else {
+                        //移出左边菜单缩进状态列表
+                        $("body").addClass("sidebar-collapse");
+                        $(".fa-chevron-left").removeClass("fa-chevron-left").addClass("fa-chevron-right");
+                        $.learuntab.LeftMenu();//加载缩进时显示菜单
                     }
+                    //是否显示顶级菜单
+                    if (IsNavbarShow())
+                        $(".left-bar").show();
+                    else
+                        $(".left-bar").hide();
+
+                    //点击缩进左边菜单事件
+                    $("#tabLRBut").click(function () {
+                        var strSpanClass = $(this).find("span").attr("class");
+                        if (strSpanClass.indexOf("fa-chevron-right") >= 0){
+                            SetCookie("showLeftMenu", false, null);//存入cookie不显示左边菜单
+                            $.learuntab.LeftMenu();//加载缩进时显示菜单
+                        }
+                        else{
+                            SetCookie("showLeftMenu", true, null);//存入cookie显示左边菜单
+                            $("#sidebar-menu .treeview").unbind("mouseenter").unbind("mouseleave");//移出加载缩进时显示菜单 
+                        }
+                        //是否显示顶级菜单
+                        if (IsNavbarShow())
+                            $(".left-bar").show();
+                        else
+                            $(".left-bar").hide();
+
+                    });
+
 
                     //加载自定义滚动条-start
                     $(".scrollbarContent").mCustomScrollbar({
@@ -564,3 +574,141 @@
     });
       
 })(jQuery);
+
+
+$(function () {
+    //缩进时展示
+    $("#change-menu").click(function () {
+        if ($(".left-bar").hasClass("none")) {
+            $(".left-bar").removeClass("none");
+            $(".main-sidebar").addClass("none");
+            $(".content-wrapper").addClass("marl0");
+            $("button.sidebar-toggle").attr("disabled", "true");            
+        } else if ($(".main-sidebar").hasClass("none")) {
+            $(".left-bar").addClass("none");
+            $(".main-sidebar").removeClass("none");
+            $(".content-wrapper").removeClass("marl0");
+            $("button.sidebar-toggle").removeAttr("disabled");
+        }
+    });
+    ChangeColor();//风格切换
+
+    TopTypeContent();
+    $("#fa_help").on("click", function () {
+        var urlCode = "~/Report/TbReport?code=contentHelp&helpCode=help";
+        TopModeDialogUrl("h33333", "帮助文档", urlCode);
+    });
+    $("#AllContents").on("click", function () {
+        var urlContent = "~/Report/TbReport?code=content_list";
+        TopModeDialogUrl("h33334", "查看全部", urlContent);
+    });
+    //消息提示的宽度
+    if ($(".navbar-toggle").is(":visible"))
+        $("#newConeent3").css("width", "100%");
+    else
+        $("#newConeent3").css("width", "460px");
+
+    MenuMin();//小菜单状态显示的事件
+});
+
+//风格切换
+var ChangeColor = function () {
+    $(".changecolor li").click(function () {
+        var style = $(this).attr("id");
+        switch (style) {
+            case "blue":
+                style = "blue";
+                break;
+            case "blueMin":
+                style = "blueMin";
+                break;
+            case "green":
+                style = "green";
+                break;
+            case "purple":
+                style = "purple";
+                break;
+            case "black":
+                style = "black";
+                break;
+            default:
+                style = "blue";
+                break;
+        }
+        $("link[name='ColorOp']").attr("href", bootPATH + "/Common/Theme/" + style + ".css");
+    });
+    SetCookie("ModeFrameIds", "", null);//清除记录打开窗口的缓存
+}
+
+//加载消息列表
+function TopTypeContent() {
+    //功能定义code，传入参数,以,隔开.zxxx最新消息xtgg系统公告
+    //var codes = "zxxx,xtgg"; 
+    //var urlContents = bootPATH + "/api/services/api/Content/GetDefineNewContents?codes=" + codes;
+    //获取最新的未读的3条，或者最新3条消息
+    var urlContents = bootPATH + "/api/services/api/Content/GetNewContents";
+    $.post(urlContents, {}, function (data) {
+        var datas = data.result;
+        if (datas.length > 0) {
+            //判断是否是未读数据，未读的显示未读数量，已读的不显示
+            if (datas[0].is_user == 1) {
+                //已读不显示
+            } else {
+                //未读，显示记录条数
+                $("#newConeentCount").html(datas.length)
+            }
+            //显示数据
+            var htmlli = "";
+            //加入最新，未读的3条信息
+            for (var i = 0 ; i < datas.length; i++) {
+                var urlClick = "~/Content/ContentInfo?navId=" + datas[i].id;
+                htmlli += "<li style='width:100%;float:left' onclick=TopModeDialogUrl('modalId664','查看','" + urlClick + "',1000,500)>";
+
+                htmlli += " <span title='" + datas[i].title + "' style='float: left;height:26px;line-height:26px;width: 295px;overflow: hidden;' >【" + datas[i].type + "】" + datas[i].title.substr(0, 12) + "</span>";
+                htmlli += "<span style='float: right;height:26px;line-height:26px;'>【" + datas[i].createTime.replace("T", " ").substring(0, 19) + "】</span>";
+
+                htmlli += "</li>";
+            }
+            //加入，查看全部                  
+            // htmlli += "<li><a style='padding: 3px 10px;float: left;' id='AllContents'>查看全部</a><span style='float: right;' ></span></li>";
+            $("#newConeent3").append(htmlli);
+        }
+    });
+}
+
+//是否显示顶部菜单
+var IsNavbarShow = function () {
+    var intNavbar = $(".navbar-fixed-top").width() - $(".navbar-right").width() - $(".logo").width() - 50;//菜单栏有效长度
+    var intLeftBar = $(".left-bar").width();
+    var strClass = $("#tabLRBut span").attr("class");
+    if ($(".navbar-toggle").is(":visible") || intNavbar <= intLeftBar) 
+        return false
+
+    if ($(".navbar-toggle").is(":hidden") && intNavbar >= intLeftBar && strClass.indexOf("fa-chevron-left") < 0)
+        return true;
+}
+
+//随着浏览器的变化而变化
+$(window).resize(function () {
+    //是否显示顶部菜单
+    if (IsNavbarShow())
+        $(".left-bar").show();
+    else
+        $(".left-bar").hide();
+    MenuMin();//小菜单状态显示的事件
+});
+
+//小菜单状态显示的事件
+var MenuMin = function () {    
+    if ($(".navbar-toggle").is(":visible")) {
+        $("#newConeent3").css("width", "100%");//消息提示的宽度
+        var objMenu = $("#sidebar-menu > .active a:first");
+        objMenu.click();
+        $("body").addClass("sidebar-collapse");
+        $(".fa-chevron-left").removeClass("fa-chevron-left").addClass("fa-chevron-right");
+        $.learuntab.LeftMenu();//加载缩进时显示菜单
+    }
+    else {
+        $("#newConeent3").css("width", "460px");//消息提示的宽度
+    }
+}

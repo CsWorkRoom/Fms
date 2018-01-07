@@ -265,10 +265,6 @@ label {
 }
 
 /*弹出提示框start*/
-.sweet-alert {
-    width: 400px;
-    padding: 0px 2px 10px 2px;
-}
 
 .sweet-alert .icon {
         margin: 5px auto !important;
@@ -297,9 +293,18 @@ label {
 
 .sweet-alert {
     width: 300px !important;
-    left: 62% !important;
+    left:62%;
     padding: 0px 0px 10px 0px !important;
 }
+@media all and (max-width:540px) {
+    .sweet-alert {
+        width:auto ;
+        left: 20% ;
+        right: 20%;
+    }
+}
+
+
 .sweet-alert h2 {
     font-size: 20px !important;
     margin: 5px 0 !important;
@@ -311,3 +316,5 @@ label {
 .sweet-alert p {
    font-size: 15px !important;
 }
+
+

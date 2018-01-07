@@ -9,7 +9,7 @@ var SendErrorInfo = function (strTitle, strMessage) {
     if ($.trim(strMessage) == "") {
         strMessage = "当前页面有误，请联系管理员！<br/>给您带来的不便，敬请谅解！";
     }
-    var strStyle = '<style>html,body,div,span,iframe,p,a,img,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,dl,dt,dd,ol,ul,li,form,label,table,tbody,thead, tr, th, td,embed {margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;outline: none;}';
+    var strStyle = '<style>html,body,div,span,iframe,p,a,img,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,dl,dt,dd,ol,ul,li,form,label,table,tbody,thead, tr, th, td,embed {font-size: 100%;font: inherit;outline: none;}';
     strStyle += ' html{ height: 100%; } ';
     strStyle += ' table{border-collapse: collapse;border-spacing: 0;}';
     strStyle += ' img {border: 0;max-width: 100%;}';

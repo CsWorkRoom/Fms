@@ -27,8 +27,7 @@ var WinResize = function (jqGrid, navMenu, jqGridPager) {
                     e.stopPropagation();
                 }, false);
             });
-            ////设置冻结列的内容页的起起始坐标
-            $("#gview_" + jqGrid + " .frozen-bdiv").css("top", $("#gview_" + jqGrid + " .ui-jqgrid-hdiv").height());
+            
             SetShrinkToFit(jqGrid);
             SetDefultDataImg(jqGrid);
 
@@ -75,7 +74,6 @@ var WinResize = function (jqGrid, navMenu, jqGridPager) {
     SetFrozenTr(jqGrid, navMenu, jqGridPager);
     $("#gview_" + jqGrid).css("overflow", "hidden");//冻结引起的区域滚动条
     $(".jqg-second-row-header").addClass("table-bordered");//多表头首行无边线
-
     SetShrinkToFit(jqGrid);
 }
 //设置冻结的高度
@@ -99,7 +97,7 @@ var SetFrozenTr = function (jqGrid, navMenu, jqGridPager) {
     for (var i = 0; i < jagridHeadTr.length; i++) {
         $(jqGridFrozenHeadTr[i]).height($(jagridHeadTr[i]).height());
     }
-    //End设置标题栏
+    //End设置标题栏 
 }
 
 //设置报表大小
@@ -130,15 +128,17 @@ var SetDefultDataImg = function (jqGrid) {
 
 //解决多表头时顶部线变粗及对其它浏览器错位的支持
 var SetShrinkToFit = function (jqGrid) {
-    if ($("#gview_" + jqGrid + " .ui-jqgrid-hdiv .ui-jqgrid-hbox table tr").length > 1) {
+    if ($("#gview_" + jqGrid + " .ui-jqgrid-hdiv .ui-jqgrid-hbox table tr").length > 1) {        
         $("#gview_" + jqGrid + " .ui-jqgrid-hdiv").css("top", "-1px");
         $("#gview_" + jqGrid + " .ui-jqgrid-bdiv").eq(0).css("top", "-1px");
-        var strTop = $("#gview_" + jqGrid + " .frozen-bdiv").css("top");
-        if (strTop != null && $.trim(strTop) != "") {
-            var intTop = parseInt(strTop.replace("px", ""));
-            var frozenBdivTop = intTop - 1;
-            $("#gview_" + jqGrid + " .frozen-bdiv").css("top", frozenBdivTop + "px");
-        }
+        var intTop = $("#gview_" + jqGrid + " .ui-jqgrid-hdiv").height() - 1;
+    $("#gview_" + jqGrid + " .frozen-bdiv").css("top", intTop + "px");
+    } else {
+        var jqgridHdivHeight =  $("#gview_" + jqGrid + " .ui-jqgrid-hdiv").height();
+        if (GetBrowser() == "firefox") //如果是火狐浏览器就加3
+            jqgridHdivHeight+=3;
+        
+        ////设置冻结列的内容页的起起始坐标
+        $("#gview_" + jqGrid + " .frozen-bdiv").css("top", jqgridHdivHeight);
     }
-
 }

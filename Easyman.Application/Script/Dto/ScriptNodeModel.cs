@@ -61,14 +61,14 @@ namespace Easyman.Dto
 
         public virtual long? ScriptNodeTypeId { get; set; }
 
-        public virtual ScriptNodeType ScriptNodeType { get; set; }
+        //public virtual ScriptNodeType ScriptNodeType { get; set; }
 
         [Display(Name = "节点代码")]
         public virtual string Code { get; set; }
 
         public virtual long? DbServerId { get; set; }
 
-        public virtual DbServer DbServer { get; set; }
+        //public virtual DbServer DbServer { get; set; }
 
         [Display(Name = "任务类型")]
         public virtual short? ScriptModel { get; set; }

@@ -246,7 +246,7 @@ function InitTbRpEventGrid(tbEventArr) {
         ],
         viewrecords: true,
         loadonce: false,
-        width: $(".modal-body").width(),
+        width: ($(".modal-body").width() - 20),
         //height: 250,
         rowNum: 20,//默认分页大小-在框架动态赋值
         rowList: [20, 30, 50],//传入分页大小的下拉-在框架动态复制
@@ -351,8 +351,8 @@ function InitTbRpParamGrid(paramArr) {
         ],
         //sortname: 'EmployeeID',
         loadonce: true,
-        width: $(".modal-body").width(),
-        height: 200,
+        width: ($(".modal-body").width()-20),
+        height: 120,
         rowNum: 150,
         pager: "#eventParamGridPager"
     });
