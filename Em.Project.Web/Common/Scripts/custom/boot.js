@@ -446,3 +446,14 @@ var GetBrowser = function () {
     }
     return OsObject;
 }
+
+//禁止记录密码
+$(function () {
+    $(".noRecordPwd").bind("click keyup change paste keydown input", function () {
+        if ($(this).val().length > 0)
+            $(this).attr("type", "password");
+        else
+            $(this).attr("type", "text");
+    });
+    $(".noRecordPwd").click();
+});

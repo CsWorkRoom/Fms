@@ -53,11 +53,7 @@
         .input-group-btn button {
             color: #000;
         }
-
-        .btn {
-            border-radius: 3px;
-        }
-
+    
         .iconBut {
             width: 40px;
             position: absolute !important;
@@ -117,6 +113,19 @@
         }
         .tab-content > .tab-pane {
             margin-bottom: 10px;
+        }
+        .tabPanel{
+            overflow-y:auto;
+            padding-bottom:20px;
+            height:100%;
+            padding-right:5px;
+        }
+        .tabContent{
+            padding-top:12px;
+            height:100%;
+            overflow:hidden;
+            padding-bottom: 55px;
+            margin-bottom: 55px;
         }
     </style>
 }
@@ -231,7 +240,6 @@
 <hr style="float:left" />
 <!--子报表列表-->
 <div class="row hrSpace" style="width:100%">
-    @*<div style="border-top: 1px solid #76838f; margin-bottom: 10px;"></div>*@
     <table id="jqGrid" style="width:110%"></table>
     <div id="jqGridPager"></div>
     <input id="curReportType" type="text" style="display:none" />
@@ -243,22 +251,21 @@
 </div>
 
 <!--表格报表的配置 模态框-->
-<div class="modal" id="tbReport" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel">
+<div class="modal" id="tbReport" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel" style="overflow:hidden">
     <!--当前操作表格报表-->
     <input id="currTbReport" type="text" style="display:none" />
-
-    <div class="modal-dialog" role="document" style="width:90%">
-        <div class="modal-content">
+    <div class="modal-dialog" role="document" style="width:85%;height:85%">
+        <div class="modal-content" style="height:100%;width:100%;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
                 <h4 class="modal-title" id="myModalLabel"> <i class="fa fa-cog"></i> 表格化报表配置</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="height:100%">
                 @*<p>内容部分</p>*@
 
-                <div class="form-body jarviswidget ">
+                <div class="form-body jarviswidget" style="height:100%">
                     <header role="heading">
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#tbBase" aria-controls="home" role="tab" data-toggle="tab">基础属性</a></li>
@@ -269,9 +276,9 @@
                         </ul>
                     </header>
                     <!--选项卡内容部分-->
-                    <div class="tab-content" style="padding-top:12px;">
+                    <div class="tab-content" style="padding-top:12px;height:100%;overflow:hidden;padding-bottom: 55px;margin-bottom: 55px;">
                         <!--表格报表基础属性-->
-                        <div role="tabpanel" class="tab-pane active form-horizontal" id="tbBase">
+                        <div role="tabpanel" class="tab-pane active form-horizontal tabPanel" id="tbBase">
                             <div class="row form-group">
                                 <label for="tbReportStyle" class="col-sm-2 control-label text-right">报表风格</label>
                                 <div class="col-sm-4">
@@ -420,14 +427,14 @@
                             </div>
                         </div>
                         <!--表格字段配置-->
-                        <div role="tabpanel" class="tab-pane" id="tbField">
+                        <div role="tabpanel" class="tab-pane tabPanel" id="tbField">
                             <table id="fieldGrid"></table>
                             <div id="fieldGridPager"></div>
                             <input id="selectRowId" type="text" style="display:none" /><!--临时存储选中的行-->
                         </div>
 
                         <!--多表头配置-->
-                        <div role="tabpanel" class="tab-pane" id="topField">
+                        <div role="tabpanel" class="tab-pane tabPanel" id="topField">
                             <div class="form-group">
                                 <button name="refrushField" id="refrushField" class="btn btn-primary"><i class="fa fa-refresh"></i> 获取数据</button>&nbsp;
                                 <button name="saveTopF" id="saveTopF" class="btn btn-success"><i class="fa fa-upload"></i> 确定</button>
@@ -441,7 +448,7 @@
 
                         <!--筛选配置-->
                         <input id="RegularVals" type="text" style="display:none" /><!--正则隐藏-->
-                        <div role="tabpanel" class="tab-pane" id="tbFilter">
+                        <div role="tabpanel" class="tab-pane tabPanel" id="tbFilter">
                             <table id="tbFilterGrid"></table>
                             <div id="tbFilterGridPager"></div>
                             <!--筛选表格邮件悬浮层-->
@@ -460,7 +467,7 @@
                         </div>
 
                         <!--事件列表配置-->
-                        <div role="tabpanel" class="tab-pane" id="tbEvent">
+                        <div role="tabpanel" class="tab-pane tabPanel" id="tbEvent">
                             <div class="row form-group">
                                 <input id="EventIdentifier" type="text" style="display:none" />
 
@@ -583,8 +590,8 @@
                                 <div id="eventParamGridPager"></div>
                             </div>
                             <div class="text-right" style="margin-top:10px">
-                                <button id="SaveTbEvent" class="btn btn-success" onclick="SaveTbEvent()"><i class="fa fa-save"></i> 保存事件</button>
-                                <button id="ResetTbEvent" class="btn btn-success" onclick="ResetTbEvent()"><i class="fa fa-reply"></i> 重置</button>
+                                <button id="ResetTbEvent" class="btn btn-danger" onclick="ResetTbEvent()" style="margin-right:5px"><i class="fa fa-reply"></i> 重置</button>
+                                <button id="SaveTbEvent" class="btn btn-primary" onclick="SaveTbEvent()"><i class="fa fa-save"></i> 保存事件</button>
                             </div>
                             <hr />
                             <!--事件列表-->
@@ -597,33 +604,33 @@
                         </div>
 
                     </div>
+                    <div class="bottomPage" style="left: 0.3px;">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" title="关闭" style="margin-right:5px"><i class="fa fa-remove"></i> 关闭</button>
+                        <button type="button" class="btn btn-primary" onclick="SaveTbReport()" title="保存"><i class="fa fa-save"></i> 保存</button>
+                    </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" title="关闭"> <i class="fa fa-remove"></i> 关闭</button>
-                    <button type="button" class="btn btn-success" onclick="SaveTbReport()" title="保存"> <i class="fa fa-save"></i> 保存</button>
-                </div>
             </div>
         </div>
     </div>
 </div>
 
 <!--预留 RDLC报表的管理-->
-<div class="modal" id="rdlcReport" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel">
+<div class="modal" id="rdlcReport" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel" style="overflow:hidden">
     <!--当前操作rdlc报表-->
     <input id="currRdlcReport" type="text" style="display:none" />
 
-    <div class="modal-dialog" role="document" style="width:90%">
-        <div class="modal-content">
+    <div class="modal-dialog" role="document" style="width:85%;height:85%">
+        <div class="modal-content" style="height:100%">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
                 <h4 class="modal-title" id="myModalLabel"> <i class="fa fa-cog"></i> RDLC报表配置</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="height:100%">
                 @*<p>内容部分</p>*@
-                <div class="form-body jarviswidget ">
+                <div class="form-body jarviswidget" style="height:100%">
                     <header role="heading">
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#rdlcBase" aria-controls="home" role="tab" data-toggle="tab">基础XML</a></li>
@@ -631,9 +638,9 @@
                         </ul>
                     </header>
                     <!--rdlc选项卡内容部分-->
-                    <div class="tab-content" style="padding-top:12px;">
+                    <div class="tab-content tabContent" >
                         <!--rdlc的基础xml-->
-                        <div role="tabpanel" class="tab-pane active form-horizontal" id="rdlcBase">
+                        <div role="tabpanel" class="tab-pane active form-horizontal tabPanel" id="rdlcBase">
                             <div class="row form-group">
                                 <label for="rdlcIsShowFilter" class="col-sm-2 control-label text-right">默认展开筛选区</label>
                                 <div class="col-sm-4">
@@ -676,9 +683,9 @@
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" title="关闭"> <i class="fa fa-remove"></i> 关闭</button>
-                    <button type="button" class="btn btn-success" onclick="SaveRdlcReport()" title="保存"> <i class="fa fa-save"></i> 保存</button>
+                <div class="bottomPage" style="left: 0.3px;">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" title="关闭" style="margin-right:5px"><i class="fa fa-remove"></i> 关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="SaveRdlcReport()" title="保存"><i class="fa fa-save"></i> 保存</button>
                 </div>
             </div>
         </div>
@@ -686,21 +693,21 @@
 </div>
 
 <!--预留 图形报表管理-->
-<div class="modal" id="chartReport" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel">
+<div class="modal" id="chartReport" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel" style="overflow:hidden">
     <!--当前操作chart报表-->
     <input id="currChartReport" type="text" style="display:none" />
 
-    <div class="modal-dialog" role="document" style="width:90%">
-        <div class="modal-content">
+    <div class="modal-dialog" role="document" style="width:85%;height:85%">
+        <div class="modal-content" style="height:100%;width:100%;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
                 <h4 class="modal-title" id="myModalLabel"> <i class="fa fa-cog"></i> Echart报表配置</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="height:100%">
                 @*<p>内容部分</p>*@
-                <div class="form-body jarviswidget ">
+                <div class="form-body jarviswidget" style="height:100%">
                     <header role="heading">
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#chartBase" aria-controls="home" role="tab" data-toggle="tab">代码体配置</a></li>
@@ -708,9 +715,9 @@
                         </ul>
                     </header>
                     <!--chart选项卡内容部分-->
-                    <div class="tab-content" style="padding-top:12px;">
+                    <div class="tab-content tabContent">
                         <!--chart的基础xml-->
-                        <div role="tabpanel" class="tab-pane active form-horizontal" id="chartBase">
+                        <div role="tabpanel" class="tab-pane active form-horizontal tabPanel" id="chartBase">
                             <div class="row form-group">
                                 <label for="chartIsShowFilter" class="col-sm-1 control-label text-right">展开筛选</label>
                                 <div class="col-sm-2">
@@ -752,16 +759,16 @@
                             </div>
                         </div>
                         <!--chart筛选配置-->
-                        <div role="tabpanel" class="tab-pane" id="chartFilter">
+                        <div role="tabpanel" class="tab-pane tabPanel" id="chartFilter">
                             <table id="chartFilterGrid"></table>
                             <div id="chartFilterGridPager"></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" title="关闭"> <i class="fa fa-remove"></i> 关闭</button>
-                    <button type="button" class="btn btn-success" onclick="SaveChartReport()" title="保存"> <i class="fa fa-save"></i> 保存</button>
+                <div class="bottomPage" style="left: 0.3px;">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" title="关闭" style="margin-right:5px"><i class="fa fa-remove"></i> 关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="SaveChartReport()" title="保存"><i class="fa fa-save"></i> 保存</button>
                 </div>
             </div>
         </div>
@@ -774,5 +781,4 @@
     @Scripts.Render("~/Bundles/App/editReport/js")
     @Scripts.Render("~/Bundles/txtIDE/js")
     <script src="~/Common/Scripts/TypeIcon/TypeIcon.js"></script>
-
 }

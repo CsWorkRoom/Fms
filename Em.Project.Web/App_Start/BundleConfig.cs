@@ -39,52 +39,7 @@ namespace Easyman.Web
                 );
             #endregion
             #endregion
-
-            #region ~/Bundles/App/main/js （停止使用）
-            bundles.Add(
-               new ScriptBundle("~/Bundles/App/main/js")
-               // .Include("~/Scripts/modernizr-2.8.3.js")
-               // .Include("~/Abp/ie10fix.js")
-               // .Include("~/Scripts/json2.js")
-               //.Include("~/Scripts/bootstrap.js")
-               //.Include("~/Scripts/bootstrapValidator.js")
-               //.Include("~/Scripts/bootstrap-typeahead.js")
-
-               //.Include("~/Scripts/moment-with-locales.js")//轻量的日期控件
-               //.Include("~/Scripts/toastr.js")
-               //.Include("~/Scripts/sweetalert/sweet-alert.js")
-               //.Include("~/Scripts/others/spinjs/spin.js")
-               //.Include("~/Scripts/others/spinjs/jquery.spin.js")
-               //.Include("~/Abp/abp.js")
-               //.Include("~/Abp/abp.jquery.js")
-               //.Include("~/Abp/abp.toastr.js")
-               //.Include("~/Abp/abp.blockUI.js")
-               //.Include("~/Abp/abp.spin.js")
-               //.Include("~/Abp/abp.sweet-alert.js")
-               //.Include("~/Scripts/vue.js")
-               //.Include("~/Scripts/lodash.js")
-
-               // .Include("~/Scripts/components/ztable/ztable.js")
-               // .Include("~/Scripts/components/ztree/jquery.ztree.js")
-
-               //.Include("~/Scripts/components/modal.js")
-               //.Include("~/Scripts/components/control-extensions.js")
-               //.Include("~/Scripts/components/jquery.fileDownload.js")
-               //.Include("~/Scripts/components/icheck/icheck.js")
-               //.Include("~/fonts/iconfont/iconfont.js")
-               // .Include("~/Common/Scripts/custom/abpHelpers.js")
-
-               //.Include("~/Common/rootUrl.js")
-               //.Include("~/Common/Scripts/errorPage/error.js")
-               //.Include("~/Common/Scripts/PageMessage/PageMessage.js")
-               //.Include("~/Common/Scripts/custom/main.js")
-               //.Include("~/Common/Scripts/custom/cache.js")
-               //.Include("~/Common/Scripts/custom/boot.js")
-               //.Include("~/Common/Scripts/custom/openPage.js")
-               //.Include("~/Common/Scripts/custom/tableSearch.js")
-               );
-            #endregion
-
+            
             #region ~/Bundles/index/js 主页面index特有
             bundles.Add(
                new ScriptBundle("~/Bundles/index/js")
@@ -197,17 +152,6 @@ namespace Easyman.Web
                     );
             #endregion
 
-            #region ztable
-            //bundles.Add(
-            //   new ScriptBundle("~/Bundles/ztable/js")
-            //         .Include("~/Scripts/components/ztable/ztable.js")
-            //        );
-            //bundles.Add(
-            //    new StyleBundle("~/Bundles/ztable/css")
-            //         .Include("~/Scripts/components/ztable/style/ztable.css", new CssRewriteUrlTransform())
-            //        );
-            #endregion
-
             #region 消息弹框插件
             bundles.Add(
                new ScriptBundle("~/Bundles/alert/js")
@@ -246,17 +190,7 @@ namespace Easyman.Web
                     );
 
             #endregion
-
-            #region calendar 日期插件
-
-            //bundles.Add(
-            //    new ScriptBundle("~/Bundles/App/calendar/js")
-            //        .Include("~/Common/Scripts/calendar/WdatePicker.js")
-            //        .Include("~/Common/Scripts/calendar/lang/zh-cn.js")
-            //        );
-
-            #endregion
-
+            
             #region multiple-select 下拉多选插件
             //css
             bundles.Add(
@@ -310,7 +244,7 @@ namespace Easyman.Web
 
             #endregion
 
-            #region TbReport 表格报表
+            #region TbReport 报表配置
             //css
             bundles.Add(
                 new StyleBundle("~/Bundles/App/TbReport/css")
@@ -336,7 +270,6 @@ namespace Easyman.Web
                     );
             #endregion
 
-
             #region txtIDE txtIDE文本编辑器
             //css
             bundles.Add(
@@ -350,22 +283,9 @@ namespace Easyman.Web
                     );
             #endregion
 
-            #region 右键内容插件 ContextMenu
-            //css
-            bundles.Add(
-                new StyleBundle("~/Bundles/ContextMenu/css")
-                    .Include("~/Content/jquery.contextMenu.css", new CssRewriteUrlTransform())
-                    );
-            //script
-            bundles.Add(
-                new ScriptBundle("~/Bundles/ContextMenu/js")
-                    .Include("~/Scripts/jquery.contextMenu.js")
-                    );
-            #endregion
-
             //启用压缩：true 或 删除该行代码
             //禁用压缩：false
-            BundleTable.EnableOptimizations = false;
+            //BundleTable.EnableOptimizations = true;
         }
     }
 }

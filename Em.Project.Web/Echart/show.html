@@ -53,6 +53,10 @@
         });
         $(document).ready(function () {
             loadChart();
+            //点空白，取消显示外置事件的标签  
+            $("body").click(function () {
+                parent.$('.popover-hide').popover('destroy');
+            });
         });
 
         //点击查询按钮后的处理

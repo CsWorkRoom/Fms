@@ -238,7 +238,7 @@ function AddFilter(newFilterArr, fd) {
     };
     newFilterArr.push(ft);
 }
-
+var gwidth = 0;
 //根据传入的筛选信息加载grid
 function LoadFilterGrid(newFilterArr,  filterGrid, filterGridPager) {
     //$.jgrid.gridUnload(filterGrid);//先卸载
@@ -258,8 +258,8 @@ function LoadFilterGrid(newFilterArr,  filterGrid, filterGridPager) {
     
 
     var $filterGrid = $("#" + filterGrid);
-    var gwidth = $filterGrid.parents(".modal-body").width();
-
+    if (gwidth<=0)
+     gwidth = $filterGrid.parents(".modal-body").width()-18;
     $filterGrid.jqGrid({
         altRows: true,//隔行换色
         data: newFilterArr,

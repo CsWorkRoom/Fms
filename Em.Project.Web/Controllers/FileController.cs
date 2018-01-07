@@ -229,7 +229,7 @@ namespace Easyman.Web.Controllers
         public ActionResult GetFileListByFolder(long folderId)
         {
             List<TreeNode> nodeList = new List<TreeNode>();//初始化node
-
+            
             #region 获取文件夹及文件 fileSql
             string fileSql = string.Format(@"SELECT A.ID,
                                A.CLIENT_PATH,

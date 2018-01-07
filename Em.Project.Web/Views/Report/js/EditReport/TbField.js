@@ -121,7 +121,7 @@ function LoadTbGrid(fieldJson) {
         viewrecords: true,
         onSelectRow: EditSelectRow,
         height: window.innerHeight * 0.6,
-        width: $(".modal-body").width(),
+        width: ($(".modal-body").width()-20),
         rowNum: fieldJson.length,
         pager: "#fieldGridPager"
     });

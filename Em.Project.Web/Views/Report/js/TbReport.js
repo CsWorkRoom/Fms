@@ -64,6 +64,7 @@ $(document).ready(function () {
         }
         $("#divTools").height(28);
         $('#filterHts').collapse('show');
+        SetSeach();//计算查询条件高度
         $(".fa-chevron-down").hide();
         $(".fa-chevron-up").show();
         $("#divTools").attr("title", "点击关闭搜索条件区");
@@ -89,12 +90,22 @@ $(document).ready(function () {
         SetPeportSize("jqGrid", "navMenu", "jqGridPager");//重新计算窗体高度
         $("#searchTools").hide();
     });
+    //滚动取得更多菜单
+    $("#gview_jqGrid .ui-jqgrid-bdiv").scroll(function () {
+        $("#moreMenu").hide();
+    });
+    //移出更多列表取消更多菜单
+    $("#moreMenu").mouseleave(function () {
+        $("#moreMenu").hide();
+    });
+
     $(window).resize();
 });
 
 //随着浏览器的变化而变化
 $(window).resize(function () {
-   WinResize("jqGrid", "navMenu", "jqGridPager");
+    WinResize("jqGrid", "navMenu", "jqGridPager");
+    SetSeach();//计算查询条件高度
 });
 
 var GetEventArrLength = function (EventArr) {
@@ -121,8 +132,18 @@ var SetSeach = function(){
     });
 }
 
-var ShowWind = function (rowId) {
-    ModeDialogContent("", "<i id='icon_type_img' class='fa fa-book'></i> 更多选项", $("#" + rowId).html(), "", 310, $("#" + rowId).height()+60);
+///显示更多菜单 
+///menuId:模型ID
+///objA:点击对像
+var ShowMoreMenu = function (menuId, objA) {
+    var gridScrollTop = $("#gview_jqGrid .ui-jqgrid-bdiv").scrollTop();
+    var intTop = (objA.offsetParent.offsetParent.offsetTop + objA.offsetParent.offsetTop + objA.offsetTop + $(objA).height() - gridScrollTop-2);
+    var intLeft = (objA.offsetParent.offsetParent.offsetLeft + objA.offsetParent.offsetLeft + objA.offsetLeft + ($(objA).width()/2));
+    $("#gbox_jqGrid").append($("#moreMenu"));//将隐藏层移到表格中
+    $("#moreMenu").html($("#" + menuId).html());
+    $("#moreMenu").css("top", intTop);
+    $("#moreMenu").css("left", intLeft);
+    $("#moreMenu").show();    
 }
 
 //获取当前PC端表格报表
@@ -196,7 +217,7 @@ function InitTbReport() {
                 if (ev.EventType == "1")//为行事件时
                 {
                     if (AddNum > 1) {
-                        strLi += '<span style="padding: 5px 0px 0px 10px;float: left;"><i class="fa fa-file-text-o" aria-hidden="true"></i> ' + OutEventForLabel(ev, null, rowObject, cellvalue, null) + '</span>';
+                        strLi += '<li onclick="$(\'#moreMenu\').hide()">' + OutEventForLabel(ev, null, rowObject, cellvalue, null) + '</li>';
                     } else {
                         lbl += OutEventForLabel(ev, null, rowObject, cellvalue,null) + " ";
                     }
@@ -205,17 +226,9 @@ function InitTbReport() {
             }
         }
         //列表菜单
-        //if (strLi != "")
-        //    lbl += '<span class="dropdown" style="margin-left: 2px;"><a style="cursor: pointer;" type="button" class="aLabel dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" >更多<span class="caret"></span></a><ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">' + strLi + '</ul></span>';
-
-        //select下拉式
-        //lbl += '<select style="width:40px" id="category" name="category"><option value="">更多</option><option value="1"><i class="fa fa-file-text-o" aria-hidden="true"></i>类别1</option><option value="2"><i class="fa fa-file-text-o" aria-hidden="true"></i>类别2</option>    <option value="3"><i class="fa fa-file-text-o" aria-hidden="true"></i>类别3</option><option value="4"><i class="fa fa-file-text-o" aria-hidden="true"></i>类别4</option></select>';
-        
-        //弹出式菜单
         if (strLi != "") {
-            lbl += '<span style="color: #337ab7;cursor: pointer;" onclick="ShowWind(\'row' + intRowNum + '\')" ><i id="icon_type_img" class="fa fa-book"></i>更多</span>';
-            strLi = '<div id="row' + intRowNum + '"><div style="overflow:auto;height:100%;width:100%;">' + strLi + '</div></div>';
-            $("body").append(strLi);
+           var menuId = "menuData" + intRowNum;
+           lbl += '<span class="dropdown" style="margin-left: 2px;"><a style="cursor: pointer;" type="button" class="aLabel" onmousemove="ShowMoreMenu(\'' + menuId + '\',this)" ><i id="icon_type_img" class="fa fa-book"></i>更多<span class="caret"></span></a><ul id="' + menuId + '" style="display:none">' + strLi + '</ul></span>';
         }
 
         intRowNum++;
@@ -338,8 +351,7 @@ function InitTbReport() {
 
             //若列事件返回值为空，则显示原fd.FieldName
             //若列事件返回不为空，则替换为事件lb
-            var tit = (fd.Remark == null || fd.Remark == "") ? fd.FieldName : fd.Remark; 
-            //fieldEvLb = fieldEvLb == "" || fieldEvLb == null ? '<label title=\'' + tit + '\' style=\'width:85%;text-align:' + fd.Align + '\' >' + fd.FieldName + '</label>' : '<div style=\'width:85%; text-align:' + fd.Align + '\'>' + fieldEvLb + '</div>';
+            var tit = (fd.Remark == null || fd.Remark == "") ? fd.FieldName : fd.Remark;
             fieldEvLb = (fieldEvLb == "" || fieldEvLb == null) ? '<label title=\'' + tit + '\' style=\'width:100%;margin-right: -20px;text-align:' + fd.Align + '\' >' + fd.FieldName + '</label>' : '<div style=\'width:100%;margin-right: -20px;text-align:' + fd.Align + '\'>' + fieldEvLb + '</div>';
             curField.label = fieldEvLb;//标签内容
             curField.name = fd.FieldCode;//字段编码
@@ -417,7 +429,7 @@ function InitTbReport() {
                             break;
                         case "2"://复选下拉框
                             var ops = GetOptions(bootPATH+"/report/GetFilterDropDown?filterId=" + ft.Id + "&code=" + $("#Code").val());
-                            ftCtr += '<div class="myOwnDdl col-md-12 col-sm-12" style="padding: 0px;">  ';
+                            ftCtr += '<div class="myOwnDdl col-md-12 col-sm-12 col-xs-12" style="padding: 0px;">  ';
                             ftCtr += '  <select id="ft_' + ftCtrName + '" name="ft_' + ftCtrName + '" value="' + ftCtrValue + '" placeholder="' + ftCtrPlaceholder + '" multiple="multiple" class="jgrid-filter-input" style="padding: 0px;color: #76838f;border: 1px solid #e4eaec; width:100%;hight:34px">';
                             ftCtr += ops;
                             ftCtr += '  </select>  '
@@ -427,7 +439,7 @@ function InitTbReport() {
                             break;
                         case "3"://单选下拉框
                             var ops = GetOptions(bootPATH+"/report/GetFilterDropDown?filterId=" + ft.Id + "&code=" + $("#Code").val());
-                            ftCtr += '<div class="myOwnDdl col-md-12 col-sm-12" style="padding: 0px;">  ';
+                            ftCtr += '<div class="myOwnDdl col-md-12 col-sm-12 col-xs-12" style="padding: 0px;">  ';
                             ftCtr += '  <select id="ft_' + ftCtrName + '" name="ft_' + ftCtrName + '" value="' + ftCtrValue + '" placeholder="' + ftCtrPlaceholder + '" multiple="multiple" class="jgrid-filter-input" style="padding: 0px;color: #76838f;border: 1px solid #e4eaec; width:100%;hight:34px">';
                             ftCtr += ops;
                             ftCtr += '  </select>  '
@@ -449,10 +461,10 @@ function InitTbReport() {
                             break;
                     }
 
-                    htm += '<div class="form-group col-md-3 col-sm-3" style="padding:0px">';
-                    htm += '    <label for="ft_' + ftCtrName + '" class="col-md-3 col-sm-3 control-label text-right" style="padding-left: 0px;padding-right: 2px;margin-top: 10px;line-height:17px" >' + ftCtrDisplayName + '</label>';
-                    htm += '<div class="col-md-9 col-sm-9 jgrid-filter-field" style="padding:0px">' + ftCtr + '</div>';
-                    htm += ' </div>';
+                    htm += '<div class="form-group col-md-3 col-sm-3 col-xs-3" style="padding:0px">';
+                    htm += '<label for="ft_' + ftCtrName + '" class="col-md-3 col-sm-3 col-xs-3 control-label text-right" style="padding-left: 0px;padding-right: 2px;margin-top: 10px;line-height:17px" >' + ftCtrDisplayName + '</label>';
+                    htm += '<div class="col-md-9 col-sm-9 col-xs-9 jgrid-filter-field" style="padding:0px">' + ftCtr + '</div>';
+                    htm += '</div>';
                     htmls += htm;
                 }
             }

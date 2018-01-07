@@ -70,9 +70,9 @@ function TopTypeIcons() {
         }
     }
     $.post(bootPATH + "/api/services/api/Icon/GetAllTypeIcons", {}, function (data) {
-        console.log(data);
+        //console.log(data);
         $.post(bootPATH + "/api/services/api/Icon/GetAllIconsId", {}, function (dataicon) {
-            console.log(dataicon);
+            //console.log(dataicon);
             //等待所有数据执行完成后 再调用方法 生成html
             list(data.result, dataicon.result);
         });
