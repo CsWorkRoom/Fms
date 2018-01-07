@@ -64,7 +64,7 @@ namespace Easyman.Service
                 var entObj = _CaseVersionCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new CaseVersion();
                 entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
                 //var entObj= AutoMapper.Mapper.Map<CaseVersion>(input);
-                var id = _CaseVersionCase.InsertAndGetId(entObj);
+                var id = _CaseVersionCase.InsertOrUpdateAndGetId(entObj);
 
                 return entObj.MapTo<CaseVersionModel>();
 

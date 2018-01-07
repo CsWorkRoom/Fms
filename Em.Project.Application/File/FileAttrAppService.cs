@@ -64,7 +64,7 @@ namespace Easyman.Service
                 var entObj = _FileAttrCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileAttr();
                 entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
                 //var entObj= AutoMapper.Mapper.Map<FileAttr>(input);
-                var id = _FileAttrCase.InsertAndGetId(entObj);
+                var id = _FileAttrCase.InsertOrUpdateAndGetId(entObj);
 
                 return entObj.MapTo<FileAttrModel>();
             } catch (Exception ex)

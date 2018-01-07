@@ -68,7 +68,7 @@ namespace Easyman.Service
                 var entObj = _FileLibraryCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileLibrary();
                 entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
                 //var entObj= AutoMapper.Mapper.Map<FileLibrary>(input);
-                var id = _FileLibraryCase.InsertAndGetId(entObj);
+                var id = _FileLibraryCase.InsertOrUpdateAndGetId(entObj);
 
                 return entObj.MapTo<FileLibraryModel>();
             }

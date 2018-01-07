@@ -71,7 +71,7 @@ namespace Easyman.Service
                 var entObj = _MonitFileCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new MonitFile();
                 entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
                 //var entObj= AutoMapper.Mapper.Map<MonitFile>(input);
-                var id = _MonitFileCase.InsertAndGetId(entObj);
+                var id = _MonitFileCase.InsertOrUpdateAndGetId(entObj);
 
                 return entObj.MapTo<MonitFileModel>();
 

@@ -65,7 +65,7 @@ namespace Easyman.Service
                 var entObj = _FolderVersionCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FolderVersion();
                 entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
                 //var entObj= AutoMapper.Mapper.Map<FolderVersion>(input);
-                var id = _FolderVersionCase.InsertAndGetId(entObj);
+                var id = _FolderVersionCase.InsertOrUpdateAndGetId(entObj);
                 return entObj.MapTo<FolderVersionModel>();
 
             }

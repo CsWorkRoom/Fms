@@ -67,7 +67,7 @@ namespace Easyman.Service
                 var entObj = _FileFormatCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new FileFormat();
                 entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
                 //var entObj= AutoMapper.Mapper.Map<FileFormat>(input);
-                var id = _FileFormatCase.InsertAndGetId(entObj);
+                var id = _FileFormatCase.InsertOrUpdateAndGetId(entObj);
 
                 return entObj.MapTo<FileFormatModel>();
             }

@@ -68,7 +68,7 @@ namespace Easyman.Service
                 var entObj = _FolderCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new Folder();
                 entObj = Fun.ClassToCopy(input, entObj, (new string[] { "Id" }).ToList());
                 //var entObj= AutoMapper.Mapper.Map<Folder>(input);
-                var id = _FolderCase.InsertAndGetId(entObj);
+                var id = _FolderCase.InsertOrUpdateAndGetId(entObj);
                 return entObj.MapTo<FolderModel>();
             }
             catch(Exception ex)
