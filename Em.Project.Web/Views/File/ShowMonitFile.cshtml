@@ -21,45 +21,54 @@
 <input id="targetTagId" type="text" value="@ViewData["targetTagId"]" style="display:none" />
 <input id="districtId" type="text" value="@ViewData["districtId"]" style="display:none" />
 <input id="districtName" type="text" value="@ViewData["districtName"]" style="display:none" />*@
-
-<h1>用户[@ViewData["userName"]]的资源管理器</h1>
-<h6>[ 包含管辖终端、共享目录以及目录下的文件结构 ]</h6>
-<div class="content_wrap">
-    <div class="zTreeDemoBackground left">
-        <ul id="treeDemo" class="ztree"></ul>
+    <div style=" height:120px; width:100%; border:1px solid #d2cccc; padding-top:20px;">
+        <h1>用户[@ViewData["userName"]]的资源管理器</h1>
+        <h6>[ 包含管辖终端、共享目录以及目录下的文件结构 ]</h6>
     </div>
-    <div class="right" id="fileModule">
-       @*<div style="cursor:pointer;float:left;width:70px;margin-left:35px" ><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-        <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>*@
+<div class="content_wrap"  style="border-bottom:1px solid #d2cccc; min-height:500px; background-color:beige;" >
+    <div class="zTreeDemoBackground left" style=" height:100%; border-right:1px solid #d2cccc;padding-left:0px;" >
+        <ul id="treeDemo" class="ztree" style=" margin-top:0px; width:100%; height:100%;  border:none;"></ul>
+    </div>
+    <div class="right" id="fileModule" style=" padding-top:10px; ">
+        @*<div style="cursor:pointer;float:left;width:70px;margin-left:35px" ><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
+            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>*@
 
 
         @*<div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder fa-4x'></i><br/>文件一</span></div>*@
         @*<div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
-        <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
-        <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
-        <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
-        <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>*@
+            <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
+            <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
+            <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
+            <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>*@
     </div>
+   
+</div>
+<div style=" margin-top:10px;">
     <input type="text" name="fromPath" id="fromPath" />
     <input type="text" name="toPath" id="toPath" />
     <button type="button" id="btnCopy" onclick="copyFile()">复制</button>
+
+    <button type="button" id="btnCopy123" onclick="CheckFolder()">备份测试</button>
+
+    <button type="button" id="btnCopy123323" onclick="DataBaseCmd()">命令测试</button>
+
 </div>
 
 <div class="modal" id="attrs" tabindex="-1" role="dialog" style="width:70%" aria-hidden="true" data-backdrop="static" aria-labelledby="myModalLabel">
@@ -80,47 +89,48 @@
                     <header role="heading">
                         <ul id="attrTabHeader" class="nav nav-tabs" role="tablist">
                             @*<li role="presentation" class="active"><a href="#attrOne" aria-controls="home" role="tab" data-toggle="tab">属性一</a></li>
-                            <li role="presentation"><a href="#attrTwo" aria-controls="profile" role="tab" data-toggle="tab">属性二</a></li>*@
+                    <li role="presentation"><a href="#attrTwo" aria-controls="profile" role="tab" data-toggle="tab">属性二</a></li>*@
                         </ul>
                     </header>
                     <!--选项卡内容部分-->
                     <div class="tab-content" id="attrTabBody" style="padding-top:12px;">
                         <!--属性类-->
                         @*<div role="tabpanel" class="tab-pane active form-horizontal" id="attrOne">
-                            <div class="form-group">
-                                <label for="Name1" class="col-xs-4 control-label" style="text-align:right">打分类型名123</label>
-                                <div class="col-xs-6">
-                                    <label for="Name1" class="control-label" style="text-align:right">打分类型名123</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="Remark2" class="col-xs-4 control-label" style="text-align:right">描述说明123</label>
-                                <div class="col-xs-6">
-                                    <label for="Name2" class="control-label" style="text-align:right">打分类型名123</label>
-                                </div>
-                            </div>
-                        </div>*@
+                    <div class="form-group">
+                        <label for="Name1" class="col-xs-4 control-label" style="text-align:right">打分类型名123</label>
+                        <div class="col-xs-6">
+                            <label for="Name1" class="control-label" style="text-align:right">打分类型名123</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Remark2" class="col-xs-4 control-label" style="text-align:right">描述说明123</label>
+                        <div class="col-xs-6">
+                            <label for="Name2" class="control-label" style="text-align:right">打分类型名123</label>
+                        </div>
+                    </div>
+                </div>*@
                         <!--属性类二-->
                         @*<div role="tabpanel" class="tab-pane form-horizontal" id="attrTwo">
-                            <div class="form-group">
-                                <label for="Name" class="col-xs-4 control-label" style="text-align:right">打分类型名</label>
-                                <div class="col-xs-6">
-                                    <label for="Name" class="control-label" style="text-align:right">打分类型名</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="Remark" class="col-xs-4 control-label" style="text-align:right">描述说明</label>
-                                <div class="col-xs-6">
-                                    <label for="Name" class="control-label" style="text-align:right">打分类型名</label>
-                                </div>
-                            </div>
-                        </div>*@
+                    <div class="form-group">
+                        <label for="Name" class="col-xs-4 control-label" style="text-align:right">打分类型名</label>
+                        <div class="col-xs-6">
+                            <label for="Name" class="control-label" style="text-align:right">打分类型名</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Remark" class="col-xs-4 control-label" style="text-align:right">描述说明</label>
+                        <div class="col-xs-6">
+                            <label for="Name" class="control-label" style="text-align:right">打分类型名</label>
+                        </div>
+                    </div>
+                </div>*@
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning" data-dismiss="modal" title="关闭"> <i class="fa fa-remove"></i> 关闭</button>
                     @*<button type="button" class="btn btn-success" onclick="SaveRdlcReport()" title="保存"> <i class="fa fa-save"></i> 保存</button>*@
                 </div>
+               
             </div>
         </div>
     </div>
@@ -340,26 +350,26 @@
                   for (var i = 0; i < dataArr.length; i++) {
                       switch (nodeType) {
                           case "first":
-                              htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'computer\',false)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                              htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:70px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'computer\',false)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
                               break;
                           case "computer":
-                              htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id + ',\'folder\',false)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                              htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:70px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id + ',\'folder\',false)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
                               break;
                           case "folder":
                               //是否为文件夹的判断
                               if (dataArr[i].isFolder) {
-                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
                               }
                               else {
-                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
                               }
                               break;
                           case "file"://文件夹
                               if (dataArr[i].isFolder) {
-                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
                               }
                               else {
-                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:70px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
                               }
                               break;
                       }
@@ -535,6 +545,44 @@
                 }
             }
             return attrTypeNameArr;
+        }
+
+
+        function CheckFolder() {
+            $.ajax({
+                type: "post",
+                url: "../Computer/MonitorStart",
+                async: false,
+                data: {
+                    ip: "172.25.97.3",
+                    folderName: "BusinessData",
+                    scriptNodeCaseId:"1"
+                },
+                success: function (e) {
+                    abp.message.success("", "提交成功！");
+                },
+                error: function (e) {
+                    kk = e;
+                }
+            });
+        }
+
+
+        function DataBaseCmd() {
+            $.ajax({
+                type: "post",
+                url: "../Computer/DataBaseCmd",
+                async: false,
+                data: {
+                    cmdStr: "exp FMS_CL/FMS_CL@112.54.93.193/orcl file=e:\datafull.dmp  log=e:\datafull.log"
+                },
+                success: function (e) {
+                    abp.message.success("", "数据外导成功！");
+                },
+                error: function (e) {
+                    kk = e;
+                }
+            });
         }
     </script>
 }
