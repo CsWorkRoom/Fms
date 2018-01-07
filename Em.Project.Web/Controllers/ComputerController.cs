@@ -379,6 +379,10 @@ namespace Easyman.Web.Controllers
                         _monitFile.CopyStatus = CopyStatus.Wait;
                     }
                 }
+                else
+                {
+                    _monitFile.CopyStatus = CopyStatus.Success;
+                }
 
 
                 _monitFile.Properties = FileTool.GetProperties(fullName);
