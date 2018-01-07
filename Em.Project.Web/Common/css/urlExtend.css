@@ -60,7 +60,7 @@ input[type=checkbox]:checked::after{display:block;position:absolute;top:-4px;lef
 }
 
 .ztree li ul.line{ background:url(../../Scripts/components/ztree/zTreeStyle/img/line_conn.gif) 0 0 repeat-y;}
-.ztree li span.button {line-height:0; margin:0; width:5px;  display: inline-block; vertical-align:middle;
+.ztree li span.button {line-height:0; margin:0; width:16px;  display: inline-block; vertical-align:middle;
 	border:0 none; cursor: pointer;outline:none;
 	background-color:transparent; background-repeat:no-repeat; background-attachment: scroll;
 	background-image:url("../../Scripts/components/ztree/zTreeStyle/img/zTreeStandard.png"); *background-image:url("../../Scripts/components/ztree/zTreeStyle/img/zTreeStandard.gif")}
