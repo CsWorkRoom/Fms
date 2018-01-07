@@ -25,7 +25,7 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        FolderModel InsertOrUpdateFolder(FolderModel input, ref ErrorInfo err);
+        FolderModel InsertOrUpdateFolder(FolderModel input);
 
         /// <summary>
         /// 删除一条终端共享文件夹

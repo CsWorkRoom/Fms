@@ -55,13 +55,11 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public FolderModel InsertOrUpdateFolder(FolderModel input,ref ErrorInfo err)
+        public FolderModel InsertOrUpdateFolder(FolderModel input)
         {
-            err.IsError = false;
+           
             try
             {
-
-
                 if (_FolderCase.GetAll().Any(p => p.Id != input.Id && p.Name == input.Name))
                 {
                     throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
@@ -75,10 +73,9 @@ namespace Easyman.Service
             }
             catch(Exception ex)
             {
-                err.IsError = true;
-                err.Message = ex.Message;
-                err.Excep = ex;
                 return null;
+                throw ex;
+            
             }
         }
 

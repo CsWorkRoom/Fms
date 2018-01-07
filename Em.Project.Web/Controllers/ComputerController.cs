@@ -131,9 +131,8 @@ namespace Easyman.Web.Controllers
                     folder = new FolderModel();
                     folder.Name = folderName;
                     folder.ComputerId = computer.Id;
-                    folder.IsUse = true;
-                    ErrorInfo err1 = new ErrorInfo();
-                    folder=_FolderAppService.InsertOrUpdateFolder(folder,ref err1);
+                    folder.IsUse = true;                  
+                    folder=_FolderAppService.InsertOrUpdateFolder(folder);
                 }
             }
             else {
