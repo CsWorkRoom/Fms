@@ -1,0 +1,274 @@
+' ************************************************************************<BR>
+' Scientific Software Script Library<BR>
+' Helper functions for Client-side scripting of session cookies (VBScript)<BR>
+' Copyright 2000 Scientific Software, Inc. All Rights Reserved.<BR>
+' <B>Do not modify in design view. Switch to source view.</B><BR>
+' ************************************************************************<BR>
+'<SCRIPT LANGUAGE="vbscript">
+'******Code Added by Madhavi on 03/20/02 for Encoding Cookies*********/
+'**********************************************************************
+'  MBCSUnEscape
+'     This function will convert the MBCS CODE TO UNICODE
+'**********************************************************************
+'Function MBCSUnEscape(sValue)
+ '    If Trim(sValue  & "") <> "" Then		
+ '       Dim objStringUtil        
+ '		Set objStringUtil = CreateObject("StringUtils.Encoder")			
+ '		MBCSUnEscape = objStringUtil.Decodebytes(sValue)
+ '		Set objStringUtil = Nothing
+ '		Exit Function
+ '	End If	
+ '	MBCSUnEscape = ""
+'End Function 
+'**********************************************************************
+'  MBCSEscape
+'     This function will convert the UNICODE TO MBCS CODE
+'**********************************************************************
+'Function MBCSEscape(sValue)
+     'If Trim(sValue  & "") <> "" Then		
+     '   Dim objStringUtil        
+	 '	Set objStringUtil = CreateObject("StringUtils.Encoder")			
+	 ' 	MBCSEscape = objStringUtil.Encode2Bytes(sValue)
+	 ' 	Set objStringUtil = Nothing
+	 ' 	Exit Function
+	'End If	
+	'MBCSEscape = ""
+'End Function 
+'******Code Added by Madhavi on 03/20/02 for Encoding Cookies*********/
+'**********************************************************************
+'  SetSessionCookieItem
+'     This function will set the value of a session cookie item from
+'     client-side code.
+'**********************************************************************
+Function SetSessionCookieItem (sName, sValue)
+   Dim strSessionID
+   strSessionID = GetSessionID()
+   Dim strNewCookie
+   Dim cookieVal
+   cookieVal = GetSessionCookie(strSessionID)
+
+   If cookieVal <> "" Then
+      Dim aCookie, i, aCrumb
+      aCookie = Split(cookieVal, "&")
+      
+      For i = 0 To UBound(aCookie)
+         aCrumb = Split(aCookie(i), "=")
+         If sName <> cookieUnescape(aCrumb(0)) Then
+            If strNewCookie <> "" Then strNewCookie = strNewCookie & "&"
+            strNewCookie = strNewCookie & aCrumb(0) & "=" & aCrumb(1)
+         End If
+      Next
+   End If
+
+   Dim myValue
+   myValue = sValue
+   If VarType(myValue) = vbDate Then
+      myValue = Month(sValue) & "/"
+      myValue = myValue & Day(sValue) & "/"
+      myValue = myValue & Year(sValue) & " "
+      myValue = myValue & Hour(sValue) & ":"
+      myValue = myValue & Minute(sValue) & ":"
+      myValue = myValue & Second(sValue)
+   End If
+
+   If strNewCookie <> "" Then strNewCookie = strNewCookie & "&"
+   strNewCookie = strNewCookie & cookieEscape(sName) & "=" & cookieEscape(objSessionMonitor.MBCSEscape(myValue))
+   objSessionMonitor.SetCookieForURL location.href, "SessionCookie" & strSessionID & "=" & strNewCookie & "; path=/"
+End Function
+
+'**********************************************************************
+'  SetPersistentCookieItem
+'     This function will set the value of a persistent cookie item from
+'     client-side code.
+'**********************************************************************
+Function SetPersistentCookieItem(sName, sValue)
+   Dim strNewCookie
+   Dim cookieVal      
+   cookieVal = GetPersistentCookie()   
+   If cookieVal <> "" Then
+      Dim aCookie, i, aCrumb
+      aCookie = Split(cookieVal, "&")      
+      For i = 0 To UBound(aCookie)
+         aCrumb = Split(aCookie(i), "=")
+         If sName <> cookieUnescape(aCrumb(0)) Then
+            If strNewCookie <> "" Then strNewCookie = strNewCookie & "&"                        
+            strNewCookie = strNewCookie & aCrumb(0) & "=" & aCrumb(1)
+         End If
+      Next
+   End If
+
+   Dim myValue
+   myValue = sValue
+   If VarType(myValue) = vbDate Then
+      myValue = Month(sValue) & "/"
+      myValue = myValue & Day(sValue) & "/"
+      myValue = myValue & Year(sValue) & " "
+      myValue = myValue & Hour(sValue) & ":"
+      myValue = myValue & Minute(sValue) & ":"
+      myValue = myValue & Second(sValue)
+   End If
+
+   If strNewCookie <> "" Then strNewCookie = strNewCookie & "&"
+   strNewCookie = strNewCookie & cookieEscape(sName) & "=" & cookieEscape(objSessionMonitor.MBCSEscape(myValue))
+
+   Dim strExpDate
+   strExpDate = GetCookieExpirationDate(14)
+   
+   objSessionMonitor.SetCookieForURL location.href, "PersistentCookie" & "=" & strNewCookie & "; path=/" & "; expires=" & strExpDate
+End Function
+
+'**********************************************************************
+'  GetSessionCookieItem
+'     This function will get the value of the specified session
+'     cookie item.
+'**********************************************************************
+Function GetSessionCookieItem(sName)
+   Dim cookieVal
+   cookieVal = GetSessionCookie(GetSessionID())
+   If cookieVal <> "" Then
+      Dim aCookie, aCrumb, i
+      aCookie = Split(cookieVal, "&")
+      
+      For i = 0 To UBound(aCookie)
+         aCrumb = Split(aCookie(i), "=")
+         If sName = cookieUnescape(aCrumb(0)) Then            
+           'GetSessionCookieItem = cookieUnescape(aCrumb(1))
+           '******Code Added by Madhavi on 03/20/02 for Encoding Cookies*********/
+            'GetSessionCookieItem = MBCSUnEscape(cookieUnescape(aCrumb(1)))
+            'If ucase(sName) = "PAGELASTACCESSTIME" Then                
+			'	GetSessionCookieItem = cookieUnescape(aCrumb(1))
+			'Else
+				GetSessionCookieItem = objSessionMonitor.MBCSUnEscape(cookieUnescape(aCrumb(1)))
+			'End If	
+				'******End Code Added by Madhavi on 03/20/02 for Encoding Cookies*********/
+            Exit Function
+         End If
+      Next
+   End If
+   
+   GetSessionCookieItem = ""
+End Function
+
+'**********************************************************************
+'  DuplicateSessionCookieItems
+'     This function will duplicate the session cookie items for the
+'     current session id and place them under a new id.  This 
+'     function will return the new session id.
+'**********************************************************************
+Function DuplicateSessionCookieItems()
+   Dim strNewSessionID
+   Dim dtNow
+   dtNow = Now()
+   If Hour(dtNow) < 10 Then
+      strNewSessionID = "0" & Hour(dtNow)
+   Else
+      strNewSessionID = Hour(dtNow)
+   End If
+   If Minute(dtNow) < 10 Then
+      strNewSessionID = strNewSessionID & "0" & Minute(dtNow)
+   Else
+      strNewSessionID = strNewSessionID & Minute(dtNow)
+   End If
+   If Second(dtNow) < 10 Then
+      strNewSessionID = strNewSessionID & "0" & Second(dtNow)
+   Else
+      strNewSessionID = strNewSessionID & Second(dtNow)
+   End If
+
+   Dim cookieVal
+   cookieVal = GetSessionCookie(GetSessionID())
+   If cookieVal <> "" Then
+      objSessionMonitor.SetCookieForURL location.href, "SessionCookie" & strNewSessionID & "=" & cookieVal & "; path=/"
+   End If
+   
+   DuplicateSessionCookieItems = strNewSessionID
+End Function
+
+'**********************************************************************
+'  GetSessionCookie
+'     This function will get the value of the session cookie.
+'**********************************************************************
+Function GetSessionCookie(strSessionID)
+   Dim strCookieData
+   If CBool(objSessionMonitor.GetCookieForURL(location.href, strCookieData)) = True Then
+      Dim aCookie, i, aCrumb
+      aCookie = Split(strCookieData, "; ")
+      
+      For i = 0 To UBound(aCookie)
+         aCrumb = Split(aCookie(i), "=")
+         If ("SessionCookie" & strSessionID) = cookieUnescape(aCrumb(0)) Then
+            GetSessionCookie = Mid(aCookie(i), Len(aCrumb(0)) + 2)
+            Exit Function
+         End If
+      Next
+   End If
+   
+   GetSessionCookie = ""
+End Function
+
+'**********************************************************************
+'  GetPersistentCookieItem
+'     This function will get the value of the specified persistent
+'     cookie item.
+'**********************************************************************
+Function GetPersistentCookieItem(sName)
+   Dim cookieVal
+   cookieVal = GetPersistentCookie()
+   
+   If cookieVal <> "" Then
+      Dim aCookie, aCrumb, i
+      aCookie = Split(cookieVal, "&")
+      
+      For i = 0 To UBound(aCookie)
+         aCrumb = Split(aCookie(i), "=")
+         If sName = cookieUnescape(aCrumb(0)) Then			              
+            GetPersistentCookieItem = objSessionMonitor.MBCSUnEscape(cookieUnescape(aCrumb(1)))            
+            Exit Function
+         End If
+      Next
+   End If
+   
+   GetPersistentCookieItem = ""
+End Function
+
+'**********************************************************************
+'  GetPersistentCookie
+'     This function will get the value of the persistent cookie.
+'**********************************************************************
+Function GetPersistentCookie()
+   Dim strCookieData
+   If CBool(objSessionMonitor.GetCookieForURL(location.href, strCookieData)) = True Then
+      Dim aCookie, i, aCrumb
+      aCookie = Split(strCookieData, "; ")
+      
+      For i = 0 To UBound(aCookie)
+         aCrumb = Split(aCookie(i), "=")
+         If "PersistentCookie" = cookieUnescape(aCrumb(0)) Then
+            
+            GetPersistentCookie = Mid(aCookie(i), Len(aCrumb(0)) + 2)
+            Exit Function
+         End If
+      Next
+   End If
+   
+   GetPersistentCookie = ""
+End Function
+
+'**********************************************************************
+'  GetSessionID
+'     This function will return the session id.
+'**********************************************************************
+Function GetSessionID()
+   Dim strSessionID
+   strSessionID = Mid(location.search, 2)
+   If InStr(1, strSessionID, "SessID=") > 0 Then
+      strSessionID = Mid(strSessionID, InStr(1, strSessionID, "SessID=") + 7)
+      If InStr(1, strSessionID, "&") > 0 Then
+         strSessionID = Left(strSessionID, InStr(1, strSessionID, "&") - 1)
+      End If
+   End If
+      
+   GetSessionID = strSessionID
+End Function
+
+'</SCRIPT>

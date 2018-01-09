@@ -12,92 +12,142 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- CSS -->
-    @Styles.Render("~/Bundles/bootstrap/css")
+    @*@Styles.Render("~/Bundles/bootstrap/css")*@
     @Styles.Render("~/Bundles/alert/css")
     @Styles.Render("~/Bundles/common/css")
 
     <link href="~/fonts/css/font-awesome.css" rel="stylesheet" />
-    <link href="~/Views/Account/css/newlogin.css" rel="stylesheet" />
+    @*<link href="~/Views/Account/css/newlogin.css" rel="stylesheet" />*@
    
 </head>
-<body oncontextmenu="return false">
-    <!--  第二版界面 -->
-    <div id="login_content">
-            <div id="login_wrap" style="background: rgb(255, 255, 255);">
-
-                <div id="login_bg" class="slideBox" style="margin: 0 0;overflow: hidden; position: relative;background-image:url(../Views/Account/img/pic_box_bg.png);background-repeat:no-repeat;background-position:center center;">
-                </div>
-
-                <div id="login_contents">
-                    <form action="~/Account/Login?returnUrl=/" method="post" id="loginForm" onsubmit="aesEncryptPassword()">
-                        <input name="action" value="login" type="hidden">
-
-                        <div id="login_area_div" class="login_area_right" style="top: 0px; right: 0%; background: rgba(0, 0, 0, 0.2);">
-                            <div class="login_area_body">
-                                <div class="login_box">
-                                    <div class="pic">
-                                        <div class="pic_box">
-                                            <img src="~/Views/Account/img/head.gif">
-                                        </div>
-                                        <div class="pic_box_bg"></div>
-                                    </div>
-                                    <div class="login_top" style="display: block;">
-                                        <div id="login_text_div" class="text" style="visibility: visible;">
-
-                                        </div>
-                                        <input name="action" value="login" type="hidden">
-
-                                        <!-- 用户名 -->
-                                        <input type="text" name="UsernameOrEmailAddress" required="Required" class="username" id="UsernameOrEmailAddress" placeholder="请输入账号" autocomplete="off"  oninvalid="setCustomValidity('请输入您的账号');" oninput="setCustomValidity('');"/>
-                                        <hr class="hr15">
-
-                                        <!-- 密码 -->
-                                        <div style="position: relative;">
-                                            <input type="text" name="Password" required="Required" class="username noRecordPwd" id="pwd" placeholder="请输入密码" oncontextmenu="return false" onpaste="return false" oninvalid="setCustomValidity('请输入您的密码');" oninput="setCustomValidity('');" />
-                                            <i class="fa fa-eye pwsShow" id="showPwd" title="显示密码" style="display:block;"></i>
-                                            <i id="holdPwd" class="fa fa-eye-slash pwsShow" title="隐藏密码" style="display:none;"></i>
-                                        </div>
-                                        <hr class="hr15">
-
-                                        <!-- 验证码 -->
-                                        <input type="text" style="float: left;width: 120px;" name="VerifyCode" required="Required" id="vertify" placeholder="请输入验证码" oncontextmenu="return false" onpaste="return false" oninvalid="setCustomValidity('请输入您的验证码');" oninput="setCustomValidity('');"/>
-                                        <div style="margin-left: 10px;float: left;">
-                                            <a title="点击切换验证码" id="verifyCodeInfo" href="javascript:;" onclick="ToggleCode(this, 'GetVerifyCode');return false;">
-                                                <img src="~/Account/GetVerifyCode" width="100" height="43" />
-                                            </a>
-                                        </div>
-                                        <br/>
-                                        <hr class="hr15">
-                                        <!-- 登录按钮 -->
+<body @*oncontextmenu="return false"*@ background="" leftMargin=0 topMargin=0 bgColor=#ffffff>
+    <form action="~/Account/Login?returnUrl=/" method="post" id="loginForm" onsubmit="aesEncryptPassword()" style="margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;"  leftMargin=0 topMargin=0>
+        <input name="action" value="login" type="hidden">
+        <TABLE class=clsLoginBody height="100%" cellSpacing=0 cellPadding=0 width="100%"
+               border=0>
+            <TBODY>
+                <TR>
+                    <TD height=1>
+                        <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+                            <TBODY>
+                                <TR>
+                                    <TD>
+                                        <IMG border=0
+                                             src="~/Views/Account/img2/global_masthead4_left.jpg">
+                                    </TD>
+                                    <TD>
+                                        <IMG border=0
+                                             src="~/Views/Account/img2/global_masthead4_center.jpg">
+                                    </TD>
+                                    <TD background=~/Views/Account/img2/global_masthead4_rtext.jpg
+                                        width="100%" border="0">
+                                        &nbsp;
+                                    </TD>
+                                </TR>
+                                <TR>
+                                    <TD height=35
+                                        background=~/Views/Account/img2/hdr_extension3.gif
+                                        width="100%" colSpan=100 border="0">
+                                        &nbsp;
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                    </TD>
+                </TR>
+                <TR>
+                    <TD style="PADDING-BOTTOM: 25px; PADDING-TOP: 75px" align=center>
+                        <TABLE class=clsLoginBody
+                               style="BORDER-TOP: #006699 1px solid; BORDER-RIGHT: #006699 1px solid; BORDER-BOTTOM: #006699 1px solid; BORDER-LEFT: #006699 1px solid; BACKGROUND-COLOR: #e8e8e8"
+                               accessKey="" cellSpacing=0 cellPadding=0 border=0>
+                            <TBODY>
+                                <TR>
+                                    <TD style="BORDER-TOP: #e8e8e8 1px solid; BORDER-RIGHT: #e8e8e8 1px solid; BORDER-BOTTOM: #e8e8e8 1px solid; PADDING-LEFT: 8px; BORDER-LEFT: #e8e8e8 1px solid"
+                                        height=25 background=~/Views/Account/img2/hdr_extension.gif
+                                        colSpan=100>
+                                        <B>
+                                            <FONT color=#ffffff size=2
+                                                  face=Tahoma>Login</FONT>
+                                        </B>
+                                    </TD>
+                                </TR>
+                                <TR style="padding-top: 8px;padding-left: 8px;height:45px">
+                                    <TD noWrap style="font-size:13px;margin-left:3px">User name:</TD>
+                                    <TD>
                                         <input id="TenancyName" name="TenancyName" type="hidden" value="管理后台">
                                         <input id="ReturnUrlHash" name="ReturnUrlHash" type="hidden" value="">
 
-                                        <!-- 错误信息 -->
-                                        <div style="padding: 5px 0 10px 0; color: #FFF; font-size: 12px;width: 100%;margin-top: 10px;" id="error-message"></div>
-                                        <input style="width: 100%;" id="submit" type="submit" value="登录">
-                                        <hr class="hr20">
-                                    </div>
+                                        <INPUT id=UsernameOrEmailAddress style="font-size: 10pt;width: 200px"
+                                               name=UsernameOrEmailAddress>
+                                    </TD>
+                                </TR>
+                                <TR style="PADDING-LEFT: 8px">
+                                    <TD style="font-size:13px;margin-left:3px">Password:</TD>
+                                    <TD>
+                                        <INPUT id=pwd style="font-size: 10pt;width: 200px"
+                                               type=password name=Password>
+                                    </TD>
+                                </TR>
 
-                                </div>
-                                <div id="login_bottom_div" class="login_bottom" style="background: rgba(255, 255, 255, 0);">
-                                    <div class="tool_area">
-                                        <span title="找回密码？"><a onclick="alert('FindPwd')" style="cursor: pointer;color: rgb(255, 255, 255); text-decoration: none;">找回密码？</a></span>
-                                        <span title="浏览器下载"><a href="#" style="color: rgb(255, 255, 255); text-decoration: none;">浏览器下载</a></span>
-                                    </div>
+                                <TR>
+                                    <TD></TD>
+                                    <TD style="padding-top: 5px; padding-left: 8px;font-size:13px" colSpan=2>
+                                        <INPUT tabIndex=0 id=chkRemember
+                                               style="HEIGHT: 16px; WIDTH: 14px; LEFT: 0px; TOP: 0px" type=checkbox
+                                               name=chkRemember> Remember me
+                                    </TD>
+                                </TR>
+                                <TR id=SubmitNormal_TableRow>
+                                    <TD style="PADDING-TOP: 8px; PADDING-LEFT: 8px; PADDING-RIGHT: 8px"
+                                        colSpan=100 align=right>
+                                        @*<IMG tabIndex=0 id="submit" type="submit"
+                                             language=VBScript style="CURSOR: hand" border=0 name=imglogin
+                                             src="~/Views/Account/img2/btn_login.gif">*@
 
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    <!-- Javascript -->
-    @Scripts.Render("~/Bundles/jquery/js")
-    @Scripts.Render("~/Bundles/bootstrap/js")
-    @Scripts.Render("~/Bundles/common/js")
-    @Scripts.Render("~/Bundles/alert/js")
-    <script src="~/Views/Account/js/login.js"></script>
+                                        <input style="width: 30%;" id="submit" type="submit" value="Login">
+                                    </TD>
+                                </TR>
+                                <tr>
+                                    @*<TD></TD>*@
+                                    <TD colspan="2"><div style="padding: 5px 0 10px 5px; color:red; font-size: 12px;width: 268px;margin-top: 10px;" id="error-message"></div></TD>
+                                </tr>
+                                <TR>
+                                    <TD height=3></TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                    </TD>
+                </TR>
+                <TR id=InvalidLoginMsg_TableRow_1
+                    style="POSITION: absolute; VISIBILITY: hidden">
+                    <TD colSpan=100 align=center><FONT color=crimson></FONT></TD>
+                </TR>
+                <TR id=InvalidLoginMsg_TableRow_2
+                    style="POSITION: absolute; VISIBILITY: hidden">
+                    <TD style="PADDING-BOTTOM: 20px" colSpan=100 align=center>
+                        <FONT color=crimson></FONT>
+                    </TD>
+                </TR>
+                <TR>
+                    <TD height="100%" vAlign=bottom colSpan=100 noWrap align=left>
+                        <IFRAME style="HEIGHT: 50pt; WIDTH: 500pt"
+                                src="~/Views/Account/img2/Copyright.htm" frameBorder=no
+                                name=Copyright
+                                scrolling=no></IFRAME>
+                    </TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+        </form>
+        <!-- Javascript -->
+        @Scripts.Render("~/Bundles/jquery/js")
+        @Scripts.Render("~/Bundles/bootstrap/js")
+        @Scripts.Render("~/Bundles/common/js")
+        @Scripts.Render("~/Bundles/alert/js")
+        <script src="~/Views/Account/js/login.js"></script>
 
 </body>
 

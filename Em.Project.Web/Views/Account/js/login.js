@@ -107,7 +107,7 @@ function InitEvent() {
         beforeSubmit: function () {
             // To do something before submit
 
-            $("#submit").val("登录中...");
+            $("#submit").val("Logining...");
             $("#submit").attr("disabled", true);
         },
         success: function (data) {
@@ -117,7 +117,7 @@ function InitEvent() {
                 $('#error-message').html("");
                 window.location.href = data.result.message;
             } else {
-                $("#submit").val("登录");
+                $("#submit").val("Login");
                 $("#submit").attr("disabled", false);
                 $('#error-message').html(data.result.message);
                 $("#pwd").val("");
@@ -127,7 +127,7 @@ function InitEvent() {
         },
         error: function (e) {
         
-            $("#submit").val("登录");
+            $("#submit").val("Login");
             $("#submit").attr("disabled", false);
             $("#pwd").val("");
             $("#vertify").val("");

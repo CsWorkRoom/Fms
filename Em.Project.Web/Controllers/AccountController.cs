@@ -108,14 +108,16 @@ namespace Easyman.Web.Controllers
                 // 对密码进行AES解密
                 loginModel.Password = EncryptHelper.AesDecrpt(loginModel.Password);
 
-                var verifyCode = loginModel.VerifyCode;
-                var isMatch = ToolHelper.MatchVerifyCode(verifyCode);
+                #region 取消验证码
+                //var verifyCode = loginModel.VerifyCode;
+                //var isMatch = ToolHelper.MatchVerifyCode(verifyCode);
 
-                if (!isMatch)
-                {
-                    //throw new UserFriendlyException("登录失败", "验证码错误");
-                    throw new Exception("登录失败：验证码错误！");
-                }
+                //if (!isMatch)
+                //{
+                //    //throw new UserFriendlyException("登录失败", "验证码错误");
+                //    throw new Exception("登录失败：验证码错误！");
+                //}
+                #endregion
 
                 var loginResult = await GetLoginResultAsync(
                            loginModel.UsernameOrEmailAddress,

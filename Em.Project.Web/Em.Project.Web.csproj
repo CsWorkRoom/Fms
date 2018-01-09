@@ -1816,6 +1816,18 @@
     <Content Include="Abp\abp.css.map" />
     <Content Include="Common\Scripts\html5uploader\upload.php" />
     <Content Include="Echart\javascripts\api.map.js" />
+    <Content Include="Views\Account\img2\btn_login.gif" />
+    <Content Include="Views\Account\img2\btn_password.gif" />
+    <Content Include="Views\Account\img2\Copyright.htm" />
+    <Content Include="Views\Account\img2\CyberLAB.css" />
+    <Content Include="Views\Account\img2\Domain%252019x19.bmp" />
+    <Content Include="Views\Account\img2\global_masthead4_center.jpg" />
+    <Content Include="Views\Account\img2\global_masthead4_left.jpg" />
+    <Content Include="Views\Account\img2\global_masthead4_rtext.jpg" />
+    <Content Include="Views\Account\img2\hdr_extension.gif" />
+    <Content Include="Views\Account\img2\hdr_extension3.gif" />
+    <Content Include="Views\Account\img2\_util_ClientCookies_JVS.htm" />
+    <Content Include="Views\Account\img2\_util_ClientCookies_VBS.htm" />
     <Content Include="Views\File\css\showMonitFile.css" />
     <Content Include="Views\File\EditFileFormat.cshtml" />
     <Content Include="Views\Report\js\EditReport\ChartMain.js" />
@@ -2064,7 +2076,7 @@
     </Content>
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Scripts\sweetalert\sweet-alert.scss" />
-    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Login1.cshtml" />
     <Content Include="Views\Account\Login.less" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\RegisterResult.cshtml" />
@@ -2102,6 +2114,7 @@
     <Content Include="Views\Attr\EditAttrType.cshtml" />
     <Content Include="Views\Attr\EditAttr.cshtml" />
     <Content Include="Views\File\ShowMonitFile.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

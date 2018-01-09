@@ -1,0 +1,41 @@
+//************************************************************************<BR>
+// Scientific Software Script Library<BR>
+// Helper functions for Client-side scripting of session cookies (VBScript)<BR>
+// Copyright 2000 Scientific Software, Inc. All Rights Reserved.<BR>
+// <B>Do not modify in design view. Switch to source view.</B><BR>
+// ************************************************************************<BR>
+//<SCRIPT LANGUAGE="JavaScript">
+
+/*********************************************************************
+ * GetCookieExpirationDate
+ *    This function will return a string value that can be used
+ *    to set cookie expiration dates.
+ ********************************************************************/
+function GetCookieExpirationDate(nOffsetDays)
+   {
+   var date = new Date();
+   date.setUTCDate(date.getUTCDate() + nOffsetDays);
+   return(date.toUTCString());
+   }
+
+/*********************************************************************
+ * cookieEscape
+ *    This function will escape the given value.
+ ********************************************************************/
+function cookieEscape(sValue)
+   {
+   return escape(sValue).replace(/\+/g, "%2B");
+   }
+   
+/*********************************************************************
+ * cookieUnescape
+ *    This function will unescape the given value.
+ ********************************************************************/
+function cookieUnescape(sValue)
+   {
+   var sTemp = unescape(sValue);
+   return unescape(sTemp.replace(/\+/g, " "));
+   }
+
+//</SCRIPT>
+

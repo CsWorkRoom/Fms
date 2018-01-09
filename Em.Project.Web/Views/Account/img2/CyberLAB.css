@@ -1,0 +1,144 @@
+.clsObjectLabelText {
+	FONT-FAMILY: Verdana; FONT-VARIANT: normal; TEXT-TRANSFORM: capitalize; FONT-WEIGHT: bold; COLOR: black; FONT-STYLE: normal; BACKGROUND-COLOR: transparent
+}
+.clsNewItem {
+	CURSOR: hand; FONT-SIZE: 65%; HEIGHT: 0px; FONT-FAMILY: Arial; WIDTH: 60px; COLOR: #0033ff; BACKGROUND-COLOR: transparent
+}
+.clsDeleteSelected {
+	CURSOR: hand; FONT-SIZE: 65%; HEIGHT: 0px; FONT-FAMILY: Arial; WIDTH: 1px; COLOR: #0033ff; BACKGROUND-COLOR: transparent
+}
+.clsRetrieveSelected {
+	CURSOR: hand; FONT-SIZE: 65%; HEIGHT: 0px; FONT-FAMILY: Arial; WIDTH: 1px; COLOR: #0033ff; BACKGROUND-COLOR: transparent
+}
+.clsResultTableHeader {
+	BORDER-TOP: #d1d1d1 1px solid; BORDER-RIGHT: medium none; BORDER-BOTTOM: medium none; BORDER-LEFT: medium none
+}
+.clsResultTextHeader {
+	FONT-SIZE: 65%; FONT-FAMILY: Arial; COLOR: #a1a1a1
+}
+.clsResultFileName {
+	FONT-SIZE: 75%; FONT-FAMILY: Arial
+}
+.clsResultDescription {
+	FONT-SIZE: 75%; FONT-FAMILY: Arial; COLOR: green; DISPLAY: block
+}
+.clsResultEntry {
+	FONT-SIZE: 75%; FONT-FAMILY: Arial; COLOR: black; DISPLAY: block
+}
+.clsResultReason {
+	FONT-SIZE: 70%; FONT-FAMILY: Arial; COLOR: gray; FONT-STYLE: italic; DISPLAY: block
+}
+.clsResultLocation {
+	CURSOR: hand; FONT-SIZE: 65%; HEIGHT: 0px; FONT-FAMILY: Arial; WIDTH: 1px; COLOR: gray; FONT-STYLE: italic; BACKGROUND-COLOR: transparent
+}
+.clsResultNext {
+	CURSOR: hand; FONT-SIZE: 75%; HEIGHT: 0px; FONT-FAMILY: Arial; WIDTH: 50px; COLOR: #0033ff; BACKGROUND-COLOR: transparent
+}
+.clsResultPrev {
+	CURSOR: hand; FONT-SIZE: 75%; HEIGHT: 0px; FONT-FAMILY: Arial; WIDTH: 65px; COLOR: #0033ff; BACKGROUND-COLOR: transparent
+}
+IMG.clsResultOptions {
+	CURSOR: hand; BORDER-TOP: medium none; BORDER-RIGHT: medium none; BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BACKGROUND-COLOR: transparent
+}
+.clsMenu {
+	CURSOR: default; FONT-SIZE: 8pt; BORDER-TOP: skyblue 1px solid; FONT-FAMILY: Verdana; BORDER-RIGHT: steelblue 1px solid; WIDTH: 150px; BORDER-BOTTOM: steelblue 1px solid; POSITION: absolute; PADDING-BOTTOM: 2px; PADDING-TOP: 0px; PADDING-LEFT: 0px; LEFT: 185px; BORDER-LEFT: skyblue 1px solid; Z-INDEX: 1; DISPLAY: none; TOP: 475px; PADDING-RIGHT: 0px; BACKGROUND-COLOR: #99ccff
+}
+.clsMenuItem {
+	CURSOR: default; FONT-SIZE: 8pt; FONT-FAMILY: Verdana; WIDTH: 150px; FONT-WEIGHT: normal; COLOR: black; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; PADDING-LEFT: 5px; PADDING-RIGHT: 1px
+}
+.clsMenuItemDisabled {
+	CURSOR: default; FONT-SIZE: 8pt; FONT-FAMILY: Verdana; WIDTH: 150px; FONT-WEIGHT: normal; COLOR: #629dd4; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; PADDING-LEFT: 5px; PADDING-RIGHT: 1px
+}
+.clsMenuItemHighlight {
+	CURSOR: default; FONT-SIZE: 8pt; FONT-FAMILY: Verdana; WIDTH: 150px; FONT-WEIGHT: normal; COLOR: white; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; PADDING-LEFT: 5px; PADDING-RIGHT: 1px; BACKGROUND-COLOR: royalblue
+}
+.clsMenuItemSeparator {
+	HEIGHT: 50px; WIDTH: 150px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px
+}
+.clsSegmentedTableHeaderCell {
+	FONT-SIZE: 65%; BORDER-TOP: medium none; FONT-FAMILY: Arial; BORDER-RIGHT: medium none; VERTICAL-ALIGN: bottom; BORDER-BOTTOM: #d1d1d1 1px solid; COLOR: black; TEXT-ALIGN: left; BORDER-LEFT: medium none
+}
+.clsSegmentedTableSummaryCell {
+	FONT-SIZE: 65%; FONT-FAMILY: Arial; COLOR: #a1a1a1; TEXT-ALIGN: right
+}
+.clsSegmentedTableResultCell {
+	VERTICAL-ALIGN: top; TEXT-ALIGN: left
+}
+.clsSegmentedTableFooterCell {
+	FONT-SIZE: 65%; FONT-FAMILY: Arial; VERTICAL-ALIGN: bottom; COLOR: #a1a1a1; TEXT-ALIGN: right
+}
+IMG.clsSegmentedTableResultOption {
+	CURSOR: hand; BORDER-TOP: medium none; BORDER-RIGHT: medium none; BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BACKGROUND-COLOR: transparent
+}
+IMG.clsSegmentedTableResultImage {
+	BORDER-TOP: medium none; BORDER-RIGHT: medium none; BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BACKGROUND-COLOR: transparent
+}
+.clsGlowText {
+	CURSOR: hand; HEIGHT: 0px; WIDTH: 0px; COLOR: #0033ff; BACKGROUND-COLOR: transparent
+}
+.clsTableHeader {
+	CURSOR: hand; FONT-SIZE: 72%; TEXT-DECORATION: underline; FONT-FAMILY: Arial; FONT-WEIGHT: bold; COLOR: #ffffff; MARGIN-LEFT: 3px
+}
+.clsTableHeaderInactive {
+	FONT-SIZE: 72%; FONT-FAMILY: Arial; FONT-WEIGHT: bold; COLOR: #ffffff; MARGIN-LEFT: 3px
+}
+.clsSegmentedTableCell {
+	FONT-SIZE: 72%; FONT-FAMILY: Arial; TEXT-ALIGN: left
+}
+.clsAnchorText {
+	CURSOR: hand; TEXT-DECORATION: underline; COLOR: blue
+}
+.clsStaticText {
+	CURSOR: default; FONT-SIZE: 9pt; TEXT-DECORATION: none; FONT-FAMILY: Arial, 'MS Sans Serif'; COLOR: black
+}
+.clsEditBox {
+	FONT-SIZE: 9pt; TEXT-DECORATION: none; BORDER-TOP: deepskyblue 1px inset; FONT-FAMILY: Arial, 'Microsoft Sans Serif'; BORDER-RIGHT: deepskyblue 1px inset; BORDER-BOTTOM: deepskyblue 1px inset; COLOR: navy; BORDER-LEFT: deepskyblue 1px inset; BACKGROUND-COLOR: #d6e7ef
+}
+.clsStaticTextDim {
+	FONT-SIZE: 8pt; FONT-FAMILY: Arial; COLOR: gray
+}
+.clsTableHdrActive {
+	CURSOR: hand; FONT-SIZE: 9pt; TEXT-DECORATION: none; FONT-FAMILY: Arial; FONT-WEIGHT: bold; COLOR: white
+}
+.clsTableHdrInActive {
+	CURSOR: default; FONT-SIZE: 9pt; TEXT-DECORATION: none; FONT-FAMILY: Arial; FONT-WEIGHT: bold; COLOR: white
+}
+.clsTableHdrActiveAlt {
+	CURSOR: hand; FONT-SIZE: 9pt; TEXT-DECORATION: underline; FONT-FAMILY: Arial; FONT-WEIGHT: bold; COLOR: white
+}
+.clsTableDataActive {
+	CURSOR: hand; FONT-SIZE: 9pt; TEXT-DECORATION: none; FONT-FAMILY: Arial; COLOR: navy
+}
+.clsTableDataInActive {
+	CURSOR: default; FONT-SIZE: 9pt; TEXT-DECORATION: none; FONT-FAMILY: Arial; COLOR: black
+}
+.clsTableDataActiveHover {
+	CURSOR: hand; FONT-SIZE: 9pt; TEXT-DECORATION: underline; FONT-FAMILY: Arial; COLOR: navy
+}
+.clsTableHdrActiveFocus {
+	CURSOR: hand; FONT-SIZE: 9pt; TEXT-DECORATION: none; FONT-FAMILY: Arial; FONT-WEIGHT: bold; COLOR: #004060
+}
+.clsTableHdrActiveFocusHover {
+	CURSOR: hand; FONT-SIZE: 9pt; TEXT-DECORATION: underline; FONT-FAMILY: Arial; FONT-WEIGHT: bold; COLOR: #004060
+}
+.clsButtonFace {
+	FONT-SIZE: 8pt; TEXT-DECORATION: none; FONT-FAMILY: 'Microsoft Sans Serif'
+}
+.clsDlgText {
+	FONT-SIZE: 8pt; TEXT-DECORATION: none; FONT-FAMILY: 'Microsoft Sans Serif'
+}
+.clsLoginLink A {
+	CURSOR: hand; FONT-SIZE: 10pt; TEXT-DECORATION: none; FONT-FAMILY: Verdana,sans-serif; COLOR: gray
+}
+.clsLoginLink A:hover {
+	TEXT-DECORATION: underline; COLOR: #f00000
+}
+.clsLoginBody {
+	FONT-SIZE: 10pt; TEXT-DECORATION: none; FONT-FAMILY: Verdana, 'Microsoft Sans Serif' , Arial; FONT-WEIGHT: normal; COLOR: black
+}
+.clsInitPage {
+	FONT-SIZE: 14pt; TEXT-DECORATION: none; FONT-FAMILY: Verdana, 'Microsoft Sans Serif' , Arial; FONT-WEIGHT: normal; COLOR: navy
+}
+.clsInitPageDetail {
+	FONT-SIZE: 10pt; TEXT-DECORATION: none; FONT-FAMILY: Verdana, 'Microsoft Sans Serif' , Arial; FONT-WEIGHT: normal; COLOR: navy
+}
