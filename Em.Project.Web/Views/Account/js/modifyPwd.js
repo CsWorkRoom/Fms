@@ -12,7 +12,7 @@ $(document).ready(function () {
 //#endregion
 //密码大写输入提示  
 function capitalTip(id) {
-    var Html = "<div class='capslock' id='capital_"+id+"' style='display:none;float: right;'><span style='color:red;'>大写锁定已开启</span></div>";
+    var Html = "<div class='capslock' id='capital_" + id + "' style='display:none;float: right;'><span style='color:red;'>Capital has start-up</span></div>";
     $('#' + id).after(Html);
     var capital = false; //聚焦初始化，防止刚聚焦时点击Caps按键提示信息显隐错误  
 
@@ -67,12 +67,12 @@ function InitEvent() {
         var confirmPwd = $("#confirmPassword").val();
 
         if (oldPwd == "" || newPwd == "" || confirmPwd == "") {
-            abp.message.error("请填写旧密码和新密码", "提交失败");
+            abp.message.error("Please fill in the old code and the new password", "Save failure");
             return;
         }
 
         if (newPwd != confirmPwd) {
-            abp.message.error("两次新密码输入不一致，请重新输入！", "提交失败");
+            abp.message.error("The two new password input is not consistent, please retype！", "Save failure");
             return;
         }
 
@@ -86,7 +86,7 @@ function InitEvent() {
                 var result = data.result;
 
                 if (result.isError) {
-                    abp.message.error(result.message, "修改失败");
+                    abp.message.error(result.message, "Failure to modify");
 
                     if (result.code == 1) {
 
@@ -94,7 +94,7 @@ function InitEvent() {
                         $("#newPassword").val("");
                         $("#confirmPassword").val("");
                     } else if (result.code == 2) {
-                        abp.message.error(result.message, "修改失败");
+                        abp.message.error(result.message, "Failure to modify");
                         setTimeout(function () { top.location.href = "/Account/Logout"; }, 3000);
                     } else if (result.code == 3) {
 
@@ -105,12 +105,12 @@ function InitEvent() {
 
                     return;
                 } else {
-                    abp.message.success("系统将自动跳转至登录页面，请重新登录", "修改成功");
+                    abp.message.success("The system will automatically jump to the login page, please log in again", "Amend the success");
                     setTimeout(function () { top.location.href = bootPATH + "/Account/Logout"; }, 3000);
                 }
             },
             error: function (data) {
-                abp.message.error(data.result.message, "错误");
+                abp.message.error(data.result.message, "Failure");
             }
         });
     });

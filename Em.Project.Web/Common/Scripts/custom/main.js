@@ -480,8 +480,10 @@
                         $.learuntab.LeftMenu();//加载缩进时显示菜单
                     }
                     //是否显示顶级菜单
-                    if (IsNavbarShow())
-                        $(".left-bar").show();
+                    if (IsNavbarShow()){
+                        //$(".left-bar").show();
+                        $(".left-bar").hide();
+                    }
                     else
                         $(".left-bar").hide();
 
@@ -497,8 +499,10 @@
                             $("#sidebar-menu .treeview").unbind("mouseenter").unbind("mouseleave");//移出加载缩进时显示菜单 
                         }
                         //是否显示顶级菜单
-                        if (IsNavbarShow())
-                            $(".left-bar").show();
+                        if (IsNavbarShow()){
+                            //$(".left-bar").show();
+                            $(".left-bar").hide();
+                        }
                         else
                             $(".left-bar").hide();
 
@@ -554,9 +558,11 @@
                     userInfo = appSession.user.userName;
                 } else {
                     if (tenant) {
-                        userInfo = tenant.tenancyName + '\\' + user.userName;
+                        //userInfo = tenant.tenancyName + '\\' + user.userName;
+                        //userInfo = '.\\' + user.userName;
+                        userInfo = user.userName;
                     } else {
-                        userInfo = '.\\' + user.userName;
+                        userInfo = user.userName;
                     }
                 }
                 $('#userInfo').html(userInfo);
@@ -593,7 +599,7 @@ $(function () {
     });
     ChangeColor();//风格切换
 
-    TopTypeContent();
+    //TopTypeContent();
     $("#fa_help").on("click", function () {
         var urlCode = "~/Report/TbReport?code=contentHelp&helpCode=help";
         TopModeDialogUrl("h33333", "帮助文档", urlCode);
@@ -691,8 +697,10 @@ var IsNavbarShow = function () {
 //随着浏览器的变化而变化
 $(window).resize(function () {
     //是否显示顶部菜单
-    if (IsNavbarShow())
-        $(".left-bar").show();
+    if (IsNavbarShow()) {
+        //$(".left-bar").show();
+        $(".left-bar").hide();
+    }
     else
         $(".left-bar").hide();
     MenuMin();//小菜单状态显示的事件
