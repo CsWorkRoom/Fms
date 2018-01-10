@@ -340,7 +340,7 @@ namespace Easyman.Web.Controllers
         public ActionResult GetAttrListByMonitFile(long monitFileId)
         {
             string sql = string.Format(@"SELECT E.ID ATTR_TYPE_ID,
-                           NVL (E.NAME, '其他') ATTR_TYPE_NAME,
+                           NVL (E.NAME, 'Other') ATTR_TYPE_NAME,
                            D.ID ATTR_ID,
                            D.NAME ATTR_NAME,
                            A.ATTR_VAL

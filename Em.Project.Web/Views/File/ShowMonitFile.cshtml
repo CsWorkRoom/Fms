@@ -81,7 +81,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel"> <i class="fa fa-cog"></i> 文件属性</h4>
+                <h4 class="modal-title" id="myModalLabel"> <i class="fa fa-cog"></i> file propertys</h4>
             </div>
             <div class="modal-body">
                 @*<p>内容部分</p>*@
@@ -94,40 +94,10 @@
                     </header>
                     <!--选项卡内容部分-->
                     <div class="tab-content" id="attrTabBody" style="padding-top:12px;">
-                        <!--属性类-->
-                        @*<div role="tabpanel" class="tab-pane active form-horizontal" id="attrOne">
-                    <div class="form-group">
-                        <label for="Name1" class="col-xs-4 control-label" style="text-align:right">打分类型名123</label>
-                        <div class="col-xs-6">
-                            <label for="Name1" class="control-label" style="text-align:right">打分类型名123</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="Remark2" class="col-xs-4 control-label" style="text-align:right">描述说明123</label>
-                        <div class="col-xs-6">
-                            <label for="Name2" class="control-label" style="text-align:right">打分类型名123</label>
-                        </div>
-                    </div>
-                </div>*@
-                        <!--属性类二-->
-                        @*<div role="tabpanel" class="tab-pane form-horizontal" id="attrTwo">
-                    <div class="form-group">
-                        <label for="Name" class="col-xs-4 control-label" style="text-align:right">打分类型名</label>
-                        <div class="col-xs-6">
-                            <label for="Name" class="control-label" style="text-align:right">打分类型名</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="Remark" class="col-xs-4 control-label" style="text-align:right">描述说明</label>
-                        <div class="col-xs-6">
-                            <label for="Name" class="control-label" style="text-align:right">打分类型名</label>
-                        </div>
-                    </div>
-                </div>*@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" title="关闭"> <i class="fa fa-remove"></i> 关闭</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" title="close"> <i class="fa fa-remove"></i> close</button>
                     @*<button type="button" class="btn btn-success" onclick="SaveRdlcReport()" title="保存"> <i class="fa fa-save"></i> 保存</button>*@
                 </div>
                
@@ -419,10 +389,15 @@
                     //做该右击事件对应的事
                     switch (key)
                     {
+                        case "log"://日志
+                            var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
+                            //打开监控历史记录报表
+                            ModeDialogUrl('modalId' + modalId, 'file log', 'Report/TbReport?code=filelog&CUR_MONIT_FILE_ID=' + monitFileId, 870, 450);
+                            break;
                         case "history"://历史记录
                             var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
                             //打开监控历史记录报表
-                            ModeDialogUrl('modalId' + modalId, '历史记录', 'Report/TbReport?code=monitFileHis&CUR_MONIT_FILE_ID=' + monitFileId, 800, 450);
+                            ModeDialogUrl('modalId' + modalId, 'Version history', 'Report/TbReport?code=monitFileHis&CUR_MONIT_FILE_ID=' + monitFileId, 800, 450);
                             break;
                         case "open"://打开
                             break;
@@ -466,9 +441,10 @@
                     //window.console && console.log(m) || alert(m);
                 },
                 items: {
-                    "history": { name: "History", icon: "history" },
-                    "open": { name: "Open", icon: "open" },
-                    "attr": { name: "Attr", icon: "attr" }
+                    "log": { name: "Log", icon: "history" },//文件日志
+                    "history": { name: "Version history", icon: "history" },//版本历史
+                    "open": { name: "Open", icon: "open" },//打开
+                    "attr": { name: "propertys", icon: "attr" }//属性集合
                     //"edit": { name: "Edit", icon: "edit" },
                     //"cut": { name: "Cut", icon: "cut" },
                     //"copy": { name: "Copy", icon: "copy" },
