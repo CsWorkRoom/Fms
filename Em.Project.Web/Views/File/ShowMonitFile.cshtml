@@ -6,61 +6,55 @@
 
 @section Styles{
     @*@Styles.Render("~/Bundles/App/jqgrid/css")*@
-<link href="~/Views/File/css/showMonitFile.css" rel="stylesheet" />
-<link href="~/Common/plugins/ContextMenu/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="~/Views/File/css/showMonitFile.css" rel="stylesheet" />
+    <link href="~/Common/plugins/ContextMenu/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="~/Scripts/easyui/easyui.css" rel="stylesheet" />
     @*@Styles.Render("~/Bundles/ContextMenu/css")*@
     <style>
         .form-control {
             padding: 0px;
         }
 
-     </style>
+      
+    </style>
 }
 @*<input id="managerJson" type="text" value="@ViewData["managerJson"]" style="display:none" />
-<input id="month" type="text" value="@ViewData["month"]" style="display:none" />
-<input id="targetTagId" type="text" value="@ViewData["targetTagId"]" style="display:none" />
-<input id="districtId" type="text" value="@ViewData["districtId"]" style="display:none" />
-<input id="districtName" type="text" value="@ViewData["districtName"]" style="display:none" />*@
-    <div style=" height:120px; width:100%; border:1px solid #d2cccc; padding-top:20px;">
-        <h1>用户[@ViewData["userName"]]的资源管理器</h1>
-        <h6>[ 包含管辖终端、共享目录以及目录下的文件结构 ]</h6>
+    <input id="month" type="text" value="@ViewData["month"]" style="display:none" />
+    <input id="targetTagId" type="text" value="@ViewData["targetTagId"]" style="display:none" />
+    <input id="districtId" type="text" value="@ViewData["districtId"]" style="display:none" />
+    <input id="districtName" type="text" value="@ViewData["districtName"]" style="display:none" />*@
+
+   
+
+<div style=" height:90px; width:100%; border:1px solid #d2cccc; padding-top:25px; text-align:left;">
+    <b style=" margin-left:10px; font-size:30px;">
+        User [@ViewData["userName"]'s] Resource Manager
+    </b>
+    <p style=" margin-left:10px;">
+        [Contains the file structure under the jurisdiction terminal, the shared directory, and the directory]
+
+    </p>
+
+</div>
+<div class="content_wrap" style="border-bottom:1px solid #d2cccc; min-height:650px; background-color:antiquewhite">
+     <div class="easyui-layout" style="width:100%;height:100%;">
+         <div region="west" split="true" title="File Directory" style="width:300px;">
+             <ul id="treeDemo" class="ztree" style="overflow:auto;  overflow-x:hidden;  margin-top:0px;  width:100%; height:100%; border:none; background-color:antiquewhite "></ul>
+         </div>
+        <div id="fileModule" region="center" title="Document Detail" style="padding-top:50px;">
+           
+        </div>
     </div>
-<div class="content_wrap"  style="border-bottom:1px solid #d2cccc; min-height:500px; background-color:beige;" >
-    <div class="zTreeDemoBackground left" style=" height:100%; border-right:1px solid #d2cccc;padding-left:0px;" >
-        <ul id="treeDemo" class="ztree" style=" margin-top:0px; width:100%; height:100%;  border:none;"></ul>
+    
+    @*<div class="zTreeDemoBackground left" style=" height:100%;  border-right:5px solid #d2cccc;padding-left:0px;">
+        <ul id="treeDemo" class="ztree" style="overflow:auto; overflow-x:hidden; margin-top:0px; width:100%; height:100%; border:none; background-color:antiquewhite "></ul>
     </div>
     <div class="right" id="fileModule" style=" padding-top:10px; ">
-        @*<div style="cursor:pointer;float:left;width:70px;margin-left:35px" ><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>
-            <div style="cursor:pointer;float:left;width:70px;margin-left:35px"><span><i class="fa fa-folder-open-o fa-4x"></i><br />文件一</span></div>*@
 
+    </div>*@
 
-        @*<div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder fa-4x'></i><br/>文件一</span></div>*@
-        @*<div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
-            <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
-            <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
-            <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>
-            <div class="col-sm-2" style="cursor:pointer"><span><i class='fa fa-folder-open-o fa-4x'></i><br />文件二</span></div>*@
-    </div>
-   
 </div>
-<div style=" margin-top:10px;">
+<div style=" margin-top:10px; display:none;">
     <input type="text" name="fromPath" id="fromPath" />
     <input type="text" name="toPath" id="toPath" />
     <button type="button" id="btnCopy" onclick="copyFile()">复制</button>
@@ -81,7 +75,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel"> <i class="fa fa-cog"></i> file propertys</h4>
+                <h4 class="modal-title" id="myModalLabel"> <i class="fa fa-cog"></i> 文件属性</h4>
             </div>
             <div class="modal-body">
                 @*<p>内容部分</p>*@
@@ -89,18 +83,48 @@
                     <header role="heading">
                         <ul id="attrTabHeader" class="nav nav-tabs" role="tablist">
                             @*<li role="presentation" class="active"><a href="#attrOne" aria-controls="home" role="tab" data-toggle="tab">属性一</a></li>
-                    <li role="presentation"><a href="#attrTwo" aria-controls="profile" role="tab" data-toggle="tab">属性二</a></li>*@
+                                <li role="presentation"><a href="#attrTwo" aria-controls="profile" role="tab" data-toggle="tab">属性二</a></li>*@
                         </ul>
                     </header>
                     <!--选项卡内容部分-->
                     <div class="tab-content" id="attrTabBody" style="padding-top:12px;">
+                        <!--属性类-->
+                        @*<div role="tabpanel" class="tab-pane active form-horizontal" id="attrOne">
+                                <div class="form-group">
+                                    <label for="Name1" class="col-xs-4 control-label" style="text-align:right">打分类型名123</label>
+                                    <div class="col-xs-6">
+                                        <label for="Name1" class="control-label" style="text-align:right">打分类型名123</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Remark2" class="col-xs-4 control-label" style="text-align:right">描述说明123</label>
+                                    <div class="col-xs-6">
+                                        <label for="Name2" class="control-label" style="text-align:right">打分类型名123</label>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <!--属性类二-->
+                        @*<div role="tabpanel" class="tab-pane form-horizontal" id="attrTwo">
+                                <div class="form-group">
+                                    <label for="Name" class="col-xs-4 control-label" style="text-align:right">打分类型名</label>
+                                    <div class="col-xs-6">
+                                        <label for="Name" class="control-label" style="text-align:right">打分类型名</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Remark" class="col-xs-4 control-label" style="text-align:right">描述说明</label>
+                                    <div class="col-xs-6">
+                                        <label for="Name" class="control-label" style="text-align:right">打分类型名</label>
+                                    </div>
+                                </div>
+                            </div>*@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" title="close"> <i class="fa fa-remove"></i> close</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" title="关闭"> <i class="fa fa-remove"></i> 关闭</button>
                     @*<button type="button" class="btn btn-success" onclick="SaveRdlcReport()" title="保存"> <i class="fa fa-save"></i> 保存</button>*@
                 </div>
-               
+
             </div>
         </div>
     </div>
@@ -109,7 +133,8 @@
 @section scripts{
     @*@Scripts.Render("~/Bundles/ContextMenu/js")*@
     <script type="text/javascript" src="~/Common/plugins/ContextMenu/jquery.contextMenu.js"></script>
-<script type="text/javascript" src="~/Common/plugins/ContextMenu/jquery.ui.position.js"></script>
+    <script type="text/javascript" src="~/Common/plugins/ContextMenu/jquery.ui.position.js"></script>
+    <script type="text/javascript" src="~/Scripts/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript">
 
         function copyFile() {
@@ -132,231 +157,226 @@
             });
         }
 
-        
-          var setting = {
-              view: {
-                  selectedMulti: false
-              },
-              data: {
-                  key: {
-                      title:"title"
-                  },
-                  simpleData: {
-                      enable: true
-                  }
-              },
-              callback: {
-                  //beforeClick: beforeClick,
-                  //beforeCollapse: beforeCollapse,
-                  //beforeExpand: beforeExpand,
-                  //onCollapse: onCollapse,
-                  //onExpand: onExpand
-                  onClick: zTreeOnClick
-              }
-          };
+
+        var setting = {
+            view: {
+                selectedMulti: false                 
+            },
+            data: {
+                key: {
+                    title: "title"
+                },
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                //beforeClick: beforeClick,
+                //beforeCollapse: beforeCollapse,
+                //beforeExpand: beforeExpand,
+                //onCollapse: onCollapse,
+                //onExpand: onExpand
+                onClick: zTreeOnClick
+            }
+        };
 
         //点击节点后触发
-          function zTreeOnClick(event, treeId, treeNode) {
-              //debugger;
-              //根据当前节点获取对应的内容
-              switch (treeNode.nodeType)
-              {
-                  case "computer"://终端
-                      //debugger;
-                      getChildByComputer(treeNode.id.substring(treeNode.id.indexOf("_") + 1));
-                      break;
-                  case "folder"://共享目录
-                      getChildByFolder(treeNode.id.substring(treeNode.id.indexOf("_") + 1));
-                      break;
-                  case "file"://文件
-                      if (treeNode.isFolder)//为文件夹时
-                      {
-                          getChildByFile(treeNode.id.substring(treeNode.id.indexOf("_") + 1));
-                      }
-                      else
-                      {
-                          alert("当前不为文件夹");
-                      }
-                      break;
-              }
+        function zTreeOnClick(event, treeId, treeNode) {
+            //debugger;
+            //根据当前节点获取对应的内容
+            switch (treeNode.nodeType) {
+                case "computer"://终端
+                    //debugger;
+                    getChildByComputer(treeNode.id.substring(treeNode.id.indexOf("_") + 1));
+                    break;
+                case "folder"://共享目录
+                    getChildByFolder(treeNode.id.substring(treeNode.id.indexOf("_") + 1));
+                    break;
+                case "file"://文件
+                    if (treeNode.isFolder)//为文件夹时
+                    {
+                        getChildByFile(treeNode.id.substring(treeNode.id.indexOf("_") + 1));
+                    }
+                    else {
+                        alert("当前不为文件夹");
+                    }
+                    break;
+            }
 
-          };
+        };
 
         //双击文件或目录的下钻操作
-          function openModel(id,nodeType,isFolder)
-          {
-              switch (nodeType)
-              {
-                  case "computer":
-                      getChildByComputer(id);
-                      break;
-                  case "folder":
-                      getChildByFolder(id);
-                      break;
-                  case "file"://文件夹
-                      if (isFolder) {
-                          getChildByFile(id);
-                      }
-                      else alert("无子项");
-                      break;
-              }
-          }
+        function openModel(id, nodeType, isFolder) {
+            switch (nodeType) {
+                case "computer":
+                    getChildByComputer(id);
+                    break;
+                case "folder":
+                    getChildByFolder(id);
+                    break;
+                case "file"://文件夹
+                    if (isFolder) {
+                        getChildByFile(id);
+                    }
+                    else alert("无子项");
+                    break;
+            }
+        }
 
         //获取终端列表
-          function getComputerList() {
-              $.ajax({
-                  url: "GetComputerListByCurUser",
-                  type: 'post',
-                  success: function (data) {
-                      //debugger;
-                      zNodes = data.result;
-                      //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-                      loadHtml(data.result, "first");
-                  },
-                  error: function (xhr) {
-                      //debugger;
-                      abp.ui.clearBusy();
+        function getComputerList() {
+            $.ajax({
+                url: "GetComputerListByCurUser",
+                type: 'post',
+                success: function (data) {
+                    //debugger;
+                    zNodes = data.result;
+                    //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                    loadHtml(data.result, "first");
+                },
+                error: function (xhr) {
+                    //debugger;
+                    abp.ui.clearBusy();
 
-                  }
-              });
-          }
+                }
+            });
+        }
         //根据终端获取共享目录
-          function getChildByComputer(computerId)
-          {
-              $.ajax({
-                  url: bootPATH + "/api/services/api/Folder/GetFolderListByComputer?computerId=" + computerId,
-                  type: 'get',
-                  success: function (data) {
-                      //debugger;
-                      zNodes = data.result;
-                      //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-                      loadHtml(data.result, "computer");
-                  },
-                  error: function (xhr) {
-                      //debugger;
-                      abp.ui.clearBusy();
+        function getChildByComputer(computerId) {
+            $.ajax({
+                url: bootPATH + "/api/services/api/Folder/GetFolderListByComputer?computerId=" + computerId,
+                type: 'get',
+                success: function (data) {
+                    //debugger;
+                    zNodes = data.result;
+                    //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                    loadHtml(data.result, "computer");
+                },
+                error: function (xhr) {
+                    //debugger;
+                    abp.ui.clearBusy();
 
-                  }
-              });
-          }
+                }
+            });
+        }
 
-          //function getChildByFolder(folderId) {
-          //    $.ajax({
-          //        url: bootPATH + "/api/services/api/File/GetCurFileListByFolder?folderId=" + folderId,
-          //        type: 'get',
-          //        success: function (data) {
-          //            //debugger;
-          //            zNodes = data.result;
-          //            //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-          //            loadHtml(data.result, "folder");
-          //        },
-          //        error: function (xhr) {
-          //            //debugger;
-          //            abp.ui.clearBusy();
-          //        }
-          //    });
-          //}
+        //function getChildByFolder(folderId) {
+        //    $.ajax({
+        //        url: bootPATH + "/api/services/api/File/GetCurFileListByFolder?folderId=" + folderId,
+        //        type: 'get',
+        //        success: function (data) {
+        //            //debugger;
+        //            zNodes = data.result;
+        //            //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        //            loadHtml(data.result, "folder");
+        //        },
+        //        error: function (xhr) {
+        //            //debugger;
+        //            abp.ui.clearBusy();
+        //        }
+        //    });
+        //}
 
         //根据共享目录获得子文件（夹）
-          function getChildByFolder(folderId) {
-              //$.ajax({
-              //    url: bootPATH + "/api/services/api/File/GetCurFileListByFolder?folderId=" + folderId,
-              //    type: 'get',
-              //    success: function (data) {
-              //        //debugger;
-              //        zNodes = data.result;
-              //        //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-              //        loadHtml(data.result, "folder");
-              //    },
-              //    error: function (xhr) {
-              //        //debugger;
-              //        abp.ui.clearBusy();
-              //    }
-              //});
+        function getChildByFolder(folderId) {
+            //$.ajax({
+            //    url: bootPATH + "/api/services/api/File/GetCurFileListByFolder?folderId=" + folderId,
+            //    type: 'get',
+            //    success: function (data) {
+            //        //debugger;
+            //        zNodes = data.result;
+            //        //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            //        loadHtml(data.result, "folder");
+            //    },
+            //    error: function (xhr) {
+            //        //debugger;
+            //        abp.ui.clearBusy();
+            //    }
+            //});
 
-              $.ajax({
-                  url: "GetFileListByFolder",
-                  data: { folderId:folderId},
-                  type: 'post',
-                  success: function (data) {
-                      //debugger;
-                      zNodes = data.result;
-                      //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-                      loadHtml(data.result, "folder");
-                  },
-                  error: function (xhr) {
-                      //debugger;
-                      abp.ui.clearBusy();
+            $.ajax({
+                url: "GetFileListByFolder",
+                data: { folderId: folderId },
+                type: 'post',
+                success: function (data) {
+                    //debugger;
+                    zNodes = data.result;
+                    //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                    loadHtml(data.result, "folder");
+                },
+                error: function (xhr) {
+                    //debugger;
+                    abp.ui.clearBusy();
 
-                  }
-              });
-          }
+                }
+            });
+        }
 
         //根据文件id获取子项
-          function getChildByFile(fileId) {
+        function getChildByFile(fileId) {
 
-              $.ajax({
-                  url: "GetFileListByFile",
-                  data: { fileId: fileId },
-                  type: 'post',
-                  success: function (data) {
-                      //debugger;
-                      zNodes = data.result;
-                      //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-                      loadHtml(data.result, "file");
-                  },
-                  error: function (xhr) {
-                      //debugger;
-                      abp.ui.clearBusy();
+            $.ajax({
+                url: "GetFileListByFile",
+                data: { fileId: fileId },
+                type: 'post',
+                success: function (data) {
+                    //debugger;
+                    zNodes = data.result;
+                    //$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                    loadHtml(data.result, "file");
+                },
+                error: function (xhr) {
+                    //debugger;
+                    abp.ui.clearBusy();
 
-                  }
-              });
-          }
+                }
+            });
+        }
 
         //根据集合和类型拼凑内容
-          function loadHtml(dataArr, nodeType) {
-              var htm = "";
-              if (dataArr != null && dataArr.length > 0) {
-                  for (var i = 0; i < dataArr.length; i++) {
-                      switch (nodeType) {
-                          case "first":
-                              htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'computer\',false)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
-                              break;
-                          case "computer":
-                              htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id + ',\'folder\',false)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
-                              break;
-                          case "folder":
-                              //是否为文件夹的判断
-                              if (dataArr[i].isFolder) {
-                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
-                              }
-                              else {
-                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
-                              }
-                              break;
-                          case "file"://文件夹
-                              if (dataArr[i].isFolder) {
-                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
-                              }
-                              else {
-                                  htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
-                              }
-                              break;
-                      }
-                  }
-              }
-              $("#fileModule").empty();//清理子元素
-              $("#fileModule").html(htm);
-          }
+        function loadHtml(dataArr, nodeType) {
+            var htm = "";
+            if (dataArr != null && dataArr.length > 0) {
+                for (var i = 0; i < dataArr.length; i++) {
+                    switch (nodeType) {
+                        case "first":
+                            htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'computer\',false)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
+                            break;
+                        case "computer":
+                            htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id + ',\'folder\',false)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
+                            break;
+                        case "folder":
+                            //是否为文件夹的判断
+                            if (dataArr[i].isFolder) {
+                                htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
+                            }
+                            else {
+                                htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
+                            }
+                            break;
+                        case "file"://文件夹
+                            if (dataArr[i].isFolder) {
+                                htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                            }
+                            else {
+                                htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                            }
+                            break;
+                    }
+                }
+            }
+            $("#fileModule").empty();//清理子元素
+            $("#fileModule").html(htm);
+        }
 
         //获取当前时间点
         function getTime() {
-            var now= new Date(),
-			h=now.getHours(),
-			m=now.getMinutes(),
-			s=now.getSeconds(),
-			ms=now.getMilliseconds();
-            return (h+":"+m+":"+s+ " " +ms);
+            var now = new Date(),
+                h = now.getHours(),
+                m = now.getMinutes(),
+                s = now.getSeconds(),
+                ms = now.getMilliseconds();
+            return (h + ":" + m + ":" + s + " " + ms);
         }
 
         //首次加载当前用户左边树形菜单，管辖的终端列表
@@ -387,17 +407,11 @@
                     //获取文件编号
                     var monitFileId = dbClickAttr.substring(10, dbClickAttr.indexOf(','));
                     //做该右击事件对应的事
-                    switch (key)
-                    {
-                        case "log"://日志
-                            var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
-                            //打开监控历史记录报表
-                            ModeDialogUrl('modalId' + modalId, 'file log', 'Report/TbReport?code=filelog&CUR_MONIT_FILE_ID=' + monitFileId, 870, 450);
-                            break;
+                    switch (key) {
                         case "history"://历史记录
                             var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
                             //打开监控历史记录报表
-                            ModeDialogUrl('modalId' + modalId, 'Version history', 'Report/TbReport?code=monitFileHis&CUR_MONIT_FILE_ID=' + monitFileId, 800, 450);
+                            ModeDialogUrl('modalId' + modalId, '历史记录', 'Report/TbReport?code=monitFileHis&CUR_MONIT_FILE_ID=' + monitFileId, 800, 450);
                             break;
                         case "open"://打开
                             break;
@@ -441,10 +455,9 @@
                     //window.console && console.log(m) || alert(m);
                 },
                 items: {
-                    "log": { name: "Log", icon: "history" },//文件日志
-                    "history": { name: "Version history", icon: "history" },//版本历史
-                    "open": { name: "Open", icon: "open" },//打开
-                    "attr": { name: "propertys", icon: "attr" }//属性集合
+                    "history": { name: "History", icon: "history" },
+                    "open": { name: "Open", icon: "open" },
+                    "attr": { name: "Attr", icon: "attr" }
                     //"edit": { name: "Edit", icon: "edit" },
                     //"cut": { name: "Cut", icon: "cut" },
                     //"copy": { name: "Copy", icon: "copy" },
@@ -461,8 +474,7 @@
         });
 
         //拼凑各属性类的属性tabs
-        function MakeTabs(data)
-        {
+        function MakeTabs(data) {
             var attrArr = $.parseJSON(data);
             var attrTypeNameArr = GetAttrTypeArr(attrArr);//根据属性集合获取属性大类
 
@@ -509,8 +521,7 @@
         }
 
         //根据属性集合获取属性大类
-        function GetAttrTypeArr(attrArr)
-        {
+        function GetAttrTypeArr(attrArr) {
             var attrTypeNameArr = []//初始化属性类型集合
             if (attrArr != null && attrArr.length > 0) {
                 for (var i = 0; i < attrArr.length; i++) {
@@ -532,7 +543,7 @@
                 data: {
                     ip: "172.25.97.3",
                     folderName: "BusinessData",
-                    scriptNodeCaseId:"1"
+                    scriptNodeCaseId: "1"
                 },
                 success: function (e) {
                     abp.message.success("", "提交成功！");

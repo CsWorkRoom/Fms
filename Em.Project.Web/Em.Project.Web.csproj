@@ -1764,6 +1764,8 @@
     <Content Include="Scripts\components\ztree\zTreeStyle\img\zTreeStandard.gif" />
     <Content Include="Scripts\components\ztree\zTreeStyle\img\zTreeStandard.png" />
     <Content Include="Scripts\components\ztree\zTreeStyle\zTreeStyle.css" />
+    <Content Include="Scripts\easyui\easyui.css" />
+    <Content Include="Scripts\easyui\jquery.easyui.min.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular-route.min.js.map" />
