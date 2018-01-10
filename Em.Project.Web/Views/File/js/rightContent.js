@@ -132,10 +132,10 @@ function loadHtml(dataArr, nodeType) {
                     break;
                 case "file"://文件夹
                     if (dataArr[i].isFolder) {
-                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
                     }
                     else {
-                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x"></i><br />' + dataArr[i].name + '</span></div>';
+                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
                     }
                     break;
             }

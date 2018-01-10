@@ -28,7 +28,7 @@
 
     </p>
 </div>
-<div class="content_wrap" style="border-bottom:1px solid #d2cccc; min-height:650px; background-color:antiquewhite">
+<div class="content_wrap" style="border-bottom:1px solid #d2cccc; background-color:antiquewhite">
      <div class="easyui-layout" style="width:100%;height:100%;">
          <div region="west" split="true" title="File Directory" style="width:300px; overflow:hidden; ">
              <ul id="treeDemo" class="ztree" style="overflow:auto;  overflow-x:hidden;  margin-top:0px;  width:100%; height:100%; border:none; background-color:antiquewhite "></ul>
@@ -46,7 +46,7 @@
     </div>*@
 
 </div>
-<div style="margin-top:10px;">
+<div style="margin-top:10px;display:none">
     <input type="text" name="fromPath" id="fromPath" />
     <input type="text" name="toPath" id="toPath" />
     <button type="button" id="btnCopy" onclick="copyFile()">复制</button>
@@ -74,13 +74,13 @@
                 @*<p>内容部分</p>*@
                 <div class="form-body jarviswidget ">
                     <header role="heading">
-                        <ul id="attrTabHeader" class="nav nav-tabs" role="tablist">
+                        <ul id="attrTabHeader" class="nav nav-tabs" role="tablist" style="font-size:12px;">
                             @*<li role="presentation" class="active"><a href="#attrOne" aria-controls="home" role="tab" data-toggle="tab">属性一</a></li>
                                 <li role="presentation"><a href="#attrTwo" aria-controls="profile" role="tab" data-toggle="tab">属性二</a></li>*@
                         </ul>
                     </header>
                     <!--选项卡内容部分-->
-                    <div class="tab-content" id="attrTabBody" style="padding-top:12px;">
+                    <div class="tab-content" id="attrTabBody" style="padding-top:12px;font-size:12px;">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -102,8 +102,19 @@
 <script type="text/javascript" src="~/Views/File/js/rightContent.js"></script>
 <script type="text/javascript" src="~/Views/File/js/fileContextMenu.js"></script>
     <script type="text/javascript">
+        //随着浏览器的变化而变化
+        $(window).resize(function () {
+            var height_cont = $(window).height();
+            $("div.content_wrap").height(height_cont - 90);
+        });
+
         //首次加载当前用户左边树形菜单，管辖的终端列表
         $(document).ready(function () {
+            var height_cont = $(window).height();
+            $("div.content_wrap").height(height_cont - 90);
+
+            //$("div.content_wrap").attr("min-height", height_cont - 91);
+
             $.ajax({
                 url: "GetNodesByCurUser",
                 type: 'post',

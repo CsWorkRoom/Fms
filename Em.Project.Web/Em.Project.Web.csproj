@@ -2028,6 +2028,8 @@
     <Content Include="Views\Report\js\EditReport\TbMain.js" />
     <Content Include="Views\Report\js\EditReport\TbTopField.js" />
     <Content Include="Views\Report\RdlcReport.cshtml" />
+    <Content Include="Common\Images\img2\global_masthead4_center.jpg" />
+    <Content Include="Common\Images\img2\global_masthead4_left.jpg" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
