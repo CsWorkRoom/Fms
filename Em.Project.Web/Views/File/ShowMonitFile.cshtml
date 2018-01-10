@@ -28,25 +28,27 @@
 
     </p>
 </div>
-<div class="content_wrap" style="border-bottom:1px solid #d2cccc; min-height:650px; background-color:antiquewhite">
-     <div class="easyui-layout" style="width:100%;height:100%;">
-         <div region="west" split="true" title="File Directory" style="width:300px; overflow:hidden; ">
-             <ul id="treeDemo" class="ztree" style="overflow:auto;  overflow-x:hidden;  margin-top:0px;  width:100%; height:100%; border:none; background-color:antiquewhite "></ul>
-         </div>
-        <div id="fileModule" region="center" title="Document Detail" style="padding-top:50px;overflow:hidden; ">
-           
-        </div>
-    </div>
-    
-    @*<div class="zTreeDemoBackground left" style=" height:100%;  border-right:5px solid #d2cccc;padding-left:0px;">
-        <ul id="treeDemo" class="ztree" style="overflow:auto; overflow-x:hidden; margin-top:0px; width:100%; height:100%; border:none; background-color:antiquewhite "></ul>
-    </div>
-    <div class="right" id="fileModule" style=" padding-top:10px; ">
+<div class="content_wrap" style="border-bottom:1px solid #d2cccc; height:420px; background-color:antiquewhite">
 
-    </div>*@
+        <div class="easyui-layout" style="width:100%;height:100%;">
+            <div region="west" split="true" title="File Directory" style="width:300px; overflow:hidden;height:100%;">
+                <ul id="treeDemo" class="ztree" style="overflow:auto;  overflow-x:hidden;  margin-top:0px;  width:100%; height:100%; border:none; background-color:antiquewhite "></ul>
+            </div>
+            <div id="fileModule" region="center" title="Document Detail" style="padding-top:50px;overflow:hidden; ">
+
+            </div>
+        </div>
+
+
+    @*<div class="zTreeDemoBackground left" style=" height:100%;  border-right:5px solid #d2cccc;padding-left:0px;">
+            <ul id="treeDemo" class="ztree" style="overflow:auto; overflow-x:hidden; margin-top:0px; width:100%; height:100%; border:none; background-color:antiquewhite "></ul>
+        </div>
+        <div class="right" id="fileModule" style=" padding-top:10px; ">
+
+        </div>*@
 
 </div>
-<div style="margin-top:10px;">
+<div style="margin-top:10px; display:none;">
     <input type="text" name="fromPath" id="fromPath" />
     <input type="text" name="toPath" id="toPath" />
     <button type="button" id="btnCopy" onclick="copyFile()">复制</button>
@@ -104,6 +106,8 @@
     <script type="text/javascript">
         //首次加载当前用户左边树形菜单，管辖的终端列表
         $(document).ready(function () {
+
+            console.log(document.body.scrollHeight);
             $.ajax({
                 url: "GetNodesByCurUser",
                 type: 'post',
