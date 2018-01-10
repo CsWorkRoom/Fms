@@ -264,7 +264,8 @@ namespace Easyman.Service
         /// 还原服务端的文件到客户端
         /// </summary>
         /// <param name="monitFileId"></param>
-        public void DownFileByMonitFile(long? monitFileId)
+        [System.Web.Http.HttpGet]
+        public string DownFileByMonitFile(long? monitFileId)
         {
             ErrorInfo err = new ErrorInfo();//初始化
             err.IsError = false;
@@ -298,6 +299,12 @@ namespace Easyman.Service
             }
 
             //返回结果数据
+            if (err.IsError)
+            {
+                return err.Message;
+            }
+            else
+                return "";
         }
 
         /// <summary>

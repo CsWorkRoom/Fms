@@ -76,7 +76,8 @@ namespace Easyman.Service
         /// 还原服务端的文件到客户端
         /// </summary>
         /// <param name="monitFileId"></param>
-        void DownFileByMonitFile(long? monitFileId);
+        [System.Web.Http.HttpGet]
+        string DownFileByMonitFile(long? monitFileId);
         #endregion
 
         /// <summary>

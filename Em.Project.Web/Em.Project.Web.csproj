@@ -1832,6 +1832,9 @@
     <Content Include="Views\Account\img2\_util_ClientCookies_VBS.htm" />
     <Content Include="Views\File\css\showMonitFile.css" />
     <Content Include="Views\File\EditFileFormat.cshtml" />
+    <Content Include="Views\File\js\fileContextMenu.js" />
+    <Content Include="Views\File\js\rightContent.js" />
+    <Content Include="Views\File\js\ztreeContent.js" />
     <Content Include="Views\Report\js\EditReport\ChartMain.js" />
     <Content Include="Views\Report\js\ChartReport.js" />
     <Content Include="Echart\data\asset\data\aqi-beijing.json" />

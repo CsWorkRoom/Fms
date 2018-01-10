@@ -29,16 +29,19 @@ namespace Easyman.Web.Controllers
         private readonly IComputerAppService _ComputerAppService;
         private readonly IFolderAppService _FolderAppService;
         private readonly IFileAppService _FileAppService;
+        private readonly IMonitFileAppService _MonitFileAppService;
 
         public FileController(IFileFormatAppService FileFormatAppService,
             IComputerAppService ComputerAppService,
             IFolderAppService FolderAppService,
-            IFileAppService FileAppService)
+            IFileAppService FileAppService,
+            IMonitFileAppService MonitFileAppService)
         {
             _FileFormatAppService = FileFormatAppService;
             _ComputerAppService = ComputerAppService;
             _FolderAppService = FolderAppService;
             _FileAppService = FileAppService;
+            _MonitFileAppService = MonitFileAppService;
         }
 
         #endregion
@@ -366,5 +369,27 @@ namespace Easyman.Web.Controllers
 
         #endregion
 
+        #region 文件上传或下载
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <param name="monitFileId"></param>
+        /// <returns></returns>
+        public string UpFileByMonitFile(long? monitFileId)
+        {
+            var errMsg = _MonitFileAppService.UpFileByMonitFile(monitFileId);
+            return errMsg;
+        }
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="monitFileId"></param>
+        /// <returns></returns>
+        public string DownFileByMonitFile(long? monitFileId)
+        {
+            var errMsg = _MonitFileAppService.DownFileByMonitFile(monitFileId);
+            return errMsg;
+        }
+        #endregion
     }
 }
