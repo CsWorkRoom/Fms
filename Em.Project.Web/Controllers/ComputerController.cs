@@ -299,6 +299,7 @@ namespace Easyman.Web.Controllers
             foreach (FileInfo temp in textFiles)
             {
                 MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString()+"\\"+temp, false, temp.Name,  temp.FullName,  temp.Extension, pguid, computer,  folder);
+                if(_monitFile.MD5!="")
                 waitFiles.Add(_monitFile);                              
             }
             //获取当前目录下的文件夹
@@ -346,46 +347,60 @@ namespace Easyman.Web.Controllers
             }
             else
             {
-                _monitFile.MD5 = FileTool.GetFileHash(filePath);
-                _monitFile.ServerPath = masterPath + computer.Ip + "\\" + folder.Name + "\\" + _monitFile.MD5+fileFormat;
                 MonitFileModel relyMonitFile = GetPMonitFile(fullName);
                 _monitFile.RelyMonitFileId = relyMonitFile != null ? relyMonitFile.Id : 0;
+                try
+                {
+                    _monitFile.MD5 = FileTool.GetFileHash(filePath);
+                }
+                catch (Exception ex)
+                {
+                    if (_monitFile.RelyMonitFileId != 0)
+                        _monitFile.MD5 = relyMonitFile.MD5;
+                    else
+                        _monitFile.MD5 = "";
+                    MonitLogModel monitLogInfo = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:文件获取异常,"+ex.Message), LogTime = DateTime.Now };
+                    _MonitFileAppService.Log(monitLogInfo);
+                }
 
-                _monitFile.IsChange = CheckFile(relyMonitFile, _monitFile.MD5);
-                if (relyMonitFile == null)
+                if (_monitFile.MD5 != "")
                 {
-                    _monitFile.FileStatus = MonitStatus.Add;
-                }
-                else if (_monitFile.IsChange)
-                {
-                    _monitFile.FileStatus = MonitStatus.Modify;
-                }
-                else
-                {
-                    _monitFile.FileStatus = MonitStatus.UnChanged;
-                }
-
-                if (_monitFile.IsChange)
-                {
-                    var mf = from f in waitFiles
-                             where f.MD5 == _monitFile.MD5
-                             select f;
-                    if (mf != null && mf.Count() > 0)
+                    _monitFile.ServerPath = masterPath + computer.Ip + "\\" + folder.Name + "\\" + _monitFile.MD5 + fileFormat;
+                    _monitFile.IsChange = CheckFile(relyMonitFile, _monitFile.MD5);
+                    if (relyMonitFile == null)
                     {
-                        _monitFile.CopyStatus = CopyStatus.Success;
+                        _monitFile.FileStatus = MonitStatus.Add;
+                    }
+                    else if (_monitFile.IsChange)
+                    {
+                        _monitFile.FileStatus = MonitStatus.Modify;
                     }
                     else
                     {
-                        _monitFile.CopyStatus = CopyStatus.Wait;
+                        _monitFile.FileStatus = MonitStatus.UnChanged;
                     }
-                }
-                else
-                {
-                    _monitFile.CopyStatus = CopyStatus.Success;
-                }
 
-
-                _monitFile.Properties = FileTool.GetProperties(fullName);
+                    if (_monitFile.IsChange)
+                    {
+                        var mf = from f in waitFiles
+                                 where f.MD5 == _monitFile.MD5
+                                 select f;
+                        if (mf != null && mf.Count() > 0)
+                        {
+                            _monitFile.CopyStatus = CopyStatus.Success;
+                        }
+                        else
+                        {
+                            _monitFile.CopyStatus = CopyStatus.Wait;
+                        }
+                    }
+                    else
+                    {
+                        _monitFile.CopyStatus = CopyStatus.Success;
+                    }
+                    _monitFile.Properties = FileTool.GetProperties(fullName);
+                }
+               
             }
 
             return _monitFile;
@@ -480,7 +495,7 @@ namespace Easyman.Web.Controllers
                 fileLibrary.Name = monitFile.MD5;
                 fileLibrary.FileFormatId = fileFormat.Id;
                 fileLibrary.IsCopy = monitFile.IsDir ? true : false;
-                fileLibrary.Size = 100;
+              //  fileLibrary.Size = 100;
                 return _FileLibraryAppService.InsertOrUpdateFileLibrary(fileLibrary);
             }
             else {
