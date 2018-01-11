@@ -172,6 +172,15 @@ namespace Easyman.Users
                 user.IsDeleted = input.IsDeleted;
                 user.DistrictId = input.DistrictId;
                 user.DepartmentId = input.DepartmentId;
+
+                #region 20180111由cs添加
+                user.IsLockoutEnabled = false;//不启用自动锁定（如果为true，密码输入4次错误会启用锁定）
+                if(input.IsActive)
+                {
+                    user.LoginFailCount = 0;//如果启用用户，记录的登录失败的次数改为0
+                }
+                #endregion
+
                 if (input.EmailAddress == "")
                 {
                     user.EmailAddress = "{0}@139.com".FormatWith(input.UserName);
