@@ -153,29 +153,46 @@ namespace Easyman.Web.Controllers
 
             string userName =  computer.UserName.Trim();//lcz2016
             string pwd =  computer.Pwd.Trim();//lcz201314
-            // 通过IP 用户名 密码 访问远程目录  不需要权限
-            using (SharedTool tool = new SharedTool(userName, pwd, ip))
+
+            //if (ConnectShare.ConnectRemote(ip, userName, pwd)>0)
+            //{
+
+            //}
+
+                // 通过IP 用户名 密码 访问远程目录  不需要权限
+                using (SharedTool tool = new SharedTool(userName, pwd, ip))
             {
+                string s = "1";
                 try
                 {
+                  
                     string selectPath = string.Format(@"\\{0}\{1}", ip, folderName);
+                    s += "2";
                     var dicInfo = new DirectoryInfo(selectPath);//选择的目录信息 
                     _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:获取当前服务器的最新目录..."), LogTime = DateTime.Now });
-                    RecycleDir(dicInfo, computer, folder, null);
-                    
+                    s += "3";
+                    RecycleDir(dicInfo, computer, folder, null,ref s);
+                    s += "4";
+                    _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:成功遍历当前目录..."), LogTime = DateTime.Now });
+
                     if (waitFiles != null && waitFiles.Count > 0)
                     {
                         var files = from f in waitFiles
                                     where f.IsChange == true
                                     select f;
-                       
+
                         if (files != null && files.Count() > 0)
                         {
+                            s += "5";
                             FolderVersionModel folderVersion = CheckFolderVersion(folder.Id, "add");
+                            s += "6";
+                            s += folderVersion.Id.ToString();
                             CaseVersionModel caseVersionModel = SaveCaseVersion(folderVersion, scriptNodeCaseId);
-                            MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})下生成新版本号", ip, folderName), LogTime = DateTime.Now , CaseVersionId= caseVersionModel.Id};
+                            s += "7";
+                            s += caseVersionModel.Id.ToString();
+                            MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})下生成新版本号", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id };
                             _MonitFileAppService.Log(monitLogErr);
-                            _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})开始生产新的目录树",ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id });
+                            _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})开始生产新的目录树", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id });
                             foreach (MonitFileTemp f in waitFiles)
                             {
                                 if (string.IsNullOrEmpty(f.ParentId))
@@ -188,7 +205,7 @@ namespace Easyman.Web.Controllers
                             foreach (MonitFileModel f in deleteFileModels)
                             {
                                 f.Status = (short)MonitStatus.Delete;
-                                _MonitFileAppService.InsertOrUpdateMonitFile(f);                               
+                                _MonitFileAppService.InsertOrUpdateMonitFile(f);
                                 _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:({0})由于当前版本文件变动，上一版本标记为删除...", f.Name), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id });
 
                             }
@@ -201,18 +218,19 @@ namespace Easyman.Web.Controllers
                             _MonitFileAppService.Log(monitLogErr);
                         }
                     }
-                    else {
-                        MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})下暂无可监控的子目录", ip,folderName), LogTime = DateTime.Now };
+                    else
+                    {
+                        MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})下暂无可监控的子目录", ip, folderName), LogTime = DateTime.Now };
                         _MonitFileAppService.Log(monitLogErr);
                     }
-                   
-                   return string.Format("结果:true;监控提示:对{0}的{1}监控完成!",ip,folderName);
+
+                    return string.Format("结果:true;监控提示:对{0}的{1}监控完成!",ip,folderName);
                 }
                 catch (Exception ex)
                 {
                     MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控异常:此{0}的{1}监控发生异常,{2}", ip, folderName, ex.Message), LogTime = DateTime.Now };
                     _MonitFileAppService.Log(monitLogErr);
-                    return string.Format("结果:false;监控提示:对{0}的{1}监控发生异常,{2}", ip, folderName,ex.Message.ToString());
+                    return string.Format("结果:false;监控提示:对{0}的{1}监控发生异常,{2}{3}", ip, folderName,ex.Message.ToString(),s);
                 }
             }
 
@@ -303,24 +321,28 @@ namespace Easyman.Web.Controllers
         /// <param name="computer"></param>
         /// <param name="folder"></param>
         /// <param name="pguid"></param>
-        public void RecycleDir(DirectoryInfo directory, ComputerModel computer,FolderModel folder,string pguid)
+        public void RecycleDir(DirectoryInfo directory, ComputerModel computer,FolderModel folder,string pguid,ref string s)
         {
+            s += "-3.1-";
             //获取当前目录下的的文件    
             FileInfo[] textFiles = directory.GetFiles("*.*", SearchOption.TopDirectoryOnly);
             foreach (FileInfo temp in textFiles)
             {
+                s += "-"+ temp.Name+ "-";
                 MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString()+"\\"+temp, false, temp.Name,  temp.FullName,  temp.Extension, pguid, computer,  folder);
                 if(_monitFile.MD5!="")
                 waitFiles.Add(_monitFile);                              
             }
+            s += "-3.2-";
             //获取当前目录下的文件夹
             DirectoryInfo[] dic = directory.GetDirectories("*.*", SearchOption.TopDirectoryOnly);
             foreach (DirectoryInfo temp in dic)
             {
+                s += "-"+temp.Name+"-";
                 MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString(),true, temp.Name, temp.FullName, temp.Extension, pguid, computer, folder);
                 waitFiles.Add(_monitFile);
               
-                this.RecycleDir(temp, computer,  folder, _monitFile.Id);
+                this.RecycleDir(temp, computer,  folder, _monitFile.Id,ref s);
             }
         }
 
