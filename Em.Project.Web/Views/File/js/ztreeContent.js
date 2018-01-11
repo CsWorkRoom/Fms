@@ -38,7 +38,7 @@ function zTreeOnClick(event, treeId, treeNode) {
                 getChildByFile(treeNode.id.substring(treeNode.id.indexOf("_") + 1));
             }
             else {
-                alert("当前不为文件夹");
+                alert("Current file is not a folder");
             }
             break;
     }

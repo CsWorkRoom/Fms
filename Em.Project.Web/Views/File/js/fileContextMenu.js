@@ -51,7 +51,7 @@ $(function () {
                         error: function (xhr) {
                             //debugger;
                             abp.ui.clearBusy();
-                            alert("获取属性信息失败！");
+                            alert("Acquisition of attribute information failure！");
                         }
                     });
                     break;

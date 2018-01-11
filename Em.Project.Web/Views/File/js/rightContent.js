@@ -11,7 +11,7 @@ function openModel(id, nodeType, isFolder) {
             if (isFolder) {
                 getChildByFile(id);
             }
-            else alert("无子项");
+            else alert("No subitem");
             break;
     }
 }

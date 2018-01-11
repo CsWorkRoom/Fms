@@ -159,17 +159,17 @@
                     debugger;
                     if (data.result == "")
                     {
-                        alert("还原失败："+data.result);
+                        alert("restore success！");
                     }
                     else
                     {
-                        alert("还原成功！");
+                        alert("restore failed：" + data.result);
                     }
                 },
                 error: function (xhr) {
                     //debugger;
                     abp.ui.clearBusy();
-                    alert("还原失败！");
+                    alert("restore failed！");
                 }
             });
         }

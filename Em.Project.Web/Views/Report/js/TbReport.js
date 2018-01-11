@@ -195,7 +195,7 @@ function InitTbReport() {
     //初始化当前拼凑的字段对象
     var curRowF = {
         //label: "操作区",//标签内容
-        label: '<label title="操作区" style="width:98%;text-align:center">操作区</label>',
+        label: '<label title="Operation area" style="width:98%;text-align:center">Op area</label>',
         name: "actions",//字段编码
         align: "center",//横向位置
         sortable: false,//是否排序
