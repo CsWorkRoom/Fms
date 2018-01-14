@@ -61,7 +61,7 @@ namespace Easyman.Service
             {
                 if (_FileLibraryCase.GetAll().Any(p => p.Id != input.Id && p.Name == input.Name))
                 {
-                    return _FileLibraryCase.GetAll().FirstOrDefault(x => x.MD5 == input.MD5).MapTo<FileLibraryModel>();
+                    return _FileLibraryCase.GetAll().FirstOrDefault(x => x.Name == input.Name).MapTo<FileLibraryModel>();
 
                 }
                 //var entObj =input.MapTo<FileLibrary>();
@@ -139,7 +139,7 @@ namespace Easyman.Service
         {
             if (!string.IsNullOrEmpty(md5))
             {
-                var FileLibrary = _FileLibraryCase.FirstOrDefault(p => p.MD5 == md5.Trim());
+                var FileLibrary = _FileLibraryCase.FirstOrDefault(p => p.Name == md5.Trim());
                 if (FileLibrary != null)
                     return FileLibrary.MapTo<FileLibraryModel>();
                 else

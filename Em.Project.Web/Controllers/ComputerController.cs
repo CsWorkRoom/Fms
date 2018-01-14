@@ -162,17 +162,14 @@ namespace Easyman.Web.Controllers
                 // 通过IP 用户名 密码 访问远程目录  不需要权限
                 using (SharedTool tool = new SharedTool(userName, pwd, ip))
             {
-                string s = "1";
                 try
                 {
                   
                     string selectPath = string.Format(@"\\{0}\{1}", ip, folderName);
-                    s += "2";
                     var dicInfo = new DirectoryInfo(selectPath);//选择的目录信息 
                     _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:获取当前服务器的最新目录..."), LogTime = DateTime.Now });
-                    s += "3";
-                    RecycleDir(dicInfo, computer, folder, null,ref s);
-                    s += "4";
+                   
+                    RecycleDir(dicInfo, computer, folder, null);             
                     _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:成功遍历当前目录..."), LogTime = DateTime.Now });
 
                     if (waitFiles != null && waitFiles.Count > 0)
@@ -183,13 +180,8 @@ namespace Easyman.Web.Controllers
 
                         if (files != null && files.Count() > 0)
                         {
-                            s += "5";
                             FolderVersionModel folderVersion = CheckFolderVersion(folder.Id, "add");
-                            s += "6";
-                            s += folderVersion.Id.ToString();
                             CaseVersionModel caseVersionModel = SaveCaseVersion(folderVersion, scriptNodeCaseId);
-                            s += "7";
-                            s += caseVersionModel.Id.ToString();
                             MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})下生成新版本号", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id };
                             _MonitFileAppService.Log(monitLogErr);
                             _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})开始生产新的目录树", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id });
@@ -230,7 +222,7 @@ namespace Easyman.Web.Controllers
                 {
                     MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控异常:此{0}的{1}监控发生异常,{2}", ip, folderName, ex.Message), LogTime = DateTime.Now };
                     _MonitFileAppService.Log(monitLogErr);
-                    return string.Format("结果:false;监控提示:对{0}的{1}监控发生异常,{2}{3}", ip, folderName,ex.Message.ToString(),s);
+                    return string.Format("结果:false;监控提示:对{0}的{1}监控发生异常,{2}", ip, folderName,ex.Message.ToString());
                 }
             }
 
@@ -321,28 +313,26 @@ namespace Easyman.Web.Controllers
         /// <param name="computer"></param>
         /// <param name="folder"></param>
         /// <param name="pguid"></param>
-        public void RecycleDir(DirectoryInfo directory, ComputerModel computer,FolderModel folder,string pguid,ref string s)
+        public void RecycleDir(DirectoryInfo directory, ComputerModel computer,FolderModel folder,string pguid)
         {
-            s += "-3.1-";
             //获取当前目录下的的文件    
             FileInfo[] textFiles = directory.GetFiles("*.*", SearchOption.TopDirectoryOnly);
             foreach (FileInfo temp in textFiles)
             {
-                s += "-"+ temp.Name+ "-";
                 MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString()+"\\"+temp, false, temp.Name,  temp.FullName,  temp.Extension, pguid, computer,  folder);
                 if(_monitFile.MD5!="")
                 waitFiles.Add(_monitFile);                              
             }
-            s += "-3.2-";
+
             //获取当前目录下的文件夹
             DirectoryInfo[] dic = directory.GetDirectories("*.*", SearchOption.TopDirectoryOnly);
             foreach (DirectoryInfo temp in dic)
             {
-                s += "-"+temp.Name+"-";
+
                 MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString(),true, temp.Name, temp.FullName, temp.Extension, pguid, computer, folder);
                 waitFiles.Add(_monitFile);
               
-                this.RecycleDir(temp, computer,  folder, _monitFile.Id,ref s);
+                this.RecycleDir(temp, computer,  folder, _monitFile.Id);
             }
         }
 
@@ -360,6 +350,7 @@ namespace Easyman.Web.Controllers
         /// <returns></returns>
         private MonitFileTemp InitMonitFile(string filePath,bool isDir, string fileName, string fullName, string fileFormat, string pguid, ComputerModel computer, FolderModel folder)
         {
+           
             MonitFileTemp _monitFile = new MonitFileTemp();
             _monitFile.Id = Guid.NewGuid().ToString();
             _monitFile.ComputerId = computer.Id;
@@ -369,9 +360,11 @@ namespace Easyman.Web.Controllers
             _monitFile.ClientPath = fullName;
             _monitFile.FormatName = fileFormat;
             _monitFile.FolderId = folder.Id;
+            
             if (isDir)
             {
                 _monitFile.CopyStatus = CopyStatus.Success;
+                _monitFile.MD5 = fullName;
                 _monitFile.ServerPath = masterPath + computer.Ip + "\\" + folder.Name + "\\" + fileName;
                 MonitFileModel relyMonitFile = GetPMonitFile(fullName);
                 _monitFile.IsChange = relyMonitFile != null ? false : true;
@@ -380,14 +373,18 @@ namespace Easyman.Web.Controllers
             }
             else
             {
+                
                 MonitFileModel relyMonitFile = GetPMonitFile(fullName);
                 _monitFile.RelyMonitFileId = relyMonitFile != null ? relyMonitFile.Id : 0;
                 try
                 {
+                   
                     _monitFile.MD5 = FileTool.GetFileHash(filePath);
+                    
                 }
                 catch (Exception ex)
                 {
+                   
                     if (_monitFile.RelyMonitFileId != 0)
                         _monitFile.MD5 = relyMonitFile.MD5;
                     else
@@ -431,7 +428,17 @@ namespace Easyman.Web.Controllers
                     {
                         _monitFile.CopyStatus = CopyStatus.Success;
                     }
-                    _monitFile.Properties = FileTool.GetProperties(fullName);
+                   
+                    try
+                    {
+                       
+                        _monitFile.Properties = FileTool.GetProperties(fullName);
+                    }
+                    catch(Exception ex)
+                    {
+                       
+                    }
+                   
                 }
                
             }
@@ -525,7 +532,7 @@ namespace Easyman.Web.Controllers
             if (monitFile.IsChange)
             {
                 fileLibrary.MD5 = monitFile.MD5;
-                fileLibrary.Name = monitFile.MD5;
+                fileLibrary.Name = monitFile.ClientPath;
                 fileLibrary.FileFormatId = fileFormat.Id;
                 fileLibrary.IsCopy = monitFile.IsDir ? true : false;
               //  fileLibrary.Size = 100;
@@ -541,7 +548,7 @@ namespace Easyman.Web.Controllers
                         return null;
                 }
                 else
-                    return _FileLibraryAppService.GetFileLibraryByMD5(monitFile.MD5);
+                    return _FileLibraryAppService.GetFileLibraryByMD5(monitFile.ClientPath);
             }
         
         }
@@ -569,7 +576,7 @@ namespace Easyman.Web.Controllers
                 if (isDir)
                 {
                     fileFormat.IsFolder = true;
-                    fileFormat.Name = "文件夹";
+                    fileFormat.Name = "Folder";
                 }
                 else
                 {

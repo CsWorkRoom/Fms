@@ -114,28 +114,29 @@ function loadHtml(dataArr, nodeType) {
     var htm = "";
     if (dataArr != null && dataArr.length > 0) {
         for (var i = 0; i < dataArr.length; i++) {
+            var sname = dataArr[i].name.length > 10 ? dataArr[i].name.substring(0,10) + "..." : dataArr[i].name;
             switch (nodeType) {
                 case "first":
-                    htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'computer\',false)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
+                    htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'computer\',false)"  title="' + dataArr[i].name + '"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em; "></i><br />' + sname + '</span></div>';
                     break;
                 case "computer":
-                    htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id + ',\'folder\',false)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
+                    htm += '<div class="col-sm-2" style="cursor:pointer;float:left;width:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id + ',\'folder\',false)"  title="' + dataArr[i].name + '"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + sname + '</span></div>';
                     break;
                 case "folder":
                     //是否为文件夹的判断
                     if (dataArr[i].isFolder) {
-                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
+                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"  title="' + dataArr[i].name + '"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + sname + '</span></div>';
                     }
                     else {
-                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
+                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"  title="' + dataArr[i].name + '"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x" style="font-size:2em;"></i><br />' + sname + '</span></div>';
                     }
                     break;
                 case "file"://文件夹
                     if (dataArr[i].isFolder) {
-                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
+                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"  title="' + dataArr[i].name + '"><span><i class="fa fa-folder-open-o fa-4x" style="font-size:2em;"></i><br />' + sname + '</span></div>';
                     }
                     else {
-                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;word-wrap:break-word;overflow:hidden;" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x" style="font-size:2em;"></i><br />' + dataArr[i].name + '</span></div>';
+                        htm += '<div class="col-sm-2 context-menu-one" style="cursor:pointer;float:left;width:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"  title="' + dataArr[i].name + '"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x" style="font-size:2em;"></i><br />' + sname + '</span></div>';
                     }
                     break;
             }
