@@ -515,6 +515,8 @@ namespace Easyman.Web.Controllers
                     insertSql += string.Format(@" into  FM_FILE_ATTR(File_library_id,attr_id,attr_val,create_time) values  ({0},{1},'{2}',current_timestamp)", fileLibrary.Id.ToString(), attrModel.Id.ToString(), k.Value);
                 }
                 insertSql += "select 1 from  dual ";
+                string deleteSql = string.Format("delete from FM_FILE_ATTR where File_library_id ={0}", fileLibrary.Id.ToString());
+                DbHelper.Execute(deleteSql);
                 DbHelper.Execute(insertSql);
             }
         }
