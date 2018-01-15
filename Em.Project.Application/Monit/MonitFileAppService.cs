@@ -426,6 +426,7 @@ namespace Easyman.Service
                         Log(monitFile.CaseVersionId, monitFile.Id, (short)logType,msg);
                         err.IsError = true;
                         err.Message = msg;
+                        SaveMonitFile(monitFile, CopyStatus.NotExist);//修改monitFile的状态为不存在状态
                     }
                 }
             }

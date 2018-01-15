@@ -236,8 +236,10 @@
         });
 
         $("#right").on("click", ".log", function (e) {
-           // var data = JSON.parse($(this).parent().attr("option-data"));
-            var LOG_NODE_ID = $("#LOG_NODE_ID").val();
+            // var data = JSON.parse($(this).parent().attr("option-data"));
+            var data_CODE = JSON.parse($(this).parent().parent().attr("option-data"));
+            var LOG_NODE_ID = data_CODE.LOG_NODE_ID;
+            //var LOG_NODE_ID = $("#LOG_NODE_ID").val();
             if (LOG_NODE_ID == null || LOG_NODE_ID == "" || LOG_NODE_ID == 0) {
                 abp.message.info("未执行任务没有日志", "提示");
                 return false;

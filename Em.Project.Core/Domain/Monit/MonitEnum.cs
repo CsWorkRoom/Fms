@@ -57,7 +57,12 @@ namespace Easyman.Domain
         /// 拷贝失败
         /// </summary>
         [Description("拷贝失败")]
-        Fail = 3
+        Fail = 3,
+        /// <summary>
+        /// 源文件不存在
+        /// </summary>
+        [Description("源文件不存在")]
+        NotExist = 4
     }
 
     /// <summary>
