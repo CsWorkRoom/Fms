@@ -64,6 +64,16 @@ namespace Easyman.Service
         /// <param name="logType"></param>
         /// <param name="logMsg"></param>
         void Log(long? caseVersionId, long? mointFileId, short? logType, string logMsg);
+        /// <summary>
+        /// 插入一条监控日志(含日志批次ID)
+        /// </summary>
+        /// <param name="caseVersionId"></param>
+        /// <param name="monitLogVersionId"></param>
+        /// <param name="mointFileId"></param>
+        /// <param name="logType"></param>
+        /// <param name="logMsg"></param>
+        void Log(long? caseVersionId, long? monitLogVersionId, long? mointFileId, short? logType, string logMsg);
+
 
         /// <summary>
         /// 上传文件到服务器

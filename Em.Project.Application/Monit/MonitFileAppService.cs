@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.IO;
+using System.Data;
 
 namespace Easyman.Service
 {
@@ -28,18 +29,24 @@ namespace Easyman.Service
         private readonly IRepository<MonitFile,long> _MonitFileCase;
         private readonly IRepository<MonitLog, long> _MonitLogCase;
         private readonly IRepository<FileLibrary, long> _FileLibraryCase;
+        private readonly IRepository<MonitLogVersion, long> _MonitLogVersionCase;
+
         /// <summary>
         /// 构造函数注入MonitFile仓储
         /// </summary>
         /// <param name="MonitFileCase"></param>
         /// <param name="MonitLogCase"></param>
+        /// <param name="FileLibraryCase"></param>
+        /// <param name="MonitLogVersionCase"></param>
         public MonitFileAppService(IRepository<MonitFile, long> MonitFileCase,
             IRepository<MonitLog, long> MonitLogCase,
-            IRepository<FileLibrary, long> FileLibraryCase)
+            IRepository<FileLibrary, long> FileLibraryCase,
+            IRepository<MonitLogVersion, long> MonitLogVersionCase)
         {
             _MonitFileCase = MonitFileCase;
             _MonitLogCase = MonitLogCase;
             _FileLibraryCase = FileLibraryCase;
+            _MonitLogVersionCase = MonitLogVersionCase;
         }
         #endregion
 
@@ -208,6 +215,28 @@ namespace Easyman.Service
             _MonitLogCase.Insert(log);//插入日志
         }
         /// <summary>
+        /// 插入一条监控日志(含日志批次ID)
+        /// </summary>
+        /// <param name="caseVersionId"></param>
+        /// <param name="monitLogVersionId"></param>
+        /// <param name="mointFileId"></param>
+        /// <param name="logType"></param>
+        /// <param name="logMsg"></param>
+        public void Log(long? caseVersionId, long? monitLogVersionId, long? mointFileId, short? logType, string logMsg)
+        {
+            var log = new MonitLog
+            {
+                CaseVersionId = caseVersionId,
+                MonitLogVersionId = monitLogVersionId,
+                MonitFileId = mointFileId,
+                LogType = logType,
+                LogMsg = logMsg,
+                LogTime = DateTime.Now
+            };
+            _MonitLogCase.Insert(log);//插入日志
+        }
+
+        /// <summary>
         /// 上传文件到服务器
         /// </summary>
         /// <param name="monitFileId"></param>
@@ -293,8 +322,48 @@ namespace Easyman.Service
                 else
                 {
                     caseVersionId = monitFile.CaseVersionId;//赋值
-                    //Log(caseVersionId, monitFileId, logType, "开始把monitFileId[" + monitFileId.ToString() + "]文件从服务端拷贝到客户端");
-                    CopyFile(monitFile, LogType.DownLog,ref err);
+
+                    //验证当前monitFileId是否有正还原中的进程
+                    var hasTask = _MonitLogVersionCase.FirstOrDefault(p => p.MonitFileId == monitFile.Id && p.Status == (short)LogStatus.Executing);
+                    if (hasTask != null)
+                    {
+                        err.IsError = true;
+                        string msg = "文件[" + monitFile.Name + "]已存在正在还原中的进程,当前还原任务被取消！";
+                        err.Message = msg;
+                    }
+                    else
+                    {
+                        //创建日志版本 
+                        MonitLogVersion logVersion = new MonitLogVersion();
+                        logVersion.LogType = (short)LogType.DownLog;
+                        logVersion.MonitFileId = monitFileId;
+                        logVersion.Status = (short)LogStatus.Executing;
+                        logVersion.BeginTime = DateTime.Now;
+                        var logVersionId = _MonitLogVersionCase.InsertAndGetId(logVersion);//插入到库
+
+                        //判断文件是否为文件夹
+                        if (monitFile.FileFormat.IsFolder.Value)//为文件夹时
+                        {
+                            CopyDirectory(monitFile,ref err, logVersionId);
+                        }
+                        else
+                        {
+                            CopyFile(monitFile, LogType.DownLog, ref err, logVersionId);
+                        }
+
+                        if (err.IsError)//有错时
+                        {
+                            logVersion.Status = (short)LogStatus.Fail;//失败
+                            logVersion.EndTime = DateTime.Now;
+                            _MonitLogVersionCase.Update(logVersion);
+                        }
+                        else
+                        {
+                            logVersion.Status = (short)LogStatus.Success;//成功
+                            logVersion.EndTime = DateTime.Now;
+                            _MonitLogVersionCase.Update(logVersion);
+                        }
+                    }
                 }
             }
 
@@ -306,13 +375,193 @@ namespace Easyman.Service
             else
                 return "";
         }
+        //复制文件夹信息
+        private void CopyDirectory(MonitFile monitFile, ref ErrorInfo err, long? monitLogVersionId = null)
+        {
+            if (monitFile != null)
+            {
+                string clientPath = monitFile.ClientPath;//客户端路径
+                string serverPath = monitFile.ServerPath;//服务端路径
+
+                string userName = monitFile.Folder.Computer.UserName;// 
+                string pwd = monitFile.Folder.Computer.Pwd;// 
+                string ip = monitFile.Folder.Computer.Ip;
+
+                //验证文件是否为未删除状态
+                if (monitFile.Status == (short)MonitStatus.Delete)
+                {
+                    err.IsError = true;
+                    err.Message = "文件[" + monitFile.Name + "]为已删除状态，不能还原。";
+                    return;
+                }
+
+
+                //#region 1、创建日志版本，得到版本编号. logVersionId
+                //MonitLogVersion logVersion = new MonitLogVersion();
+                //logVersion.LogType = (short)LogType.DownLog;
+                //logVersion.MonitFileId = monitFile.Id;
+                //logVersion.Status = (short)LogStatus.Executing;
+                //logVersion.BeginTime = DateTime.Now;
+                //var logVersionId = _MonitLogVersionCase.InsertAndGetId(logVersion);//插入到库
+                //#endregion
+
+                // 登录客户端：通过IP 用户名 密码 访问远程目录
+                using (SharedTool tool = new SharedTool(userName, pwd, ip))
+                {
+                    #region 获得当前文件所在共享目录的所有文件列表 clientFiles
+                    string selectPath = string.Format(@"\\{0}\{1}", ip, monitFile.Folder.Name);
+                    var dicInfo = new DirectoryInfo(selectPath);//选择的目录信息 
+                    FileInfo[] clientFiles = GetFilesByDir(dicInfo);//获得客户端所有文件
+                    #endregion
+
+                    //新文件夹路径.MonitConst.RestoreStr还原的特殊符号
+                    string tempClientPath = clientPath.Substring(0, clientPath.LastIndexOf(@"\") + 1) + monitFile.Name + MonitConst.RestoreStr;
+                    DirectoryInfo di = new DirectoryInfo(tempClientPath);
+                    // 没有时就创建
+                    if (di.Exists == false)
+                        di.Create();
+                    //查询待还原的文件夹的子目录结构
+                    string sql = string.Format(@"    SELECT A.ID,A.PARENT_ID,
+                                                   A.NAME,
+                                                   A.CLIENT_PATH,
+                                                   A.SERVER_PATH,
+                                                   A.MD5,
+                                                   B.IS_FOLDER
+                                              FROM FM_MONIT_FILE A
+                                                   LEFT JOIN FM_FILE_FORMAT B ON (A.FILE_FORMAT_ID = B.ID)
+                                             WHERE A.STATUS <> 1
+                                        CONNECT BY PRIOR A.ID = PARENT_ID
+                                        START WITH A.ID = {0}", monitFile.Id);
+                    DataTable fileTb = DbHelper.ExecuteGetTable(sql);
+                    if (fileTb != null && fileTb.Rows.Count > 0)
+                    {
+                        //给新文件目录生成子文件信息
+                        RecursionDir(monitFile.Id, null, ref err, fileTb, clientPath, tempClientPath, clientFiles);
+                    }
+
+                    //验证目录生成结果
+                    if (err.IsError)
+                    {
+                        //当文件还原有错误信息时：删除新文件夹.返回错误信息
+                        Directory.Delete(tempClientPath, true);
+                    }
+                    else//注意以下文件名称变更过程可能出现失败，需要进行异常处理
+                    {
+                        //修改原文件夹名字
+                        Directory.Move(clientPath, clientPath + MonitConst.MiddleStr);
+                        //将新文件夹名改为原文件夹名
+                        Directory.Move(tempClientPath, clientPath);
+                        //删除原文件夹
+                        Directory.Delete(clientPath + MonitConst.MiddleStr, true);
+                    }
+                }
+
+
+
+
+                //2、在客户端路径根目录建立一个新的文件夹（文件夹+时间戳）
+
+                //查询sql，得到当前客户端文件夹以下的所有文件信息datatable
+
+                //新增递归方法：传入monitFileId,在新文件夹下生成对应的文件和文件夹，直至所有生成完成
+                //注意项：为避免大文件带来的复制瓶颈，先根据md5在本机共享目录下去检查是否具有相同文件，如果存在直接copy
+                //如果没有，再去远端服务器下载到本机目录
+
+                //修改本机原文件夹名字，将新建的文件夹该名为原名，删除原文件夹
+
+                //注意项：如果以上环节中出错，处理方式：如果拷贝文件出错，是否要跳出整个还原？已经还原的文件是否要做删除？
+                //是否要留给下次还原来遍历如果有相同文件可直接使用，然后是如何删除文件的问题？
+                //另外需要在监控服务处，过滤这种还原的临时文件存储名称（）
+                //在每次还原的时候，需要先验证该文件夹或文件是否已处于还原状态。
+
+            }
+        }
+
+        private void RecursionDir(long? beginMonitFileId, DataRow curDataRow, ref ErrorInfo err,DataTable fileTb,string oldRootPath,string newRootPath, FileInfo[] clientFiles)
+        {
+            if (fileTb != null && fileTb.Rows.Count > 0)
+            {
+                if (beginMonitFileId != null)//第一个层级:顶点
+                {
+                    foreach (DataRow dr in fileTb.Rows)
+                    {
+                        //父级不为空且等于初始值时
+                        if (!string.IsNullOrEmpty(dr["PARENT_ID"].ToString()) && dr["PARENT_ID"].ToString() == beginMonitFileId.Value.ToString())
+                        {
+                            //调用递归:扫描并建立子文件结构
+                            RecursionDir(null, dr, ref err, fileTb, oldRootPath, newRootPath, clientFiles);
+                        }
+                    }
+                }
+                else
+                {
+                    var curClientPath = curDataRow["CLIENT_PATH"].ToString();//原客户端路径
+                    var newClientPath = newRootPath + curClientPath.Substring(oldRootPath.Length);//文件新路径
+                    //当前文件为文件夹时
+                    if (curDataRow["IS_FOLDER"].ToString() == "1")
+                    {
+                        DirectoryInfo di = new DirectoryInfo(newClientPath);
+                        // 没有时就创建
+                        if (di.Exists == false)
+                            di.Create();
+
+                        //调用递归:扫描并建立子文件结构
+                        foreach (DataRow dr in fileTb.Rows)
+                        {
+                            if (!string.IsNullOrEmpty(dr["PARENT_ID"].ToString()) && dr["PARENT_ID"].ToString() == curDataRow["ID"].ToString())
+                            {
+                                RecursionDir(null, dr, ref err, fileTb, oldRootPath, newRootPath, clientFiles);
+                            }
+                        }
+                    }
+                    else//为文件时
+                    {
+                        FileInfo file = null;
+                        //依次遍历获得文件，判断其md5值是否与当前文件相同
+                        foreach (FileInfo temp in clientFiles)
+                        {
+                            try
+                            {
+                                string curMd5 = FileTool.GetFileHash(temp.FullName);
+                                if (!string.IsNullOrEmpty(curMd5) && curMd5 == curDataRow["MD5"].ToString())
+                                {
+                                    file = temp;
+                                    break;//跳出循环
+                                }
+                            }
+                            catch
+                            {
+                            }
+                        }
+                        //验证当前文件是否与客户端文件匹配
+                        //匹配时
+                        if (file != null)
+                        {
+                            File.Copy(file.FullName, newClientPath, true);//将客户机文件复制一份当新目录
+                        }
+                        else//不匹配时，从服务端拷贝文件
+                        {
+                            var curServerPath = curDataRow["SERVER_PATH"].ToString();
+                            File.Copy(curServerPath, newClientPath, true);//从客户端拷贝文件到服务端(覆盖式拷贝)
+                        }
+                    }
+                }
+            }
+        }
+
+        //根据目录获得其下的所有文件
+        private FileInfo[] GetFilesByDir(DirectoryInfo directory)
+        {
+            FileInfo[] textFiles = directory.GetFiles("*.*", SearchOption.AllDirectories);
+            return textFiles;
+        }
 
         /// <summary>
         /// 根据LogType拷贝文件
         /// </summary>
         /// <param name="monitFile"></param>
         /// <param name="logType"></param>
-        private void CopyFile(MonitFile monitFile,LogType logType,ref ErrorInfo err)
+        private void CopyFile(MonitFile monitFile,LogType logType,ref ErrorInfo err,long?monitLogVersionId=null)
         {
             //考虑让这个方法返回bool类型，用于在还原时的判断依据
             if (monitFile != null)
@@ -348,7 +597,7 @@ namespace Easyman.Service
                                 //参数1：要复制的源文件路径，
                                 //参数2：复制后的目标文件路径，
                                 //参数3：是否覆盖相同文件名
-                                Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "开始把编号monitFileId[" + monitFile.Id.ToString() + "]的文件从客户端["+ fromPath + "]迁移到服务端["+ toPath + "]");
+                                Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "开始把编号monitFileId[" + monitFile.Id.ToString() + "]的文件从客户端["+ fromPath + "]迁移到服务端["+ toPath + "]");
                                 SaveMonitFile(monitFile, CopyStatus.Excuting);//修改monitFile的状态为拷贝中
                                 try
                                 {
@@ -359,19 +608,19 @@ namespace Easyman.Service
                                     fileL.IsCopy = true;
                                     _FileLibraryCase.Update(fileL);
                                     var msg = "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从客户端[" + fromPath + "]迁移到服务端[" + toPath + "]拷贝成功";
-                                    Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, msg);
+                                    Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                 }
                                 catch (Exception e)
                                 {
                                     var msg = "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从客户端[" + fromPath + "]迁移到服务端[" + toPath + "]拷贝失败：" + e.Message;
-                                    Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, msg);
+                                    Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                     err.IsError = true;
                                     err.Message = msg;
                                     SaveMonitFile(monitFile, CopyStatus.Fail);//修改monitFile的状态为失败
                                 }
                                 break;
                             case LogType.DownLog:
-                                Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "开始把编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]");
+                                Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "开始把编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]");
                                 //SaveMonitFile(monitFile, CopyStatus.Excuting);
 
                                 //先重命名客户端原来文件
@@ -381,7 +630,7 @@ namespace Easyman.Service
                                 try
                                 {
                                     RemaneFile(toPath, renamePath);//重命名
-                                    Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "把客户端文件重命名成功:从[" + toPath + "]到[" + renamePath + "]");
+                                    Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "把客户端文件重命名成功:从[" + toPath + "]到[" + renamePath + "]");
                                     try
                                     {
                                         File.Copy(fromPath, toPath, false);//从服务端拷贝文件到客户端(非覆盖式拷贝)
@@ -389,15 +638,15 @@ namespace Easyman.Service
                                         try
                                         {
                                             File.Delete(renamePath);//删除重命名的文件
-                                            Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, "删除客户端重命名的文件[" + renamePath + "]成功");
+                                            Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "删除客户端重命名的文件[" + renamePath + "]成功");
 
                                             var msg = "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]拷贝成功";
-                                            Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, msg);
+                                            Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                         }
                                         catch (Exception e)
                                         {
                                             var msg = "删除客户端重命名的文件[" + renamePath + "]失败:" + e.Message;
-                                            Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, msg);
+                                            Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                             err.IsError = false;
                                             err.Message = msg;//警告信息
                                         }
@@ -405,7 +654,7 @@ namespace Easyman.Service
                                     catch (Exception e)
                                     {
                                         var msg = "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]拷贝失败：" + e.Message;
-                                        Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, msg);
+                                        Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                         err.IsError = true;
                                         err.Message = msg;
                                     }
@@ -413,7 +662,7 @@ namespace Easyman.Service
                                 catch (Exception e)
                                 {
                                     var msg = "把客户端文件重命名失败:从[" + toPath + "]到[" + renamePath + "]拷贝失败：" + e.Message;
-                                    Log(monitFile.CaseVersionId, monitFile.Id, (short)logType, msg);
+                                    Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                     err.IsError = true;
                                     err.Message = msg;
                                 }
@@ -423,7 +672,7 @@ namespace Easyman.Service
                     else
                     {
                         var msg = "源文件[" + fromPath + "]不存在";
-                        Log(monitFile.CaseVersionId, monitFile.Id, (short)logType,msg);
+                        Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType,msg);
                         err.IsError = true;
                         err.Message = msg;
                         SaveMonitFile(monitFile, CopyStatus.NotExist);//修改monitFile的状态为不存在状态

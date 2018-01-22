@@ -13,6 +13,9 @@ namespace Easyman.Domain
         /// </summary>
         public const string RestoreStr = "abcdefg$$lcz&&cs";//命名规则后面可以调整
 
-        //其他可能需要排除的字符串定义
+        /// <summary>
+        /// 原文件删除前被重命名的后缀
+        /// </summary>
+        public const string MiddleStr = "abcdefghig$$lcz&&cs12345";//命名规则后面可以调整
     }
 }

@@ -105,4 +105,5 @@ namespace Easyman.Domain
         [Description("执行中")]
         Executing = 2
     }
+
 }
