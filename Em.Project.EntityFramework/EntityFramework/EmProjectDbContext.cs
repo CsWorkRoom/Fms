@@ -183,6 +183,7 @@ namespace Easyman.EntityFramework
         public virtual IDbSet<FolderVersion> FolderVersion { get; set; }
         public virtual IDbSet<MonitFile> MonitFile { get; set; }
         public virtual IDbSet<MonitLog> MonitLog { get; set; }
+        public virtual IDbSet<MonitLogVersion> MonitLogVersion { get; set; }
 
         #endregion
 

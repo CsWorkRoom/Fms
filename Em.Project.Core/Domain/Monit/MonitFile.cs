@@ -109,6 +109,12 @@ namespace Easyman.Domain
         public virtual short? CopyStatus { get; set; }
 
         /// <summary>
+        /// 拷贝状态时间
+        /// </summary>
+        [Column("COPY_STATUS_TIME")]
+        public virtual DateTime? CopyStatusTime { get; set; }
+
+        /// <summary>
         /// 备注
         /// </summary>
         [Column("REMARK"), StringLength(200)]

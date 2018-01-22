@@ -86,4 +86,23 @@ namespace Easyman.Domain
         [Description("从服务端还原到客户端")]
         DownLog = 2
     }
+
+    public enum LogStatus
+    {
+        /// <summary>
+        /// 失败
+        /// </summary>
+        [Description("失败")]
+        Fail = 0,
+        /// <summary>
+        /// 成功
+        /// </summary>
+        [Description("成功")]
+        Success = 1,
+        /// <summary>
+        /// 执行中
+        /// </summary>
+        [Description("执行中")]
+        Executing = 2
+    }
 }

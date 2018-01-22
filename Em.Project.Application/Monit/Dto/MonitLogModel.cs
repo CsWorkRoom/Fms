@@ -20,6 +20,11 @@ namespace Easyman.Dto
         public virtual long? CaseVersionId { get; set; }
 
         /// <summary>
+        /// 还原和下载批次单ID
+        /// </summary>
+        public virtual long? MonitLogVersionId { get; set; }
+
+        /// <summary>
         /// 文件及文件夹ID
         /// </summary>
         public virtual long? MonitFileId { get; set; }
