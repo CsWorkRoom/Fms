@@ -68,6 +68,7 @@
     <Compile Include="Domain\Export\DownData.cs" />
     <Compile Include="Domain\Export\ExportData.cs" />
     <Compile Include="Domain\Export\ExportConfig.cs" />
+    <Compile Include="Domain\File\FileUpload.cs" />
     <Compile Include="Domain\File\FileClaim.cs" />
     <Compile Include="Domain\File\FileFormat.cs" />
     <Compile Include="Domain\File\FileAttr.cs" />

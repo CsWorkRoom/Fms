@@ -184,7 +184,7 @@ namespace Easyman.EntityFramework
         public virtual IDbSet<MonitFile> MonitFile { get; set; }
         public virtual IDbSet<MonitLog> MonitLog { get; set; }
         public virtual IDbSet<MonitLogVersion> MonitLogVersion { get; set; }
-
+        public virtual IDbSet<FileUpload> FileUpload { get; set; }
         #endregion
 
         #region 配置
