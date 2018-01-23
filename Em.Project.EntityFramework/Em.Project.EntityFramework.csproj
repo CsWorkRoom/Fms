@@ -109,6 +109,34 @@
     <Compile Include="EmProjectDataModule.cs" />
     <Compile Include="EntityFramework\EmProjectDbContext.cs" />
     <Compile Include="EntityFramework\Repositories\EasymanRepositoryBase.cs" />
+    <Compile Include="Migrations\201712161455493_initfms1.cs" />
+    <Compile Include="Migrations\201712161455493_initfms1.Designer.cs">
+      <DependentUpon>201712161455493_initfms1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712170349127_initfms2.cs" />
+    <Compile Include="Migrations\201712170349127_initfms2.Designer.cs">
+      <DependentUpon>201712170349127_initfms2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712181436242_initfms3.cs" />
+    <Compile Include="Migrations\201712181436242_initfms3.Designer.cs">
+      <DependentUpon>201712181436242_initfms3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712190129526_initfms4.cs" />
+    <Compile Include="Migrations\201712190129526_initfms4.Designer.cs">
+      <DependentUpon>201712190129526_initfms4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801050914224_initfms5.cs" />
+    <Compile Include="Migrations\201801050914224_initfms5.Designer.cs">
+      <DependentUpon>201801050914224_initfms5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801210718253_initfms6.cs" />
+    <Compile Include="Migrations\201801210718253_initfms6.Designer.cs">
+      <DependentUpon>201801210718253_initfms6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801230915485_initfms7.cs" />
+    <Compile Include="Migrations\201801230915485_initfms7.Designer.cs">
+      <DependentUpon>201801230915485_initfms7.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AbpZeroDbMigrator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SeedData\DefaultEditionsCreator.cs" />
@@ -149,6 +177,29 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201712161455493_initfms1.resx">
+      <DependentUpon>201712161455493_initfms1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712170349127_initfms2.resx">
+      <DependentUpon>201712170349127_initfms2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712181436242_initfms3.resx">
+      <DependentUpon>201712181436242_initfms3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712190129526_initfms4.resx">
+      <DependentUpon>201712190129526_initfms4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801050914224_initfms5.resx">
+      <DependentUpon>201801050914224_initfms5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801210718253_initfms6.resx">
+      <DependentUpon>201801210718253_initfms6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801230915485_initfms7.resx">
+      <DependentUpon>201801230915485_initfms7.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
