@@ -228,7 +228,7 @@ function InitTbReport() {
         //列表菜单
         if (strLi != "") {
            var menuId = "menuData" + intRowNum;
-           lbl += '<span class="dropdown" style="margin-left: 2px;"><a style="cursor: pointer;" type="button" class="aLabel" onmousemove="ShowMoreMenu(\'' + menuId + '\',this)" ><i id="icon_type_img" class="fa fa-book"></i>更多<span class="caret"></span></a><ul id="' + menuId + '" style="display:none">' + strLi + '</ul></span>';
+           lbl += '<span class="dropdown" style="margin-left: 2px;"><a style="cursor: pointer;" type="button" class="aLabel" onmousemove="ShowMoreMenu(\'' + menuId + '\',this)" ><i id="icon_type_img" class="fa fa-book"></i>more<span class="caret"></span></a><ul id="' + menuId + '" style="display:none">' + strLi + '</ul></span>';
         }
 
         intRowNum++;

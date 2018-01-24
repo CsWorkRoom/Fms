@@ -369,7 +369,7 @@ namespace Easyman.Web.Controllers
 
         #endregion
 
-        #region 文件上传或下载
+        #region 文件上传或还原
         /// <summary>
         /// 上传文件
         /// </summary>
@@ -381,13 +381,13 @@ namespace Easyman.Web.Controllers
             return errMsg;
         }
         /// <summary>
-        /// 下载文件
+        /// 还原文件
         /// </summary>
         /// <param name="monitFileId"></param>
         /// <returns></returns>
-        public string DownFileByMonitFile(long? monitFileId)
+        public string RestoreFileByMonitFile(long? monitFileId)
         {
-            var errMsg = _MonitFileAppService.DownFileByMonitFile(monitFileId);
+            var errMsg = _MonitFileAppService.RestoreFileByMonitFile(monitFileId);
             return errMsg;
         }
         #endregion

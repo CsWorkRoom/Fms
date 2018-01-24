@@ -87,7 +87,13 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="monitFileId"></param>
         [System.Web.Http.HttpGet]
-        string DownFileByMonitFile(long? monitFileId);
+        string RestoreFileByMonitFile(long? monitFileId);
+
+        [System.Web.Http.HttpGet]
+        string GenerateFile(long? monitFileId);
+
+        [System.Web.Http.HttpGet]
+        void DeleteFile(string fileName);
         #endregion
 
         /// <summary>

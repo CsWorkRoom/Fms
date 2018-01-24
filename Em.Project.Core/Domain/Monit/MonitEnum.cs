@@ -76,15 +76,20 @@ namespace Easyman.Domain
         [Description("监控日志类型")]
         MonitLog = 0,
         /// <summary>
-        /// 从客户端拷贝到服务端
+        /// 上传（客户端到服务端拷贝）
         /// </summary>
-        [Description("从客户端拷贝到服务端")]
+        [Description("上传（客户端到服务端拷贝）")]
         UpLog = 1,
         /// <summary>
-        /// 从服务端还原到客户端
+        /// 还原（服务端到客户端还原）
         /// </summary>
-        [Description("从服务端还原到客户端")]
-        DownLog = 2
+        [Description("还原（服务端到客户端还原）")]
+        RestoreLog = 2,
+        /// <summary>
+        /// 下载（客户web上下载）
+        /// </summary>
+        [Description("下载（客户web上下载）")]
+        DownLog = 3
     }
 
     public enum LogStatus

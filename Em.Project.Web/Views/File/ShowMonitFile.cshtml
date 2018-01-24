@@ -173,29 +173,6 @@
                 }
             });
         }
-        //还原文件
-        function restoreFile(monitFileId) {
-            $.ajax({
-                url: bootPATH + "/api/services/api/MonitFile/DownFileByMonitFile?monitFileId=" + monitFileId,
-                type: 'get',
-                success: function (data) {
-                    debugger;
-                    if (data.result == "")
-                    {
-                        alert("restore success！");
-                    }
-                    else
-                    {
-                        alert("restore failed：" + data.result);
-                    }
-                },
-                error: function (xhr) {
-                    //debugger;
-                    abp.ui.clearBusy();
-                    alert("restore failed！");
-                }
-            });
-        }
 
         //function getChildByFolder(folderId) {
         //    $.ajax({
@@ -222,6 +199,28 @@
                 s = now.getSeconds(),
                 ms = now.getMilliseconds();
             return (h + ":" + m + ":" + s + " " + ms);
+        }
+
+        //还原文件
+        function downMFilebyId(monitFileId) {
+            $.ajax({
+                url: bootPATH + "/api/services/api/MonitFile/GenerateFile?monitFileId=" + monitFileId,
+                type: 'get',
+                success: function (data) {
+                    debugger;
+                    if (data.result == "") {
+                        alert("restore success！");
+                    }
+                    else {
+                        alert("restore failed：" + data.result);
+                    }
+                },
+                error: function (xhr) {
+                    //debugger;
+                    abp.ui.clearBusy();
+                    alert("restore failed！");
+                }
+            });
         }
 
         function CheckFolder() {

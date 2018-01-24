@@ -17,5 +17,9 @@ namespace Easyman.Domain
         /// 原文件删除前被重命名的后缀
         /// </summary>
         public const string MiddleStr = "abcdefghig$$lcz&&cs12345";//命名规则后面可以调整
+
+        //下载特殊字符串
+        public const string DownStr = "higklmn$$lcz&&cs6789";//命名规则后面可以调整
+
     }
 }

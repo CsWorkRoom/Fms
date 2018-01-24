@@ -55,15 +55,23 @@ $(function () {
                         }
                     });
                     break;
+                case "restore"://还原
+                    restoreFile(monitFileId);
+                    break;
+                case "down"://下载
+                    DownFile(monitFileId);
+                    break;
             }
 
             //var m = "clicked: " + key;
             //window.console && console.log(m) || alert(m);
         },
         items: {
-            "log": { name: "Log", icon: "history" },//文件日志
-            "history": { name: "Version history", icon: "history" },//版本历史
             "open": { name: "Open", icon: "open" },//打开
+            "restore": { name: "Restore", icon: "history" },//还原
+            "down": { name: "Down", icon: "history" },//下载
+            //"log": { name: "Log", icon: "history" },//文件日志
+            "history": { name: "Version history", icon: "history" },//版本历史
             "attr": { name: "propertys", icon: "attr" }//属性集合
             //"edit": { name: "Edit", icon: "edit" },
             //"cut": { name: "Cut", icon: "cut" },
@@ -144,3 +152,93 @@ function GetAttrTypeArr(attrArr) {
     return attrTypeNameArr;
 }
 //#endregion
+
+//还原文件
+function restoreFile(monitFileId) {
+    $.ajax({
+        url: bootPATH + "/api/services/api/MonitFile/RestoreFileByMonitFile?monitFileId=" + monitFileId,
+        type: 'get',
+        success: function (data) {
+            debugger;
+            if (data.result == "") {
+                alert("restore success！");
+            }
+            else {
+                alert("restore failed：" + data.result);
+            }
+        },
+        error: function (xhr) {
+            //debugger;
+            abp.ui.clearBusy();
+            alert("restore failed！");
+        }
+    });
+}
+//下载文件和文件夹的压缩包
+function DownFile(monitFileId)
+{
+    $.ajax({
+        url: bootPATH + "/api/services/api/MonitFile/GenerateFile?monitFileId=" + monitFileId,
+        type: 'get',
+        success: function (data) {
+            debugger;
+            var fileName = data.result;
+            if (fileName != "") {
+                window.downloadFile(bootPATH + fileName);
+                //下载完成后，删除生成的源
+                $.ajax({
+                    url: bootPATH + "/api/services/api/MonitFile/DeleteFile?fileName=" + fileName,
+                    type: 'get',
+                });
+            }
+            else
+            {
+                alert("Download failure！");
+            }
+        },
+        error: function (xhr) {
+            return "error！";
+        }
+    });
+}
+
+//下载网站指定路径的文件
+window.downloadFile = function (sUrl) {
+
+    //iOS devices do not support downloading. We have to inform user about this.
+    if (/(iP)/g.test(navigator.userAgent)) {
+        alert('Your device does not support files downloading. Please try again in desktop browser.');
+        return false;
+    }
+
+    //If in Chrome or Safari - download via virtual link click
+    if (window.downloadFile.isChrome || window.downloadFile.isSafari) {
+        //Creating new link node.
+        var link = document.createElement('a');
+        link.href = sUrl;
+
+        if (link.download !== undefined) {
+            //Set HTML5 download attribute. This will prevent file from opening if supported.
+            var fileName = sUrl.substring(sUrl.lastIndexOf('/') + 1, sUrl.length);
+            link.download = fileName;
+        }
+
+        //Dispatching click event.
+        if (document.createEvent) {
+            var e = document.createEvent('MouseEvents');
+            e.initEvent('click', true, true);
+            link.dispatchEvent(e);
+            return true;
+        }
+    }
+
+    // Force file download (whether supported by server).
+    if (sUrl.indexOf('?') === -1) {
+        sUrl += '?download';
+    }
+
+    window.open(sUrl, '_self');
+    return true;
+}
+window.downloadFile.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
