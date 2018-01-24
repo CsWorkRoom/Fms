@@ -23,10 +23,12 @@
     <b style="margin-left:10px; font-size:30px;">
         User [@ViewData["userName"]'s] Resource Manager
     </b>
-    <p style="margin-left:10px;">
+    @*<p style="margin-left:10px;">
         [Contains the file structure under the jurisdiction terminal, the shared directory, and the directory]
-
-    </p>
+    </p>*@
+    <div style="float:left"><input type="text" name="searchName" id="searchName" /><button type="button" id="btnSearch" onclick="SearchFile()">Search</button>
+    <p>There are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum" >0</a> current error monitoring data</p>
+    </div>
 </div>
 <div class="content_wrap" style="border-bottom:1px solid #d2cccc; background-color:antiquewhite">
      <div class="easyui-layout" style="width:100%;height:100%;">
@@ -152,6 +154,24 @@
                 }
             });
             getComputerList();//获取终端管辖终端列表
+
+            //获得错误节点数
+            $.ajax({
+                url: bootPATH + "/api/services/api/MonitFile/GetErrorNumByUser",
+                type: 'get',
+                success: function (data) {
+                    debugger;
+                    if (data.result != "") {
+                        $("#errNum").text(data.result).css("color","red");
+                    }
+                    else {
+                    }
+                },
+                error: function (xhr) {
+                    //debugger;
+                    abp.ui.clearBusy();
+                }
+            });
         });
 
         function copyFile() {
@@ -258,5 +278,26 @@
                 }
             });
         }
-    </script>
+  
+        //搜索文件
+        function SearchFile()
+        {
+            var fileName = $("#searchName").val();
+            if(fileName!=null&&fileName!="")
+            {
+                //弹出一个新页面（报表）,显示搜索结果
+                var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
+                //打开监控历史记录报表
+                ModeDialogUrl('modalId' + modalId, 'file list', 'Report/TbReport?code=fileList&NAME=' + fileName, 1100, 500);
+            }
+        }
+
+        function LookErrlog()
+        {
+            //弹出一个新页面（报表）,显示搜索结果
+            var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
+            //打开监控历史记录报表
+            ModeDialogUrl('modalId' + modalId, 'error node', 'Report/TbReport?code=errNodeCase', 1100, 500);
+        }
+      </script>
 }

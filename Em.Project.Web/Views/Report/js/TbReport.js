@@ -408,8 +408,8 @@ function InitTbReport() {
                     var condiCtrTwo = '';//字符串形式
                     //#region condiCtrTwo
                     condiCtrTwo += '<div class="jgrid-filter-operator" style="padding-left:0px;padding-right:0px;z-index:1;"><select id="cond_' + ftCtrName + '" name="cond_' + ftCtrName + '" class="form-control option">';
-                    condiCtrTwo += '   <option value="=">等于</option>'
                     condiCtrTwo += '   <option value="like">包含</option>'
+                    condiCtrTwo += '   <option value="=">等于</option>'
                     condiCtrTwo += '   <option value="in">存在</option>'
                     condiCtrTwo += '</select></div>'
                     //#endregion

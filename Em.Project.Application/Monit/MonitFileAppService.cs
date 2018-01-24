@@ -326,7 +326,7 @@ namespace Easyman.Service
                     caseVersionId = monitFile.CaseVersionId;//赋值
 
                     //验证当前monitFileId是否有正还原中的进程
-                    var hasTask = _MonitLogVersionCase.FirstOrDefault(p => p.MonitFileId == monitFile.Id && p.Status == (short)LogStatus.Executing);
+                    var hasTask = _MonitLogVersionCase.FirstOrDefault(p => p.MonitFileId == monitFile.Id && p.Status == (short)LogStatus.Executing && p.LogType == logType);
                     if (hasTask != null)
                     {
                         err.IsError = true;
@@ -423,13 +423,15 @@ namespace Easyman.Service
 
                             if (monitFile.Name.LastIndexOf('.') != -1)//有后缀
                             {
-                                string newFileName = monitFile.Name.Insert(monitFile.Name.LastIndexOf('.') - 1, "_" + tempVar);
-                                tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
+                                string newFileName = monitFile.Name.Insert(monitFile.Name.LastIndexOf('.'), "_" + tempVar);
+                                //tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
+                                tempPath = AppDomain.CurrentDomain.BaseDirectory + newFileName;
                             }
                             else//无后缀
                             {
                                 string newFileName = monitFile.Name + "_" + tempVar;
-                                tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
+                                //tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
+                                tempPath = AppDomain.CurrentDomain.BaseDirectory + newFileName;
                             }
                             try
                             {
@@ -448,7 +450,8 @@ namespace Easyman.Service
                                 Log(caseVersionId, logVersionId, monitFileId, logType, msg);
                                 fileName = tempPath;
                             }
-                            catch { }
+                            catch (Exception ex){
+                            }
                         }
                         else
                         {
@@ -474,7 +477,41 @@ namespace Easyman.Service
         [System.Web.Http.HttpGet]
         public void DeleteFile(string fileName)
         {
-            File.Delete(HttpContext.Current.Server.MapPath("/") + fileName);
+            //File.Delete(HttpContext.Current.Server.MapPath("/") + fileName);
+            File.Delete(AppDomain.CurrentDomain.BaseDirectory + fileName);
+        }
+
+        [System.Web.Http.HttpGet]
+        public int GetErrorNumByUser()
+        {
+            int num = 0;
+            string sql = string.Format(@"SELECT COUNT(1) FROM 
+                        EM_SCRIPT_NODE_CASE F,
+                        FM_CASE_VERSION D,
+                        FM_FOLDER_VERSION A,
+                        FM_FOLDER B,
+                        (
+                        SELECT A.ID
+                            FROM FM_COMPUTER A,
+                                (    SELECT ID
+                                        FROM EM_DISTRICT
+                                CONNECT BY PRIOR ID = PARENT_ID
+                                START WITH ID = (SELECT DISTRICT_ID
+                                                    FROM ABP_USERS
+                                                    WHERE ID = {0})) B
+                            WHERE A.DISTRICT_ID = B.ID
+                            ) C
+                            WHERE B.COMPUTER_ID=C.ID
+                            AND A.FOLDER_ID=B.ID
+                            AND D.FOLDER_VERSION_ID=A.ID
+                            AND F.ID=SCRIPT_NODE_CASE_ID
+                            AND F.RETURN_CODE=0", CurrUserId());
+            DataTable dt= DbHelper.ExecuteGetTable(sql);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                num = Convert.ToInt32(dt.Rows[0][0].ToString());
+            }
+            return num;
         }
 
         //按照文件目录结构生成文件夹及以下内容
@@ -498,8 +535,8 @@ namespace Easyman.Service
                 //在服务端的ip目录下创建文件夹
                 //string tempPath = serverPath.Substring(0, serverPath.IndexOf(monitFile.Folder.Computer.Ip) + monitFile.Folder.Computer.Ip.Length) + "\\" + monitFile.Name + tempVar;
 
-
-                string tempPath = HttpContext.Current.Server.MapPath("/") + monitFile.Name + tempVar;
+                string tempPath=  AppDomain.CurrentDomain.BaseDirectory + monitFile.Name + tempVar; ;
+                //string tempPath = HttpContext.Current.Server.MapPath("/") + monitFile.Name + tempVar;
 
                 var msg = "开始创建临时文件夹："+ tempPath;
                 Log(caseVersionId, logVersionId, monitFileId, logType, msg);
@@ -519,7 +556,7 @@ namespace Easyman.Service
                 Log(caseVersionId, logVersionId, monitFileId, logType, msg);
 
                 //查询待还原的文件夹的子目录结构
-                string sql = string.Format(@"    SELECT A.ID,A.PARENT_ID,A.COPY_STATUS
+                string sql = string.Format(@"    SELECT A.ID,A.PARENT_ID,A.COPY_STATUS,
                                                    A.NAME,
                                                    A.CLIENT_PATH,
                                                    A.SERVER_PATH,
@@ -553,7 +590,8 @@ namespace Easyman.Service
                     Log(caseVersionId, logVersionId, monitFileId, logType, msg);
                     //压缩文件夹
                     string sourceDir = tempPath + "\\";//待压缩目录
-                    string targetFile = HttpContext.Current.Server.MapPath("/") + monitFile.Name + "_" + tempVar + ".zip";//压缩后的文件
+                    //string targetFile = HttpContext.Current.Server.MapPath("/") + monitFile.Name + "_" + tempVar + ".zip";//压缩后的文件
+                    string targetFile = AppDomain.CurrentDomain.BaseDirectory + monitFile.Name + "_" + tempVar + ".zip";//压缩后的文件
                     ZipHelper zip = new ZipHelper();
                     zip.ZipFileDirectory(sourceDir, targetFile);//压缩文件
 

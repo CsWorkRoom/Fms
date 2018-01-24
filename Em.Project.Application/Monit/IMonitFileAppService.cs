@@ -94,6 +94,9 @@ namespace Easyman.Service
 
         [System.Web.Http.HttpGet]
         void DeleteFile(string fileName);
+
+        [System.Web.Http.HttpGet]
+        int GetErrorNumByUser();
         #endregion
 
         /// <summary>
