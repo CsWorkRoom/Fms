@@ -369,9 +369,9 @@ namespace Easyman.Web.Controllers
 
         #endregion
 
-        #region 文件上传或还原
+        #region 文件监控或还原
         /// <summary>
-        /// 上传文件
+        /// 监控并上传文件
         /// </summary>
         /// <param name="monitFileId"></param>
         /// <returns></returns>

@@ -50,7 +50,17 @@ namespace Easyman.Service
         /// <returns></returns>
         MonitFileModel GetMonitFileByPath(string path);
 
-        #region 扩展方法
+        /// <summary>
+        /// 根据版本获取文件目录
+        /// </summary>
+        /// <param name="versionId"></param>
+        /// <returns></returns>
+        List<MonitFileModel> GetMonitFileByVersion(long versionId);
+
+
+        #region 扩展方法:监控文件(夹)的上载、下载、还原等功能
+
+        #region 监控日志的写入
         /// <summary>
         /// 插入一条监控日志
         /// </summary>
@@ -73,37 +83,49 @@ namespace Easyman.Service
         /// <param name="logType"></param>
         /// <param name="logMsg"></param>
         void Log(long? caseVersionId, long? monitLogVersionId, long? mointFileId, short? logType, string logMsg);
+        #endregion
 
-
+        #region 上传监控文件到服务端+将服务端文件(夹)还原到客户端
         /// <summary>
-        /// 上传文件到服务器
+        /// 监控并上传监控文件到服务器（单个文件的上传）
         /// </summary>
         /// <param name="monitFileId"></param>
         [System.Web.Http.HttpGet]
         string UpFileByMonitFile(long? monitFileId);
-
         /// <summary>
-        /// 还原服务端的文件到客户端
+        /// 还原服务端的文件到客户端（含文件夹和文件两种形式还原处理）
         /// </summary>
         /// <param name="monitFileId"></param>
         [System.Web.Http.HttpGet]
         string RestoreFileByMonitFile(long? monitFileId);
+        #endregion
 
+        #region 客户在web端下载文件(夹)到本机
+        /// <summary>
+        /// 下载前的准备：生成待下载文件
+        /// 1）文件夹下载：生成临时文件夹及子目录,压缩成zip包,删除生成临时文件夹 ->返回生成后的压缩文件名
+        /// 2）文件下载：生成临时文件 ->返回生成后的临时文件名
+        /// </summary>
+        /// <param name="monitFileId"></param>
+        /// <returns></returns>
         [System.Web.Http.HttpGet]
         string GenerateFile(long? monitFileId);
+        #endregion
 
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="fileName"></param>
         [System.Web.Http.HttpGet]
         void DeleteFile(string fileName);
 
+        /// <summary>
+        /// 获取当前用户管辖共享文件夹的监控错误数
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Http.HttpGet]
         int GetErrorNumByUser();
         #endregion
 
-        /// <summary>
-        /// 根据版本获取文件目录
-        /// </summary>
-        /// <param name="versionId"></param>
-        /// <returns></returns>
-        List<MonitFileModel> GetMonitFileByVersion(long versionId);
     }
 }
