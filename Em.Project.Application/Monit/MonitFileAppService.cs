@@ -733,7 +733,7 @@ namespace Easyman.Service
 
         #region 公共方法
         /// <summary>
-        /// 下载前的准备：生成待下载文件
+        /// 下载前的准备：生成待下载文件到临时文件夹：根目录+tempFolder
         /// 1）文件夹下载：生成临时文件夹及子目录,压缩成zip包,删除生成临时文件夹 ->返回生成后的压缩文件名
         /// 2）文件下载：生成临时文件 ->返回生成后的临时文件名
         /// </summary>
@@ -773,17 +773,18 @@ namespace Easyman.Service
                             var msg = "开始生成临时文件名...";
                             Log(caseVersionId, logVersionId, monitFileId, logType, msg);
 
+                            string newFileName = "";
                             if (monitFile.Name.LastIndexOf('.') != -1)//有后缀
                             {
-                                string newFileName = monitFile.Name.Insert(monitFile.Name.LastIndexOf('.'), "_" + tempVar);
+                                newFileName = monitFile.Name.Insert(monitFile.Name.LastIndexOf('.'), "_" + tempVar);
                                 //tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
-                                tempPath = AppDomain.CurrentDomain.BaseDirectory + newFileName;
+                                tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + newFileName;
                             }
                             else//无后缀
                             {
-                                string newFileName = monitFile.Name + "_" + tempVar;
+                                newFileName = monitFile.Name + "_" + tempVar;
                                 //tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
-                                tempPath = AppDomain.CurrentDomain.BaseDirectory + newFileName;
+                                tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + newFileName;
                             }
                             try
                             {
@@ -800,7 +801,7 @@ namespace Easyman.Service
 
                                 msg = "返回临时文件：" + tempPath;
                                 Log(caseVersionId, logVersionId, monitFileId, logType, msg);
-                                fileName = tempPath;
+                                fileName = newFileName;
                             }
                             catch (Exception ex)
                             {
@@ -857,7 +858,7 @@ namespace Easyman.Service
                 //在服务端的ip目录下创建文件夹
                 //string tempPath = serverPath.Substring(0, serverPath.IndexOf(monitFile.Folder.Computer.Ip) + monitFile.Folder.Computer.Ip.Length) + "\\" + monitFile.Name + tempVar;
 
-                string tempPath = AppDomain.CurrentDomain.BaseDirectory + monitFile.Name + tempVar; ;
+                string tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + monitFile.Name + tempVar; ;
                 //string tempPath = HttpContext.Current.Server.MapPath("/") + monitFile.Name + tempVar;
 
                 var msg = "开始创建临时文件夹：" + tempPath;
@@ -913,7 +914,7 @@ namespace Easyman.Service
                     //压缩文件夹
                     string sourceDir = tempPath + "\\";//待压缩目录
                     //string targetFile = HttpContext.Current.Server.MapPath("/") + monitFile.Name + "_" + tempVar + ".zip";//压缩后的文件
-                    string targetFile = AppDomain.CurrentDomain.BaseDirectory + monitFile.Name + "_" + tempVar + ".zip";//压缩后的文件
+                    string targetFile = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + monitFile.Name + "_" + tempVar + ".zip";//压缩后的文件
                     ZipHelper zip = new ZipHelper();
                     zip.ZipFileDirectory(sourceDir, targetFile);//压缩文件
 
@@ -1012,7 +1013,29 @@ namespace Easyman.Service
         public void DeleteFile(string fileName)
         {
             //File.Delete(HttpContext.Current.Server.MapPath("/") + fileName);
-            File.Delete(AppDomain.CurrentDomain.BaseDirectory + fileName);
+            File.Delete(AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + fileName);
+        }
+
+        /// <summary>
+        /// 删除文件夹
+        /// </summary>
+        [System.Web.Http.HttpGet]
+        public void DeleteTempFiles()
+        {
+            var tempDir = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\";
+            FileInfo[] files = GetFilesByDir(tempDir);
+            if(files!=null&&files.Length>0)
+            {
+                //循环删除临时文件夹下的文件
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        File.Delete(file.FullName);//删除能删掉的文件
+                    }
+                    catch (Exception ex) { }
+                }
+            }
         }
 
         /// <summary>
@@ -1107,6 +1130,18 @@ namespace Easyman.Service
         }
 
         #region 其他可共用私有方法
+        /// <summary>
+        /// 根据目录路径获得其下的所有文件集合
+        /// </summary>
+        /// <param name="dirPaht">E:\easyman\AEasymanProject\</param>
+        /// <returns></returns>
+        private FileInfo[] GetFilesByDir(string dirPaht)
+        {
+            DirectoryInfo directory = new DirectoryInfo(dirPaht);
+            FileInfo[] textFiles = directory.GetFiles("*.*", SearchOption.AllDirectories);
+            return textFiles;
+        }
+
         /// <summary>
         /// 根据目录路径获得其下的所有文件集合
         /// </summary>

@@ -102,7 +102,7 @@ namespace Easyman.Service
 
         #region 客户在web端下载文件(夹)到本机
         /// <summary>
-        /// 下载前的准备：生成待下载文件
+        /// 下载前的准备：生成待下载文件到临时文件夹：根目录+tempFolder
         /// 1）文件夹下载：生成临时文件夹及子目录,压缩成zip包,删除生成临时文件夹 ->返回生成后的压缩文件名
         /// 2）文件下载：生成临时文件 ->返回生成后的临时文件名
         /// </summary>
@@ -118,6 +118,12 @@ namespace Easyman.Service
         /// <param name="fileName"></param>
         [System.Web.Http.HttpGet]
         void DeleteFile(string fileName);
+
+        /// <summary>
+        /// 删除临时文件夹下的文件
+        /// </summary>
+        [System.Web.Http.HttpGet]
+        void DeleteTempFiles();
 
         /// <summary>
         /// 获取当前用户管辖共享文件夹的监控错误数

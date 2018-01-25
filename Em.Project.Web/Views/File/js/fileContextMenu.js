@@ -184,15 +184,15 @@ function DownFile(monitFileId)
             debugger;
             var fileName = data.result;
             if (fileName != "") {
-                window.downloadFile(bootPATH + fileName);
-                //下载完成后，删除生成的源
+                window.downloadFile(bootPATH + "tempFolder/" + fileName);//下载文件
+                //删除临时文件夹tempFolder之下的文件
                 $.ajax({
-                    url: bootPATH + "/api/services/api/MonitFile/DeleteFile?fileName=" + fileName,
+                    //url: bootPATH + "/api/services/api/MonitFile/DeleteFile?fileName=" + fileName,
+                    url: bootPATH + "/api/services/api/MonitFile/DeleteTempFiles",
                     type: 'get',
                 });
             }
-            else
-            {
+            else {
                 alert("Download failure！");
             }
         },
