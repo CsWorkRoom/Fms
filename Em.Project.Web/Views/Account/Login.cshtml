@@ -148,7 +148,71 @@
         @Scripts.Render("~/Bundles/common/js")
         @Scripts.Render("~/Bundles/alert/js")
         <script src="~/Views/Account/js/login.js"></script>
+    <script type="text/javascript">
+    var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+    // alert(isChrome);
+    if (isChrome) {
+        //alert("是Chrome浏览器");
+    } else {
+        swal({
+            title: "浏览器兼容提升",
+            text: "检测到您使用的不是Chrome浏览器，是否下载Chrome浏览器?",
+            type: "success",
+            confirmButtonText: "是",
+            cancelButtonText: "否",
+            showCancelButton: true,
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                window.downloadFile(bootPATH + "Chrome.exe");
+            }
+        });
 
+        //alert("为了您更好的系统体验使用，建设使用谷歌浏览器。如需要下载，请在网页底部直接下载安装！");
+    }
+
+    //#region 下载网站指定路径的文件
+    window.downloadFile = function (sUrl) {
+
+        //iOS devices do not support downloading. We have to inform user about this.
+        if (/(iP)/g.test(navigator.userAgent)) {
+            alert('Your device does not support files downloading. Please try again in desktop browser.');
+            return false;
+        }
+
+        //If in Chrome or Safari - download via virtual link click
+        if (window.downloadFile.isChrome || window.downloadFile.isSafari) {
+            //Creating new link node.
+            var link = document.createElement('a');
+            link.href = sUrl;
+
+            if (link.download !== undefined) {
+                //Set HTML5 download attribute. This will prevent file from opening if supported.
+                var fileName = sUrl.substring(sUrl.lastIndexOf('/') + 1, sUrl.length);
+                link.download = fileName;
+            }
+
+            //Dispatching click event.
+            if (document.createEvent) {
+                var e = document.createEvent('MouseEvents');
+                e.initEvent('click', true, true);
+                link.dispatchEvent(e);
+                return true;
+            }
+        }
+
+        // Force file download (whether supported by server).
+        if (sUrl.indexOf('?') === -1) {
+            sUrl += '?download';
+        }
+
+        window.open(sUrl, '_self');
+        return true;
+    }
+    window.downloadFile.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+    window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
+        //#endregion
+    </script>
 </body>
 
 
