@@ -1023,28 +1023,82 @@ namespace Easyman.Service
         public int GetErrorNumByUser()
         {
             int num = 0;
-            string sql = string.Format(@"SELECT COUNT(1) FROM 
-                        EM_SCRIPT_NODE_CASE F,
-                        FM_CASE_VERSION D,
-                        FM_FOLDER_VERSION A,
-                        FM_FOLDER B,
-                        (
-                        SELECT A.ID
-                            FROM FM_COMPUTER A,
-                                (    SELECT ID
-                                        FROM EM_DISTRICT
-                                CONNECT BY PRIOR ID = PARENT_ID
-                                START WITH ID = (SELECT DISTRICT_ID
-                                                    FROM ABP_USERS
-                                                    WHERE ID = {0})) B
-                            WHERE A.DISTRICT_ID = B.ID
-                            ) C
-                            WHERE B.COMPUTER_ID=C.ID
-                            AND A.FOLDER_ID=B.ID
-                            AND D.FOLDER_VERSION_ID=A.ID
-                            AND F.ID=SCRIPT_NODE_CASE_ID
-                            AND F.RETURN_CODE=0", CurrUserId());
-            DataTable dt= DbHelper.ExecuteGetTable(sql);
+
+            #region 作废sql
+            //string sql = string.Format(@"SELECT COUNT(1) FROM 
+            //            EM_SCRIPT_NODE_CASE F,
+            //            FM_CASE_VERSION D,
+            //            FM_FOLDER_VERSION A,
+            //            FM_FOLDER B,
+            //            (
+            //            SELECT A.ID
+            //                FROM FM_COMPUTER A,
+            //                    (    SELECT ID
+            //                            FROM EM_DISTRICT
+            //                    CONNECT BY PRIOR ID = PARENT_ID
+            //                    START WITH ID = (SELECT DISTRICT_ID
+            //                                        FROM ABP_USERS
+            //                                        WHERE ID = {0})) B
+            //                WHERE A.DISTRICT_ID = B.ID
+            //                ) C
+            //                WHERE B.COMPUTER_ID=C.ID
+            //                AND A.FOLDER_ID=B.ID
+            //                AND D.FOLDER_VERSION_ID=A.ID
+            //                AND F.ID=SCRIPT_NODE_CASE_ID
+            //                AND F.RETURN_CODE=0", CurrUserId());
+            #endregion
+
+            #region sql
+            string sql = string.Format(@"SELECT COUNT (1)
+                    FROM (SELECT 0 MONIT_FILE_ID,
+                                D.ID CASE_VERSION_ID,
+                                C.NAME COMPUTER_NAME,
+                                C.IP,
+                                B.NAME FOLDER_NAME,
+                                '共享目录监控' TASK_TYPE,
+                                F.END_TIME ERROR_TIME
+                            FROM EM_SCRIPT_NODE_CASE F,
+                                FM_CASE_VERSION D,
+                                FM_FOLDER_VERSION A,
+                                FM_FOLDER B,
+                                (SELECT A.*
+                                    FROM FM_COMPUTER A,
+                                        (    SELECT ID
+                                                FROM EM_DISTRICT
+                                        CONNECT BY PRIOR ID = PARENT_ID
+                                        START WITH ID = (SELECT DISTRICT_ID
+                                                            FROM ABP_USERS
+                                                            WHERE ID = {0})) B
+                                    WHERE A.DISTRICT_ID = B.ID) C
+                            WHERE     B.COMPUTER_ID = C.ID
+                                AND A.FOLDER_ID = B.ID
+                                AND D.FOLDER_VERSION_ID = A.ID
+                                AND F.ID = SCRIPT_NODE_CASE_ID
+                                AND F.RETURN_CODE = 0
+                        UNION
+                        SELECT A.ID MONIT_FILE_ID,
+                                A.CASE_VERSION_ID,
+                                B.NAME COMPUTER_NAME,
+                                B.IP,
+                                C.NAME FOLDER_NAME,
+                                '拷贝文件到服务端' TASK_TYPE,
+                                A.COPY_STATUS_TIME ERROR_TIME
+                            FROM FM_MONIT_FILE A,
+                                (SELECT A.*
+                                    FROM FM_COMPUTER A,
+                                        (    SELECT ID
+                                                FROM EM_DISTRICT
+                                        CONNECT BY PRIOR ID = PARENT_ID
+                                        START WITH ID = (SELECT DISTRICT_ID
+                                                            FROM ABP_USERS
+                                                            WHERE ID = {0})) B
+                                    WHERE A.DISTRICT_ID = B.ID) B,
+                                FM_FOLDER C
+                            WHERE     A.COMPUTER_ID = B.ID
+                                AND A.COPY_STATUS = 3
+                                AND A.FOLDER_ID = C.ID)", CurrUserId());
+            #endregion
+            DataTable dt = DbHelper.ExecuteGetTable(sql);
             if (dt != null && dt.Rows.Count > 0)
             {
                 num = Convert.ToInt32(dt.Rows[0][0].ToString());

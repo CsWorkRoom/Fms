@@ -291,13 +291,14 @@
                 ModeDialogUrl('modalId' + modalId, 'file list', 'Report/TbReport?code=fileList&NAME=' + fileName, 1100, 500);
             }
         }
-
+        //查看日志信息
         function LookErrlog()
         {
             //弹出一个新页面（报表）,显示搜索结果
             var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
             //打开监控历史记录报表
-            ModeDialogUrl('modalId' + modalId, 'error node', 'Report/TbReport?code=errNodeCase', 1100, 500);
+            //ModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errNodeCase', 1100, 500);
+            ModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errorDetail', 1100, 500);
         }
       </script>
 }
