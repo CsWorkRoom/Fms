@@ -42,15 +42,15 @@ $(function () {
                                         data: { url: path, monitFileId: monitFileId },
                                         type: 'post',
                                         success: function (data) {
-                                            console.log(data);
-                                            if (data != null && data != "") {
+
+                                            if (data != null && data != "" && data.indexOf("error!")<0) {
                                                 var surl = "../pdfjs/web/viewer.html?file=/pdfjs/pdf/file" + monitFileId + ".pdf";
                                                 window.open(surl, 'newwindow', 'height=700,width=600,top=111,left=111,toolbar=no,menubar=no,scrollbars=yes, resizable=no,location=no, status=no');
 
                                             }
                                             else {
                                                 abp.ui.clearBusy();
-                                                alert("error");
+                                                alert("The file is not completed in sync, and the preview is not supported.");
                                             }
                                         }
                                     });

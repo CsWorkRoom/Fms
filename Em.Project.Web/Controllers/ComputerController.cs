@@ -356,6 +356,24 @@ namespace Easyman.Web.Controllers
         }
 
         #region 文件相关类实例化
+
+        private void UpdateDirState(MonitFileTemp _monitFile)
+        {
+            var mt = waitFiles.FirstOrDefault(e => e.Id == _monitFile.ParentId);
+
+            if (mt != null && mt.FileStatus == MonitStatus.UnChanged)
+            {
+
+                int index = waitFiles.FindIndex(m => m == mt);
+                waitFiles[index].FileStatus = MonitStatus.Modify;
+                if (mt.ParentId != null)
+                {
+                    UpdateDirState(mt);
+                }
+            }
+        }
+
+
         /// <summary>
         /// 初始化文件类
         /// </summary>
@@ -386,6 +404,8 @@ namespace Easyman.Web.Controllers
                 _monitFile.MD5 = fullName;
                 _monitFile.ServerPath = masterPath + computer.Ip + "\\" + folder.Name + "\\" + fileName;
                 MonitFileModel relyMonitFile = GetPMonitFile(fullName);
+                if(relyMonitFile != null)
+                _monitFile.RelyMonitFileId = relyMonitFile.Id;
                 _monitFile.IsChange = relyMonitFile != null ? false : true;
                 _monitFile.FileStatus = relyMonitFile != null ? MonitStatus.UnChanged : MonitStatus.Add;
                 _monitFile.Properties = FileTool.GetDictionaryByDir(fullName);
@@ -394,7 +414,8 @@ namespace Easyman.Web.Controllers
             {
                 
                 MonitFileModel relyMonitFile = GetPMonitFile(fullName);
-                _monitFile.RelyMonitFileId = relyMonitFile != null ? relyMonitFile.Id : 0;
+                if(relyMonitFile != null)
+                    _monitFile.RelyMonitFileId =  relyMonitFile.Id;
                 try
                 {
                    
@@ -442,6 +463,8 @@ namespace Easyman.Web.Controllers
                         {
                             _monitFile.CopyStatus = CopyStatus.Wait;
                         }
+                        //修改上级文件夹
+                        UpdateDirState(_monitFile);
                     }
                     else
                     {

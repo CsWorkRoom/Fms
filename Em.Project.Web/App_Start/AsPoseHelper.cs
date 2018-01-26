@@ -31,7 +31,7 @@ namespace Easyman.Web.App_Start
             }
             catch (Exception ex)
             {
-                return "";
+                return "error!"+ex.Message;
             }
         }
         //excel文档转换问题
@@ -54,7 +54,7 @@ namespace Easyman.Web.App_Start
             }
             catch (Exception ex)
             {
-                return "";
+                return "error!" + ex.Message;
             }
 
         }
@@ -80,7 +80,7 @@ namespace Easyman.Web.App_Start
             }
             catch (Exception ex)
             {
-                return "";
+                return "error!" + ex.Message;
             }
           
         }

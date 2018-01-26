@@ -2333,8 +2333,6 @@
     <Content Include="pdfjs\web\locale\zh-CN\viewer.properties" />
     <Content Include="pdfjs\web\locale\zh-TW\viewer.properties" />
     <Content Include="pdfjs\web\locale\zu\viewer.properties" />
-    <Content Include="pdfjs\pdf\file939.pdf" />
-    <Content Include="pdfjs\pdf\file948.pdf" />
     <None Include="Properties\PublishProfiles\abp.pubxml" />
     <None Include="Properties\PublishProfiles\Easyma3Temp_HTML.pubxml" />
     <None Include="Properties\PublishProfiles\easyman.pubxml" />
@@ -2538,6 +2536,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Common\Scripts\html5uploader\uploads\" />
+    <Folder Include="pdfjs\pdf\" />
     <Folder Include="Scripts\angular-ui\" />
     <Folder Include="Scripts\summernote\font\" />
     <Folder Include="Scripts\summernote\lang\" />
