@@ -418,7 +418,7 @@ namespace Easyman.Service
                         break;
                 }
                 string userName = monitFile.Folder.Computer.UserName;// 
-                string pwd = monitFile.Folder.Computer.Pwd;// 
+                string pwd = GetDecryptPwd(monitFile.Folder.Computer.Pwd);// 
                 string ip = monitFile.Folder.Computer.Ip;
 
                 // 通过IP 用户名 密码 访问远程目录  不需要权限
@@ -537,7 +537,7 @@ namespace Easyman.Service
                 string serverPath = monitFile.ServerPath;//服务端路径
 
                 string userName = monitFile.Folder.Computer.UserName;// 
-                string pwd = monitFile.Folder.Computer.Pwd;// 
+                string pwd = GetDecryptPwd(monitFile.Folder.Computer.Pwd);// 
                 string ip = monitFile.Folder.Computer.Ip;
 
                 //验证文件是否为未删除状态
@@ -1175,6 +1175,25 @@ namespace Easyman.Service
         {
             FileInfo fileInfo = new FileInfo(oldPath);
             fileInfo.MoveTo(newPath);
+        }
+       
+        /// <summary>
+        /// 获得解密后的密码
+        /// </summary>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        private string GetDecryptPwd(string pwd)
+        {
+            string aesPwd = pwd;
+            try
+            {
+                var p = EncryptHelper.AesDecrpt(pwd);
+                aesPwd = p;
+            }
+            catch
+            {
+            }
+            return aesPwd;
         }
         #endregion
     }

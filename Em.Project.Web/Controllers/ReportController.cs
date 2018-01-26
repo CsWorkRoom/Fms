@@ -762,9 +762,11 @@ namespace Easyman.FwWeb.Controllers
                 switch (exportWay)
                 {
                     case "离线":
+                    case "offline":
                         strResult = _exportAppService.OfflineExportData(exp, intCountSize);
                         break;
                     case "在线":
+                    case "online":
                         strResult = strHost + _exportAppService.OnlineExportData(exp);
                         break;
                     default:

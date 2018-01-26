@@ -69,7 +69,9 @@
             </div>
             <label for="Pwd" class="col-xs-2 control-label">登陆密码</label>
             <div class="col-sm-4">
-                @Html.TextBoxFor(f => f.Pwd, new { @class = "form-control", placeholder = "账户密码", @Required = "Required", @oninvalid = "setCustomValidity('请输入账户密码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                @*@Html.TextBoxFor(f => f.Pwd, new { @class = "form-control", placeholder = "账户密码", @Required = "Required", @oninvalid = "setCustomValidity('请输入账户密码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>*@
+                @Html.HiddenFor(p => p.Pwd)
+                <input id="dbPwd" name="dbPwd" type="password" placeholder="账户密码" class="form-control" required="Required" oninvalid="setCustomValidity('请输入账户密码')" oninput="setCustomValidity('')" /><i class="iRequired">*</i>
             </div>
         </div>
         <div class="form-group">
@@ -97,10 +99,27 @@
 @section scripts{
     @*放页面自定义js*@
     <script type="text/javascript">
+        $(document).ready(function () {
+            var pwd = $("#Pwd").val();
+            if (pwd != null && pwd != "") {
+                var dPwd = Decrypt(pwd);
+                if (dPwd == "" || dPwd == null) {
+                    $("#dbPwd").val(pwd);//当解密的内容为空，则赋原值
+                }
+                else
+                    $("#dbPwd").val(dPwd);//解密后赋值给显示密码的控件
+            }
+        });
+
     //母版页调用提交方法
     function SubmitForm() {
         //from表单提交路径
         var postUrl = "../api/services/api/computer/InsertOrUpdateComputer";
+
+        var pwd = $("#dbPwd").val();
+        if (pwd != null && pwd != "") {
+            $("#Pwd").val(Encrypt(pwd));//加密后传入到后台保存
+        }
         //提交方法-JS里面
         handleSubmitForm(postUrl);
     }

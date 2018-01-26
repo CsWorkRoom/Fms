@@ -153,7 +153,7 @@ namespace Easyman.Web.Controllers
             }
 
             string userName =  computer.UserName.Trim();//lcz2016
-            string pwd =  computer.Pwd.Trim();//lcz201314
+            string pwd = GetDecryptPwd(computer.Pwd.Trim());//lcz201314
 
             //if (ConnectShare.ConnectRemote(ip, userName, pwd)>0)
             //{
@@ -229,6 +229,24 @@ namespace Easyman.Web.Controllers
 
             
              
+        }
+        /// <summary>
+        /// 获得解密后的密码
+        /// </summary>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        private string GetDecryptPwd(string pwd)
+        {
+            string aesPwd = pwd;
+            try
+            {
+                var p = Common.Helper.EncryptHelper.AesDecrpt(pwd);
+                aesPwd = p;
+            }
+            catch
+            {
+            }
+            return aesPwd;
         }
 
         private void RecursionSaveMonitFile(long? parentId, MonitFileTemp f, FolderVersionModel folderVersion, CaseVersionModel caseVersionModel)
