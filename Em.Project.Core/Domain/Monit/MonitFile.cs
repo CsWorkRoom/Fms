@@ -120,5 +120,11 @@ namespace Easyman.Domain
         [Column("REMARK"), StringLength(200)]
         public virtual string Remark { get; set; }
 
+        /// <summary>
+        /// 是否隐藏文件
+        /// </summary>
+        [Column("IS_HIDE")]
+        public virtual bool? IsHide { get; set; }
+
     }
 }
