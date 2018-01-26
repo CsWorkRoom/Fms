@@ -25,17 +25,21 @@
     </style>
 }
 
-<div style="height:90px; width:100%; border:1px solid #d2cccc; padding-top:25px; text-align:left;">
-    <b style="margin-left:10px; font-size:30px;">
-        User [@ViewData["userName"]'s] Resource Manager
-    </b>
-    @*<p style="margin-left:10px;">
-        [Contains the file structure under the jurisdiction terminal, the shared directory, and the directory]
-    </p>*@
-    <div style="float:left"><input type="text" name="searchName" id="searchName" /><button type="button" id="btnSearch" onclick="SearchFile()">Search</button>
-    <p>There are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum" >0</a> current error monitoring data
-        <a href="#" onclick="LookMoreLog()" id="moreLog">more</a>
-        </p>
+    <div style="height:90px; width:100%; border:1px solid #d2cccc; padding-top:25px; text-align:left;">
+        <b style="margin-left:10px; font-size:30px;">
+            User [@ViewData["userName"]'s] Resource Manager
+        </b>
+        @*<p style="margin-left:10px;">
+            [Contains the file structure under the jurisdiction terminal, the shared directory, and the directory]
+        </p>*@
+        <div>
+        <div style="margin-left:30px; margin-top:10px; float:left;">
+            There are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum">0</a> current error monitoring data
+            <a href="#" onclick="LookMoreLog()" id="moreLog" style="font-size:20px;">more</a>
+        </div>
+        <div style="float:right;  margin-top:10px; ">
+            <input type="text" name="searchName"  class="form-control" id="searchName"  placeholder="请输入关键字" width="250"/><button type="button" id="btnSearch" onclick="SearchFile()">Search</button>
+        </div>
     </div>
 </div>
 <div class="content_wrap" style="border-bottom:1px solid #d2cccc; background-color:antiquewhite">
