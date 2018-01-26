@@ -27,7 +27,9 @@
         [Contains the file structure under the jurisdiction terminal, the shared directory, and the directory]
     </p>*@
     <div style="float:left"><input type="text" name="searchName" id="searchName" /><button type="button" id="btnSearch" onclick="SearchFile()">Search</button>
-    <p>There are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum" >0</a> current error monitoring data</p>
+    <p>There are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum" >0</a> current error monitoring data
+        <a href="#" onclick="LookMoreLog()" id="moreLog">more</a>
+        </p>
     </div>
 </div>
 <div class="content_wrap" style="border-bottom:1px solid #d2cccc; background-color:antiquewhite">
@@ -301,6 +303,15 @@
             //ModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errNodeCase', 1100, 500);
             //ModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errorDetail', 1100, 500);
             TopModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errorDetail', 1100, 500);//弹顶级层
+        }
+        //查看所有日志
+        function LookMoreLog()
+        {
+            //弹出一个新页面（报表）,显示搜索结果
+            var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
+            //打开监控历史记录报表
+            TopModeDialogUrl('modalId' + modalId, 'more log', 'Report/TbReport?code=moreLog', 1100, 500);//弹顶级层
+
         }
       </script>
 }
