@@ -81,5 +81,7 @@ namespace Easyman.Dto
         public virtual string Remark { get; set; }
 
         public virtual bool? IsDelete { get; set; }
+
+        public virtual bool? IsHide { get; set; }
     }
 }

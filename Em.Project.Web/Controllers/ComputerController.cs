@@ -20,6 +20,7 @@ using Easyman.Domain;
 using EasyMan.Dtos;
 using System.Text;
 using System.Diagnostics;
+using System.Configuration;
 
 namespace Easyman.Web.Controllers
 {
@@ -108,7 +109,7 @@ namespace Easyman.Web.Controllers
 
         public  List<MonitFileTemp> waitFiles = new List<MonitFileTemp>();
         public  List<MonitFileModel> monitFileModels = new List<MonitFileModel>();
-        public string masterPath = "D:\\";
+        public string masterPath = ConfigurationManager.AppSettings["MasterPath"];
         #region 开始监听
         /// <summary>
         /// 监听入口
@@ -319,17 +320,35 @@ namespace Easyman.Web.Controllers
             FileInfo[] textFiles = directory.GetFiles("*.*", SearchOption.TopDirectoryOnly);
             foreach (FileInfo temp in textFiles)
             {
+               
                 MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString()+"\\"+temp, false, temp.Name,  temp.FullName,  temp.Extension, pguid, computer,  folder);
-                if(_monitFile.MD5!="")
+                _monitFile.Size = temp.Length;
+                if ((temp.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+                {
+                    _monitFile.IsHide = true;
+                }
+                else
+                {
+                    _monitFile.IsHide = false;
+                }
+                if (_monitFile.MD5!="")
                 waitFiles.Add(_monitFile);                              
             }
 
             //获取当前目录下的文件夹
             DirectoryInfo[] dic = directory.GetDirectories("*.*", SearchOption.TopDirectoryOnly);
             foreach (DirectoryInfo temp in dic)
-            {
-
+            {               
                 MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString(),true, temp.Name, temp.FullName, temp.Extension, pguid, computer, folder);
+                if ((temp.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+                {
+                    _monitFile.IsHide = true;
+                }
+                else
+                {
+                    _monitFile.IsHide = false;
+                }
+
                 waitFiles.Add(_monitFile);
               
                 this.RecycleDir(temp, computer,  folder, _monitFile.Id);
@@ -472,7 +491,7 @@ namespace Easyman.Web.Controllers
             monitFileModel.CaseVersionId = caseVersionModel.Id;
             monitFileModel.FileFormatId = fileFormat.Id;
             monitFileModel.CopyStatus = (short)monitFile.CopyStatus;
-          
+            monitFileModel.IsHide = monitFile.IsHide;
             return _MonitFileAppService.InsertOrUpdateMonitFile(monitFileModel);
         }
 
@@ -537,7 +556,8 @@ namespace Easyman.Web.Controllers
                 fileLibrary.Name = monitFile.ClientPath;
                 fileLibrary.FileFormatId = fileFormat.Id;
                 fileLibrary.IsCopy = monitFile.IsDir ? true : false;
-              //  fileLibrary.Size = 100;
+                fileLibrary.Size = monitFile.Size;
+                fileLibrary.IsHide = monitFile.IsHide;
                 return _FileLibraryAppService.InsertOrUpdateFileLibrary(fileLibrary);
             }
             else {

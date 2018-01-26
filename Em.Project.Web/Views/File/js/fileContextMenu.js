@@ -20,6 +20,51 @@ $(function () {
                     ModeDialogUrl('modalId' + modalId, 'version history', 'Report/TbReport?code=monitFileHis&CUR_MONIT_FILE_ID=' + monitFileId, 900, 450);
                     break;
                 case "open"://打开
+                    //获取文件路径
+                    $.ajax({
+                        url: "GetFilePathByMonitFile",
+                        data: { monitFileId: monitFileId },
+                        type: 'post',
+                        success: function (data) {
+                            if (data != null && data != "") {
+                                //根据路径预览文件内容
+                                var fileData = $.parseJSON(data);
+                                var name = fileData[0].NAME;
+                                var path = fileData[0].SERVER_PATH;
+                                var names = new Array(".xls", ".xlsx", ".doc", ".docx", ".txt");
+
+                                if (names.indexOf(name) < 0) {
+                                    alert("No Support");
+                                }
+                                else {                                  
+                                    $.ajax({
+                                        url: "GetHtmlUrl",
+                                        data: { url: path, monitFileId: monitFileId },
+                                        type: 'post',
+                                        success: function (data) {
+                                            console.log(data);
+                                            if (data != null && data != "") {
+                                                var surl = "../pdfjs/web/viewer.html?file=/pdfjs/pdf/file" + monitFileId + ".pdf";
+                                                window.open(surl, 'newwindow', 'height=700,width=600,top=111,left=111,toolbar=no,menubar=no,scrollbars=yes, resizable=no,location=no, status=no');
+
+                                            }
+                                            else {
+                                                abp.ui.clearBusy();
+                                                alert("error");
+                                            }
+                                        }
+                                    });
+                                }                              
+
+                            }
+                        },
+                        error: function (xhr) {
+                            //debugger;
+                            abp.ui.clearBusy();
+                            alert("Acquisition of attribute information failure！");
+                        }
+                    });
+
                     break;
                 case "attr"://属性
                     $("#attrTabHeader").empty();//清空头部

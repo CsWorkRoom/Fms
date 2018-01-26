@@ -71,5 +71,7 @@ namespace Easyman.Dto
 
         public Dictionary<string, string> Properties { get; set; }
 
+        public virtual bool? IsHide { get; set; }
+
     }
 }

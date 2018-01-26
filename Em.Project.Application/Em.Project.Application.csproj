@@ -109,14 +109,17 @@
     <Compile Include="File\Dto\FileAttrModel.cs" />
     <Compile Include="File\Dto\FileFormatModel.cs" />
     <Compile Include="File\Dto\FileLibraryModel.cs" />
+    <Compile Include="File\Dto\FileUploadModel.cs" />
     <Compile Include="File\FileAppService.cs" />
     <Compile Include="File\FileAttrAppService.cs" />
     <Compile Include="File\FileFormatAppService.cs" />
     <Compile Include="File\FileLibraryAppService.cs" />
+    <Compile Include="File\FileUploadAppService.cs" />
     <Compile Include="File\IFileAppService.cs" />
     <Compile Include="File\IFileAttrAppService.cs" />
     <Compile Include="File\IFileFormatAppService.cs" />
     <Compile Include="File\IFileLibraryAppService.cs" />
+    <Compile Include="File\IFileUploadAppService.cs" />
     <Compile Include="Formula\Dto\TargetFormulaModel.cs" />
     <Compile Include="Formula\ITargetFormulaAppService.cs" />
     <Compile Include="Formula\TargetFormulaAppService.cs" />

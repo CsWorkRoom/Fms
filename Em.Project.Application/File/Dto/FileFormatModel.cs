@@ -32,5 +32,7 @@ namespace Easyman.Dto
         /// 备注
         /// </summary>
         public virtual string Remark { get; set; }
+
+        public virtual short? IsHide { get; set; }
     }
 }

@@ -17,7 +17,10 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Linq;
-
+using Easyman.Web.App_Start;
+using System.IO;
+using System.Configuration;
+using System.Web;
 
 namespace Easyman.Web.Controllers
 {
@@ -30,18 +33,24 @@ namespace Easyman.Web.Controllers
         private readonly IFolderAppService _FolderAppService;
         private readonly IFileAppService _FileAppService;
         private readonly IMonitFileAppService _MonitFileAppService;
+        private readonly IFileUploadAppService _FileUploadAppService;
+        private readonly IUserAppService _UserAppService;
 
         public FileController(IFileFormatAppService FileFormatAppService,
             IComputerAppService ComputerAppService,
             IFolderAppService FolderAppService,
             IFileAppService FileAppService,
-            IMonitFileAppService MonitFileAppService)
+            IMonitFileAppService MonitFileAppService,
+            IFileUploadAppService FileUploadAppService,
+            IUserAppService UserAppService)
         {
             _FileFormatAppService = FileFormatAppService;
             _ComputerAppService = ComputerAppService;
             _FolderAppService = FolderAppService;
             _FileAppService = FileAppService;
             _MonitFileAppService = MonitFileAppService;
+            _FileUploadAppService = FileUploadAppService;
+            _UserAppService = UserAppService;
         }
 
         #endregion
@@ -115,7 +124,7 @@ namespace Easyman.Web.Controllers
                             pId = "computer_" + row["ID"].ToString().Trim(),
                             nodeType = "folder",//共享目录
                             iconSkin = "pIcon010",
-                            isParent =true
+                            isParent = true
                         });
                         nodeList.AddRange(nodeListFolder);//添加共享目录
 
@@ -167,9 +176,9 @@ namespace Easyman.Web.Controllers
                             #endregion
 
                             DataTable fileDt = DbHelper.ExecuteGetTable(fileSql);
-                            if(fileDt!=null&&fileDt.Rows.Count>0)
+                            if (fileDt != null && fileDt.Rows.Count > 0)
                             {
-                                foreach(DataRow dr in fileDt.Rows)
+                                foreach (DataRow dr in fileDt.Rows)
                                 {
                                     TreeNode fileNode = new TreeNode();
                                     fileNode.id = "file_" + dr["ID"].ToString().Trim();
@@ -232,7 +241,7 @@ namespace Easyman.Web.Controllers
         public ActionResult GetFileListByFolder(long folderId)
         {
             List<TreeNode> nodeList = new List<TreeNode>();//初始化node
-            
+
             #region 获取文件夹及文件 fileSql
             string fileSql = string.Format(@"SELECT A.ID,
                                A.CLIENT_PATH,
@@ -391,5 +400,188 @@ namespace Easyman.Web.Controllers
             return errMsg;
         }
         #endregion
+
+
+
+
+        #region 文件上传管理       
+        public ActionResult UploadFile()
+        {
+            return View();
+        }
+        public ActionResult Upload()
+        {
+            try
+            {
+                string UploadPath = ConfigurationManager.AppSettings["UploadPath"];
+                string basePath = UploadPath + DateTime.Now.ToString("yyyy-MM-dd") + "/";
+                string name = string.Empty;
+                HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
+                //如果目录不存在，则创建目录
+                if (files != null)
+                {
+                    if (!Directory.Exists(basePath))
+                    {
+                        Directory.CreateDirectory(basePath);
+                    }
+                    DateTime nowTime = DateTime.Now;
+                    var user = _UserAppService.GetUser(CurrUserId());
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        string fileName = files[i].FileName;
+                        files[i].SaveAs(basePath + fileName);
+                        FileUploadModel fileUploadModel = new FileUploadModel();
+                        fileUploadModel.FileName = fileName;
+                        fileUploadModel.FilePath = basePath + fileName;
+                        fileUploadModel.UploadTime = nowTime;
+                        fileUploadModel.UserId = Convert.ToInt32(user.Id);
+                        fileUploadModel.UserName = user.Name;
+                        _FileUploadAppService.InsertOrUpdateFileUpload(fileUploadModel);
+                    }
+                }
+                return Content("true");
+            }
+            catch (Exception ex)
+            {
+                return Content("fasle;" + ex.Message);
+            }
+
+        }
+
+        #endregion
+
+
+        #region 文件预览
+        //根据传入的类别和编号，查找对应的内容
+        public ActionResult GetFilePathByMonitFile(long monitFileId)
+        {
+            string sql = string.Format(@"SELECT  MF.SERVER_PATH ,FA.NAME 
+                                                 FROM  
+                                                     FM_MONIT_FILE MF ,
+                                                     FM_FILE_FORMAT FA  
+                                                 WHERE MF.ID={0} AND
+                                                     MF.FILE_FORMAT_ID=FA.ID", monitFileId);
+            DataTable attrdt = DbHelper.ExecuteGetTable(sql);
+            if (attrdt != null && attrdt.Rows.Count > 0)
+            {
+                return Content(JSON.DecodeToStr(attrdt));
+
+            }
+            else
+                return null;
+        }
+
+        #region 预览Excel
+
+
+        /// <summary>
+        /// Index页面
+        /// </summary>
+        /// <param name="url">例：/uploads/......XXX.xls</param>
+        public ActionResult GetHtmlUrl(string url, long monitFileId)
+        {
+            string physicalPath = url;
+            string scode = "file" + monitFileId.ToString();
+            string extension = Path.GetExtension(physicalPath);
+            string htmlUrl = "";
+
+            switch (extension.ToLower())
+            {
+
+                case ".xls":
+                case ".xlsx":
+                    //htmlUrl = PreviewExcel(physicalPath, url, scode);
+                    htmlUrl = AsPoseHelper.GetPdfFromExcel(physicalPath, scode);
+                    break;
+                case ".doc":
+                case ".docx":
+                    // htmlUrl = PreviewWord(physicalPath, url, scode);
+                    htmlUrl = AsPoseHelper.GetPdfFromWord(physicalPath, scode);
+                    break;
+                case ".txt":
+                    //htmlUrl = PreviewTxt(physicalPath, url, scode);
+                    htmlUrl = AsPoseHelper.GetPdfFromTxt(physicalPath, scode);
+                    break;
+                case ".pdf":
+                    htmlUrl = PreviewPdf(physicalPath, url, scode);
+                    break;
+            }
+            var surl = htmlUrl;
+            return Content(surl);
+        }
+
+        /// <summary>
+        /// 预览Excel
+        /// </summary>
+        public string PreviewExcel(string physicalPath, string url, string scode)
+        {
+            Microsoft.Office.Interop.Excel.Application application = null;
+            Microsoft.Office.Interop.Excel.Workbook workbook = null;
+            application = new Microsoft.Office.Interop.Excel.Application();
+            object missing = Type.Missing;
+            object trueObject = true;
+            application.Visible = false;
+            application.DisplayAlerts = false;
+            workbook = application.Workbooks.Open(physicalPath, missing, trueObject, missing, missing, missing,
+              missing, missing, missing, missing, missing, missing, missing, missing, missing);
+            //Save Excel to Html
+            object format = Microsoft.Office.Interop.Excel.XlFileFormat.xlHtml;
+            string htmlName = scode + ".html";//Path.GetFileNameWithoutExtension(physicalPath)
+            String outputFile = Path.GetDirectoryName(physicalPath) + "\\" + htmlName;
+            workbook.SaveAs(outputFile, format, missing, missing, missing,
+                     missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, missing,
+                     missing, missing, missing, missing);
+            workbook.Close();
+            application.Quit();
+            return Path.GetDirectoryName(Server.UrlDecode(url)) + "\\" + htmlName;
+        }
+        #endregion
+        #region 预览Word
+        /// <summary>
+        /// 预览Word
+        /// </summary>
+        public string PreviewWord(string physicalPath, string url, string scode)
+        {
+            Microsoft.Office.Interop.Word._Application application = null;
+            Microsoft.Office.Interop.Word._Document doc = null;
+            application = new Microsoft.Office.Interop.Word.Application();
+            object missing = Type.Missing;
+            object trueObject = true;
+            application.Visible = false;
+            application.DisplayAlerts = Microsoft.Office.Interop.Word.WdAlertLevel.wdAlertsNone;
+            doc = application.Documents.Open(physicalPath, missing, trueObject, missing, missing, missing,
+              missing, missing, missing, missing, missing, missing, missing, missing, missing, missing);
+            //Save Excel to Html
+            object format = Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatHTML;
+            string htmlName = scode + ".html";//Path.GetFileNameWithoutExtension(physicalPath)
+            String outputFile = Path.GetDirectoryName(physicalPath) + "\\" + htmlName;
+            doc.SaveAs(outputFile, format, missing, missing, missing,
+                     missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, missing,
+                     missing, missing, missing, missing);
+            doc.Close();
+            application.Quit();
+            return Path.GetDirectoryName(Server.UrlDecode(url)) + "\\" + htmlName;
+        }
+        #endregion
+        #region 预览Txt
+        /// <summary>
+        /// 预览Txt
+        /// </summary>
+        public string PreviewTxt(string physicalPath, string url, string scode)
+        {
+            return Server.UrlDecode(url);
+        }
+        #endregion
+        #region 预览Pdf
+        /// <summary>
+        /// 预览Pdf
+        /// </summary>
+        public string PreviewPdf(string physicalPath, string url, string scode)
+        {
+            return Server.UrlDecode(url);
+        }
+        #endregion
+        #endregion
+
     }
 }
