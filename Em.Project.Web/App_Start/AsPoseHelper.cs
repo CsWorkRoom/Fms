@@ -43,7 +43,9 @@ namespace Easyman.Web.App_Start
                 {
 
                     Aspose.Cells.Workbook workbook = new Workbook(stream);
+
                     PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
+
                     pdfSaveOptions.Compliance = PdfCompliance.PdfA1b;
                     string htmlName = scode + ".pdf";//Path.GetFileNameWithoutExtension(physicalPath)
                     string outpdfpath = AppDomain.CurrentDomain.BaseDirectory + "pdfjs\\pdf\\" + htmlName;
@@ -69,7 +71,8 @@ namespace Easyman.Web.App_Start
                 {
                     string text = reader.ReadToEnd();
                     Aspose.Words.Document doc = new Aspose.Words.Document();
-                    Aspose.Words.DocumentBuilder builder = new DocumentBuilder(doc);
+                    Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
+                   
                     builder.Write(text);
                     string htmlName = scode + ".pdf";//Path.GetFileNameWithoutExtension(physicalPath)
                     string outpdfpath = AppDomain.CurrentDomain.BaseDirectory + "pdfjs\\pdf\\" + htmlName;

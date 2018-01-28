@@ -68,5 +68,10 @@ namespace Easyman.Web.Models
         /// 文件格式图标
         /// </summary>
         public virtual string fileFormatIcon { get; set; }
+
+        /// <summary>
+        /// 是否隐藏
+        /// </summary>
+        public virtual bool? isHide { get; set; }
     }
 }

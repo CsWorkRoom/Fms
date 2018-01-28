@@ -25,26 +25,27 @@
     </style>
 }
 
-    <div style="height:90px; width:100%; border:1px solid #d2cccc; padding-top:25px; text-align:left;">
-        <b style="margin-left:10px; font-size:30px;">
+    <div style=" width:100%; border:1px solid #d2cccc; padding-top:20px; text-align:center;" >
+        @*<b style="margin-left:10px; font-size:30px; display:none;">
             User [@ViewData["userName"]'s] Resource Manager
-        </b>
+        </b>*@
         @*<p style="margin-left:10px;">
             [Contains the file structure under the jurisdiction terminal, the shared directory, and the directory]
         </p>*@
-        <div>
-        <div style="margin-left:30px; margin-top:10px; float:left;">
-            There are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum">0</a> current error monitoring data
-            <a href="#" onclick="LookMoreLog()" id="moreLog" style="font-size:20px;">more</a>
+        <div style=" margin-left:200px; height:40px;   background-color:steelblue; text-align:center;width:730px; vertical-align:middle; padding-top:5px;" class="thumbnail">
+            Search: <input type="text" name="searchName" id="searchName" style="width:600px;" /><button type="button" id="btnSearch" onclick="SearchFile()">Go</button>
         </div>
-        <div style="float:right;  margin-top:10px; ">            
-            <input type="text" name="searchName"   id="searchName"   width="250"/><button type="button" id="btnSearch" onclick="SearchFile()">Search</button>
-        </div>
+
+
+            <div >
+                There are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum">0</a> current error monitoring data
+                <a href="#" onclick="LookMoreLog()" id="moreLog" style="font-size:20px;">more</a>
+            </div>
+
     </div>
-</div>
-<div class="content_wrap" style="border-bottom:1px solid #d2cccc; background-color:antiquewhite">
+<div class="content_wrap" style="border-bottom:1px solid #d2cccc; height:420px; ">
      <div class="easyui-layout" style="width:100%;height:100%;">
-         <div region="west" split="true" title="File Directory" style="width:300px; overflow:hidden; ">
+         <div region="west" split="true" title="File Directory" style="width:200px; overflow:hidden; ">
              <ul id="treeDemo" class="ztree" style="overflow:auto;  overflow-x:hidden;  margin-top:0px;  width:100%; height:100%; border:none; background-color:antiquewhite "></ul>
          </div>
         <div id="fileModule" region="center" title="Document Detail" style="padding-top:50px;overflow:hidden; float:left;">
@@ -140,15 +141,15 @@
         //#endregion
 
         //随着浏览器的变化而变化
-        $(window).resize(function () {
-            var height_cont = $(window).height();
-            $("div.content_wrap").height(height_cont - 90);
-        });
+        //$(window).resize(function () {
+        //    var height_cont = $(window).height();
+        //    $("div.content_wrap").height(height_cont - 90);
+        //});
 
         //首次加载当前用户左边树形菜单，管辖的终端列表
         $(document).ready(function () {
             var height_cont = $(window).height();
-            $("div.content_wrap").height(height_cont - 90);
+         //   $("div.content_wrap").height(height_cont - 90);
 
             //$("div.content_wrap").attr("min-height", height_cont - 91);
 

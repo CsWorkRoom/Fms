@@ -72,6 +72,15 @@ namespace Easyman.Web.Controllers
 
         public ActionResult ShowMonitFile()
         {
+            //using (StreamReader reader = new StreamReader("D:\\FileUpLoad\\2018-01-23\\2f8d3a964ea2356965a6884e58e648f1.txt", System.Text.Encoding.GetEncoding("UTF-8")))
+            //{
+            //    string text = reader.ReadToEnd();
+            //    Aspose.Words.Document doc = new Aspose.Words.Document();
+            //    Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
+            //    builder.Write(text);
+            //    string outpdfpath = "D:\\FileUpLoad\\2018-01-23\\2f8d3a964ea2356965a6884e58e648f1.pdf";
+            //    doc.Save(outpdfpath, Aspose.Words.SaveFormat.Pdf);
+            //}
             var user = _FileAppService.GetCurrentUser();
             ViewData["userName"] = user.Name;
             return View();
@@ -261,7 +270,8 @@ namespace Easyman.Web.Controllers
                                B.NAME FORMAT_NAME,
                                B.ICON FILE_ICON,
                                C.NAME MD5_NAME,
-                               C.""SIZE"" FILE_SIZE
+                               C.""SIZE"" FILE_SIZE,
+                               A.IS_HIDE
                           FROM FM_MONIT_FILE A
                                LEFT JOIN FM_FILE_FORMAT B ON(A.FILE_FORMAT_ID = B.ID)
                                LEFT JOIN FM_FILE_LIBRARY C ON(A.FILE_LIBRARY_ID = C.ID)
@@ -285,6 +295,7 @@ namespace Easyman.Web.Controllers
                     fileNode.isParent = fileNode.isFolder.Value;//文件夹才有子项
                     fileNode.iconSkin = fileNode.isParent ? "pIcon010" : "";
                     fileNode.fileFormatIcon = dr["FILE_ICON"].ToString();
+                    fileNode.isHide = dr["IS_FOLDER"].ToString() == "1" ? true : false;
                     nodeList.Add(fileNode);
                 }
             }
