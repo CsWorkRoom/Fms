@@ -23,7 +23,7 @@ namespace Easyman.Web.App_Start
 
                     Aspose.Words.Document doc = new Aspose.Words.Document(soursefilepath);
                     string htmlName = scode + ".pdf";//Path.GetFileNameWithoutExtension(physicalPath)
-                    string outpdfpath = System.Web.HttpContext.Current.Server.MapPath("\\pdfjs\\pdf") + "\\" + htmlName;
+                    string outpdfpath = AppDomain.CurrentDomain.BaseDirectory+"pdfjs\\pdf\\" + htmlName;
                     doc.Save(outpdfpath, Aspose.Words.SaveFormat.Pdf);
                     return outpdfpath;
 
@@ -46,7 +46,7 @@ namespace Easyman.Web.App_Start
                     PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
                     pdfSaveOptions.Compliance = PdfCompliance.PdfA1b;
                     string htmlName = scode + ".pdf";//Path.GetFileNameWithoutExtension(physicalPath)
-                    string outpdfpath = System.Web.HttpContext.Current.Server.MapPath("\\pdfjs\\pdf") + "\\" + htmlName;
+                    string outpdfpath = AppDomain.CurrentDomain.BaseDirectory + "pdfjs\\pdf\\" + htmlName;
                     workbook.Save(outpdfpath, Aspose.Cells.SaveFormat.Pdf);
                     return outpdfpath;
 
@@ -72,7 +72,7 @@ namespace Easyman.Web.App_Start
                     Aspose.Words.DocumentBuilder builder = new DocumentBuilder(doc);
                     builder.Write(text);
                     string htmlName = scode + ".pdf";//Path.GetFileNameWithoutExtension(physicalPath)
-                    string outpdfpath = System.Web.HttpContext.Current.Server.MapPath("\\pdfjs\\pdf") + "\\" + htmlName;
+                    string outpdfpath = AppDomain.CurrentDomain.BaseDirectory + "pdfjs\\pdf\\" + htmlName;
                     doc.Save(outpdfpath, Aspose.Words.SaveFormat.Pdf);
                     return outpdfpath;
                 }

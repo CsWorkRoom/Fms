@@ -44,7 +44,7 @@ $(function () {
                                         success: function (data) {
 
                                             if (data != null && data != "" && data.indexOf("error!")<0) {
-                                                var surl = "../pdfjs/web/viewer.html?file=/pdfjs/pdf/file" + monitFileId + ".pdf";
+                                                var surl = "../pdfjs/web/viewer.html?file=/fms/pdfjs/pdf/file" + monitFileId + ".pdf";
                                                 window.open(surl, 'newwindow', 'height=700,width=600,top=111,left=111,toolbar=no,menubar=no,scrollbars=yes, resizable=no,location=no, status=no');
 
                                             }
