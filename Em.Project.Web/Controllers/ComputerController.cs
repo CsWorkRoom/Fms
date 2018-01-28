@@ -203,13 +203,13 @@ namespace Easyman.Web.Controllers
 
                             }
                         }
-                        else
-                        {
-                            FolderVersionModel folderVersion = CheckFolderVersion(folder.Id, "get");
-                            CaseVersionModel caseVersionModel = SaveCaseVersion(folderVersion, scriptNodeCaseId);
-                            MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("此({0})的({1})下无文件变化,指向上一个版本", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id };
-                            _MonitFileAppService.Log(monitLogErr);
-                        }
+                        //else
+                        //{
+                        //    FolderVersionModel folderVersion = CheckFolderVersion(folder.Id, "get");
+                        //    CaseVersionModel caseVersionModel = SaveCaseVersion(folderVersion, scriptNodeCaseId);
+                        //    MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("此({0})的({1})下无文件变化,指向上一个版本", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id };
+                        //    _MonitFileAppService.Log(monitLogErr);
+                        //}
                     }
                     else
                     {

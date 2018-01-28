@@ -126,7 +126,7 @@ function loadHtml(dataArr, nodeType) {
                 case "folder":
                     if (dataArr[i].isHide)
                     {
-                        hideAttr = "opacity:0.5;";
+                        hideAttr = "opacity:0.2;";
                     }
                     //是否为文件夹的判断
                     if (dataArr[i].isFolder) {
@@ -138,7 +138,7 @@ function loadHtml(dataArr, nodeType) {
                     break;
                 case "file"://文件夹
                     if (dataArr[i].isHide) {
-                        hideAttr = "opacity:0.5;";
+                        hideAttr = "opacity:0.2;";
                     }
                     if (dataArr[i].isFolder) {
                         htm += '<div class="col-sm-2 context-menu-one" style="' + hideAttr+'cursor:pointer;float:left;width:100px;height:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"  title="' + dataArr[i].name + '"><span><i class="glyphicon glyphicon-folder-close" style="font-size:2em;"></i><br /><p class="text-overflow">' + sname + '</p></span></div>';
