@@ -1961,6 +1961,7 @@
     <Content Include="Views\File\css\showMonitFile.css" />
     <Content Include="Views\File\EditFileFormat.cshtml" />
     <Content Include="Views\File\js\fileContextMenu.js" />
+    <Content Include="Views\File\js\PerfectLoad.js" />
     <Content Include="Views\File\js\rightContent.js" />
     <Content Include="Views\File\js\ztreeContent.js" />
     <Content Include="Views\Report\js\EditReport\ChartMain.js" />
