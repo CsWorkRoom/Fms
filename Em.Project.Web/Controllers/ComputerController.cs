@@ -334,42 +334,49 @@ namespace Easyman.Web.Controllers
         /// <param name="pguid"></param>
         public void RecycleDir(DirectoryInfo directory, ComputerModel computer,FolderModel folder,string pguid)
         {
+            string filterName=MonitConst.RestoreStr;
             //获取当前目录下的的文件    
             FileInfo[] textFiles = directory.GetFiles("*.*", SearchOption.TopDirectoryOnly);
             foreach (FileInfo temp in textFiles)
             {
-               
-                MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString()+"\\"+temp, false, temp.Name,  temp.FullName,  temp.Extension, pguid, computer,  folder);
-                _monitFile.Size = temp.Length;
-                if ((temp.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+                if (!temp.FullName.Contains(filterName))
                 {
-                    _monitFile.IsHide = true;
+                    MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString() + "\\" + temp, false, temp.Name, temp.FullName, temp.Extension, pguid, computer, folder);
+                    _monitFile.Size = temp.Length;
+                    if ((temp.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+                    {
+                        _monitFile.IsHide = true;
+                    }
+                    else
+                    {
+                        _monitFile.IsHide = false;
+                    }
+                    if (_monitFile.MD5 != "")
+                        waitFiles.Add(_monitFile);
                 }
-                else
-                {
-                    _monitFile.IsHide = false;
-                }
-                if (_monitFile.MD5!="")
-                waitFiles.Add(_monitFile);                              
+                                           
             }
 
             //获取当前目录下的文件夹
             DirectoryInfo[] dic = directory.GetDirectories("*.*", SearchOption.TopDirectoryOnly);
             foreach (DirectoryInfo temp in dic)
-            {               
-                MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString(),true, temp.Name, temp.FullName, temp.Extension, pguid, computer, folder);
-                if ((temp.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+            {
+                if (!temp.FullName.Contains(filterName))
                 {
-                    _monitFile.IsHide = true;
-                }
-                else
-                {
-                    _monitFile.IsHide = false;
-                }
+                    MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString(), true, temp.Name, temp.FullName, temp.Extension, pguid, computer, folder);
+                    if ((temp.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+                    {
+                        _monitFile.IsHide = true;
+                    }
+                    else
+                    {
+                        _monitFile.IsHide = false;
+                    }
 
-                waitFiles.Add(_monitFile);
-              
-                this.RecycleDir(temp, computer,  folder, _monitFile.Id);
+                    waitFiles.Add(_monitFile);
+
+                    this.RecycleDir(temp, computer, folder, _monitFile.Id);
+                }
             }
         }
 
