@@ -14,54 +14,53 @@
         .form-control {
             padding: 0px;
         }
+
         .text-overflow {
-          
             word-break: keep-all; /* 不换行 */
             white-space: nowrap; /* 不换行 */
             overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
             text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
         }
-      
     </style>
 }
 
-    <div style=" width:100%; border:1px solid #d2cccc; border-bottom:none; padding-top:20px; text-align:center;" >
-        @*<b style="margin-left:10px; font-size:30px; display:none;">
+<div style=" width:100%; border:1px solid #d2cccc; border-bottom:none; padding-top:20px; text-align:center;">
+    @*<b style="margin-left:10px; font-size:30px; display:none;">
             User [@ViewData["userName"]'s] Resource Manager
         </b>*@
-        @*<p style="margin-left:10px;">
+    @*<p style="margin-left:10px;">
             [Contains the file structure under the jurisdiction terminal, the shared directory, and the directory]
         </p>*@
-        <div style=" margin-left:200px; height:40px;   background-color:steelblue; text-align:center;width:730px; vertical-align:middle; padding-top:5px;" class="thumbnail">
-            Search: <input type="text" name="searchName" id="searchName" style="width:600px;" /><button type="button" id="btnSearch" onclick="SearchFile()">Go</button>
-        </div>
-
-
-            <div >
-                There are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum">0</a> current error monitoring data
-                <a href="#" onclick="LookMoreLog()" id="moreLog" style="font-size:20px;">more</a>
-            </div>
-
+    <div style=" margin-left:200px; height:40px;   background-color:steelblue; text-align:center;width:730px; vertical-align:middle; padding-top:5px;" class="thumbnail">
+        Search: <input type="text" name="searchName" id="searchName" style="width:600px;" /><button type="button" id="btnSearch" onclick="SearchFile()">Go</button>
     </div>
-    <div class="content_wrap" style="border-bottom:0px solid #d2cccc;height:420px; position:absolute;left:0;bottom:0;">
-       
-        <div class="easyui-layout" style="width:100%;height:100%;">
-            <div region="west" split="true" title="File Directory" style="width:200px; overflow:hidden; ">
-                <ul id="treeDemo" class="ztree" style="overflow:auto;  overflow-x:hidden;  margin-top:0px;  width:100%; height:100%; border:none; background-color:antiquewhite "></ul>
-            </div>
-            <div id="fileModule" region="center" title="Document Detail" style="padding-top:50px;overflow:hidden; float:left;">
 
-            </div>
+
+    <div>
+        There are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum">0</a> current error monitoring data
+        <a href="#" onclick="LookMoreLog()" id="moreLog" style="font-size:20px;">more</a>
+    </div>
+
+</div>
+<div class="content_wrap" style="border-bottom:0px solid #d2cccc;height:420px; position:absolute;left:0;bottom:0;">
+
+    <div class="easyui-layout" style="width:100%;height:100%;">
+        <div region="west" split="true" title="File Directory" style="width:200px; overflow:hidden; ">
+            <ul id="treeDemo" class="ztree" style="overflow:auto;  overflow-x:hidden;  margin-top:0px;  width:100%; height:100%; border:none; background-color:antiquewhite "></ul>
         </div>
+        <div id="fileModule" region="center" title="Document Detail" style="padding-top:50px;overflow:hidden; float:left;">
 
-        @*<div class="zTreeDemoBackground left" style=" height:100%;  border-right:5px solid #d2cccc;padding-left:0px;">
+        </div>
+    </div>
+
+    @*<div class="zTreeDemoBackground left" style=" height:100%;  border-right:5px solid #d2cccc;padding-left:0px;">
             <ul id="treeDemo" class="ztree" style="overflow:auto; overflow-x:hidden; margin-top:0px; width:100%; height:100%; border:none; background-color:antiquewhite "></ul>
         </div>
         <div class="right" id="fileModule" style=" padding-top:10px; ">
 
         </div>*@
 
-    </div>
+</div>
 <div style="margin-top:10px; display:none">
     <input type="text" name="fromPath" id="fromPath" />
     <input type="text" name="toPath" id="toPath" />
@@ -109,14 +108,28 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myLoadLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document" style="opacity:0.3">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLoadLabel">tips</h4>
+            </div>
+            <div class="modal-body">
+                loading.....
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
     @*@Scripts.Render("~/Bundles/ContextMenu/js")*@
     <script type="text/javascript" src="~/Common/plugins/ContextMenu/jquery.contextMenu.js"></script>
     <script type="text/javascript" src="~/Common/plugins/ContextMenu/jquery.ui.position.js"></script>
     <script type="text/javascript" src="~/Scripts/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="~/Views/File/js/ztreeContent.js"></script>
-<script type="text/javascript" src="~/Views/File/js/rightContent.js"></script>
-<script type="text/javascript" src="~/Views/File/js/fileContextMenu.js"></script>
+    <script type="text/javascript" src="~/Views/File/js/PerfectLoad.js"></script>
+    <script type="text/javascript" src="~/Views/File/js/ztreeContent.js"></script>
+    <script type="text/javascript" src="~/Views/File/js/rightContent.js"></script>
+    <script type="text/javascript" src="~/Views/File/js/fileContextMenu.js"></script>
     <script type="text/javascript">
         //#region 页面禁用鼠标右键
         if (window.Event) {
@@ -137,23 +150,23 @@
                 return false;
             }
         }
-        document.oncontextmenu = nocontextmenu; // for IE5+ 
-        document.onmousedown = norightclick; // for all others 
+        document.oncontextmenu = nocontextmenu; // for IE5+
+        document.onmousedown = norightclick; // for all others
         //#endregion
 
-      //  随着浏览器的变化而变化
+        //  随着浏览器的变化而变化
         $(window).resize(function () {
-          //  var height_cont = $(window).height();
+            //  var height_cont = $(window).height();
             //$("div.content_wrap").height(height_cont - 90);
-           
+
         });
-        
-      
+
+
         //首次加载当前用户左边树形菜单，管辖的终端列表
         $(document).ready(function () {
-       
-          //  var height_cont = $(window).height();
-         //   $("div.content_wrap").height(height_cont - 90);
+
+            //  var height_cont = $(window).height();
+            //   $("div.content_wrap").height(height_cont - 90);
 
             //$("div.content_wrap").attr("min-height", height_cont - 91);
 
@@ -179,7 +192,7 @@
                 success: function (data) {
                     debugger;
                     if (data.result != "") {
-                        $("#errNum").text(data.result).css("color","red");
+                        $("#errNum").text(data.result).css("color", "red");
                     }
                     else {
                     }
@@ -227,7 +240,7 @@
         //        }
         //    });
         //}
-       
+
         //获取当前时间点
         function getTime() {
             var now = new Date(),
@@ -295,13 +308,11 @@
                 }
             });
         }
-  
+
         //搜索文件
-        function SearchFile()
-        {
+        function SearchFile() {
             var fileName = $("#searchName").val();
-            if(fileName!=null&&fileName!="")
-            {
+            if (fileName != null && fileName != "") {
                 //弹出一个新页面（报表）,显示搜索结果
                 var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
                 //打开监控历史记录报表
@@ -310,8 +321,7 @@
             }
         }
         //查看日志信息
-        function LookErrlog()
-        {
+        function LookErrlog() {
             //弹出一个新页面（报表）,显示搜索结果
             var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
             //打开监控历史记录报表
@@ -320,13 +330,12 @@
             TopModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errorDetail', 1200, 500);//弹顶级层
         }
         //查看所有日志
-        function LookMoreLog()
-        {
+        function LookMoreLog() {
             //弹出一个新页面（报表）,显示搜索结果
             var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
             //打开监控历史记录报表
             TopModeDialogUrl('modalId' + modalId, 'more log', 'Report/TbReport?code=moreLog', 1200, 500);//弹顶级层
 
         }
-      </script>
+    </script>
 }
