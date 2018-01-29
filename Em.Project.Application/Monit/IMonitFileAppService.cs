@@ -133,5 +133,11 @@ namespace Easyman.Service
         int GetErrorNumByUser();
         #endregion
 
+        #region 上传文件下载
+        [System.Web.Http.HttpGet]
+        string GenerateUploadFile(string url);
+        
+        #endregion
+
     }
 }

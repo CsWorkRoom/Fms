@@ -1196,5 +1196,50 @@ namespace Easyman.Service
             return aesPwd;
         }
         #endregion
+
+        #region 上传文件下载
+        /// <summary>
+        /// 文件路径
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        [System.Web.Http.HttpGet]
+        
+        public string GenerateUploadFile(string url)
+        {
+            try
+            {
+                string fileName = "";
+                string newFileName = "";
+                string tempPath = "";
+                string tempVar = DateTime.Now.Ticks.ToString();
+                if (File.Exists(url))
+                {
+
+                    fileName = Path.GetFileNameWithoutExtension(url);
+
+                    newFileName = fileName + "_" + tempVar + ".zip";
+
+                    tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempUploader\\" + newFileName;
+                    ZipHelper zip = new ZipHelper();
+                    zip.ZipFileOne(url, tempPath);//压缩文件
+                    fileName = newFileName;
+                    return fileName;
+                }
+                else
+                {
+                    return "error!file is not exist" ;
+                }
+
+             
+            }
+            catch(Exception ex)
+            {
+                return "error!"+ex.Message;
+            }
+           
+        }
+            #endregion
+
+        }
     }
-}

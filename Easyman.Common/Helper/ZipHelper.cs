@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections.Generic;
@@ -73,6 +74,25 @@ namespace Easyman.Common.Helper
             zip(strFile, s, strFile);
             s.Finish();
             s.Close();
+        }
+
+        /// <summary>
+        /// 压缩文件目录
+        /// </summary>
+        /// <param name="strFile">D:\\Debug\\</param>
+        /// <param name="strZip">D:\\Debug2\\a.zip</param>
+        public void ZipFileOne(string srcFileName, string zipFileName)
+        {
+            FileStream srcFile = File.OpenRead(srcFileName);
+
+            GZipOutputStream zipFile = new GZipOutputStream(File.Open(zipFileName, FileMode.Create));
+
+            byte[] fileData = new byte[srcFile.Length];
+            srcFile.Read(fileData, 0, (int)srcFile.Length);
+            zipFile.Write(fileData, 0, fileData.Length);
+
+            srcFile.Close();
+            zipFile.Close();
         }
 
 
@@ -184,6 +204,10 @@ namespace Easyman.Common.Helper
                 }
             }
         }
+
+
+
+     
 
 
     }
