@@ -61,12 +61,12 @@ function initUpload()
         InputModel: true,
         // 只允许选择文件，可选。
         accept: {
-            title: '上传文件格式错误！',
+            title: 'Upload file format error！',
             mimeTypes: 'text/comma-separated-values,text/plain'
         },
         timeout: 0,
         fileNumLimit: 100,
-        ButtonText: "提交附件",
+        ButtonText: "Submission of annexes",
         InputModel: true,
         duplicate: true,
         table_style: "margin-top: -4px;"
@@ -84,7 +84,7 @@ function initUpload()
 
         $list.append('<div id="' + file.id + '" class="item">' +
             '<h4 class="info">' + '</h4>' +
-            '<p class="state">等待上传...</p>' +
+            '<p class="state">Wait for uploading...</p>' +
         '</div>');
 
         $list.append($li);
@@ -105,15 +105,15 @@ function initUpload()
             '</div>').appendTo($li).find('.progress-bar');
         }
 
-        $li.find('p.state').text('上传中');
+        $li.find('p.state').text('Uploading...');
         $percent.css('width', percentage * 100 + '%');
     });
 
     uploader.on('uploadSuccess', function (file) {
-        $('#' + file.id).find('p.state').text('已上传');
+        $('#' + file.id).find('p.state').text('Uploaded');
         //uploader.destroy();
         //initUpload();
-        $('#' + file.id).find('p.state').text('已上传');
+        $('#' + file.id).find('p.state').text('Uploaded');
         $('#uploader-demo').append('<input  type="text" name="attachmentid" value="' + data.attachmentid + '"/>');
         $('#' + file.id).addClass('upload-state-done');
     });
@@ -125,12 +125,12 @@ function initUpload()
     uploader.on('uploadFinished', function () {
         uploader.destroy();
         initUpload();
-        $btn.text('开始上传');
+        $btn.text('Start upload');
     });
 
 
     uploader.on('uploadError', function (file,reason) {
-        $('#' + file.id).find('p.state').text('上传出错'+reason);
+        $('#' + file.id).find('p.state').text('Upload error' + reason);
         //uploader.destroy();
         //initUpload();
     });
@@ -149,9 +149,9 @@ function initUpload()
         }
 
         if (state === 'uploading') {
-            $btn.text('暂停上传');
+            $btn.text('Pause upload');
         } else {
-            $btn.text('开始上传');
+            $btn.text('Start upload');
         }
        
     });

@@ -217,7 +217,7 @@ namespace Easyman.Web
             #region ~/Bundles/App/jqgrid/js
             bundles.Add(
                 new ScriptBundle("~/Bundles/App/jqgrid/js")
-                    .Include("~/Scripts/i18n/grid.locale-cn.js")
+                    .Include("~/Scripts/i18n/grid.locale-en.js")
                     .Include("~/Scripts/jquery.jqGrid.js")
                     .Include("~/Common/Scripts/custom/JqGridWinSet.js")
                     );

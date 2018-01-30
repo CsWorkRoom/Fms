@@ -38,20 +38,20 @@
             <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
 
                 <div class="form-group">
-                    <label for="ByName" class="col-xs-4 control-label">数据库别名</label>
+                    <label for="ByName" class="col-xs-4 control-label">ByName</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.ByName, new { @class = "form-control", placeholder = "数据库别名", @Required = "Required", @oninvalid = "setCustomValidity('请输入数据库别名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                        @Html.TextBoxFor(f => f.ByName, new { @class = "form-control", placeholder = "ByName", @Required = "Required", @oninvalid = "setCustomValidity('Please enter the ByName of the database')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="DbTagId" class="col-xs-4 control-label">数据库标识</label>
+                    <label for="DbTagId" class="col-xs-4 control-label">database tag</label>
                     <div class="col-sm-6">
                         @Html.DropDownTreeFor(d => d.DbTagId, "../api/services/api/DbTag/GetDbTagTreeJson")
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="DbType" class="col-xs-4 control-label">数据库种类</label>
+                    <label for="DbType" class="col-xs-4 control-label">database type</label>
                     <div class="col-sm-6">
                         @Html.DropDownListFor(m => m.DbTypeId, ViewBag.DbType as List<SelectListItem>, new { @class = "form-control" })
                     </div>
@@ -59,40 +59,40 @@
                 <div class="form-group">
                     <label for="Ip" class="col-xs-4 control-label">IP</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.Ip, new { @class = "form-control", placeholder = "IP", @Required = "Required", @oninvalid = "setCustomValidity('请输入IP')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                        @Html.TextBoxFor(f => f.Ip, new { @class = "form-control", placeholder = "IP", @Required = "Required", @oninvalid = "setCustomValidity('Please enter IP')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="Port" class="col-xs-4 control-label">端口</label>
+                    <label for="Port" class="col-xs-4 control-label">Port</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.Port, new { @class = "form-control", placeholder = "端口", @Required = "Required", @oninvalid = "setCustomValidity('请输入端口')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                        @Html.TextBoxFor(f => f.Port, new { @class = "form-control", placeholder = "Port", @Required = "Required", @oninvalid = "setCustomValidity('Please enter Port')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="DataCase" class="col-xs-4 control-label">实例名</label>
+                    <label for="DataCase" class="col-xs-4 control-label">DataCase</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.DataCase, new { @class = "form-control", placeholder = "实例名", @Required = "Required", @oninvalid = "setCustomValidity('请输入实例名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                        @Html.TextBoxFor(f => f.DataCase, new { @class = "form-control", placeholder = "DataCase", @Required = "Required", @oninvalid = "setCustomValidity('Please enter DataCase')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="User" class="col-xs-4 control-label">用户名</label>
+                    <label for="User" class="col-xs-4 control-label">User</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(f => f.User, new { @class = "form-control", placeholder = "用户名", @Required = "Required", @oninvalid = "setCustomValidity('请输入用户名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                        @Html.TextBoxFor(f => f.User, new { @class = "form-control", placeholder = "User", @Required = "Required", @oninvalid = "setCustomValidity('Please enter User')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="Password" class="col-xs-4 control-label">密码</label>
+                    <label for="Password" class="col-xs-4 control-label">Password</label>
                     <div class="col-sm-6">
                         @Html.HiddenFor(p => p.Password)
-                        <input id="dbPwd" name="dbPwd" type="password" placeholder="请输入用户密码" class="form-control" required="Required" oninvalid="setCustomValidity('请输入用户密码')" oninput="setCustomValidity('')" /><i class="iRequired">*</i>
+                        <input id="dbPwd" name="dbPwd" type="password" placeholder="Please enter Password" class="form-control" required="Required" oninvalid="setCustomValidity('Please enter Password')" oninput="setCustomValidity('')" /><i class="iRequired">*</i>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="Order" class="col-xs-4 control-label">描述说明</label>
+                    <label for="Order" class="col-xs-4 control-label">Remark</label>
                     <div class="col-sm-6">
-                        @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "描述说明" })
+                        @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "Remark" })
                     </div>
                 </div>
             </div>
@@ -101,8 +101,8 @@
     <div class="form-actions text-right">
         <div class="row bottomPage">
             <div style="margin-right:15px">
-                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
-                <button class="btn btn-primary" id="sumbit-btn" type="submit" onclick="submitDb()" ><i class="fa fa-save"></i> 提交</button>
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> Colse</button> &nbsp;
+                <button class="btn btn-primary" id="sumbit-btn" type="submit" onclick="submitDb()" ><i class="fa fa-save"></i> submit</button>
             </div>
         </div>
     </div>

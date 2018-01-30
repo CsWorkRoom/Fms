@@ -316,11 +316,11 @@ var SavaSuccessData = function () {
     RefreshFram();//刷新父级页面
     //提示消息 
     swal({
-        title: "保存提示",
-        text: "数据已保存成功!是否返回列表页?",
+        title: "Save prompt",
+        text: "Data has been saved successfully! Do you return to the list page?",
         type: "success",
-        confirmButtonText: "是",
-        cancelButtonText: "否",
+        confirmButtonText: "yes",
+        cancelButtonText: "no",
         showCancelButton: true,
     },
    function (isConfirm) {
@@ -365,7 +365,7 @@ var SubmitFormData = function (fromID, subButId) {
             if (data.success)
                 SavaSuccessData();//刷新父级窗口
             else
-                abp.message.error(data.result.message, "保存失败");
+                abp.message.error(data.result.message, "save fail!");
             $(subButId).button('reset');
         },
         error: function () {

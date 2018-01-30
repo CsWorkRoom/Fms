@@ -30,30 +30,30 @@
         <div class="tab-content" style="padding-top:19px;">
             <div role="tabpanel" class="tab-pane active" id="navMenu">
                 <div class="form-group">
-                    <label for="TenantId" class="col-sm-2 control-label">租户</label>
+                    <label for="TenantId" class="col-sm-2 control-label">Tenant</label>
                     <div class="col-sm-4">
                         @Html.DropDownTreeFor(d => d.TenantId, "../api/services/api/Tenant/GetTenantTreeJson")
                     </div>
-                    <label for="ParentId" class="col-sm-2 control-label">上级组织</label>
+                    <label for="ParentId" class="col-sm-2 control-label">Paretn</label>
                     <div class="col-sm-4">
                         @Html.DropDownTreeFor(d => d.ParentId, "../api/services/api/District/GetDistrictTreeJson")
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="Name" class="col-sm-2 control-label">名称</label>
+                    <label for="Name" class="col-sm-2 control-label">Name</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "组织名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入组织名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                        @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "distric name", @Required = "Required", @oninvalid = "setCustomValidity('Please enter the district name')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
-                    <label for="Code" class="col-sm-2 control-label">编码</label>
+                    <label for="Code" class="col-sm-2 control-label">Code</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "组织编码", @Required = "Required", @oninvalid = "setCustomValidity('请输入编码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                        @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "code", @Required = "Required", @oninvalid = "setCustomValidity('Please enter the code')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
 
                 <div class="form-group">
 
-                    <label for="Icon" class="col-sm-2 control-label">组织图标</label>
+                    <label for="Icon" class="col-sm-2 control-label">Icon</label>
                     <div class="col-sm-4">
                         <div class="btn-group">
                             @Html.HiddenFor(f => f.Icon)
@@ -66,41 +66,41 @@
                             </div>
                         </div>
                     </div>
-                    <label for="ObjectType" class="col-sm-2 control-label">组织分类</label>
+                    <label for="ObjectType" class="col-sm-2 control-label">Type</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.ObjectType, new { @class = "form-control", placeholder = "组织分类" })
+                        @Html.TextBoxFor(f => f.ObjectType, new { @class = "form-control", placeholder = "district type" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="IsUse" class="col-sm-2 control-label">是否在用</label>
+                    <label for="IsUse" class="col-sm-2 control-label">Is use</label>
                     <div class="col-sm-4">
                         @Html.DropDownListFor(p => p.IsUse, new List<SelectListItem> {
-                       new SelectListItem { Text = "否", Value = "false" },
-                       new SelectListItem { Text = "是", Value = "true", Selected = true } },
+                       new SelectListItem { Text = "false", Value = "false" },
+                       new SelectListItem { Text = "true", Value = "true", Selected = true } },
                         new { @class = "form-control" })
                     </div>
-                    <label for="CurLevel" class="col-sm-2 control-label">组织层级</label>
+                    <label for="CurLevel" class="col-sm-2 control-label">level</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.CurLevel, new { @class = "form-control", placeholder = "组织层级", disabled = "disabled" })
+                        @Html.TextBoxFor(f => f.CurLevel, new { @class = "form-control", placeholder = "district level", disabled = "disabled" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="LinkMan" class="col-sm-2 control-label">组织联系人</label>
+                    <label for="LinkMan" class="col-sm-2 control-label">LinkMan</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.LinkMan, new { @class = "form-control", placeholder = "组织联系人" })
+                        @Html.TextBoxFor(f => f.LinkMan, new { @class = "form-control", placeholder = "LinkMan" })
                     </div>
-                    <label for="LinkPhone" class="col-sm-2 control-label">组织联系人电话</label>
+                    <label for="LinkPhone" class="col-sm-2 control-label">LinkPhone</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(f => f.LinkPhone, new { @class = "form-control", placeholder = "组织联系人电话" })
+                        @Html.TextBoxFor(f => f.LinkPhone, new { @class = "form-control", placeholder = "LinkPhone" })
                     </div>
                 </div>
 
                 <div class="form-group" ">
-                    <label for="Order" class="col-sm-2 control-label">描述说明</label>
+                    <label for="Order" class="col-sm-2 control-label">Remark</label>
                     <div class="col-sm-10">
-                        @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "描述说明", @style = "height:50px" })
+                        @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "Remark", @style = "height:50px" })
                     </div>
                 </div>
             </div>
@@ -109,8 +109,8 @@
     <div class="form-actions">
         <div class="row bottomPage">
             <div class="col-md-12 right">
-                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
-                <button class="btn btn-success" id="sumbit-btn" type="submit"><i class="fa fa-save"></i> 提交</button>
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> Close</button> &nbsp;
+                <button class="btn btn-success" id="sumbit-btn" type="submit"><i class="fa fa-save"></i> Submit</button>
             
             </div>
         </div>

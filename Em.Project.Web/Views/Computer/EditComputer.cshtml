@@ -42,44 +42,44 @@
     <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
 
         <div class="form-group">
-            <label for="Name" class="col-xs-2 control-label">终端名称</label>
+            <label for="Name" class="col-xs-2 control-label">Name</label>
             <div class="col-sm-4">
-                @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "终端名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "Name", @Required = "Required", @oninvalid = "setCustomValidity('Please enter Name')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
             </div>
-            <label for="Code" class="col-xs-2 control-label">终端编码</label>
+            <label for="Code" class="col-xs-2 control-label">Code</label>
             <div class="col-sm-4">
-                @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "终端编码", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端编码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                @Html.TextBoxFor(f => f.Code, new { @class = "form-control", placeholder = "Code", @Required = "Required", @oninvalid = "setCustomValidity('Please enter Code')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
             </div>
         </div>
         <div class="form-group">
-            <label for="ComputerTypeId" class="col-xs-2 control-label">终端类型</label>
+            <label for="ComputerTypeId" class="col-xs-2 control-label">ComputerType</label>
             <div class="col-sm-4">
-                @Html.DropDownListFor(p => p.ComputerTypeId, Model.ComputerTypeList == null ? new List<SelectListItem> { new SelectListItem { Text = "无选项", Value = "" } } : (Model.ComputerTypeList as List<SelectListItem>),
-                          new { @class = "form-control", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端类型')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                @Html.DropDownListFor(p => p.ComputerTypeId, Model.ComputerTypeList == null ? new List<SelectListItem> { new SelectListItem { Text = "no option", Value = "" } } : (Model.ComputerTypeList as List<SelectListItem>),
+                          new { @class = "form-control", @Required = "Required", @oninvalid = "setCustomValidity('Please enter ComputerType')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
             </div>
-            <label for="DistrictId" class="col-xs-2 control-label">终端归属</label>
+            <label for="DistrictId" class="col-xs-2 control-label">District</label>
             <div class="col-sm-4">
                 @Html.DropDownTreeForUser(d => d.DistrictId, "../api/services/api/District/GetDistrictTreeJson")
             </div>
         </div>
         <div class="form-group">
-            <label for="UserName" class="col-xs-2 control-label">登陆账户</label>
+            <label for="UserName" class="col-xs-2 control-label">UserName</label>
             <div class="col-sm-4">
-                @Html.TextBoxFor(f => f.UserName, new { @class = "form-control", placeholder = "登陆账户", @Required = "Required", @oninvalid = "setCustomValidity('请输入登陆账户')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                @Html.TextBoxFor(f => f.UserName, new { @class = "form-control", placeholder = "UserName", @Required = "Required", @oninvalid = "setCustomValidity('Please enter UserName')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
             </div>
-            <label for="Pwd" class="col-xs-2 control-label">登陆密码</label>
+            <label for="Pwd" class="col-xs-2 control-label">password</label>
             <div class="col-sm-4">
                 @*@Html.TextBoxFor(f => f.Pwd, new { @class = "form-control", placeholder = "账户密码", @Required = "Required", @oninvalid = "setCustomValidity('请输入账户密码')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>*@
                 @Html.HiddenFor(p => p.Pwd)
-                <input id="dbPwd" name="dbPwd" type="password" placeholder="账户密码" class="form-control" required="Required" oninvalid="setCustomValidity('请输入账户密码')" oninput="setCustomValidity('')" /><i class="iRequired">*</i>
+                <input id="dbPwd" name="dbPwd" type="password" placeholder="password" class="form-control" required="Required" oninvalid="setCustomValidity('Please enter password')" oninput="setCustomValidity('')" /><i class="iRequired">*</i>
             </div>
         </div>
         <div class="form-group">
-            <label for="Ip" class="col-xs-2 control-label">IP地址</label>
+            <label for="Ip" class="col-xs-2 control-label">IP</label>
             <div class="col-sm-4">
-                @Html.TextBoxFor(f => f.Ip, new { @class = "form-control", placeholder = "终端IP", @Required = "Required", @oninvalid = "setCustomValidity('请输入终端IP')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                @Html.TextBoxFor(f => f.Ip, new { @class = "form-control", placeholder = "IP", @Required = "Required", @oninvalid = "setCustomValidity('Please enter IP')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
             </div>
-            <label for="IsUse" class="col-xs-2 control-label">是否启用</label>
+            <label for="IsUse" class="col-xs-2 control-label">IsUse</label>
             <div class="col-sm-4">
                 @Html.CheckBoxFor(f => f.IsUse)
             </div>
@@ -87,9 +87,9 @@
         
        
         <div class="form-group">
-            <label for="Remark" class="col-xs-2 control-label">说明</label>
+            <label for="Remark" class="col-xs-2 control-label">Remark</label>
             <div class="col-sm-10">
-                @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "描述说明" })
+                @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "Remark" })
             </div>
         </div>
     </div>

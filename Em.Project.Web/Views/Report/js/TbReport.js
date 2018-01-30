@@ -399,18 +399,18 @@ function InitTbReport() {
                     var condiCtrOne = '';//数值及时间形式
                     //#region condiCtrOne
                     condiCtrOne += '<div class="jgrid-filter-operator " style="padding-left:0px;padding-right:0px;z-index:1;"><select id="cond_' + ftCtrName + '" name="cond_' + ftCtrName + '" class="form-control option">';
-                    condiCtrOne += '   <option value="=">等于</option>'
-                    condiCtrOne += '   <option value=">">大于</option>'
-                    condiCtrOne += '   <option value="<">小于</option>'
-                    condiCtrOne += '   <option value="in">存在</option>'
+                    condiCtrOne += '   <option value="=">=</option>'
+                    condiCtrOne += '   <option value=">">></option>'
+                    condiCtrOne += '   <option value="<"><</option>'
+                    condiCtrOne += '   <option value="in">in</option>'
                     condiCtrOne += '</select></div>'
                     //#endregion
                     var condiCtrTwo = '';//字符串形式
                     //#region condiCtrTwo
                     condiCtrTwo += '<div class="jgrid-filter-operator" style="padding-left:0px;padding-right:0px;z-index:1;"><select id="cond_' + ftCtrName + '" name="cond_' + ftCtrName + '" class="form-control option">';
-                    condiCtrTwo += '   <option value="like">包含</option>'
-                    condiCtrTwo += '   <option value="=">等于</option>'
-                    condiCtrTwo += '   <option value="in">存在</option>'
+                    condiCtrTwo += '   <option value="like">like</option>'
+                    condiCtrTwo += '   <option value="=">=</option>'
+                    condiCtrTwo += '   <option value="in">in</option>'
                     condiCtrTwo += '</select></div>'
                     //#endregion
 
@@ -462,8 +462,8 @@ function InitTbReport() {
                     }
 
                     htm += '<div class="form-group col-md-3 col-sm-3 col-xs-3" style="padding:0px">';
-                    htm += '<label for="ft_' + ftCtrName + '" class="col-md-3 col-sm-3 col-xs-3 control-label text-right" style="padding-left: 0px;padding-right: 2px;margin-top: 10px;line-height:17px" >' + ftCtrDisplayName + '</label>';
-                    htm += '<div class="col-md-9 col-sm-9 col-xs-9 jgrid-filter-field" style="padding:0px">' + ftCtr + '</div>';
+                    htm += '<label for="ft_' + ftCtrName + '" class="col-md-4 col-sm-4 col-xs-4 control-label text-right" style="padding-left: 0px;padding-right: 2px;margin-top: 10px;line-height:17px" >' + ftCtrDisplayName + '</label>';
+                    htm += '<div class="col-md-8 col-sm-8 col-xs-8 jgrid-filter-field" style="padding:0px">' + ftCtr + '</div>';
                     htm += '</div>';
                     htmls += htm;
                 }
@@ -472,8 +472,8 @@ function InitTbReport() {
             //条件查询
             if (htmls != null && htmls.length > 0) {
                 //查询条件 
-                var strSearch = '<button type="button" class="btn btn-primary" onclick="DoSearch()"><i class="glyphicon glyphicon-search"></i> 查询</button>';//查询按钮
-                strSearch += '&nbsp;<button type="button" class="btn btn-warning" onclick="ResetSearch()"><i class="fa fa-reply"></i> 重置</button>';//重置按钮
+                var strSearch = '<button type="button" class="btn btn-primary" onclick="DoSearch()"><i class="glyphicon glyphicon-search"></i> Search</button>';//查询按钮
+                strSearch += '&nbsp;<button type="button" class="btn btn-warning" onclick="ResetSearch()"><i class="fa fa-reply"></i> Reset</button>';//重置按钮
                 $("#searchTools").html(strSearch);
                 $("#spanSearch").show();
                 //查询条件
@@ -624,7 +624,7 @@ function InitTbReport() {
     $('#jqGrid').navButtonAdd('#jqGridPager',
         {
             buttonicon: "glyphicon glyphicon-question-sign",
-            title: "报表说明",
+            title: "Explain",
             caption: "",
             position: "last",
             onClickButton: GridExplain
@@ -669,9 +669,9 @@ function InitTbReport() {
 
 //报表说明
 function GridExplain() {
-    var strTitle = "报表说明";
+    var strTitle = "Explain";
     var tbreport = GetTbReport();
-    var strContent = (tbreport.Remark != undefined && tbreport.Remark != null && tbreport.Remark != "" && tbreport.Remark.toLowerCase() != "null" && tbreport.Remark != "NaN" ? tbreport.Remark : "暂无！");
+    var strContent = (tbreport.Remark != undefined && tbreport.Remark != null && tbreport.Remark != "" && tbreport.Remark.toLowerCase() != "null" && tbreport.Remark != "NaN" ? tbreport.Remark : "no message！");
     strContent = strContent + "</div>";
 
     new PopMsg(strTitle, strContent, "");//右下角显示信息
@@ -1210,7 +1210,7 @@ function ResetSearch()
                             $("#cond_" + ft.FieldParam).val("in");//当为复选框时，设置操作符为存在
                         }
                         else
-                            $("#cond_" + ft.FieldParam).val("=");//恢复为等于
+                            $("#cond_" + ft.FieldParam).val("like");//恢复为等于
                     }
                 }
             }

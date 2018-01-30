@@ -30,23 +30,23 @@
     <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
 
         <div class="form-group">
-            <label for="Name" class="col-xs-2 control-label">文件格式</label>
+            <label for="Name" class="col-xs-2 control-label">Name</label>
             <div class="col-sm-4">
-                @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "文件格式", @Required = "Required", @oninvalid = "setCustomValidity('请输入文件格式名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "Name", @Required = "Required", @oninvalid = "setCustomValidity('Please enter Name')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
             </div>
-            <label for="IsFolder" class="col-xs-2 control-label">是否文件夹</label>
+            <label for="IsFolder" class="col-xs-2 control-label">IsFolder</label>
             <div class="col-sm-4">
                 @Html.DropDownListFor(m => m.IsFolder, new List<SelectListItem>() {
-            new SelectListItem{ Text ="是", Value="true", Selected = true },
-            new SelectListItem{ Text ="否", Value="false" }
+            new SelectListItem{ Text ="true", Value="true", Selected = true },
+            new SelectListItem{ Text ="false", Value="false" }
         }, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
-            <label for="Icon" class="col-xs-2 control-label">小图标</label>
+            <label for="Icon" class="col-xs-2 control-label">Icon</label>
             <div class="col-sm-4">
                 <div class="btn-group">
-                    @Html.TextBoxFor(f => f.Icon, new { @class = "form-control", placeholder = "按钮图标", @onchange = "ContentIconType($(this).val())", @onkeyup = "ContentIconType($(this).val())" })
+                    @Html.TextBoxFor(f => f.Icon, new { @class = "form-control", placeholder = "Icon", @onchange = "ContentIconType($(this).val())", @onkeyup = "ContentIconType($(this).val())" })
                     <button class="btn btn-default  dropdown-toggle iconBut" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="MyModelTypeIcon('#divTypeIcon')">
                         <span class="btn-value"><i id="icon_type_img" class="eventIcon"></i></span> <span class="caret"></span>
                     </button>
@@ -57,9 +57,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="Remark" class="col-xs-2 control-label">说明</label>
+            <label for="Remark" class="col-xs-2 control-label">Remark</label>
             <div class="col-sm-10">
-                @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "描述说明" })
+                @Html.TextAreaFor(f => f.Remark, new { @class = "form-control", placeholder = "Remark" })
             </div>
         </div>
     </div>

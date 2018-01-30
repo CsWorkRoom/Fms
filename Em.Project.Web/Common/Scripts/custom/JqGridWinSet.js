@@ -116,7 +116,7 @@ var SetDefultDataImg = function (jqGrid) {
     $(parentVid).css("text-align", "center");
     if (rowData.length <= 0) {
         if ($(".Nodata").length <= 0) {
-            var strHtml = "<span class='Nodata'><i aria-hidden='true' class='fa fa-recycle fa-4x' style='line-height: 20px;'></i><span style='font-size: 40px;margin-left: 20px;'>未查找到数据！</span></span>";
+            var strHtml = "<span class='Nodata'><i aria-hidden='true' class='fa fa-recycle fa-4x' style='line-height: 20px;'></i><span style='font-size: 40px;margin-left: 20px;'>No data was found！</span></span>";
             $(parentVid).append(strHtml);
         }
         $("#gview_" + jqGrid + " .frozen-bdiv").hide();
