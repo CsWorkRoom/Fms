@@ -458,48 +458,71 @@ namespace Easyman.Service
                                 }
                                 break;
                             case LogType.RestoreLog:
-                                Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "开始把编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]");
+                                Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "开始启动把编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]");
                                 //SaveMonitFile(monitFile, CopyStatus.Excuting);
 
                                 //先重命名客户端原来文件
                                 var repVar = toPath.Substring(toPath.LastIndexOf('.'));
-                                //重命名其实就可以是服务端的名称，不用时间ticks
+                                //重命名：含时间戳
                                 var renamePath = toPath.Replace(repVar, DateTime.Now.Ticks.ToString() + repVar);
                                 try
                                 {
-                                    RemaneFile(toPath, renamePath);//重命名
-                                    Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "把客户端文件重命名成功:从[" + toPath + "]到[" + renamePath + "]");
-                                    try
+                                    //验证客户端文件是否存在
+                                    if (!File.Exists(toPath))//不存在
                                     {
-                                        File.Copy(fromPath, toPath, false);//从服务端拷贝文件到客户端(非覆盖式拷贝)
-                                        //SaveMonitFile(monitFile, CopyStatus.Success);
+                                        Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "警告：客户端对应目录不存在文件[" + monitFile.Name + "]");//警告
                                         try
                                         {
-                                            File.Delete(renamePath);//删除重命名的文件
-                                            Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "删除客户端重命名的文件[" + renamePath + "]成功");
-
+                                            //不存在时，直接从服务端拷贝到客户
+                                            File.Copy(fromPath, toPath, false);//从服务端拷贝文件到客户端(非覆盖式拷贝)
                                             var msg = "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]拷贝成功";
                                             Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                         }
                                         catch (Exception e)
                                         {
-                                            var msg = "删除客户端重命名的文件[" + renamePath + "]失败:" + e.Message;
+                                            var msg = "服务端到客户端还原失败:" + e.Message;
                                             Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
-                                            err.IsError = false;
-                                            err.Message = msg;//警告信息
+                                            err.IsError = true;
+                                            err.Message = msg;//
                                         }
                                     }
-                                    catch (Exception e)
+                                    else//存在
                                     {
-                                        var msg = "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]拷贝失败：" + e.Message;
-                                        Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
-                                        err.IsError = true;
-                                        err.Message = msg;
+                                        RemaneFile(toPath, renamePath);//重命名
+                                        Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "把客户端文件重命名成功:从[" + toPath + "]到[" + renamePath + "]");
+                                        try
+                                        {
+                                            File.Copy(fromPath, toPath, false);//从服务端拷贝文件到客户端(非覆盖式拷贝)
+                                                                               //SaveMonitFile(monitFile, CopyStatus.Success);
+                                            try
+                                            {
+                                                var msg = "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]拷贝成功";
+                                                Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
+
+                                                File.Delete(renamePath);//删除重命名的文件
+                                                Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "删除客户端重命名的文件[" + renamePath + "]成功");
+                                                Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]完毕！");
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                var msg = "删除客户端重命名的文件[" + renamePath + "]失败:" + e.Message;
+                                                Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
+                                                err.IsError = false;
+                                                err.Message = msg;//警告信息
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            var msg = "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]拷贝失败：" + e.Message;
+                                            Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
+                                            err.IsError = true;
+                                            err.Message = msg;
+                                        }
                                     }
                                 }
                                 catch (Exception e)
                                 {
-                                    var msg = "把客户端文件重命名失败:从[" + toPath + "]到[" + renamePath + "]拷贝失败：" + e.Message;
+                                    var msg = "把客户端文件重命名失败，从[" + toPath + "]到[" + renamePath + "]：" + e.Message;
                                     Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                     err.IsError = true;
                                     err.Message = msg;
@@ -564,8 +587,14 @@ namespace Easyman.Service
                     string tempClientPath = clientPath.Substring(0, clientPath.LastIndexOf(@"\") + 1) + monitFile.Name + MonitConst.RestoreStr;
                     DirectoryInfo di = new DirectoryInfo(tempClientPath);
                     // 没有时就创建
-                    if (di.Exists == false)
+                    if (!di.Exists)
                         di.Create();
+                    else
+                    {
+                        //若已存在特殊符号的文件夹，先删除
+                        Directory.Delete(tempClientPath, true);
+                        di.Create();//再创建
+                    }
 
                     var msg = "创建临时文件夹：" + tempClientPath;
                     Log(caseVersionId, monitLogVersionId, monitFileId, logType, msg);
@@ -608,20 +637,31 @@ namespace Easyman.Service
                     }
                     else//注意以下文件名称变更过程可能出现失败，需要进行异常处理
                     {
-                        msg = "原文件夹更名为：" + clientPath + MonitConst.MiddleStr;
-                        Log(caseVersionId, monitLogVersionId, monitFileId, logType, msg);
-                        //修改原文件夹名字
-                        Directory.Move(clientPath, clientPath + MonitConst.MiddleStr);
+                        //验证客户端文件夹是否存在
+                        if (!Directory.Exists(clientPath))
+                        {
+                            msg = "将临时文件夹更名为新文件夹：" + clientPath;
+                            Log(caseVersionId, monitLogVersionId, monitFileId, logType, msg);
+                            //将新文件夹名改为原文件夹名
+                            Directory.Move(tempClientPath, clientPath);
+                        }
+                        else
+                        {
+                            msg = "原文件夹更名为：" + clientPath + MonitConst.MiddleStr;
+                            Log(caseVersionId, monitLogVersionId, monitFileId, logType, msg);
+                            //修改原文件夹名字
+                            Directory.Move(clientPath, clientPath + MonitConst.MiddleStr);
 
-                        msg = "将临时文件夹更名为新文件夹：" + clientPath;
-                        Log(caseVersionId, monitLogVersionId, monitFileId, logType, msg);
-                        //将新文件夹名改为原文件夹名
-                        Directory.Move(tempClientPath, clientPath);
+                            msg = "将临时文件夹更名为新文件夹：" + clientPath;
+                            Log(caseVersionId, monitLogVersionId, monitFileId, logType, msg);
+                            //将新文件夹名改为原文件夹名
+                            Directory.Move(tempClientPath, clientPath);
 
-                        msg = "删除被更名的原文件夹：" + clientPath + MonitConst.MiddleStr;
-                        Log(caseVersionId, monitLogVersionId, monitFileId, logType, msg);
-                        //删除原文件夹
-                        Directory.Delete(clientPath + MonitConst.MiddleStr, true);
+                            msg = "删除被更名的原文件夹：" + clientPath + MonitConst.MiddleStr;
+                            Log(caseVersionId, monitLogVersionId, monitFileId, logType, msg);
+                            //删除原文件夹
+                            Directory.Delete(clientPath + MonitConst.MiddleStr, true);
+                        }
                     }
                 }
 
