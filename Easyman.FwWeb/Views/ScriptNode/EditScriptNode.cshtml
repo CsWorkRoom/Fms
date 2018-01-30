@@ -88,17 +88,9 @@
                        {
                            @class = "form-control",
                            placeholder =
-                           @"建表命令：请以@{你的英文表名}替换表名。格式如下：
-    ---复制创建---
-    CREATE TABLE @{ 你新建的英文表名} AS SELECT *FROM TB1
-    ---新建---
-    CREATE TABLE @{ 你新建的英文表名}
-    (
-      ID NUMBER(18) NOT NULL,
-      NAME VARCHAR(50),
-      REMARK VARCHAR(200),
-      CONSTRAINT PK_EM_SCRIPT_NODE_TYPE PRIMARY KEY(ID)
-    ); ",
+                           @"格式：MonitorStart(""192.168.200.134"", ""testForlder""); 
+                                第一个参数ip为待监控的终端局域网地址
+                                第二个参数为需要监控的共享目录的文件夹名",
                            @style = "height:330px"
                        })
                         </div>
