@@ -10,14 +10,18 @@ $(function () {
             //做该右击事件对应的事
             switch (key) {
                 case "log"://日志
+                    $.bootstrapLoading.start({ loadingTips: "Loading, please wait..." });
                     var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
                     //打开监控历史记录报表
                     ModeDialogUrl('modalId' + modalId, 'file log', 'Report/TbReport?code=filelog&CUR_MONIT_FILE_ID=' + monitFileId, 870, 450);
+                    $.bootstrapLoading.end();
                     break;
                 case "history"://历史记录
+                    $.bootstrapLoading.start({ loadingTips: "Loading, please wait..." });
                     var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
                     //打开监控历史记录报表
                     ModeDialogUrl('modalId' + modalId, 'version history', 'Report/TbReport?code=monitFileHis&CUR_MONIT_FILE_ID=' + monitFileId, 900, 450);
+                    $.bootstrapLoading.end();
                     break;
                 case "open"://打开
                     //获取文件路径
@@ -70,6 +74,7 @@ $(function () {
 
                     break;
                 case "attr"://属性
+                    $.bootstrapLoading.start({ loadingTips: "Loading, please wait..." });
                     $("#attrTabHeader").empty();//清空头部
                     $("#attrTabBody").empty();//清空包体
 
@@ -95,19 +100,25 @@ $(function () {
                                 });
                                 //#endregion
                             }
+                            $.bootstrapLoading.end();
                         },
                         error: function (xhr) {
                             //debugger;
+                            $.bootstrapLoading.end();
                             abp.ui.clearBusy();
                             alert("Acquisition of attribute information failure！");
                         }
                     });
                     break;
                 case "restore"://还原
+                    $.bootstrapLoading.start({ loadingTips: "Loading, please wait..." });
                     restoreFile(monitFileId);
+                    $.bootstrapLoading.end();
                     break;
                 case "down"://下载
+                    $.bootstrapLoading.start({ loadingTips: "Loading, please wait..." });
                     DownFile(monitFileId);
+                    $.bootstrapLoading.end();
                     break;
             }
 
