@@ -127,7 +127,8 @@ namespace Easyman.Service
             {
                 var Attr = _AttrCase.FirstOrDefault(p => p.Name == name.Trim());
                 if (Attr != null)
-                    return Attr.MapTo<AttrModel>();
+                   // return Attr.MapTo<AttrModel>();
+                return AutoMapper.Mapper.Map<AttrModel>(Attr);
                 else
                     return null;
             }
