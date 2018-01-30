@@ -436,7 +436,8 @@ namespace Easyman.Web.Controllers
                     {
                         Directory.CreateDirectory(basePath);
                     }
-                    DateTime nowTime = DateTime.Now;
+                    //string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    string nowTime = System.Web.HttpContext.Current.Request["nowtime"];
                     var user = _UserAppService.GetUser(CurrUserId());
                     for (int i = 0; i < files.Count; i++)
                     {
@@ -445,7 +446,7 @@ namespace Easyman.Web.Controllers
                         FileUploadModel fileUploadModel = new FileUploadModel();
                         fileUploadModel.FileName = fileName;
                         fileUploadModel.FilePath = basePath + fileName;
-                        fileUploadModel.UploadTime = nowTime;
+                        fileUploadModel.UploadTime = Convert.ToDateTime(nowTime);
                         fileUploadModel.UserId = Convert.ToInt32(user.Id);
                         fileUploadModel.UserName = user.Name;
                         _FileUploadAppService.InsertOrUpdateFileUpload(fileUploadModel);
