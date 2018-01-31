@@ -13,7 +13,6 @@ namespace Easyman.Common.Helper
 {
     public class ZipHelper
     {
-        #region 压缩文件包
         /// <summary>
         /// 压缩文件包
         /// </summary>
@@ -61,27 +60,11 @@ namespace Easyman.Common.Helper
         }
 
         /// <summary>
-        /// 压缩文件目录
+        /// 压缩文件
         /// </summary>
-        /// <param name="strFile">D:\\Debug\\</param>
+        /// <param name="strFile"></param>
         /// <param name="strZip">D:\\Debug2\\a.zip</param>
-        public void ZipFile(string strFile, string strZip)
-        {
-            if (strFile[strFile.Length - 1] != Path.DirectorySeparatorChar)
-                strFile += Path.DirectorySeparatorChar;
-            ZipOutputStream s = new ZipOutputStream(File.Create(strZip));
-            s.SetLevel(6); // 0 - store only to 9 - means best compression
-            zip(strFile, s, strFile);
-            s.Finish();
-            s.Close();
-        }
-
-        /// <summary>
-        /// 压缩文件目录
-        /// </summary>
-        /// <param name="strFile">D:\\Debug\\</param>
-        /// <param name="strZip">D:\\Debug2\\a.zip</param>
-        public void ZipFileOne(string srcFileName, string zipFileName)
+        public void ZipFile(string srcFileName, string zipFileName)
         {
             FileStream srcFile = File.OpenRead(srcFileName);
 
@@ -94,117 +77,6 @@ namespace Easyman.Common.Helper
             srcFile.Close();
             zipFile.Close();
         }
-
-
-        /// <summary>
-        /// 压缩多层目录
-        /// </summary>
-        /// <param name="strDirectory">The directory.</param>
-        /// <param name="zipedFile">The ziped file.</param>
-        public void ZipFileDirectory(string strDirectory, string zipedFile)
-        {
-            using (System.IO.FileStream ZipFile = System.IO.File.Create(zipedFile))
-            {
-                using (ZipOutputStream s = new ZipOutputStream(ZipFile))
-                {
-                    ZipSetp(strDirectory, s, "");
-                }
-            }
-        }
-
-        /// <summary>
-        /// 递归遍历目录
-        /// </summary>
-        /// <param name="strDirectory">The directory.</param>
-        /// <param name="s">The ZipOutputStream Object.</param>
-        /// <param name="parentPath">The parent path.</param>
-        private void ZipSetp(string strDirectory, ZipOutputStream s, string parentPath)
-        {
-            if (strDirectory[strDirectory.Length - 1] != Path.DirectorySeparatorChar)
-            {
-                strDirectory += Path.DirectorySeparatorChar;
-            }
-            Crc32 crc = new Crc32();
-
-            string[] filenames = Directory.GetFileSystemEntries(strDirectory);
-
-            foreach (string file in filenames)// 遍历所有的文件和目录
-            {
-
-                if (Directory.Exists(file))// 先当作目录处理如果存在这个目录就递归Copy该目录下面的文件
-                {
-                    string pPath = parentPath;
-                    pPath += file.Substring(file.LastIndexOf("\\") + 1);
-                    pPath += "\\";
-                    ZipSetp(file, s, pPath);
-                }
-
-                else // 否则直接压缩文件
-                {
-                    //打开压缩文件
-                    using (FileStream fs = File.OpenRead(file))
-                    {
-
-                        byte[] buffer = new byte[fs.Length];
-                        fs.Read(buffer, 0, buffer.Length);
-
-                        string fileName = parentPath + file.Substring(file.LastIndexOf("\\") + 1);
-                        ZipEntry entry = new ZipEntry(fileName);
-
-                        entry.DateTime = DateTime.Now;
-                        entry.Size = fs.Length;
-
-                        fs.Close();
-
-                        crc.Reset();
-                        crc.Update(buffer);
-
-                        entry.Crc = crc.Value;
-                        s.PutNextEntry(entry);
-
-                        s.Write(buffer, 0, buffer.Length);
-                    }
-                }
-            }
-        }
-        #endregion
-
-        private void zip(string strFile, ZipOutputStream s, string staticFile)
-        {
-            if (strFile[strFile.Length - 1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
-            Crc32 crc = new Crc32();
-            string[] filenames = Directory.GetFileSystemEntries(strFile);
-            foreach (string file in filenames)
-            {
-
-                if (Directory.Exists(file))
-                {
-                    zip(file, s, staticFile);
-                }
-
-                else // 否则直接压缩文件
-                {
-                    //打开压缩文件
-                    FileStream fs = File.OpenRead(file);
-
-                    byte[] buffer = new byte[fs.Length];
-                    fs.Read(buffer, 0, buffer.Length);
-                    string tempfile = file.Substring(staticFile.LastIndexOf("\\") + 1);
-                    ZipEntry entry = new ZipEntry(tempfile);
-
-                    entry.DateTime = DateTime.Now;
-                    entry.Size = fs.Length;
-                    fs.Close();
-                    crc.Reset();
-                    crc.Update(buffer);
-                    entry.Crc = crc.Value;
-                    s.PutNextEntry(entry);
-
-                    s.Write(buffer, 0, buffer.Length);
-                }
-            }
-        }
-
 
         /// <summary>
         /// 压缩文件夹
