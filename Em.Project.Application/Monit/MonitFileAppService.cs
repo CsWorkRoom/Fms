@@ -1264,17 +1264,47 @@ namespace Easyman.Service
                 string tempVar = DateTime.Now.Ticks.ToString();
                 if (File.Exists(url))
                 {
+                    //string fromFileName = url.Substring(url.LastIndexOf("\\")+1);//文件名
 
-                    fileName = Path.GetFileNameWithoutExtension(url);
+                    string fromFileName= Path.GetFileName(url);
 
-                    newFileName = fileName + "_" + tempVar + ".zip";
+                    //string fromFileName = url.Substring(url.LastIndexOf("\\
+                    if (fromFileName.LastIndexOf('.') != -1)//有后缀
+                    {
+                        newFileName = fromFileName.Insert(fromFileName.LastIndexOf('.'), "_" + tempVar);
+                        //tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
+                        tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + newFileName;
+                    }
+                    else//无后缀
+                    {
+                        newFileName = fromFileName + "_" + tempVar;
+                        tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + newFileName;
+                    }
 
-                    tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempUploader\\" + newFileName;
-                    ZipHelper zip = new ZipHelper();
-                    //zip.ZipFileOne(url, tempPath);//压缩文件
-                    zip.ZipPath(url, tempPath);//压缩文件
+
+                    string tempFolder = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\";
+
+                    //创建文件夹
+                    DirectoryInfo di = new DirectoryInfo(tempFolder);
+                    // 没有时就创建
+                    if (!di.Exists)
+                        di.Create();
+
+                    File.Copy(url, tempPath, true);//复制文件
+
                     fileName = newFileName;
                     return fileName;
+
+
+                    //fileName = Path.GetFileNameWithoutExtension(url);
+
+                    //newFileName = fileName + "_" + tempVar + ".zip";
+
+                    //tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempUploader\\" + newFileName;
+                    //ZipHelper zip = new ZipHelper();
+                    ////zip.ZipFileOne(url, tempPath);//压缩文件
+                    //zip.ZipPath(url, tempPath);//压缩文件
+                    
                 }
                 else
                 {
