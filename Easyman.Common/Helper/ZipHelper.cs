@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Easyman.Common.Helper
 {
-   public class ZipHelper
+    public class ZipHelper
     {
         #region 压缩文件包
         /// <summary>
@@ -206,9 +206,49 @@ namespace Easyman.Common.Helper
         }
 
 
+        /// <summary>
+        /// 压缩文件夹
+        /// </summary>
+        /// <param name="srcPath"></param>
+        /// <param name="strZip"></param>
+        public void ZipPath(string srcPath, string strZip)
+        {
+            ZipOutputStream zipOutputStream = new ZipOutputStream(File.Create(strZip));
+            zipOutputStream.SetLevel(9);
+            DirectoryInfo di = new DirectoryInfo(srcPath);
+            ZipSubPath(di.FullName, di, zipOutputStream);
+            zipOutputStream.Finish();
+            zipOutputStream.Close();
+        }
 
-     
+        /// <summary>
+        /// 压缩子目录
+        /// </summary>
+        /// <param name="rootPath"></param>
+        /// <param name="directoryInfo"></param>
+        /// <param name="zipOutputStream"></param>
+        private void ZipSubPath(string rootPath, DirectoryInfo directoryInfo, ZipOutputStream zipOutputStream)
+        {
+            //文件，直接压缩文件
+            foreach (FileInfo fi in directoryInfo.GetFiles())
+            {
+                FileStream fs = File.OpenRead(fi.FullName);
+                byte[] buffer = new byte[fs.Length];
+                fs.Read(buffer, 0, buffer.Length);
+                ZipEntry entry = new ZipEntry(fi.FullName.Replace(rootPath, ""));
+                entry.DateTime = DateTime.Now;
+                entry.Size = fs.Length;
+                fs.Close();
+                zipOutputStream.PutNextEntry(entry);
+                zipOutputStream.Write(buffer, 0, buffer.Length);
+            }
 
+            //子目录
+            foreach (DirectoryInfo di in directoryInfo.GetDirectories())
+            {
+                ZipSubPath(rootPath, di, zipOutputStream);
+            }
+        }
 
     }
 }

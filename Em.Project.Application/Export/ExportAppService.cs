@@ -58,7 +58,7 @@ namespace Easyman.Service
         #endregion
 
         #region 公共接口
-        #region 在线导出
+        #region online导出
         public string OnlineExportData(ExportDataModel exp)
         {
             EasyMan.Dtos.ErrorInfo err = new EasyMan.Dtos.ErrorInfo();
@@ -343,7 +343,7 @@ namespace Easyman.Service
         /// <param name="strMapPath">保存后的物理路径</param>
         public void SavaDBSql(string strPath, string strMapPath, ExportDataModel exp)
         {
-            long lngUserId = (long)(exp.ExportWay == "在线" ? GetCurrentUserAsync().Result.Id : exp.UserId);
+            long lngUserId = (long)(exp.ExportWay == "online" ? GetCurrentUserAsync().Result.Id : exp.UserId);
 
             #region 更新文件表
             //文件管理列表
@@ -354,7 +354,7 @@ namespace Easyman.Service
             files.UploadTime = DateTime.Now;
             files.UserId = lngUserId;
 
-            if (exp.ExportWay == "在线" )
+            if (exp.ExportWay == "online" )
             {
                 files.Id = 0;
             }
@@ -389,7 +389,7 @@ namespace Easyman.Service
 
             exp.FilesId = exp.FilesId;
             exp.UserId = lngUserId;
-            if (exp.ExportWay == "在线")
+            if (exp.ExportWay == "online")
             {
                 exp.BeginTime = DateTime.Now;
                 exp.Id = 0;
@@ -414,7 +414,7 @@ namespace Easyman.Service
                 return;
             }
 
-            if (exp.ExportWay == "在线")
+            if (exp.ExportWay == "online")
             {
                 DateTime dtmCreateTime = DateTime.Now;
                 //数据下载记录表

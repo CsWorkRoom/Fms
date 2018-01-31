@@ -706,7 +706,7 @@ namespace Easyman.FwWeb.Controllers
                 #region 抽样数据
                 double WaitTime = (double)expCfg.WaitTime;
                 DateTime datEndDate = DateTime.Now.AddMilliseconds(WaitTime);//最大等待时长
-                if (DateTime.Now > datEndDate && exportWay == "在线")
+                if (DateTime.Now > datEndDate && (exportWay == "在线"|| exportWay == "online"))
                 {
                     return Content("在线导出时，由于数据量过大，在统计数据时超出在线最大等待时长，请转为离线导出。是否转为离线导出？");
                 }
@@ -718,7 +718,7 @@ namespace Easyman.FwWeb.Controllers
                 #endregion
 
                 //判断是否为离线
-                if ((intCountSize > expCfg.MaxRowNum || intPumping > expCfg.DataSize) && exportWay == "在线")
+                if ((intCountSize > expCfg.MaxRowNum || intPumping > expCfg.DataSize) && (exportWay == "在线" || exportWay == "online"))
                 {
                     return Content("在线导出最大支持" + expCfg.MaxRowNum + "条数据及" + expCfg.DataSize + "KB字节,是否转为离线导出？");
                 }

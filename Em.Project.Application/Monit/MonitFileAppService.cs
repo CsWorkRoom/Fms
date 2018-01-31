@@ -810,6 +810,14 @@ namespace Easyman.Service
                             string tempVar = DateTime.Now.Ticks.ToString();
                             string tempPath = "";
 
+                            string tempFolder = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\";
+                            
+                            //创建文件夹
+                            DirectoryInfo di = new DirectoryInfo(tempFolder);
+                            // 没有时就创建
+                            if (!di.Exists)
+                                di.Create();
+
                             var msg = "开始生成临时文件名...";
                             Log(caseVersionId, logVersionId, monitFileId, logType, msg);
 
@@ -955,9 +963,10 @@ namespace Easyman.Service
                     string sourceDir = tempPath + "\\";//待压缩目录
                     //string targetFile = HttpContext.Current.Server.MapPath("/") + monitFile.Name + "_" + tempVar + ".zip";//压缩后的文件
                     string targetFile = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + monitFile.Name + "_" + tempVar + ".zip";//压缩后的文件
-                    ZipHelper zip = new ZipHelper();
-                    zip.ZipFileDirectory(sourceDir, targetFile);//压缩文件
 
+                    ZipHelper zip = new ZipHelper();
+                    zip.ZipPath(sourceDir, targetFile);//压缩文件
+                    
                     msg = "压缩完毕，文件名：" + monitFile.Name + "_" + tempVar + ".zip";
                     Log(caseVersionId, logVersionId, monitFileId, logType, msg);
 
@@ -1262,7 +1271,8 @@ namespace Easyman.Service
 
                     tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempUploader\\" + newFileName;
                     ZipHelper zip = new ZipHelper();
-                    zip.ZipFileOne(url, tempPath);//压缩文件
+                    //zip.ZipFileOne(url, tempPath);//压缩文件
+                    zip.ZipPath(url, tempPath);//压缩文件
                     fileName = newFileName;
                     return fileName;
                 }
