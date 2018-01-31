@@ -236,6 +236,13 @@ function restoreFile(monitFileId) {
 //下载文件和文件夹的压缩包
 function DownFile(monitFileId)
 {
+    //删除临时文件夹tempFolder之下的文件
+    $.ajax({
+        //url: bootPATH + "/api/services/api/MonitFile/DeleteFile?fileName=" + fileName,
+        url: bootPATH + "/api/services/api/MonitFile/DeleteTempFiles",
+        type: 'get',
+        async: false
+    });
     $.ajax({
         url: bootPATH + "/api/services/api/MonitFile/GenerateFile?monitFileId=" + monitFileId,
         type: 'get',
@@ -244,12 +251,6 @@ function DownFile(monitFileId)
             var fileName = data.result;
             if (fileName != "") {
                 window.downloadFile(bootPATH + "tempFolder/" + fileName);//下载文件
-                //删除临时文件夹tempFolder之下的文件
-                $.ajax({
-                    //url: bootPATH + "/api/services/api/MonitFile/DeleteFile?fileName=" + fileName,
-                    url: bootPATH + "/api/services/api/MonitFile/DeleteTempFiles",
-                    type: 'get',
-                });
             }
             else {
                 alert("Download failure！");
