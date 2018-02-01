@@ -512,8 +512,10 @@ namespace Easyman.Service
                 hr.UserId = AbpSession.UserId.Value;
                 hr.ObjectId = OBJECT_ID;
                 hr.AddTime = DateTime.Now;
-                hr.StartTime = DateTime.Now;
-                hr.ObjectCaseId = ExampleId;
+                #region 任务启动时间和实例ID由服务去添加
+                //hr.StartTime = DateTime.Now;
+                //hr.ObjectCaseId = ExampleId;
+                #endregion
                 _handRecord.Insert(hr);
                 return true;
             }
@@ -549,10 +551,17 @@ namespace Easyman.Service
                 HandRecord hr = new HandRecord();
                 hr.HandType = (short)StartType;
                 hr.UserId = AbpSession.UserId.Value;
-                hr.ObjectId = OBJECT_ID;
+                //hr.ObjectId = OBJECT_ID;
                 hr.AddTime = DateTime.Now;
-                hr.StartTime = DateTime.Now;
-                hr.ObjectCaseId = ExampleId;
+                //hr.StartTime = DateTime.Now;
+                hr.ObjectCaseId = OBJECT_ID;
+                #region 赋值脚本节点ID给手工记录
+                var nodeCase = _scriptNodeCase.FirstOrDefault(ExampleId);
+                if (nodeCase != null)
+                {
+                    hr.ObjectId = nodeCase.ScriptNodeId;
+                }
+                #endregion
                 _handRecord.Insert(hr);
                 return true;
             }
