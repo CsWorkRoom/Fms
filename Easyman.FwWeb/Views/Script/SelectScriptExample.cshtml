@@ -108,14 +108,14 @@
     <div class="form-body jarviswidget" style="height:100%;width:100%">
         <header role="heading" class="header">
             <ul class="nav nav-tabs" role="tablist" style="background-color:#fafafa;">
-                <li><a href="#" id="aSetConfig"><i class="fa fa-cog" aria-hidden="true" style="color:#079048"></i> 任务组属性</a></li>
-                <li><a href="#" id="NodeTypeList"><i class="fa fa-file-text" aria-hidden="true" style="color: #ec9a22;"></i> 任务组日志</a></li>
-                <li><a href="#" id="aHealp"><i class="fa fa-question-circle" aria-hidden="true" style="color:#1c7851"></i> 帮助</a></li>
+                <li><a href="#" id="aSetConfig"><i class="fa fa-cog" aria-hidden="true" style="color:#079048"></i> TaskGroupAttr</a></li>
+                <li><a href="#" id="NodeTypeList"><i class="fa fa-file-text" aria-hidden="true" style="color: #ec9a22;"></i> TaskGroupLog</a></li>
+                <li><a href="#" id="aHealp"><i class="fa fa-question-circle" aria-hidden="true" style="color:#1c7851"></i> Help</a></li>
                 <li style="float:right"><i class="fa fa-share-alt" aria-hidden="true" style="color:#e35341;padding: 10px 15px;"></i>
-                    <img src="~/Common/Images/selectScript/acc.png" />成功&nbsp;
-                    <img src="~/Common/Images/selectScript/error.png" />失败&nbsp;
-                 <img src="~/Common/Images/selectScript/executing.png" />执行中&nbsp;
-                 <img src="~/Common/Images/selectScript/start.png" />未执行&nbsp;
+                    <img src="~/Common/Images/selectScript/acc.png" />Sucess&nbsp;
+                    <img src="~/Common/Images/selectScript/error.png" />Failt&nbsp;
+                 <img src="~/Common/Images/selectScript/executing.png" />Running&nbsp;
+                 <img src="~/Common/Images/selectScript/start.png" />Waiting&nbsp;
                 
                 </li>
             </ul>
@@ -128,57 +128,57 @@
             <div role="tabpanel" class="tab-pane active" id="navMenu">
 
                 <div class="form-group">
-                    <label for="Name" class="col-sm-4 control-label">任务组实例名称</label>
+                    <label for="Name" class="col-sm-4 control-label">GroupCaseName</label>
                     <div class="col-sm-6">
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control",  @readonly= "readonly" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="RETRY_TIME" class="col-sm-4 control-label">失败重启次数</label>
+                    <label for="RETRY_TIME" class="col-sm-4 control-label">ReTryTime</label>
                     <div class="col-sm-6">
                         @Html.TextBoxFor(m => m.RetryTime, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="START_TIME_STR" class="col-sm-4 control-label">启动时间</label>
+                    <label for="START_TIME_STR" class="col-sm-4 control-label">StartTime</label>
                     <div class="col-sm-6">
                         @Html.TextBoxFor(m => m.START_TIME_STR, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="START_MODEL_STR" class="col-sm-4 control-label">启动模式</label>
+                    <label for="START_MODEL_STR" class="col-sm-4 control-label">StartModel</label>
                     <div class="col-sm-6">
                         @Html.TextBoxFor(m => m.START_MODEL_STR, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="USER_ID_STR" class="col-sm-4 control-label">启动人</label>
+                    <label for="USER_ID_STR" class="col-sm-4 control-label">StartUserName</label>
                     <div class="col-sm-6">
                         @Html.TextBoxFor(m => m.USER_ID_STR, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="RUN_STATUS_STR" class="col-sm-4 control-label">启动状态</label>
+                    <label for="RUN_STATUS_STR" class="col-sm-4 control-label">RunStatus</label>
                     <div class="col-sm-6">
                         @Html.TextBoxFor(m => m.RUN_STATUS_STR, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="IS_HAVE_FAIL_STR" class="col-sm-4 control-label">是否有失败节点</label>
+                    <label for="IS_HAVE_FAIL_STR" class="col-sm-4 control-label">IsHaveFail</label>
                     <div class="col-sm-6">
                         @Html.TextBoxFor(m => m.IS_HAVE_FAIL_STR, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="RETURN_CODE_STR" class="col-sm-4 control-label">结束标识</label>
+                    <label for="RETURN_CODE_STR" class="col-sm-4 control-label">ReturnCode</label>
                     <div class="col-sm-6">
                         @Html.TextBoxFor(m => m.RETURN_CODE_STR, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="END_TIME_STR" class="col-sm-4 control-label">结束时间</label>
+                    <label for="END_TIME_STR" class="col-sm-4 control-label">EndTime</label>
                     <div class="col-sm-6">
                         @Html.TextBoxFor(m => m.END_TIME_STR, new { @class = "form-control", @readonly = "readonly" })
                     </div>
@@ -241,7 +241,7 @@
             var LOG_NODE_ID = data_CODE.LOG_NODE_ID;
             //var LOG_NODE_ID = $("#LOG_NODE_ID").val();
             if (LOG_NODE_ID == null || LOG_NODE_ID == "" || LOG_NODE_ID == 0) {
-                abp.message.info("未执行任务没有日志", "提示");
+                abp.message.info("No log is not executed", "tips");
                 return false;
             }
             TopModeDialogUrl("n33331", "任务实例日志", bootPATH+"Report/TbReport?code=RW_LOG&ExampleNodeId=" + LOG_NODE_ID);
@@ -259,13 +259,13 @@
            
             if (data_CODE.RETURN_CODE_STR!="失败")
             {
-                abp.message.info("只有失败任务可以重启。", "提示");
+                abp.message.info("Only the failed task can be restarted。", "tips");
                 return false;
             }
             $.post("../api/services/api/Script/StartExampSelect?StartType=2&ExampleId=" + data_CODE.SCRIPT_CASE_ID + "&ExampleNode=" + data_CODE.LOG_NODE_ID, {}, function (dataicon) {
                 console.log(dataicon);
                 if (dataicon.result == true || dataicon.result == "ture") {
-                    abp.message.info("启动成功", "提示");
+                    abp.message.info("Start the success", "tips");
                 }
 
             });

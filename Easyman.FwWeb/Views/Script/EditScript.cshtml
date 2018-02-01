@@ -85,11 +85,11 @@
     <div class="form-body jarviswidget" style="height:100%;">
         <header role="heading" class="header">
             <ul class="nav nav-tabs" role="tablist">
-                <li><a href="#" id="NodeTypeList"><i class="fa fa-file-text" aria-hidden="true" style="color: #ec9a22;"></i> 任务列表</a></li>
-                <li><a href="#" id="setMenu"><i class="fa fa-cog" aria-hidden="true" style="color:#079048"></i> 任务组信息</a></li>
-                <li><a href="#" id="" onclick="handleSubmitForm()"><i class="fa fa-floppy-o" aria-hidden="true" style="color:#209ff9"></i> 保存</a></li>
-                <li><a href="#" id="aHealp" ><i class="fa fa-question-circle" aria-hidden="true" style="color:#1c7851"></i> 帮助</a></li>
-                <button id="sumbit-btn" style="display:none" type="submit">提交</button>
+                <li><a href="#" id="NodeTypeList"><i class="fa fa-file-text" aria-hidden="true" style="color: #ec9a22;"></i> TaskList</a></li>
+                <li><a href="#" id="setMenu"><i class="fa fa-cog" aria-hidden="true" style="color:#079048"></i> TaskGroupInfo</a></li>
+                <li><a href="#" id="" onclick="handleSubmitForm()"><i class="fa fa-floppy-o" aria-hidden="true" style="color:#209ff9"></i> Save</a></li>
+                <li><a href="#" id="aHealp" ><i class="fa fa-question-circle" aria-hidden="true" style="color:#1c7851"></i> Help</a></li>
+                <button id="sumbit-btn" style="display:none" type="submit">Submit</button>
             </ul>
         </header>
 
@@ -101,45 +101,45 @@
 
                 <div role="tabpanel" style="width:96%;display:none" class="tab-pane active" id="navMenu">
                     <div class="form-group">
-                        <label for="Name" class="col-xs-4 control-label">任务组名称</label>
+                        <label for="Name" class="col-xs-4 control-label">TaskGroupName</label>
                         <div class="col-sm-6">
-                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "任务组名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入任务组名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "TaskGroupName", @Required = "Required", @oninvalid = "setCustomValidity('Please enter the name of the task group')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="ScriptTypeId" class="col-xs-4 control-label">任务组类型</label>
+                        <label for="ScriptTypeId" class="col-xs-4 control-label">TaskGroupType</label>
                         <div class="col-sm-6">
-                            @Html.DropDownListFor(m => m.ScriptTypeId, ViewBag.ScriptTypeList as List<SelectListItem>, new { @class = "form-control", @oninvalid = "setCustomValidity('请输入任务组类型')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                            @Html.DropDownListFor(m => m.ScriptTypeId, ViewBag.ScriptTypeList as List<SelectListItem>, new { @class = "form-control", @oninvalid = "setCustomValidity('Please enter the task group type')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="Cron" class="col-xs-4 control-label">时间表达式</label>
+                        <label for="Cron" class="col-xs-4 control-label">TimeCron</label>
                         <div class="col-sm-6">
-                            @Html.TextBoxFor(m => m.Cron, new { @class = "form-control", placeholder = "时间表达式", @Required = "Required", @oninvalid = "setCustomValidity('请输入时间表达式')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                            @Html.TextBoxFor(m => m.Cron, new { @class = "form-control", placeholder = "TimeCron", @Required = "Required", @oninvalid = "setCustomValidity('Please enter the time expression')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="Status" class="col-xs-4 control-label">任务组状态</label>
+                        <label for="Status" class="col-xs-4 control-label">TaskGroupStatus</label>
                         <div class="col-sm-6">
                             @Html.DropDownListFor(m => m.Status, new List<SelectListItem>() {
-                       new SelectListItem{ Text ="开启", Value="1", Selected = true },
-                       new SelectListItem{ Text ="关闭", Value="0" }
+                       new SelectListItem{ Text ="ON", Value="1", Selected = true },
+                       new SelectListItem{ Text ="OFF", Value="0" }
                    }, new { @class = "form-control" })
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="RetryTime" class="col-xs-4 control-label">失败重启次数</label>
+                        <label for="RetryTime" class="col-xs-4 control-label">ReTryTime</label>
                         <div class="col-sm-6">
-                            @Html.TextBoxFor(m => m.RetryTime, new { @class = "form-control", placeholder = "失败重启次数", @Required = "Required", @oninvalid = "setCustomValidity('请输入失败重启次数')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                            @Html.TextBoxFor(m => m.RetryTime, new { @class = "form-control", placeholder = "ReTryTime", @Required = "Required", @oninvalid = "setCustomValidity('Please enter the number of failed restarts')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="Remark" class="col-xs-4 control-label">任务组说明</label>
+                        <label for="Remark" class="col-xs-4 control-label">Remark</label>
                         <div class="col-sm-6">
                             @Html.TextAreaFor(m => m.Remark, new { @class = "form-control", })
                         </div>
@@ -279,7 +279,7 @@
 
                     // alert(left+"-"+top);
                 } else {
-                    abp.message.error("已有该节点。", "提示");
+                    abp.message.error("The existing node。", "tips");
                 }
             }
 
@@ -351,7 +351,7 @@
                     });
                     if (isRepeat >= 2) {
                         jsPlumb.detach(conn);
-                        abp.message.error("不能重复连接！", "提示");
+                        abp.message.error("Not Can repeat the connection！", "tips");
                         return false;
                     }
                      //右键删除
@@ -380,7 +380,7 @@
             
             if (info.sourceId == info.targetId) {
                 jsPlumb.detach(info);
-                abp.message.error("不能连接自己！", "提示");
+                abp.message.error("Can't connect to yourself！", "tips");
                 return false;
             }
             
@@ -392,7 +392,7 @@
             });
             if (isRepeat >= 2) {
                 jsPlumb.detach(info);
-                abp.message.error("不能重复连接！", "提示");
+                abp.message.error("Cannot repeat the connection！", "tips");
                 return false;
             }
 
@@ -679,7 +679,7 @@
             });
 
         }).fail(function (data) {
-            abp.message.error("节点加载失败", "提示");
+            abp.message.error("Node loading failure", "tips");
             });
        
     }

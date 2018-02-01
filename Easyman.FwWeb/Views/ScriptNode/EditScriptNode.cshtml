@@ -21,12 +21,12 @@
         <div class="tab-content" style="padding-top:2px;">
             <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:40px">
                 <div class="form-group">
-                    <label for="Name" class="col-sm-2 control-label">节点名</label>
+                    <label for="Name" class="col-sm-2 control-label">NodeName</label>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "节点名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入节点名')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "NodeName", @Required = "Required", @oninvalid = "setCustomValidity('Please enter the node name')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                     <div id="IsShow">
-                        <label for="IsUpdateExample" class="col-sm-2 control-label">是否修改节点实例</label>
+                        <label for="IsUpdateExample" class="col-sm-2 control-label">IsUpdateExample</label>
 
                         <div class="col-sm-4">
                             <div class="switch switch-small">
@@ -42,43 +42,43 @@
                     
                 </div>
                 <div class="form-group">
-                    <label for="ScriptNodeTypeId" class="col-sm-2 control-label" >节点类型</label>
+                    <label for="ScriptNodeTypeId" class="col-sm-2 control-label">ScriptNodeType</label>
                     <div class="col-sm-4">
                         @Html.DropDownTreeFor(d => d.ScriptNodeTypeId, "../api/services/api/ScriptNodeType/GetScriptNodeTypeTreeJson")
                     </div>
-                    <label for="DbServerId" class="col-sm-2 control-label">启动数据库</label>
+                    <label for="DbServerId" class="col-sm-2 control-label">DbServer</label>
                     <div class="col-sm-4">
                         @Html.DropDownTreeFor(d => d.DbServerId, "../api/services/api/DbServer/GetDbServerTreeJson")
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="ScriptModel" class="col-sm-2 control-label">任务类型</label>
+                    <label for="ScriptModel" class="col-sm-2 control-label">ScriptModel</label>
                     <div class="col-sm-10" style="margin-top: 5px;">
-                        @Html.RadioButtonFor(p => p.ScriptModel, 2, new { @checked = "checked" }) 命令段
-                        @Html.RadioButtonFor(p => p.ScriptModel, 1,new { @style = "display:none"}) @*建表*@
-                        </div>
+                        @Html.RadioButtonFor(p => p.ScriptModel, 2, new { @checked = "checked" }) Command segment
+                        @Html.RadioButtonFor(p => p.ScriptModel, 1, new { @style = "display:none" }) @*建表*@
+                    </div>
                     </div>
                     <div id="tbGroup">
                         <div class="form-group">
-                            <label for="EnglishTabelName" class="col-sm-2 control-label">表英文名</label>
+                            <label for="EnglishTabelName" class="col-sm-2 control-label">EnglishTabelName</label>
                             <div class="col-sm-4">
-                                @Html.TextBoxFor(m => m.EnglishTabelName, new { @class = "form-control", placeholder = "表英文名"})<i class="iRequired">*</i>
+                                @Html.TextBoxFor(m => m.EnglishTabelName, new { @class = "form-control", placeholder = "EnglishTabelName" })<i class="iRequired">*</i>
                             </div>
-                            <label for="ChineseTabelName" class="col-sm-2 control-label">表别名</label>
+                            <label for="ChineseTabelName" class="col-sm-2 control-label">ChineseTabelName</label>
                             <div class="col-sm-4">
-                                @Html.TextBoxFor(m => m.ChineseTabelName, new { @class = "form-control", placeholder = "表中文名"})<i class="iRequired">*</i>
+                                @Html.TextBoxFor(m => m.ChineseTabelName, new { @class = "form-control", placeholder = "ChineseTabelName" })<i class="iRequired">*</i>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="TableType" class="col-sm-2 control-label">表类型</label>
+                            <label for="TableType" class="col-sm-2 control-label">TableType</label>
                             <div class="col-sm-4" style="margin-top: 5px;">
-                                @Html.RadioButtonFor(p => p.TableType, 1, new { @checked = "checked" }) 公用表
-                                @Html.RadioButtonFor(p => p.TableType, 0) 私有表
+                                @Html.RadioButtonFor(p => p.TableType, 1, new { @checked = "checked" }) Public table
+                                @Html.RadioButtonFor(p => p.TableType, 0) Private table
                             </div>
-                            <label for="TableModel" class="col-sm-2 control-label">建表模式</label>
+                            <label for="TableModel" class="col-sm-2 control-label">TableModel</label>
                             <div class="col-sm-4" style="margin-top: 5px;">
-                                @Html.RadioButtonFor(p => p.TableModel, 1, new { @checked = "checked" }) 新建
-                                @Html.RadioButtonFor(p => p.TableModel, 2) 复制
+                                @Html.RadioButtonFor(p => p.TableModel, 1, new { @checked = "checked" }) New
+                                @Html.RadioButtonFor(p => p.TableModel, 2) Copy
                             </div>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            @Html.TextAreaFor(m => m.Remark, new { @class = "form-control", placeholder = "节点说明" })
+                            @Html.TextAreaFor(m => m.Remark, new { @class = "form-control", placeholder = "Remark" })
                         </div>
                     </div>
                 </div>
@@ -106,8 +106,8 @@
         <div class="form-actions text-right">
             <div class="row bottomPage">
                 <div class="col-md-12">
-                    <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
-                    <button class="btn btn-primary" id="sumbit-btn" type="submit" ><i class="fa fa-save"></i> 提交</button>
+                    <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> Close</button> &nbsp;
+                    <button class="btn btn-primary" id="sumbit-btn" type="submit" ><i class="fa fa-save"></i> Submit</button>
                 </div>
             </div>
         </div>
@@ -125,8 +125,8 @@
             }
             //加载事件
             $("#IsUpdateExample").bootstrapSwitch({
-                onText: '是',
-                offText: '否',
+                onText: 'ON',
+                offText: 'OFF',
                 setState: $('#IsUpdateExample').val() == "1" ? true : false
             });
             //值变动事件

@@ -19,13 +19,13 @@
         <div class="tab-content" style="padding-top:12px;">
             <div role="tabpanel" class="tab-pane active" id="navMenu" style="margin-bottom:50px">
                 <div class="form-group">
-                    <label for="Name" class="col-sm-4 control-label">任务组类型名称</label>
+                    <label for="Name" class="col-sm-4 control-label">GroupTypeName</label>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "任务组类型名称", @Required = "Required", @oninvalid = "setCustomValidity('请输入任务组类型名称')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "GroupTypeName", @Required = "Required", @oninvalid = "setCustomValidity('Please enter the task group type name')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="Remark" class="col-sm-4 control-label">备注</label>
+                    <label for="Remark" class="col-sm-4 control-label">Remark</label>
                     <div class="col-sm-6">
                         @Html.TextAreaFor(m => m.Remark, new { @class = "form-control", })
                     </div>
@@ -36,8 +36,8 @@
     <div class="form-actions">
         <div class="row bottomPage">
             <div class="col-md-12 right">
-                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> 关闭</button> &nbsp;
-                <button class="btn btn-primary" id="sumbit-btn" type="submit"><i class="fa fa-save"></i> 提交</button>
+                <button type='button' class='btn btn-danger' onclick="ColseModel()" data-dismiss='modal'><i class='fa fa-times'></i> Close</button> &nbsp;
+                <button class="btn btn-primary" id="sumbit-btn" type="submit"><i class="fa fa-save"></i> Submit</button>
             </div>
         </div>
     </div>
