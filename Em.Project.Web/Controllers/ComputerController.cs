@@ -173,6 +173,7 @@ namespace Easyman.Web.Controllers
                     RecycleDir(dicInfo, computer, folder, null);             
                     _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:成功遍历当前目录..."), LogTime = DateTime.Now });
 
+                    string str = "监控文件夹无文件变化";
                     if (waitFiles != null && waitFiles.Count > 0)
                     {
                         var files = from f in waitFiles
@@ -181,6 +182,7 @@ namespace Easyman.Web.Controllers
 
                         if (files != null && files.Count() > 0)
                         {
+                            str = "监控文件夹存在文件变动的操作";
                             FolderVersionModel folderVersion = CheckFolderVersion(folder.Id, "add");
                             CaseVersionModel caseVersionModel = SaveCaseVersion(folderVersion, scriptNodeCaseId);
                             MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})下生成新版本号", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id };
@@ -203,13 +205,14 @@ namespace Easyman.Web.Controllers
 
                             }
                         }
-                        //else
-                        //{
-                        //    FolderVersionModel folderVersion = CheckFolderVersion(folder.Id, "get");
-                        //    CaseVersionModel caseVersionModel = SaveCaseVersion(folderVersion, scriptNodeCaseId);
-                        //    MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("此({0})的({1})下无文件变化,指向上一个版本", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id };
-                        //    _MonitFileAppService.Log(monitLogErr);
-                        //}
+                        else
+                        {
+                            str = "监控文件夹无文件变动";
+                            //FolderVersionModel folderVersion = CheckFolderVersion(folder.Id, "get");
+                            //CaseVersionModel caseVersionModel = SaveCaseVersion(folderVersion, scriptNodeCaseId);
+                            //MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("此({0})的({1})下无文件变化,指向上一个版本", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id };
+                            //_MonitFileAppService.Log(monitLogErr);
+                        }
                     }
                     else
                     {
