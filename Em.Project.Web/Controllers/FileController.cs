@@ -426,7 +426,8 @@ namespace Easyman.Web.Controllers
             try
             {
                 string UploadPath = ConfigurationManager.AppSettings["UploadPath"];
-                string basePath = UploadPath + DateTime.Now.ToString("yyyy-MM-dd") + "/";
+                var user = _UserAppService.GetUser(CurrUserId());
+                string basePath = UploadPath + user.Name + "/";
                 string name = string.Empty;
                 HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
                 //如果目录不存在，则创建目录
@@ -438,14 +439,21 @@ namespace Easyman.Web.Controllers
                     }
                     //string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     string nowTime = System.Web.HttpContext.Current.Request["nowtime"];
-                    var user = _UserAppService.GetUser(CurrUserId());
+                 
                     for (int i = 0; i < files.Count; i++)
                     {
                         string fileName = files[i].FileName;
-                        files[i].SaveAs(basePath + fileName);
+                        string[] names = fileName.Split('.');
+                        string trueName = names[0].ToString() +"_"+ Convert.ToDateTime(nowTime).ToString("yyyyMMddHHmmss");
+                        if (fileName.Contains("."))
+                        {
+                            trueName += "." + names[1].ToString();
+                        }
+
+                        files[i].SaveAs(basePath + trueName);
                         FileUploadModel fileUploadModel = new FileUploadModel();
                         fileUploadModel.FileName = fileName;
-                        fileUploadModel.FilePath = basePath + fileName;
+                        fileUploadModel.FilePath = basePath + trueName;
                         fileUploadModel.UploadTime = Convert.ToDateTime(nowTime);
                         fileUploadModel.UserId = Convert.ToInt32(user.Id);
                         fileUploadModel.UserName = user.Name;
