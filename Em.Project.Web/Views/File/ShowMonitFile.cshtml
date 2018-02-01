@@ -31,14 +31,16 @@
     @*<p style="margin-left:10px;">
             [Contains the file structure under the jurisdiction terminal, the shared directory, and the directory]
         </p>*@
-    <div style=" margin-left:200px; height:40px;   background-color:steelblue; text-align:center;width:730px; vertical-align:middle; padding-top:5px;" class="thumbnail">
-        Search: <input type="text" name="searchName" id="searchName" style="width:600px;" /><button type="button" id="btnSearch" onclick="SearchFile()">Go</button>
+    <button type="button" id="btnSearch" onclick="javascript: location.reload();">Refresh</button>
+
+    <div style="float:left; margin-left:200px; height:40px;   background-color:steelblue; text-align:center;width:730px; vertical-align:middle; padding-top:5px;" class="thumbnail">
+         Search: <input type="text" name="searchName" id="searchName" style="width:600px;" /><button type="button" id="btnSearch" onclick="SearchFile()">Go</button>
     </div>
 
 
     <div>
-        There are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum">0</a> current error monitoring data
-        <a href="#" onclick="LookMoreLog()" id="moreLog" style="font-size:20px;">more</a>
+        Current there are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum">0</a> error monitoring data. 
+        <a href="#" onclick="LookMoreLog()" id="moreLog" style="font-size:20px;">more</a> log
     </div>
 
 </div>
