@@ -74,71 +74,42 @@ function initUpload()
 
     // 当有文件添加进来的时候
     uploader.on('fileQueued', function (file) {
-       // $list.html("");
-        var $li = $(
-                '<div id="' + file.id + '" class="file-item thumbnail">' +
-                    '<img>' + '<div class="info">' + file.name + '</div>' +
-                '</div>'
-                ),
-            $img = $li.find('img');
 
-        $list.append('<div id="' + file.id + '" class="item">' +
-            '<h4 class="info">' + '</h4>' +
-            '<p class="state">Wait for uploading...</p>' +
-        '</div>');
+        $list.append('<div style="background-color:#f5f5f5; color: #000000;" id="' + file.id + '" class="item">' +
+            '<h4 class="info" >' + file.name + '</h4>' +
+            '<p class="state">Wait to upload...</p>' +
+            '</div>');     
 
-        $list.append($li);
-
-      
     });
 
     // 文件上传过程中创建进度条实时显示。
     uploader.on('uploadProgress', function (file, percentage) {
-        var $li = $('#' + file.id),
-           $percent = $li.find('.progress .progress-bar');
 
+        var $li = $('#' + file.id),
+            $percent = $li.find('.progress .progress-bar');
         // 避免重复创建
         if (!$percent.length) {
             $percent = $('<div class="progress progress-striped active">' +
-              '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-              '</div>' +
-            '</div>').appendTo($li).find('.progress-bar');
+                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                '</div>' +
+                '</div>').appendTo($li).find('.progress-bar');
         }
-
-        $li.find('p.state').text('Uploading...');
+        $li.find('p.state').text('File Loading');
         $percent.css('width', percentage * 100 + '%');
+
     });
 
     uploader.on('uploadSuccess', function (file) {
-        $('#' + file.id).find('p.state').text('Uploaded');
-        //uploader.destroy();
-        //initUpload();
-        $('#' + file.id).find('p.state').text('Uploaded');
-        $('#uploader-demo').append('<input  type="text" name="attachmentid" value="' + data.attachmentid + '"/>');
-        $('#' + file.id).addClass('upload-state-done');
+        $('#' + file.id).find('p.state').text('File Uploaded');
     });
 
-
-
-
-    // 所有文件上传成功后调用        
-    uploader.on('uploadFinished', function () {
-        uploader.destroy();
-        initUpload();
-        $btn.text('Start upload');
-    });
-
-
-    uploader.on('uploadError', function (file,reason) {
-        $('#' + file.id).find('p.state').text('Upload error' + reason);
-        //uploader.destroy();
-        //initUpload();
+    uploader.on('uploadError', function (file) {
+        $('#' + file.id).find('p.state').text('File Upload Error');
     });
 
     uploader.on('uploadComplete', function (file) {
         $('#' + file.id).find('.progress').fadeOut();
     });
-
     uploader.on('all', function (type) {
         if (type === 'startUpload') {
             state = 'uploading';
@@ -147,13 +118,12 @@ function initUpload()
         } else if (type === 'uploadFinished') {
             state = 'done';
         }
-
         if (state === 'uploading') {
-            $btn.text('Pause upload');
+            $btn.text('Pause Upload');
         } else {
-            $btn.text('Start upload');
+            $btn.text('Start Upload');
         }
-       
+
     });
 
     $btn.on('click', function () {
