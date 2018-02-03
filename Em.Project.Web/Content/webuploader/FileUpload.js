@@ -76,8 +76,8 @@ function initUpload()
     uploader.on('fileQueued', function (file) {
 
         $list.append('<div style="background-color:#f5f5f5; color: #000000;" id="' + file.id + '" class="item">' +
-            '<h4 class="info" >' + file.name + '</h4>' +
-            '<p class="state">Wait to upload...</p>' +
+            '<h4 class="info" style="margin:5px;font: 15px/21px Arial, Helvetica, simsun, sans-serif;" >' + file.name + '</h4>' +
+            '<p class="state"  style="margin:5px;" >Wait to upload...</p>' +
             '</div>');     
 
     });
