@@ -73,22 +73,13 @@
     <Compile Include="Domain\File\FileFormat.cs" />
     <Compile Include="Domain\File\FileAttr.cs" />
     <Compile Include="Domain\File\FileLibrary.cs" />
-    <Compile Include="Domain\Formula\MonthTargetFormula.cs" />
-    <Compile Include="Domain\Formula\TargetFormula.cs" />
-    <Compile Include="Domain\Monit\MonitConst.cs" />
-    <Compile Include="Domain\Monit\MonitLogVersion.cs" />
-    <Compile Include="Domain\Monit\MonitLog.cs" />
-    <Compile Include="Domain\Monit\MonitEnum.cs" />
-    <Compile Include="Domain\Monit\MonitFile.cs" />
     <Compile Include="Domain\Monit\CaseVersion.cs" />
     <Compile Include="Domain\Monit\FolderVersion.cs" />
-    <Compile Include="Domain\MonthTarget\MonthBill.cs" />
-    <Compile Include="Domain\MonthTarget\MonthBillLog.cs" />
-    <Compile Include="Domain\MonthTarget\MonthBonusDetail.cs" />
-    <Compile Include="Domain\MonthTarget\MonthTargetDetail.cs" />
-    <Compile Include="Domain\MonthTarget\MonthSubitemScore.cs" />
-    <Compile Include="Domain\MonthTarget\MonthTarget.cs" />
-    <Compile Include="Domain\MonthTarget\MonthBonus.cs" />
+    <Compile Include="Domain\Monit\MonitConst.cs" />
+    <Compile Include="Domain\Monit\MonitEnum.cs" />
+    <Compile Include="Domain\Monit\MonitFile.cs" />
+    <Compile Include="Domain\Monit\MonitLog.cs" />
+    <Compile Include="Domain\Monit\MonitLogVersion.cs" />
     <Compile Include="Domain\Report\GlobalVar.cs" />
     <Compile Include="Domain\Report\Param.cs" />
     <Compile Include="Domain\Report\ChartReport.cs" />
@@ -102,13 +93,6 @@
     <Compile Include="Domain\Report\TbReportFieldTop.cs" />
     <Compile Include="Domain\Report\InEvent.cs" />
     <Compile Include="Domain\Report\TbReportOutEvent.cs" />
-    <Compile Include="Domain\Subitem\Subitem.cs" />
-    <Compile Include="Domain\Subitem\SubitemType.cs" />
-    <Compile Include="Domain\Target\Manager.cs" />
-    <Compile Include="Domain\Target\TargetValue.cs" />
-    <Compile Include="Domain\Target\Target.cs" />
-    <Compile Include="Domain\Target\TargetTag.cs" />
-    <Compile Include="Domain\Target\TargetType.cs" />
     <Compile Include="EmProjectCoreModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -118,9 +102,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Managers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Easyman.Common\Easyman.Common.csproj">
       <Project>{35976e70-09e4-4bd4-8a81-d292c7872d16}</Project>

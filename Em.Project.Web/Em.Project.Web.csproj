@@ -2450,10 +2450,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\AttrController.cs" />
-    <Compile Include="Controllers\MonthTargetController.cs" />
-    <Compile Include="Controllers\SubitemController.cs" />
     <Compile Include="Controllers\ComputerController.cs" />
-    <Compile Include="Controllers\TargetController.cs" />
     <Compile Include="Controllers\GlobalVarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\EasymanControllerBase.cs" />
@@ -2503,18 +2500,8 @@
     <Content Include="Views\Report\TbReport.cshtml" />
     <Content Include="Views\Home\NoAccess.cshtml" />
     <Content Include="Views\GlobalVar\EditGlobalVar.cshtml" />
-    <Content Include="Views\Target\EditTargetType.cshtml" />
-    <Content Include="Views\Target\EditTargetTag.cshtml" />
-    <Content Include="Views\Target\EditTarget.cshtml" />
-    <Content Include="Views\MonthTarget\EditMonthBonus.cshtml" />
-    <Content Include="Views\Target\EditTargetFormula.cshtml" />
     <Content Include="Views\Shared\Type_Icon.cshtml" />
     <Content Include="Views\Shared\_CommonEdite.cshtml" />
-    <Content Include="Views\Subitem\EditSubitem.cshtml" />
-    <Content Include="Views\Subitem\EditSubitemType.cshtml" />
-    <Content Include="Views\Target\EditManagerTargetValue.cshtml" />
-    <Content Include="Views\Target\EditQxTargetValue.cshtml" />
-    <Content Include="Views\Subitem\MarkScore.cshtml" />
     <Content Include="Views\Report\EditChartTemp.cshtml" />
     <Content Include="Views\Report\EditChartType.cshtml" />
     <Content Include="Views\Report\ChartReport1.cshtml" />
@@ -2544,7 +2531,6 @@
     <Folder Include="Scripts\summernote\plugin\databasic\" />
     <Folder Include="Scripts\summernote\plugin\hello\" />
     <Folder Include="Scripts\summernote\plugin\specialchars\" />
-    <Folder Include="Views\MonthTarget\js\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Easyman.Application\Easyman.Application.csproj">

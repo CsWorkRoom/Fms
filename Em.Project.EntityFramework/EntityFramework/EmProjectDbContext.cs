@@ -143,27 +143,27 @@ namespace Easyman.EntityFramework
         public virtual IDbSet<ExportData> ExportData { get; set; }
         public virtual IDbSet<DownData> DownData { get; set; }
 
-        /*-----------------------------Target----------------------*/
-        public virtual IDbSet<TargetFormula> TargetFormula { get; set; }
-        public virtual IDbSet<MonthTargetFormula> MonthTargetFormula { get; set; }
+        /*-----------------------------Target（注释和删除原抢盘的表）----------------------*/
+        //public virtual IDbSet<TargetFormula> TargetFormula { get; set; }
+        //public virtual IDbSet<MonthTargetFormula> MonthTargetFormula { get; set; }
 
-        public virtual IDbSet<MonthBill> MonthBill { get; set; }
-        public virtual IDbSet<MonthBillLog> MonthBillLog { get; set; }
-        public virtual IDbSet<MonthBonus> MonthBonus { get; set; }
-        public virtual IDbSet<MonthTarget> MonthTarget { get; set; }
-        public virtual IDbSet<MonthTargetDetail> MonthTargetDetail { get; set; }
-        public virtual IDbSet<MonthBonusDetail> MonthBonusDetail { get; set; }
+        //public virtual IDbSet<MonthBill> MonthBill { get; set; }
+        //public virtual IDbSet<MonthBillLog> MonthBillLog { get; set; }
+        //public virtual IDbSet<MonthBonus> MonthBonus { get; set; }
+        //public virtual IDbSet<MonthTarget> MonthTarget { get; set; }
+        //public virtual IDbSet<MonthTargetDetail> MonthTargetDetail { get; set; }
+        //public virtual IDbSet<MonthBonusDetail> MonthBonusDetail { get; set; }
 
-        public virtual IDbSet<Target> Target { get; set; }
-        public virtual IDbSet<TargetTag> TargetTag { get; set; }
-        public virtual IDbSet<TargetType> TargetType { get; set; }
-        public virtual IDbSet<TargetValue> TargetValue { get; set; }
+        //public virtual IDbSet<Target> Target { get; set; }
+        //public virtual IDbSet<TargetTag> TargetTag { get; set; }
+        //public virtual IDbSet<TargetType> TargetType { get; set; }
+        //public virtual IDbSet<TargetValue> TargetValue { get; set; }
 
-        public virtual IDbSet<Manager> Manager { get; set; }
+        //public virtual IDbSet<Manager> Manager { get; set; }
 
-        public virtual IDbSet<SubitemType> SubitemType { get; set; }
-        public virtual IDbSet<Subitem> Subitem { get; set; }
-        public virtual IDbSet<MonthSubitemScore> MonthSubitemScore { get; set; }
+        //public virtual IDbSet<SubitemType> SubitemType { get; set; }
+        //public virtual IDbSet<Subitem> Subitem { get; set; }
+        //public virtual IDbSet<MonthSubitemScore> MonthSubitemScore { get; set; }
 
 
         #endregion

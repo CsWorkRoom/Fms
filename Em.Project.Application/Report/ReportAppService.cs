@@ -591,7 +591,7 @@ namespace Easyman.Service
                                 case "String":
                                     if (param.OpType == "like")
                                     {
-                                        searchs += " AND " + param.FieldCode + " "+param.OpType + " '%" + param.Value + "%'";
+                                        searchs += " AND UPPER(" + param.FieldCode + ") "+param.OpType + " '%" + param.Value.ToUpper() + "%'";
                                     }
                                     else if (param.OpType == "in")
                                     {
