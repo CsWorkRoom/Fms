@@ -38,7 +38,7 @@ function InitPage() {
         $(".htCore").attr("class", "table table-bordered");
     });
     //初始化(子-表格报表)中的多表头保存事件
-    $("#saveTopF").click(function () {        
+    $("#saveTopF").click(function () {
         SaveTopField();
     });
     SetRegularHt();//正则隐藏赋值
@@ -105,10 +105,10 @@ function handleSubmitForm() {
         swal("提示信息", "Sql不能为空!", "error");
         return;
     }
-    if ($.trim($("#DbServerId").val()) == "") {
-        swal("提示信息", "数据库不能为空！", "error");
-        return;
-    }
+    //if ($.trim($("#DbServerId").val()) == "") {
+    //    swal("提示信息", "数据库不能为空！", "error");
+    //    return;
+    //}
     //提交表单信息
     $("#saveForm").submit();
 }
@@ -125,10 +125,10 @@ function AnalysisSql() {
         abp.message.error("Sql不能为空！！", "提示信息");
         return;
     }
-    if ($.trim(dbid) == "") {
-        abp.message.error("数据库不能为空！", "提示信息");
-        return;
-    }
+    //if ($.trim(dbid) == "") {
+    //    abp.message.error("数据库不能为空！", "提示信息");
+    //    return;
+    //}
     $("#analysis-sql").button('loading');
     $.ajax({
         type: "post",
@@ -144,8 +144,7 @@ function AnalysisSql() {
                 if (err.IsError) {
                     $('#divAnalysis').collapse("hide");
                     $('#saveAllReport').hide();
-                    if (err.Message.indexOf("<title>") != -1)
-                    {
+                    if (err.Message.indexOf("<title>") != -1) {
                         var start = err.Message.indexOf("<title>");
                         var end = err.Message.indexOf("</title>");
                         abp.message.error(err.Message.substring(start + 7, end), "解析失败");
@@ -172,8 +171,7 @@ function AnalysisSql() {
             }
         },
         error: function (e) {
-            if (e.responseText.indexOf("<title>") != -1)
-            {
+            if (e.responseText.indexOf("<title>") != -1) {
                 var start = e.responseText.indexOf("<title>");
                 var end = e.responseText.indexOf("</title>");
                 abp.message.error(e.responseText.substring(start + 7, end), "解析失败");
@@ -212,19 +210,17 @@ function OpenReportDiv() {
 
         //初始化新增报表
         $("#currTbReport").val(JSON.stringify(childRp));
-        
+
         InitTbReportModel();
     }
         //图形报表
-    else if (rpType == 3)
-    {
+    else if (rpType == 3) {
         //初始化新增报表
         $("#currChartReport").val(JSON.stringify(childRp));
         InitChartReportModel();
     }
         //RDLC报表
-    else if (rpType == 4)
-    {
+    else if (rpType == 4) {
         //初始化新增报表
         $("#currRdlcReport").val(JSON.stringify(childRp));
         InitRdlcReportModel();
@@ -274,7 +270,7 @@ function InitGrid() {
         if (intHeight < 200) {
             intHeight = 200;
         }
-       // alert($("#saveForm").width());
+        // alert($("#saveForm").width());
         //再加载
         $("#jqGrid").jqGrid({
             data: childJson,
@@ -294,7 +290,7 @@ function InitGrid() {
                         var res = "";
                         switch (cellvalue.toString()) {
                             case "1":
-                                res="表格报表";
+                                res = "表格报表";
                                 break;
                             case "2":
                                 res = "键值报表";
@@ -316,7 +312,7 @@ function InitGrid() {
             viewrecords: false,
             loadonce: false,
             height: intHeight,
-           // width: $("#saveForm").width(),//window.innerWidth - 25,
+            // width: $("#saveForm").width(),//window.innerWidth - 25,
             gridComplete: function () {
                 $("#jqGrid").setGridWidth($("#saveForm").width());
                 $("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x": "hidden" });
@@ -367,14 +363,13 @@ function EditReport(ChildReportId, ChildReportType, ApplicationType) {
                     $("#currTbReport").val(JSON.stringify(child));
                     InitTbReportModel();//打开表格模态，并加载相关数据
                 }
-                //图形报表
-                else if (ChildReportType == 3)
-                {
+                    //图形报表
+                else if (ChildReportType == 3) {
                     //给子报表隐藏区域赋值
                     $("#currChartReport").val(JSON.stringify(child));
                     InitChartReportModel();//打开rdlc模态，并加载相关数据
                 }
-                //RDLC报表
+                    //RDLC报表
                 else if (ChildReportType == 4) {
                     //给子报表隐藏区域赋值
                     $("#currRdlcReport").val(JSON.stringify(child));

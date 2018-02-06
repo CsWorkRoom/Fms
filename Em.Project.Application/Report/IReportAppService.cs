@@ -101,6 +101,7 @@ namespace Easyman.Service
         /// <returns></returns>
         string GetSqlByCode(string code, string queryParams);
         string GetSqlForField(string code, string queryParams, long tbReportId, ref ErrorInfo err);
+        string SqlForPage(string dbType, string sql, int pageIndex, int pageSize, ref ErrorInfo err);
         #endregion
 
     }

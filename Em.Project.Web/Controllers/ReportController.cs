@@ -21,7 +21,7 @@ using System.Web.Routing;
 
 namespace Easyman.FwWeb.Controllers
 {
-    public class ReportController :  EasyManController
+    public class ReportController : EasyManController
     {
         #region 初始化
         private readonly IReportAppService _reportAppService;
@@ -88,7 +88,7 @@ namespace Easyman.FwWeb.Controllers
             return Task.Factory.StartNew(() =>
             {
                 var urlQuery = Request.Url.GetLeftPart(UriPartial.Query).ToString();
-                var urlRoot= urlQuery.Split(new[] { "/Report/TbReport" }, StringSplitOptions.None)[0];
+                var urlRoot = urlQuery.Split(new[] { "/Report/TbReport" }, StringSplitOptions.None)[0];
                 //UrlDecode解码中文
                 var curUrl = System.Web.HttpUtility.UrlDecode(urlQuery).Substring(urlRoot.Length + 1);
                 var urlToLower = curUrl.ToLower();
@@ -118,7 +118,7 @@ namespace Easyman.FwWeb.Controllers
                 //}
                 #endregion
 
-                if (report != null&&!string.IsNullOrEmpty(report.ChildReportListJson)&& report.ChildReportListJson != "[]")
+                if (report != null && !string.IsNullOrEmpty(report.ChildReportListJson) && report.ChildReportListJson != "[]")
                 {
                     return View(report);//当具有子报表时返回
                 }
@@ -136,7 +136,7 @@ namespace Easyman.FwWeb.Controllers
         /// <param name="urlToLower"></param>
         /// <param name="curUrl"></param>
         /// <returns></returns>
-        private long GetModuleIdByParentPage1(string urlToLower,string curUrl)
+        private long GetModuleIdByParentPage1(string urlToLower, string curUrl)
         {
             #region 获取当前路径对应的模版 --moduleId
             long moduleId = 0;//初始化
@@ -188,8 +188,8 @@ namespace Easyman.FwWeb.Controllers
         private long GetModuleIdByParentPage(string urlToLower, string curUrl)
         {
             long moduleId = 0;//初始化
-            var md= _moduleAppService.GetModuleByUrlAndCode(curUrl);
-            if(md!=null)
+            var md = _moduleAppService.GetModuleByUrlAndCode(curUrl);
+            if (md != null)
             {
                 moduleId = md.Id;
             }
@@ -300,10 +300,10 @@ namespace Easyman.FwWeb.Controllers
         /// <returns></returns>
         public ActionResult DownNowRDLC(long? rdlcId, string reportName)
         {
-            if(rdlcId!=null)
+            if (rdlcId != null)
             {
-                var rdlc= _rdlcAppService.GetRdlcReportBase(rdlcId.Value);
-                if(rdlc!=null)
+                var rdlc = _rdlcAppService.GetRdlcReportBase(rdlcId.Value);
+                if (rdlc != null)
                 {
                     var tmp = Encoding.UTF8.GetBytes(rdlc.RdlcXml);
                     var fileName = reportName + DateTime.Now.ToString("yyyyMMdd") + ".rdlc";
@@ -698,7 +698,7 @@ namespace Easyman.FwWeb.Controllers
                 {
                     throw new Exception(err.Message);
                 }
-                int intCountSize = IntDataSize(sql, (long)(report == null || report.DbServerId == null ? 0 : report.DbServerId));//返回当前集合条数
+                int intCountSize = IntDataSize(sql, (report == null || report.DbServerId == null ? null : report.DbServerId));//返回当前集合条数
                 if (intCountSize <= 0)
                 {
                     return Content("暂无无数据导出！");
@@ -706,21 +706,21 @@ namespace Easyman.FwWeb.Controllers
                 #region 抽样数据
                 double WaitTime = (double)expCfg.WaitTime;
                 DateTime datEndDate = DateTime.Now.AddMilliseconds(WaitTime);//最大等待时长
-                if (DateTime.Now > datEndDate && (exportWay == "在线"|| exportWay == "online"))
+                if (DateTime.Now > datEndDate && exportWay == "online")
                 {
-                    return Content("在线导出时，由于数据量过大，在统计数据时超出在线最大等待时长，请转为离线导出。是否转为离线导出？");
+                    return Content("online导出时，由于数据量过大，在统计数据时超出online最大等待时长，请转为offline导出。是否转为offline导出？");
                 }
-                long intPumping = GetPumpingSize((long)report.DbServerId, sql, intCountSize, WaitTime, exportWay);//通过样品数据预估数据集大小,如果小于等于0，表示超时
+                long intPumping = GetPumpingSize(report.DbServerId, sql, intCountSize, WaitTime, exportWay);//通过样品数据预估数据集大小,如果小于等于0，表示超时
                 if (intPumping <= 0)
                 {
-                    return Content("在线导出时，由于数据量过大，在数据抽样时超出在线最大等待时长，请转为离线导出。是否转为离线导出？");
+                    return Content("online导出时，由于数据量过大，在数据抽样时超出online最大等待时长，请转为offline导出。是否转为offline导出？");
                 }
                 #endregion
 
-                //判断是否为离线
-                if ((intCountSize > expCfg.MaxRowNum || intPumping > expCfg.DataSize) && (exportWay == "在线" || exportWay == "online"))
+                //判断是否为offline
+                if ((intCountSize > expCfg.MaxRowNum || intPumping > expCfg.DataSize) && exportWay == "online")
                 {
-                    return Content("在线导出最大支持" + expCfg.MaxRowNum + "条数据及" + expCfg.DataSize + "KB字节,是否转为离线导出？");
+                    return Content("online导出最大支持" + expCfg.MaxRowNum + "条数据及" + expCfg.DataSize + "KB字节,是否转为offline导出？");
                 }
 
                 object objTopFields = "";
@@ -749,7 +749,7 @@ namespace Easyman.FwWeb.Controllers
                     TopFields = objTopFields,//多表头信息
                     ColumnHeader = "",
                     Sql = sql,
-                    DbServerId = report == null || report.DbServerId == null ? 0 : report.DbServerId,
+                    DbServerId = report == null || report.DbServerId == null ? null : report.DbServerId,
                     FileName = (module == null ? "无名称" : module.Name) + "_" + DateTime.Now.Ticks,
                     Status = "生成中",
                     ObjParam = "",
@@ -761,11 +761,9 @@ namespace Easyman.FwWeb.Controllers
                 //针对两种形式的导出处理，待完善
                 switch (exportWay)
                 {
-                    case "离线":
                     case "offline":
                         strResult = _exportAppService.OfflineExportData(exp, intCountSize);
                         break;
-                    case "在线":
                     case "online":
                         strResult = strHost + _exportAppService.OnlineExportData(exp);
                         break;
@@ -807,7 +805,7 @@ namespace Easyman.FwWeb.Controllers
                 default:
                     return ".xlsx";
             }
-         }
+        }
         #endregion
 
         #region 获取数据
@@ -858,8 +856,8 @@ namespace Easyman.FwWeb.Controllers
         /// </summary>
         /// <param name="strSql">SQL</param>
         /// <param name="ingDbServerId">服务器ID</param>
-        /// <returns>返回是否离线下载</returns>
-        private int IntDataSize(string strSql,long ingDbServerId)
+        /// <returns>返回是否offline下载</returns>
+        private int IntDataSize(string strSql, long? ingDbServerId)
         {
             strSql = "select count(0) from (" + strSql + ")td";
             //获得参数
@@ -873,7 +871,16 @@ namespace Easyman.FwWeb.Controllers
             #region 得到执行sql语句
             try
             {
-                object objSize = _dbServerAppService.ExecuteScalar(ingDbServerId, strSql, ref err);//获取数据总长度
+                object objSize = 0;
+                if (ingDbServerId == null)
+                {
+                    string dbType = DbHelper.GetCurConnection().DbType.ToString();
+                    objSize = DbHelper.ExecuteScalar(strSql);
+                }
+                else
+                {
+                    objSize = _dbServerAppService.ExecuteScalar(ingDbServerId.Value, strSql, ref err);//获取数据总长度
+                }
                 esitSize = (objSize == null || objSize.ToString().Trim() == "" ? 0 : Convert.ToInt32(objSize));
                 if (err.IsError)
                 {
@@ -1102,7 +1109,7 @@ namespace Easyman.FwWeb.Controllers
         /// <param name="intCountNum">总计数量</param>
         /// <param name="intPumping">抽样个数</param>
         /// <returns></returns>
-        private long GetPumpingSize(long lngDbid, string strSql, int intCountNum, double WaitTime, string exportWay,int intPumping = 10)
+        private long GetPumpingSize(long? lngDbid, string strSql, int intCountNum, double WaitTime, string exportWay, int intPumping = 10)
         {
             if (intCountNum < intPumping)
             {
@@ -1118,8 +1125,20 @@ namespace Easyman.FwWeb.Controllers
             foreach (int item in intRandom)
             {
                 DateTime datEndDate = DateTime.Now.AddMilliseconds(WaitTime);//最大等待时长
-                DataTable dtTempDb = _dbServerAppService.ExecuteGetTable(lngDbid, strSql, item, 1);
-                if (DateTime.Now > datEndDate && exportWay == "在线")
+
+                EasyMan.Dtos.ErrorInfo err = new EasyMan.Dtos.ErrorInfo();
+                DataTable dtTempDb = new DataTable();
+                if (lngDbid == null)
+                {
+                    string sqlOne = _reportAppService.SqlForPage(DbHelper.GetCurConnection().DbType.ToString(), strSql, item, 1, ref err);
+                    dtTempDb = DbHelper.ExecuteGetTable(sqlOne);
+                }
+                else
+                {
+                    dtTempDb = _dbServerAppService.ExecuteGetTable(lngDbid.Value, strSql, item, 1);
+                }
+
+                if (DateTime.Now > datEndDate && exportWay == "online")
                 {
                     return -1;
                 }
@@ -1131,10 +1150,11 @@ namespace Easyman.FwWeb.Controllers
                     }
                 }
             }
-            if (strTemp.Length<=0) {
+            if (strTemp.Length <= 0)
+            {
                 return 0;
             }
-           int intStrLength = Common.Fun.GetStringLength(strTemp);
+            int intStrLength = Common.Fun.GetStringLength(strTemp);
             long lngRowAVG = intStrLength / intPumping * intCountNum;//每行的平均大小，乘以总行数;得到大概总大小
             return lngRowAVG;
         }

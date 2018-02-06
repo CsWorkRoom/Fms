@@ -124,7 +124,7 @@ namespace Easyman.Service
                 throw new UserFriendlyException("操作错误，对象或已被删除！");
             }
         }
-         
+
         /// <summary>
         /// 更新和新增数据库
         /// </summary>
@@ -133,7 +133,7 @@ namespace Easyman.Service
         public void InsertOrUpdateDbServer(DbServerInput input)
         {
 
-            
+
             if (_dbServerRepository.GetAll().Any(p => p.Id != input.Id && p.ByName == input.ByName))
             {
                 throw new System.Exception("数据库别名重复");
@@ -149,7 +149,7 @@ namespace Easyman.Service
             {
                 throw new UserFriendlyException("新增或者更新失败！");
             }
-            
+
         }
 
         /// <summary>
@@ -180,20 +180,28 @@ namespace Easyman.Service
 
             var dbServers = servers.Select(s => new
             {
-                id = s.Id,
+                id = (long?)s.Id,
                 name = s.ByName,
                 open = false,
                 iconSkin = "menu"
             }).ToList();
 
-            #region 暂时不启用默认中心库
-            //var sysdb = new {
-            //    id = Convert.ToInt64(0),
-            //    name = "默认中心库",
-            //    open = false,
+            #region 启用默认中心库
+            //var sysdb = new
+            //{
+            //    id = 0,
+            //    name = "系统承载库(默认)",
+            //    open = true,
             //    iconSkin = "menu"
             //};
-            //dbServers.Add(sysdb);
+
+            dbServers.Insert(0, new
+            {
+                id = (long?)null,
+                name = "系统承载库(内置)",
+                open = true,
+                iconSkin = "menu"
+            });
             #endregion
 
             return dbServers;
@@ -317,7 +325,7 @@ namespace Easyman.Service
             catch
             {
             }
-            
+
             switch (dbserver.DbTypeName.ToUpper())
             {
                 case "DB2":

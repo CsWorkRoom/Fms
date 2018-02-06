@@ -248,6 +248,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dapper\Data\ConnectionMsg.cs" />
     <Compile Include="Dapper\DbHelper.cs" />
     <Compile Include="Configuration\ISystemConfigurationProvider.cs" />
     <Compile Include="Configuration\SystemConfig.cs" />

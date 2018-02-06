@@ -8,6 +8,7 @@ using System.Linq;
 using Easyman.Common;
 using System;
 using System.Data;
+using Easyman.Common.Data;
 
 namespace Easyman.Service
 {
@@ -35,7 +36,7 @@ namespace Easyman.Service
         /// <param name="tbReportApp"></param>
         /// <param name="globalVarApp"></param>
         /// <param name="rdlcReportApp"></param>
-        public ReportAppService(IRepository<Report, long> reportRepository, 
+        public ReportAppService(IRepository<Report, long> reportRepository,
             IDbServerAppService dbServerApp,
             ITbReportAppService tbReportApp,
             IGlobalVarAppService globalVarApp,
@@ -100,11 +101,11 @@ namespace Easyman.Service
         public ReportOutput GetReport(long id)
         {
             var ent = _reportRepository.Get(id);
-            if(ent!=null)
+            if (ent != null)
             {
-               var report= AutoMapper.Mapper.Map<ReportOutput>(ent);
+                var report = AutoMapper.Mapper.Map<ReportOutput>(ent);
                 //获取子报表集合
-                var childReportList= ChildReportList(id,0,false);
+                var childReportList = ChildReportList(id, 0, false);
                 if (childReportList != null && childReportList.Count > 0)
                 {
                     report.ChildReportListJson = JSON.DecodeToStr(childReportList);
@@ -121,7 +122,7 @@ namespace Easyman.Service
         /// <param name="moduleId">菜单号</param>
         /// <param name="checkRole"></param>
         /// <returns></returns>
-        public ReportOutput GetReport(string code,long moduleId,bool checkRole=false)
+        public ReportOutput GetReport(string code, long moduleId, bool checkRole = false)
         {
             //获取报表
             var ent = _reportRepository.FirstOrDefault(p => p.Code == code.Trim());
@@ -175,7 +176,7 @@ namespace Easyman.Service
                                 rp.ChildReportType == (short)ReportEnum.ReportType.Table)
                             {
                                 //调用表格报表的保存逻辑
-                                _tbReportApp.SaveTbReport(rp, reportId,report.Code);
+                                _tbReportApp.SaveTbReport(rp, reportId, report.Code);
                             }
 
                             //RDLC报表保存逻辑
@@ -203,7 +204,7 @@ namespace Easyman.Service
         /// 解析sql文的字段
         /// </summary>
         /// <param name="sql"></param>
-        /// <param name="dbserverId"></param>
+        /// <param name="dbserverId">dbserverId为空时，取默认承载库</param>
         /// <returns></returns>
         public string AnalysisSql(string sql, long? dbserverId)
         {
@@ -218,69 +219,63 @@ namespace Easyman.Service
             //替换变量（内置或自定义、外置）
             sql = ReplaceDefaultValue(sql, null);
 
-            if (dbserverId != null)
+            try
             {
-                try
+                if (dbserverId != null)
                 {
-                    if (dbserverId != 0)
-                    {
-                        dr = _dbServerApp.ExecuteDataReader(dbserverId.Value, sql);//选择库
-                    }
-                    else
-                    {
-                        dr = DbHelper.ExecuteDataReader(sql);//本地承载库
-                    }
-
-                    //声明字段集合
-                    IList<TbReportFieldModel> fields = new List<TbReportFieldModel>();
-                    if (dr != null && dr.FieldCount > 0)
-                    {
-                        for (int i = 0; i < dr.FieldCount; i++)
-                        {
-                            TbReportFieldModel field = new TbReportFieldModel
-                            {
-                                FieldCode = dr.GetName(i),
-                                FieldName = dr.GetName(i),
-                                DataType = dr.GetFieldType(i).Name,
-                                IsOrder = true,
-                                IsShow = true,
-                                Width = 60,
-                                IsSearch = false,
-                                IsFrozen = false,
-                                Align = "center",
-                                Remark = ""
-                            };
-                            fields.Add(field);
-                        }
-
-                        err.Params = JSON.DecodeToStr(fields);
-                        err.IsError = false;
-                    }
-                    else
-                    {
-                        err.IsError = true;
-                        err.Message = "未解析出字段信息";
-                    }
+                    dr = _dbServerApp.ExecuteDataReader(dbserverId.Value, sql);//选择库
                 }
-                catch(Exception ex)
+                else
+                {
+                    dr = DbHelper.ExecuteDataReader(sql);//本地承载库
+                }
+
+                //声明字段集合
+                IList<TbReportFieldModel> fields = new List<TbReportFieldModel>();
+                if (dr != null && dr.FieldCount > 0)
+                {
+                    for (int i = 0; i < dr.FieldCount; i++)
+                    {
+                        TbReportFieldModel field = new TbReportFieldModel
+                        {
+                            FieldCode = dr.GetName(i),
+                            FieldName = dr.GetName(i),
+                            DataType = dr.GetFieldType(i).Name,
+                            IsOrder = true,
+                            IsShow = true,
+                            Width = 60,
+                            IsSearch = false,
+                            IsFrozen = false,
+                            Align = "center",
+                            Remark = ""
+                        };
+                        fields.Add(field);
+                    }
+
+                    err.Params = JSON.DecodeToStr(fields);
+                    err.IsError = false;
+                }
+                else
                 {
                     err.IsError = true;
-                    err.Message = "解析失败："+ex.Message;
-                }
-                finally
-                {
-                    if(dr!=null)
-                    {
-                        dr.Close();
-                        dr.Dispose();//关闭资源
-                    }
+                    err.Message = "未解析出字段信息";
                 }
             }
-            else
+            catch (Exception ex)
             {
                 err.IsError = true;
-                err.Message = "未选择数据库";
+                err.Message = "解析失败：" + ex.Message;
             }
+            finally
+            {
+                if (dr != null)
+                {
+                    dr.Close();
+                    dr.Dispose();//关闭资源
+                }
+            }
+
+
             return JSON.DecodeToStr(err);
         }
 
@@ -295,51 +290,83 @@ namespace Easyman.Service
         /// <param name="sord"></param>
         /// <param name="err"></param>
         /// <returns></returns>
-        public string ExcuteReportSql(string code, int rows, int page,string queryParams,string sidx,string sord, ref ErrorInfo err)
+        public string ExcuteReportSql(string code, int rows, int page, string queryParams, string sidx, string sord, ref ErrorInfo err)
         {
             if (!string.IsNullOrEmpty(code))
             {
                 var ent = _reportRepository.FirstOrDefault(p => p.Code == code);
                 if (ent != null)
                 {
-                    var dbserver = _dbServerApp.GetDbServer(ent.DbServerId.Value);
-                    if (dbserver != null)
+                    string dbType = "";//数据库种类
+                    int records = 0;//总数量
+                    DataTable endTable = new DataTable();//查询结果
+
+                    #region 获取数据库
+                    DbServerOutput dbServer = new DbServerOutput();
+                    //中心库
+                    if (ent.DbServerId == null)
                     {
-                        //替换全局变量
-                        string sql = ReplaceGlobalVar(ent.Sql);
-                        //替换变量（内置或自定义、外置）
-                        sql = ReplaceDefaultValue(sql, queryParams);
-                        //当IsPlaceholder==true时,拼凑查询筛选条件
-                        if (ent.IsPlaceholder == null || !ent.IsPlaceholder.Value)
-                        {
-                            sql = AnalysisParam(dbserver.DbTypeName, sql, queryParams);
-                        }
-                        //获取总数
-                        string sqlC = string.Format(@"select count(1) from ({0})", sql);
-                        object obj = _dbServerApp.ExecuteScalar(ent.DbServerId.Value, sqlC, ref err);
-
-                        sql = SqlForOrder(sql, sidx, sord);//生成排序sql
-                        //拼凑分页sql
-                        string sqlPage= SqlForPage(dbserver, sql, page, rows, ref err);
-                        //执行带有分页的sql
-                        DataTable endTable = _dbServerApp.ExecuteGetTable(ent.DbServerId.Value, sqlPage);
-                       
-                        int records = Convert.ToInt32(obj);
-
-                        //拼凑json串
-                        string result = "{\"records\":" + records + ",\"page\":" + page + ",\"total\":" + Math.Ceiling(decimal.Divide(records, rows)) + ",\"rows\":" + JSON.DecodeToStr(endTable) + "}";
-                        return result;
+                        var connection = ConnectionMsg.GetCurConnection();//获取当前承载库连接信息
+                        dbType = connection.DbType.ToString();
+                        dbServer = null;
                     }
                     else
                     {
-                        err.IsError = true;
-                        err.Message = "未找到当前code对应的数据库编号["+ ent.DbServerId.Value + "]！";
+                        dbServer = _dbServerApp.GetDbServer(ent.DbServerId.Value);
+                        dbType = dbServer.DbTypeName;
+                        if (dbServer == null)
+                        {
+                            err.IsError = true;
+                            err.Message = "未找到当前code对应的数据库编号[" + ent.DbServerId.Value + "]！";
+                            return "";
+                        }
                     }
+                    #endregion
+
+                    //替换全局变量
+                    string sql = ReplaceGlobalVar(ent.Sql);
+                    //替换变量（内置或自定义、外置）
+                    sql = ReplaceDefaultValue(sql, queryParams);
+                    //当IsPlaceholder==true时,拼凑查询筛选条件
+                    if (ent.IsPlaceholder == null || !ent.IsPlaceholder.Value)
+                    {
+                        sql = AnalysisParam(dbType, sql, queryParams);
+                    }
+                    sql = SqlForOrder(sql, sidx, sord);//生成排序sql
+                    string sqlPage = SqlForPage(dbType, sql, page, rows, ref err);//拼凑分页sql
+
+                    //获取总数
+                    string sqlC = string.Format(@"select count(1) from ({0})", sql);
+                    if (dbServer != null)
+                    {
+                        //记录总数
+                        object num = _dbServerApp.ExecuteScalar(ent.DbServerId.Value, sqlC, ref err);
+                        records = Convert.ToInt32(num);
+                        endTable = _dbServerApp.ExecuteGetTable(ent.DbServerId.Value, sqlPage);
+                    }
+                    else//根据承载库查询
+                    {
+                        try
+                        {
+                            object num = DbHelper.ExecuteScalar(sqlC);
+                            records = Convert.ToInt32(num);
+                            endTable = DbHelper.ExecuteGetTable(sqlPage);
+                        }
+                        catch (Exception ex)
+                        {
+                            err.IsError = true;
+                            err.Message = "查询数据错误：" + ex.Message;
+                            return "";
+                        }
+                    }
+                    //拼凑json串
+                    string result = "{\"records\":" + records + ",\"page\":" + page + ",\"total\":" + Math.Ceiling(decimal.Divide(records, rows)) + ",\"rows\":" + JSON.DecodeToStr(endTable) + "}";
+                    return result;
                 }
                 else
                 {
                     err.IsError = true;
-                    err.Message = "未找到编号为["+code+"]的报表！";
+                    err.Message = "未找到编号为[" + code + "]的报表！";
                 }
             }
             else
@@ -364,23 +391,19 @@ namespace Easyman.Service
                 var ent = _reportRepository.FirstOrDefault(p => p.Code == code);
                 if (ent != null)
                 {
-                    var dbserver = _dbServerApp.GetDbServer(ent.DbServerId.Value);
-                    if (dbserver != null)
+                    string dbType = GetDbTypeByReport(ent, ref err);
+                    if (err.IsError)
                     {
-                        //替换全局变量
-                        sql = ReplaceGlobalVar(ent.Sql);
-                        //替换变量（内置或自定义、外置）
-                        sql = ReplaceDefaultValue(sql, queryParams);
-                        //当IsPlaceholder==true时,拼凑查询筛选条件
-                        if (ent.IsPlaceholder == null || !ent.IsPlaceholder.Value)
-                        {
-                            sql = AnalysisParam(dbserver.DbTypeName, sql, queryParams);
-                        }
+                        return "";
                     }
-                    else
+                    //替换全局变量
+                    sql = ReplaceGlobalVar(ent.Sql);
+                    //替换变量（内置或自定义、外置）
+                    sql = ReplaceDefaultValue(sql, queryParams);
+                    //当IsPlaceholder==true时,拼凑查询筛选条件
+                    if (dbType != "" && (ent.IsPlaceholder == null || !ent.IsPlaceholder.Value))
                     {
-                        err.IsError = true;
-                        err.Message = "未找到当前code对应的数据库编号[" + ent.DbServerId.Value + "]！";
+                        sql = AnalysisParam(dbType, sql, queryParams);
                     }
                 }
                 else
@@ -397,7 +420,7 @@ namespace Easyman.Service
             return sql;
         }
 
-        public string GetSqlForField(string code, string queryParams,long tbReportId, ref ErrorInfo err)
+        public string GetSqlForField(string code, string queryParams, long tbReportId, ref ErrorInfo err)
         {
             string sql = "";
             if (!string.IsNullOrEmpty(code))
@@ -405,45 +428,44 @@ namespace Easyman.Service
                 var ent = _reportRepository.FirstOrDefault(p => p.Code == code);
                 if (ent != null)
                 {
-                    var dbserver = _dbServerApp.GetDbServer(ent.DbServerId.Value);
-                    if (dbserver != null)
+                    string dbType = GetDbTypeByReport(ent, ref err);
+                    if (err.IsError)
                     {
-                        //替换全局变量
-                        sql = ReplaceGlobalVar(ent.Sql);
-                        //替换变量（内置或自定义、外置）
-                        sql = ReplaceDefaultValue(sql, queryParams);
-                        //当IsPlaceholder==true时,拼凑查询筛选条件
-                        if (ent.IsPlaceholder == null || !ent.IsPlaceholder.Value)
-                        {
-                            sql = AnalysisParam(dbserver.DbTypeName, sql, queryParams);
-                        }
-                        //如果为0时，表示非常规表报
-                        if (tbReportId==0) {
-                            return sql;
-                        }
+                        return "";
+                    }
 
-                        //按照字段排序拼凑需要sql字段及顺序
-                        var fieldList = _tbReportApp.GetFildList(tbReportId);//获取字段集合
-                        if (fieldList != null && fieldList.Count > 0)
-                        {
-                            string fields = "";
-                            foreach (var fd in fieldList)
-                            {
-                                if (fd.IsShow)
-                                    fields += fd.FieldCode + " as \"" + fd.FieldName + "\",";
-                            }
-                            if (!string.IsNullOrEmpty(fields) && fields.Length > 0)
-                            {
-                                fields = fields.Substring(0, fields.Length - 1);
-                            }
-                            sql = string.Format(@"select {0} from ({1})", fields, sql);
-                        }
-                    }
-                    else
+                    //替换全局变量
+                    sql = ReplaceGlobalVar(ent.Sql);
+                    //替换变量（内置或自定义、外置）
+                    sql = ReplaceDefaultValue(sql, queryParams);
+                    //当IsPlaceholder==true时,拼凑查询筛选条件
+                    if (ent.IsPlaceholder == null || !ent.IsPlaceholder.Value)
                     {
-                        err.IsError = true;
-                        err.Message = "未找到当前code对应的数据库编号[" + ent.DbServerId.Value + "]！";
+                        sql = AnalysisParam(dbType, sql, queryParams);
                     }
+                    //如果为0时，表示非常规表报
+                    if (tbReportId == 0)
+                    {
+                        return sql;
+                    }
+
+                    //按照字段排序拼凑需要sql字段及顺序
+                    var fieldList = _tbReportApp.GetFildList(tbReportId);//获取字段集合
+                    if (fieldList != null && fieldList.Count > 0)
+                    {
+                        string fields = "";
+                        foreach (var fd in fieldList)
+                        {
+                            if (fd.IsShow)
+                                fields += fd.FieldCode + " as \"" + fd.FieldName + "\",";
+                        }
+                        if (!string.IsNullOrEmpty(fields) && fields.Length > 0)
+                        {
+                            fields = fields.Substring(0, fields.Length - 1);
+                        }
+                        sql = string.Format(@"select {0} from ({1})", fields, sql);
+                    }
+
                 }
                 else
                 {
@@ -474,24 +496,46 @@ namespace Easyman.Service
                 var ent = _reportRepository.FirstOrDefault(p => p.Code == code);
                 if (ent != null)
                 {
-                    var dbserver = _dbServerApp.GetDbServer(ent.DbServerId.Value);
-                    if (dbserver != null)
+                    string dbType = "";//数据库种类
+
+                    #region 获取数据库
+                    DbServerOutput dbServer = new DbServerOutput();
+                    //中心库
+                    if (ent.DbServerId == null)
                     {
-                        //替换全局变量
-                        string sql = ReplaceGlobalVar(ent.Sql);
-                        //替换变量（内置或自定义、外置）
-                        sql = ReplaceDefaultValue(sql, queryParams);
-                        //当IsPlaceholder==true时,拼凑查询筛选条件
-                        if (ent.IsPlaceholder == null || !ent.IsPlaceholder.Value)
-                        {
-                            sql = AnalysisParam(dbserver.DbTypeName, sql, queryParams);
-                        }
-                        dt = _dbServerApp.ExecuteGetTable(dbserver.Id, sql);//执行sql
+                        var connection = ConnectionMsg.GetCurConnection();//获取当前承载库连接信息
+                        dbType = connection.DbType.ToString();
+                        dbServer = null;
                     }
                     else
                     {
-                        err.IsError = true;
-                        err.Message = "未找到当前code对应的数据库编号[" + ent.DbServerId.Value + "]！";
+                        dbServer = _dbServerApp.GetDbServer(ent.DbServerId.Value);
+                        dbType = dbServer.DbTypeName;
+                        if (dbServer == null)
+                        {
+                            err.IsError = true;
+                            err.Message = "未找到当前code对应的数据库编号[" + ent.DbServerId.Value + "]！";
+                            return dt;
+                        }
+                    }
+                    #endregion
+
+                    //替换全局变量
+                    string sql = ReplaceGlobalVar(ent.Sql);
+                    //替换变量（内置或自定义、外置）
+                    sql = ReplaceDefaultValue(sql, queryParams);
+                    //当IsPlaceholder==true时,拼凑查询筛选条件
+                    if (ent.IsPlaceholder == null || !ent.IsPlaceholder.Value)
+                    {
+                        sql = AnalysisParam(dbType, sql, queryParams);
+                    }
+                    if (dbServer == null)
+                    {
+                        dt = DbHelper.ExecuteGetTable(sql);
+                    }
+                    else
+                    {
+                        dt = _dbServerApp.ExecuteGetTable(dbServer.Id, sql);//执行sql
                     }
                 }
                 else
@@ -509,7 +553,7 @@ namespace Easyman.Service
         }
 
         /// <summary>
-        /// 根据传入code执行报表，返回datatable
+        /// 根据传入code和查询变量，返回sql
         /// </summary>
         /// <param name="code"></param>
         /// <param name="queryParams"></param>
@@ -518,24 +562,27 @@ namespace Easyman.Service
         {
             string sql = "";
             DataTable dt = new DataTable();
+            ErrorInfo err = new ErrorInfo();
+
             if (!string.IsNullOrEmpty(code))
             {
                 var ent = _reportRepository.FirstOrDefault(p => p.Code == code);
                 if (ent != null)
                 {
-                    var dbserver = _dbServerApp.GetDbServer(ent.DbServerId.Value);
-                    if (dbserver != null)
+                    string dbType = GetDbTypeByReport(ent, ref err);
+                    if (err.IsError)
                     {
-                        //替换全局变量
-                        sql = ReplaceGlobalVar(ent.Sql);
-                        //替换变量（内置或自定义、外置）
-                        sql = ReplaceDefaultValue(sql, queryParams);
-                        //当IsPlaceholder==true时,拼凑查询筛选条件
-                        if (ent.IsPlaceholder == null || !ent.IsPlaceholder.Value)
-                        {
-                            sql = AnalysisParam(dbserver.DbTypeName, sql, queryParams);
-                        }
-                        //dt = _dbServerApp.ExecuteGetTable(dbserver, sql);//执行sql
+                        return "";
+                    }
+
+                    //替换全局变量
+                    sql = ReplaceGlobalVar(ent.Sql);
+                    //替换变量（内置或自定义、外置）
+                    sql = ReplaceDefaultValue(sql, queryParams);
+                    //当IsPlaceholder==true时,拼凑查询筛选条件
+                    if (ent.IsPlaceholder == null || !ent.IsPlaceholder.Value)
+                    {
+                        sql = AnalysisParam(dbType, sql, queryParams);
                     }
                 }
             }
@@ -547,18 +594,49 @@ namespace Easyman.Service
         #region 私有方法
 
         /// <summary>
+        /// 根据Report的信息获取数据库种类dbType
+        /// 当Report的DbServerId为null时，取当前承载库的信息
+        /// </summary>
+        /// <param name="ent"></param>
+        /// <param name="err"></param>
+        /// <returns></returns>
+        private string GetDbTypeByReport(Report ent, ref ErrorInfo err)
+        {
+            string dbType = "";
+            if (ent.DbServerId == null)
+            {
+                dbType = DbHelper.GetCurConnection().DbType.ToString();
+            }
+            else
+            {
+                var dbserver = _dbServerApp.GetDbServer(ent.DbServerId.Value);
+                if (dbserver != null)
+                {
+                    dbType = dbserver.DbTypeName;
+                }
+                else
+                {
+                    err.IsError = true;
+                    err.Message = "未找到数据库编号为[" + ent.DbServerId.Value + "]的dbServer！";
+                }
+            }
+            return dbType;
+        }
+
+
+        /// <summary>
         /// 替换全局变量
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
         private string ReplaceGlobalVar(string sql)
         {
-            var globalList= _globalVarApp.GetGlobalVarList();
-            if(globalList!=null&&globalList.Count>0)
+            var globalList = _globalVarApp.GetGlobalVarList();
+            if (globalList != null && globalList.Count > 0)
             {
-                foreach(var global in globalList)
+                foreach (var global in globalList)
                 {
-                    sql = sql.Replace("@("+global.Name+")", global.Value);
+                    sql = sql.Replace("@(" + global.Name + ")", global.Value);
                 }
             }
             return sql;
@@ -575,15 +653,15 @@ namespace Easyman.Service
         {
             string searchs = "";//查询条件初始化
 
-            if(queryParams!=null&&queryParams!=""&& queryParams!="[]")
+            if (queryParams != null && queryParams != "" && queryParams != "[]")
             {
-                List<QueryParam> paramList = JSON.EncodeToEntity<List< QueryParam>>(queryParams);
+                List<QueryParam> paramList = JSON.EncodeToEntity<List<QueryParam>>(queryParams);
                 if (paramList != null && paramList.Count > 0)
                 {
                     searchs += " WHERE 1=1 ";//有条件参数的初始化
                     foreach (var param in paramList)
                     {
-                        if(!string.IsNullOrEmpty( param.Value)&&!string.IsNullOrEmpty( param.OpType))
+                        if (!string.IsNullOrEmpty(param.Value) && !string.IsNullOrEmpty(param.OpType))
                         {
                             //"Decimal:数值型;String:字符串;Int32:整型;Int64:长整型;Int16:短整型;DateTime:时间"
                             switch (param.DataType)
@@ -591,7 +669,7 @@ namespace Easyman.Service
                                 case "String":
                                     if (param.OpType == "like")
                                     {
-                                        searchs += " AND UPPER(" + param.FieldCode + ") "+param.OpType + " '%" + param.Value.ToUpper() + "%'";
+                                        searchs += " AND UPPER(" + param.FieldCode + ") " + param.OpType + " '%" + param.Value.ToUpper() + "%'";
                                     }
                                     else if (param.OpType == "in")
                                     {
@@ -605,7 +683,7 @@ namespace Easyman.Service
                                                 vas += "'" + v + "',";
                                             }
                                         }
-                                        searchs += " AND " + param.FieldCode +" "+ param.OpType + " (" + vas.Substring(0, vas.Length - 1) + ")";
+                                        searchs += " AND " + param.FieldCode + " " + param.OpType + " (" + vas.Substring(0, vas.Length - 1) + ")";
                                     }
                                     else if (param.OpType == "=")
                                     {
@@ -616,10 +694,15 @@ namespace Easyman.Service
                                         searchs += " AND " + param.FieldCode + " " + param.OpType + " '" + param.Value + "'";
                                     }
                                     break;
-                                case "Decimal":case "Int32":case "Int64":case "Int16":
+                                case "Decimal":
+                                case "Int32":
+                                case "Int64":
+                                case "Int16":
                                     switch (param.OpType)
                                     {
-                                        case "=":case ">":case "<":
+                                        case "=":
+                                        case ">":
+                                        case "<":
                                             searchs += " AND " + param.FieldCode + " " + param.OpType + " " + param.Value;
                                             break;
                                         case "in":
@@ -676,7 +759,7 @@ namespace Easyman.Service
                                                         break;
                                                 }
                                             }
-                                            else if(param.FilterType == ReportEnum.FilterType.DataYYYYMM.GetHashCode().ToString())
+                                            else if (param.FilterType == ReportEnum.FilterType.DataYYYYMM.GetHashCode().ToString())
                                             {
                                                 switch (param.OpType)
                                                 {
@@ -685,8 +768,8 @@ namespace Easyman.Service
                                                         break;
                                                     case "=":
                                                         searchs += " AND " + param.FieldCode + " >= TO_DATE('" + param.Value + "-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ";
-                                                        DateTime endT= Convert.ToDateTime(param.Value + "-01 00:00:00").AddMonths(1);
-                                                        searchs += " AND " + param.FieldCode + " < TO_DATE('"+ endT + "','YYYY-MM-DD HH24:MI:SS') ";
+                                                        DateTime endT = Convert.ToDateTime(param.Value + "-01 00:00:00").AddMonths(1);
+                                                        searchs += " AND " + param.FieldCode + " < TO_DATE('" + endT + "','YYYY-MM-DD HH24:MI:SS') ";
                                                         break;
                                                     case "<":
                                                         searchs += " AND " + param.FieldCode + " < TO_DATE('" + param.Value + "-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ";
@@ -703,7 +786,7 @@ namespace Easyman.Service
                                                                 var v = valArr[i];
                                                                 searchs += " (" + param.FieldCode + " >= TO_DATE('" + v + "-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ";
                                                                 DateTime end = Convert.ToDateTime(v + "-01 00:00:00").AddMonths(1);
-                                                                searchs += " AND " + param.FieldCode + " < TO_DATE('"+ end + "','YYYY-MM-DD HH24:MI:SS')) ";
+                                                                searchs += " AND " + param.FieldCode + " < TO_DATE('" + end + "','YYYY-MM-DD HH24:MI:SS')) ";
                                                                 if (i != valArr.Length - 1)
                                                                 {
                                                                     searchs += " OR ";
@@ -717,7 +800,7 @@ namespace Easyman.Service
                                                         break;
                                                 }
                                             }
-                                                break;
+                                            break;
                                         case "SQLSERVER":
                                             break;
                                         case "MYSQL":
@@ -733,10 +816,10 @@ namespace Easyman.Service
                     }
                 }
             }
-            if (!string.IsNullOrEmpty(searchs)&& searchs!= " WHERE 1=1 ")
+            if (!string.IsNullOrEmpty(searchs) && searchs != " WHERE 1=1 ")
             {
                 searchs = " WHERE " + searchs.Substring(searchs.IndexOf("AND") + 3);
-                return "SELECT * FROM (" + sql + ") " + searchs; 
+                return "SELECT * FROM (" + sql + ") " + searchs;
             }
             else
                 return sql;
@@ -750,7 +833,7 @@ namespace Easyman.Service
         /// <returns></returns>
         private string ReplaceDefaultValue(string sql, string queryParams)
         {
-            Users.User user= GetCurrentUserAsync().Result;
+            Users.User user = GetCurrentUserAsync().Result;
             if (user != null)
             {
                 //预设置的内置表里有
@@ -825,15 +908,15 @@ namespace Easyman.Service
         /// <param name="moduleId"></param>
         /// <param name="checkRole"></param>
         /// <returns></returns>
-        private IList<ChildReportModel> ChildReportList(long reportId,long moduleId, bool checkRole)
+        private IList<ChildReportModel> ChildReportList(long reportId, long moduleId, bool checkRole)
         {
             //声明一个子报表的集合
             var ChildReportList = new List<ChildReportModel>();
             //获取表格报表
-            var tbList= _tbReportApp.GetChildListFromTbReport(reportId, moduleId, checkRole);
-            if(tbList!=null&&tbList.Count>0)
+            var tbList = _tbReportApp.GetChildListFromTbReport(reportId, moduleId, checkRole);
+            if (tbList != null && tbList.Count > 0)
             {
-                ChildReportList= ChildReportList.Concat(tbList).ToList();
+                ChildReportList = ChildReportList.Concat(tbList).ToList();
             }
 
             //获取图形报表
@@ -844,8 +927,8 @@ namespace Easyman.Service
             }
 
             //获取RDLC报表
-            var rdlcList= _rdlcReportApp.GetChildListFromRdlcReport(reportId, moduleId, checkRole);
-            if(rdlcList!=null&&rdlcList.Count>0)
+            var rdlcList = _rdlcReportApp.GetChildListFromRdlcReport(reportId, moduleId, checkRole);
+            if (rdlcList != null && rdlcList.Count > 0)
             {
                 ChildReportList = ChildReportList.Concat(rdlcList).ToList();
             }
@@ -881,7 +964,33 @@ namespace Easyman.Service
                     break;
             }
             int startNum = (pageIndex - 1) * pageSize;
-           
+
+            string nowsql = string.Format(@"        
+                SELECT *
+                FROM (SELECT {1} N, T.*
+                        FROM ({0}) T)
+                WHERE N > {2} AND N <= {3}", sql, rownNum, startNum, startNum + pageSize);
+            return nowsql;
+        }
+
+        public string SqlForPage(string dbType, string sql, int pageIndex, int pageSize, ref ErrorInfo err)
+        {
+            string rownNum = "ROWNUM ";//初始化编号
+
+            switch (dbType.ToUpper())
+            {
+                case "DB2":
+                    rownNum = string.Format(" ROW_NUMBER() OVER( PARTITION BY 1 ) ");
+                    break;
+                case "ORACLE":
+                    rownNum = "ROWNUM ";
+                    break;
+                case "SQLSERVER":
+                    rownNum = string.Format("ROW_NUMBER() OVER (ORDER BY  %%physloc%%)");
+                    break;
+            }
+            int startNum = (pageIndex - 1) * pageSize;
+
             string nowsql = string.Format(@"        
                 SELECT *
                 FROM (SELECT {1} N, T.*
@@ -927,7 +1036,7 @@ namespace Easyman.Service
                 //    }
                 //}
 
-                sql = string.Format(@"select * from ({0}) order by {1}", sql, sidx+" "+sord);
+                sql = string.Format(@"select * from ({0}) order by {1}", sql, sidx + " " + sord);
             }
             return sql;
         }

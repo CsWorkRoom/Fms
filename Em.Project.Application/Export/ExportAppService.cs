@@ -1,5 +1,6 @@
 ﻿using Abp.Domain.Repositories;
 using Abp.UI;
+using Easyman.Common;
 using Easyman.Common.Helper;
 using Easyman.Domain;
 using Easyman.Dto;
@@ -26,14 +27,15 @@ namespace Easyman.Service
         private readonly IRepository<Files, long> _filesRepository;
         private readonly IRepository<DownData, long> _downDataRepository;
         private readonly IRepository<ExportConfig, long> _exportConfigRepository;
-       private readonly IDbServerAppService _dbServerAppService;
-        
+        private readonly IDbServerAppService _dbServerAppService;
+        private readonly IReportAppService _reportAppService;
+
 
         private static int intPagIndex = 0;//计算总页数
-        private static System.Timers.Timer t=null;//准备一个定时器，定时查看是线程是否全部都执行完成
+        private static System.Timers.Timer t = null;//准备一个定时器，定时查看是线程是否全部都执行完成
         private static string strPathAll = "";//所有导出的文件虚拟文件集合
         private static string strMapPathAll = "";//物理路径集合
-        private static DateTime dtmEndTime = new DateTime ();//线程等待最大时间长
+        private static DateTime dtmEndTime = new DateTime();//线程等待最大时间长
         private static long lngDbServerId = 0;//数据库ID
         List<Thread> ThreadList = new List<Thread>();//记录线程信息
         List<Thread> TempThreadList = new List<Thread>();//临时记录线程信息
@@ -46,14 +48,16 @@ namespace Easyman.Service
             IRepository<Files, long> filesRepository,
             IRepository<DownData, long> downDataRepository,
             IRepository<ExportConfig, long> exportConfigRepository,
-            IDbServerAppService dbServerAppService
+            IDbServerAppService dbServerAppService,
+            IReportAppService reportAppService
             )
         {
             _exportDataRepository = exportDataRepository;
             _filesRepository = filesRepository;
             _downDataRepository = downDataRepository;
             _exportConfigRepository = exportConfigRepository;
-           _dbServerAppService = dbServerAppService;
+            _dbServerAppService = dbServerAppService;
+            _reportAppService = reportAppService;
         }
         #endregion
 
@@ -67,12 +71,24 @@ namespace Easyman.Service
             {
                 //非压缩导出
                 string strFileName = exp.FileName;
-                lngDbServerId = (long)exp.DbServerId;
+                //lngDbServerId = (long)exp.DbServerId;
                 strMapPathAll = "";
                 strPathAll = "";
                 string strPath = exp.FilePath;
                 Easyman.Common.Fun.GetPath(ref strFileName, exp.FileFormat, ref strMapPathAll, ref strPath);//重新整理保存路径
-                DataTable dt = _dbServerAppService.ExecuteGetTable((int)exp.DbServerId, exp.Sql); //要导出的数据集
+
+                #region 表结果dt
+                DataTable dt = new DataTable();
+                if (exp.DbServerId == null)
+                {
+                    dt = DbHelper.ExecuteGetTable(exp.Sql);
+                }
+                else
+                {
+                    dt = _dbServerAppService.ExecuteGetTable((int)exp.DbServerId, exp.Sql); //要导出的数据集
+                }
+                #endregion
+
                 string ColumnHeader = "";
                 switch (exp.FileFormat.ToLower())
                 {
@@ -114,7 +130,7 @@ namespace Easyman.Service
         {
             EasyMan.Dtos.ErrorInfo err = new EasyMan.Dtos.ErrorInfo();
             err.IsError = false;
-            var config= GetExportConfig("report");
+            var config = GetExportConfig("report");
             var intTheadCount = 1000;//线程最大值
             if (ThreadList.Count >= intTheadCount)
             {
@@ -125,7 +141,8 @@ namespace Easyman.Service
             dtmEndTime = DateTime.Now.AddSeconds((int)config.MaxTime);//得到配置的最大导出时长（秒）
             intPagIndex = intCountNum / intRowNum; //计算总页数
             string strFileName = exp.FileName;
-            lngDbServerId = (long)exp.DbServerId;
+
+            //lngDbServerId = (long)exp.DbServerId;
             strMapPathAll = "";
             strPathAll = "";
             exp.UserId = GetCurrentUserAsync().Result.Id;
@@ -145,16 +162,26 @@ namespace Easyman.Service
             object obj = new object();
             if (intPagIndex > 1)//如果大于1页，就启用分文件再压缩的方式离线导出文件
             {
-              string strTempFileFormat = exp.FileFormat;//暂存文件格式
+                string strTempFileFormat = exp.FileFormat;//暂存文件格式
                 exp.FileFormat = ".zip";//压缩文件格式
                 SavaDBSql(null, null, exp);//添加初始值
                 exp.FileFormat = strTempFileFormat;//还原文件格式
                 TempThreadList = new List<Thread>();//记录线程信息
                 for (int i = 1; i <= intPagIndex; i++)
                 {
-                    string strTempFileName = strFileName + "_" + i +exp.FileFormat;
+                    string strTempFileName = strFileName + "_" + i + exp.FileFormat;
                     exp.FileName = strTempFileName;
-                    DataTable dt = _dbServerAppService.ExecuteGetTable((int)exp.DbServerId, exp.Sql, i, intRowNum); //要导出的数据集
+
+                    DataTable dt = new DataTable();
+                    if (exp.DbServerId == null)
+                    {
+                        string sqlOne = _reportAppService.SqlForPage(DbHelper.GetCurConnection().DbType.ToString(), exp.Sql, i, intRowNum, ref err);
+                        dt = DbHelper.ExecuteGetTable(sqlOne);
+                    }
+                    else
+                    {
+                        dt = _dbServerAppService.ExecuteGetTable((int)exp.DbServerId, exp.Sql, i, intRowNum); //要导出的数据集
+                    }
                     dt.Columns.Remove("N");//删除分页引起的多一列数据
                     exp.ObjParam = dt;
                     string strPath = strFilePath;//虚拟地址
@@ -163,7 +190,7 @@ namespace Easyman.Service
                     exp.FilePath = strMapPath;
                     strPathAll += (strPathAll == "" ? "" : "|") + strPath;
                     strMapPathAll += (strMapPathAll == "" ? "" : "|") + strMapPath;
-                    
+
                     Thread thread = new Thread(new ParameterizedThreadStart(OutExportFile));//启用多线程处理数据
                     thread.IsBackground = true;
                     thread.Name = strTempFileName.Replace(exp.FileFormat, "");
@@ -177,7 +204,7 @@ namespace Easyman.Service
                 ExportDataM = exp;
 
                 t = new System.Timers.Timer(10000);//实例化Timer类，设置间隔时间为10000毫秒；
-                t.Elapsed += new System.Timers.ElapsedEventHandler((s, e) => OutTime(s, e, strFilePath, strFileName,(ExportDataModel)obj, TempThreadList));
+                t.Elapsed += new System.Timers.ElapsedEventHandler((s, e) => OutTime(s, e, strFilePath, strFileName, (ExportDataModel)obj, TempThreadList));
                 t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
                 t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；        
                 t.Start();
@@ -191,7 +218,19 @@ namespace Easyman.Service
                 Easyman.Common.Fun.GetPath(ref strFileName, exp.FileFormat, ref strMapPathAll, ref strPath);//重新整理保存路径
                 exp.FileName = strFileName;
                 exp.FilePath = strMapPathAll;
-                exp.ObjParam = _dbServerAppService.ExecuteGetTable((int)exp.DbServerId, exp.Sql); //要导出的数据集
+
+                DataTable dt = new DataTable();
+                if (exp.DbServerId == null)
+                {
+                    dt = DbHelper.ExecuteGetTable(exp.Sql);
+                }
+                else
+                {
+                    dt = _dbServerAppService.ExecuteGetTable((int)exp.DbServerId, exp.Sql); //要导出的数据集
+                }
+
+                //exp.ObjParam = _dbServerAppService.ExecuteGetTable((int)exp.DbServerId, exp.Sql); //要导出的数据集
+                exp.ObjParam = dt;
                 Thread thread = new Thread(new ParameterizedThreadStart(OutExportFile));//启用多线程处理数据
                 thread.IsBackground = true;
                 thread.Name = strFileName.Replace(exp.FileFormat, "");
@@ -201,7 +240,7 @@ namespace Easyman.Service
                 ThreadList.Add(thread);//添加到总记录里面
                 TempThreadList.Add(thread);//添加到临时记录
 
-                ExportDataModel ExportDataM = new  ExportDataModel();
+                ExportDataModel ExportDataM = new ExportDataModel();
                 ExportDataM = exp;
 
                 t = new System.Timers.Timer(10000);//实例化Timer类，设置间隔时间为10000毫秒；
@@ -276,7 +315,7 @@ namespace Easyman.Service
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        private void OutTime(object source, System.Timers.ElapsedEventArgs e, string strPath,string strFileName, ExportDataModel exp, List<Thread> LstThread)
+        private void OutTime(object source, System.Timers.ElapsedEventArgs e, string strPath, string strFileName, ExportDataModel exp, List<Thread> LstThread)
         {
             #region 检测线程是否全部执行完成
             List<Thread> outThreadList = LstThread;
@@ -317,15 +356,15 @@ namespace Easyman.Service
                 string strMapPath = "";
                 strMapPath = strMapPathAll.Split('|')[0];
                 string[] panth = strMapPath.Split('\\');
-                strMapPath = strMapPath.Replace(panth[panth.Length-1], "");
+                strMapPath = strMapPath.Replace(panth[panth.Length - 1], "");
                 strMapPath = strMapPath + strFileName;
                 exp.FilePath = strMapPath;
                 if (1 < intPagIndex)
-                 {
+                {
                     ZipHelper zip = new ZipHelper();
                     strMapPath += ".zip";
                     exp.FileFormat = ".zip";
-                    exp.FileName = strFileName+".zip";
+                    exp.FileName = strFileName + ".zip";
                     strPath += "/" + DateTime.Now.Month + "/" + strFileName + ".zip";
                     exp.FilePath += ".zip";
                     zip.ZipFiles(strMapPathAll, strMapPath);
@@ -354,18 +393,18 @@ namespace Easyman.Service
             files.UploadTime = DateTime.Now;
             files.UserId = lngUserId;
 
-            if (exp.ExportWay == "online" )
+            if (exp.ExportWay == "online")
             {
                 files.Id = 0;
             }
             else
             {
-                files.Id = exp.FilesId ==null ? 0 : (int)exp.FilesId;
+                files.Id = exp.FilesId == null ? 0 : (int)exp.FilesId;
             }
-            if(strPath != null && strMapPath != null && strPath != "" && strMapPath != "")
+            if (strPath != null && strMapPath != null && strPath != "" && strMapPath != "")
             {
                 strPath = strPath.Replace("\\", "/");
-                System.IO.FileInfo FileObj = new FileInfo(strMapPath);               
+                System.IO.FileInfo FileObj = new FileInfo(strMapPath);
                 files.Length = FileObj.Length;//文件大小 
                 files.Path = strPath;
                 files.Url = strPath;
@@ -394,7 +433,7 @@ namespace Easyman.Service
                 exp.BeginTime = DateTime.Now;
                 exp.Id = 0;
             }
-            
+
             if (strPath == null || strMapPath == null)
             {
                 ///向导出数据生成记录里面插入数据
@@ -444,7 +483,7 @@ namespace Easyman.Service
         {
             ExportData expData = _exportDataRepository.Get(intFileId);
             var user = GetCurrentUserAsync().Result;//当前登录者
-            if (expData ==null || expData.Id<=0)
+            if (expData == null || expData.Id <= 0)
             {
                 EasyMan.Dtos.ErrorInfo err = new EasyMan.Dtos.ErrorInfo();
                 err.IsError = false;
@@ -473,7 +512,7 @@ namespace Easyman.Service
             return downData;
         }
         #endregion
-        
+
         public ExportConfig GetExportConfig(int id)
         {
             return _exportConfigRepository.Get(id);

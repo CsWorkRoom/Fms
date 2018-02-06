@@ -9,10 +9,13 @@
 */
 #endregion
 
+using Easyman.Common.Data;
+using Easyman.Common.Reconsitution;
 using EasyMan.Common.Data;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -38,7 +41,7 @@ namespace Easyman.Common
             DataTable table = new DataTable();
             try
             {
-                var dr = _dbSession.ExecuteReader(sql,param,transaction,commandTimeout, commandType);
+                var dr = _dbSession.ExecuteReader(sql, param, transaction, commandTimeout, commandType);
                 table.Load(dr);
                 _dbSession.Closed();
             }
@@ -70,7 +73,7 @@ namespace Easyman.Common
             DataTable table = new DataTable();
             try
             {
-                result= _dbSession.Execute(sql, param, transaction, commandTimeout, commandType);
+                result = _dbSession.Execute(sql, param, transaction, commandTimeout, commandType);
                 _dbSession.Closed();
             }
             catch (Exception ex)
@@ -278,5 +281,13 @@ namespace Easyman.Common
 
         //扩展其他数据库操作方法
 
+        /// <summary>
+        /// 获取当前承载库
+        /// </summary>
+        /// <returns></returns>
+        public static ConnectionMsg GetCurConnection()
+        {
+            return ConnectionMsg.GetCurConnection();
+        }
     }
 }
