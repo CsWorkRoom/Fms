@@ -338,11 +338,12 @@ namespace Easyman.Web.Controllers
         public void RecycleDir(DirectoryInfo directory, ComputerModel computer,FolderModel folder,string pguid)
         {
             string filterName=MonitConst.RestoreStr;
+            string filterDataBase = MonitConst.DataBaseStr;
             //获取当前目录下的的文件    
             FileInfo[] textFiles = directory.GetFiles("*.*", SearchOption.TopDirectoryOnly);
             foreach (FileInfo temp in textFiles)
             {
-                if (!temp.FullName.Contains(filterName))
+                if (!temp.FullName.Contains(filterName)&& !temp.FullName.Contains(filterDataBase))
                 {
                     MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString() + "\\" + temp, false, temp.Name, temp.FullName, temp.Extension, pguid, computer, folder);
                     _monitFile.Size = temp.Length;
@@ -364,7 +365,7 @@ namespace Easyman.Web.Controllers
             DirectoryInfo[] dic = directory.GetDirectories("*.*", SearchOption.TopDirectoryOnly);
             foreach (DirectoryInfo temp in dic)
             {
-                if (!temp.FullName.Contains(filterName))
+                if (!temp.FullName.Contains(filterName) && !temp.FullName.Contains(filterDataBase))
                 {
                     MonitFileTemp _monitFile = InitMonitFile(directory.FullName.ToString(), true, temp.Name, temp.FullName, temp.Extension, pguid, computer, folder);
                     if ((temp.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden)

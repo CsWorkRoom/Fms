@@ -21,5 +21,8 @@ namespace Easyman.Domain
         //下载特殊字符串
         public const string DownStr = "higklmn$$lcz&&cs6789";//命名规则后面可以调整
 
+        //数据库备份文件
+        public const string DataBaseStr = "DataBase$$lcz$$cs";//命名规则后面可以调整
+
     }
 }

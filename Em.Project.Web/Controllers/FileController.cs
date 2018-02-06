@@ -604,5 +604,100 @@ namespace Easyman.Web.Controllers
         #endregion
         #endregion
 
+        #region 数据库文件备份和还原SqlServer
+        public string masterPath = ConfigurationManager.AppSettings["MasterPath"];
+
+        public string UpFileByDataBase(string ip, string folderName,string fileName)
+        {
+            ComputerModel computer = _ComputerAppService.GetComputerByIp(ip);
+            string mess = "";
+            if (computer != null)
+            {
+                FolderModel folder = _FolderAppService.GetFolderByComputerAndName(computer.Id, folderName);
+                if (folder != null)
+                {
+                    string fromPath = string.Format("\\\\{0}\\{1}\\{2}.bak",ip,folderName,fileName);
+                    string toPath =string.Format("{0}\\DataBase", masterPath);
+                    this.CheckDir(toPath);
+                    mess = TransFile(computer.UserName, computer.Pwd, ip, fromPath, toPath+"\\"+fileName+".bak");
+                }
+                else
+                {
+                    mess = string.Format("结果:false;此IP({0})的终端下此共享目录不存在", ip);
+                }              
+            }
+            else
+            {
+                mess= string.Format("结果:false;此IP({0})的终端在数据库中不存在", ip);
+            }
+            return mess;
+        }
+
+        private string TransFile(string userName, string pwd,string ip,string fromPath,string toPath)
+        {
+            string mess = "";
+            using (SharedTool tool = new SharedTool(userName, pwd, ip))
+            {
+                if (System.IO.File.Exists(fromPath))
+                {
+                    try
+                    {                     
+                        System.IO.File.Copy(fromPath, toPath, true);//从客户端拷贝文件到服务端(覆盖式拷贝)
+                        mess = string.Format("结果:true;此IP({0})的终端下({1})数据库处理成功", ip, fromPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        mess = string.Format("结果:false;此IP({0})的终端下({1})备份文件传输失败", ip, fromPath);
+                    }
+                }
+                else
+                {
+                    mess = string.Format("结果:false;此IP({0})的终端下此文件路径不存在({1})", ip, fromPath);
+                }
+                return mess;
+            }
+        }
+
+        public void CheckDir(string directory)
+        {
+            //如果不存在就创建file文件夹
+            if (Directory.Exists(directory) == false)
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+        }
+
+        public string DownFileByDataBase(string ip, string folderName, string fileName)
+        {
+            ComputerModel computer = _ComputerAppService.GetComputerByIp(ip);
+            string mess = "";
+            if (computer != null)
+            {
+                FolderModel folder = _FolderAppService.GetFolderByComputerAndName(computer.Id, folderName);
+                if (folder != null)
+                {
+                    string toPath = string.Format("\\\\{0}\\{1}\\{2}.bak", ip, folderName, fileName);
+                    string fromPath = string.Format("{0}\\DataBase\\{1}.bak", masterPath,fileName);
+                    if (System.IO.File.Exists(fromPath) == false)
+                    {
+                        mess = string.Format("结果:false;还未有此路径文件的备份({0})", fileName);
+                    }
+                    else
+                        mess = TransFile(computer.UserName, computer.Pwd, ip, fromPath, toPath);
+                }
+                else
+                {
+                    mess = string.Format("结果:false;此IP({0})的终端下此共享目录不存在", ip);
+                }
+            }
+            else
+            {
+                mess = string.Format("结果:false;此IP({0})的终端在数据库中不存在", ip);
+            }
+            return mess;
+        }
+        #endregion
+
     }
 }
