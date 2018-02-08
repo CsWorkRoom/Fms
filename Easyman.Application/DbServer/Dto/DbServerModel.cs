@@ -21,13 +21,13 @@ namespace Easyman.Dto
 
         public virtual long? DbTagId { get; set; }
 
-        [Display(Name = "数据库标识")]
-        public virtual DbTag DbTag { get; set; }
+        //[Display(Name = "数据库标识")]
+        //public virtual DbTag DbTag { get; set; }
 
         public virtual long? DbTypeId { get; set; }
 
-        [Display(Name = "数据库种类")]
-        public virtual DbType DbType { get; set; }
+        //[Display(Name = "数据库种类")]
+        //public virtual DbType DbType { get; set; }
 
         [Display(Name = "IP")]
         public virtual string Ip { get; set; }
@@ -59,14 +59,14 @@ namespace Easyman.Dto
 
         public virtual long? DbTagId { get; set; }
 
-        public virtual DbTag DbTag { get; set; }
+        //public virtual DbTag DbTag { get; set; }
 
         public virtual string DbTagName { get; set; }
 
         public virtual long? DbTypeId { get; set; }
 
-        [Display(Name = "数据库种类")]
-        public virtual DbType DbType { get; set; }
+        //[Display(Name = "数据库种类")]
+        //public virtual DbType DbType { get; set; }
 
         public virtual string DbTypeName { get; set; }
 
