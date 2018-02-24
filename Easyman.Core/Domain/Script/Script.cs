@@ -58,5 +58,10 @@ namespace Easyman.Domain
         /// </summary>
         [Column("DIV_WIDE")]
         public virtual int? DivWide { get; set; }
+        /// <summary>
+        /// 是否支持并发20180224
+        /// </summary>
+        [Column("IS_SUPERVENE")]
+        public virtual short? IsSupervene { get; set; }
     }
 }

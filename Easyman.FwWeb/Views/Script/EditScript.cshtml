@@ -137,7 +137,15 @@
                             @Html.TextBoxFor(m => m.RetryTime, new { @class = "form-control", placeholder = "ReTryTime", @Required = "Required", @oninvalid = "setCustomValidity('Please enter the number of failed restarts')", @oninput = "setCustomValidity('')" })<i class="iRequired">*</i>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label for="IsSupervene" class="col-xs-4 control-label">IsSupervene</label>
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(m => m.IsSupervene, new List<SelectListItem>() {
+                       new SelectListItem{ Text ="YES", Value="1"},
+                       new SelectListItem{ Text ="NO", Value="0", Selected = true }
+                   }, new { @class = "form-control" })
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="Remark" class="col-xs-4 control-label">Remark</label>
                         <div class="col-sm-6">

@@ -57,6 +57,10 @@ namespace Easyman.Dto
         /// </summary>
         [Display(Name = "脚本说明")]
         public virtual string Remark { get; set; }
+        /// <summary>
+        /// 是否支持并发
+        /// </summary>
+        public virtual short? IsSupervene { get; set; }
     }
 
     /// <summary>
@@ -127,6 +131,11 @@ namespace Easyman.Dto
         /// 脚本流容器div宽
         /// </summary>
         public virtual int? DivWide { get; set; }
+
+        /// <summary>
+        /// 是否支持并发
+        /// </summary>
+        public virtual short? IsSupervene { get; set; }
 
     }
     /// <summary>

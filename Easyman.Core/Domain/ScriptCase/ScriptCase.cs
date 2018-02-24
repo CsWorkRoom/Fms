@@ -64,5 +64,10 @@ namespace Easyman.Domain
         /// </summary>
         [Column("END_TIME")]
         public virtual DateTime? EndTime { get; set; }
+        /// <summary>
+        /// 是否支持并发20180224
+        /// </summary>
+        [Column("IS_SUPERVENE")]
+        public virtual short? IsSupervene { get; set; }
     }
 }
