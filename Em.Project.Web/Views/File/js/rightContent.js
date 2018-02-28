@@ -133,7 +133,11 @@ function loadHtml(dataArr, nodeType) {
                         htm += '<div class="col-sm-2 context-menu-one" style="' + hideAttr +'cursor:pointer;float:left;width:100px;height:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"  title="' + dataArr[i].name + '"><span ><i class="glyphicon glyphicon-folder-close" style="font-size:2em;"></i><br /><p class="text-overflow">' + sname + '</p></span></div>';
                     }
                     else {
-                        htm += '<div class="col-sm-2 context-menu-one" style="' + hideAttr +'cursor:pointer;float:left;width:100px;height:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"  title="' + dataArr[i].name + '"><span ><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x" style="font-size:2em;"></i><br /><p class="text-overflow">' + sname + '</p></span></div>';
+                        var img = "fa-file-o";
+                        if (dataArr[i].fileFormatIcon != null && dataArr[i].fileFormatIcon != "") {
+                            img = dataArr[i].fileFormatIcon;
+                        }
+                        htm += '<div class="col-sm-2 context-menu-one" style="' + hideAttr + 'cursor:pointer;float:left;width:100px;height:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"  title="' + dataArr[i].name + '"><span ><i class="fa ' + img + ' fa-4x" style="font-size:2em;"></i><br /><p class="text-overflow">' + sname + '</p></span></div>';
                     }
                     break;
                 case "file"://文件夹
@@ -144,7 +148,11 @@ function loadHtml(dataArr, nodeType) {
                         htm += '<div class="col-sm-2 context-menu-one" style="' + hideAttr+'cursor:pointer;float:left;width:100px;height:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',true)"  title="' + dataArr[i].name + '"><span><i class="glyphicon glyphicon-folder-close" style="font-size:2em;"></i><br /><p class="text-overflow">' + sname + '</p></span></div>';
                     }
                     else {
-                        htm += '<div class="col-sm-2 context-menu-one" style="' + hideAttr+'cursor:pointer;float:left;width:100px;height:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"  title="' + dataArr[i].name + '"><span><i class="fa ' + dataArr[i].fileFormatIcon + ' fa-4x" style="font-size:2em;"></i><br /><p class="text-overflow">' + sname + '</p></span></div>';
+                        var img = "fa-file-o";
+                        if (dataArr[i].fileFormatIcon != null && dataArr[i].fileFormatIcon != "") {
+                            img = dataArr[i].fileFormatIcon;
+                        }
+                        htm += '<div class="col-sm-2 context-menu-one" style="' + hideAttr + 'cursor:pointer;float:left;width:100px;height:100px;margin-left:35px;margin-bottom:20px;word-wrap:break-word;overflow:hidden;text-align:center" ondblclick="openModel(' + dataArr[i].id.substring(dataArr[i].id.indexOf("_") + 1) + ',\'file\',false)"  title="' + dataArr[i].name + '"><span><i class="fa ' + img + ' fa-4x" style="font-size:2em;"></i><br /><p class="text-overflow">' + sname + '</p></span></div>';
                     }
                     break;
             }
