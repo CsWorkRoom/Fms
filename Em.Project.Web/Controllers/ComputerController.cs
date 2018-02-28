@@ -21,6 +21,7 @@ using EasyMan.Dtos;
 using System.Text;
 using System.Diagnostics;
 using System.Configuration;
+using System.Management;
 
 namespace Easyman.Web.Controllers
 {
@@ -179,8 +180,9 @@ namespace Easyman.Web.Controllers
                         var files = from f in waitFiles
                                     where f.IsChange == true
                                     select f;
+                        var plusFiles = monitFileModels.Where(a => !waitFiles.Exists(t => a.ClientPath==t.ClientPath));
 
-                        if (files != null && files.Count() > 0)
+                        if ((files != null && files.Count() > 0)||(plusFiles!=null && plusFiles.Count()>0))
                         {
                             str = "监控文件夹存在文件变动的操作";
                             FolderVersionModel folderVersion = CheckFolderVersion(folder.Id, "add");
@@ -196,14 +198,25 @@ namespace Easyman.Web.Controllers
                                 }
 
                             }
-                            var deleteFileModels = monitFileModels.Where(p => p.IsDelete != false);
-                            foreach (MonitFileModel f in deleteFileModels)
+                          if(  plusFiles != null && plusFiles.Count() > 0)
                             {
-                                f.Status = (short)MonitStatus.Delete;
-                                _MonitFileAppService.InsertOrUpdateMonitFile(f);
-                                _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:({0})由于当前版本文件变动，上一版本标记为删除...", f.Name), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id });
+                                str = "/文件删除的操作";
+                                foreach (MonitFileModel f in plusFiles)
+                                {
+                                    f.Status = (short)MonitStatus.Delete;
+                                    _MonitFileAppService.InsertOrUpdateMonitFile(f);
+                                    _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:({0})由于当前版本文件变动，上一版本标记为删除...", f.Name), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id });
 
+                                }
                             }
+                            //var deleteFileModels = monitFileModels.Where(p => p.IsDelete != false);
+                            //foreach (MonitFileModel f in deleteFileModels)
+                            //{
+                            //    f.Status = (short)MonitStatus.Delete;
+                            //    _MonitFileAppService.InsertOrUpdateMonitFile(f);
+                            //    _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:({0})由于当前版本文件变动，上一版本标记为删除...", f.Name), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id });
+
+                            //}
                         }
                         else
                         {
@@ -220,7 +233,7 @@ namespace Easyman.Web.Controllers
                         _MonitFileAppService.Log(monitLogErr);
                     }
 
-                    return string.Format("结果:true;监控提示:对{0}的{1}监控完成!",ip,folderName);
+                    return string.Format("结果:true;监控提示:对{0}的{1}监控完成!{2}",ip,folderName,str);
                 }
                 catch (Exception ex)
                 {
@@ -823,5 +836,29 @@ namespace Easyman.Web.Controllers
             }
         }
         #endregion
+
+        #region 网络测试
+
+        public string ConnectTest(string userName,string password,string ip)
+        {
+            try
+            {
+
+                ConnectionOptions connection_wmi = new ConnectionOptions();
+                connection_wmi.Username = userName;
+                connection_wmi.Password = password;
+                connection_wmi.Authority = "ntlmdomain:DOMAIN";
+
+                ManagementScope scope = new ManagementScope("\\\\"+ip+"\\root\\CIMV2", connection_wmi);
+                scope.Connect();
+                return "True";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
+        
     }
 }
