@@ -184,7 +184,8 @@ namespace Easyman.Web.Controllers
 
                         if ((files != null && files.Count() > 0)||(plusFiles!=null && plusFiles.Count()>0))
                         {
-                            str = "监控文件夹存在文件变动的操作";
+                            if (files != null && files.Count() > 0)
+                                str = "监控文件夹存在文件变动的操作";
                             FolderVersionModel folderVersion = CheckFolderVersion(folder.Id, "add");
                             CaseVersionModel caseVersionModel = SaveCaseVersion(folderVersion, scriptNodeCaseId);
                             MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})下生成新版本号", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id };
@@ -200,7 +201,7 @@ namespace Easyman.Web.Controllers
                             }
                           if(  plusFiles != null && plusFiles.Count() > 0)
                             {
-                                str = "/文件删除的操作";
+                                str += "/监控文件夹存在文件删除的操作";
                                 foreach (MonitFileModel f in plusFiles)
                                 {
                                     f.Status = (short)MonitStatus.Delete;
