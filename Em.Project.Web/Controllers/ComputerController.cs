@@ -21,7 +21,7 @@ using EasyMan.Dtos;
 using System.Text;
 using System.Diagnostics;
 using System.Configuration;
-using System.Management;
+
 
 namespace Easyman.Web.Controllers
 {
@@ -844,14 +844,6 @@ namespace Easyman.Web.Controllers
         {
             try
             {
-
-                ConnectionOptions connection_wmi = new ConnectionOptions();
-                connection_wmi.Username = userName;
-                connection_wmi.Password = password;
-                connection_wmi.Authority = "ntlmdomain:DOMAIN";
-
-                ManagementScope scope = new ManagementScope("\\\\"+ip+"\\root\\CIMV2", connection_wmi);
-                scope.Connect();
                 return "True";
             }
             catch (Exception ex)
