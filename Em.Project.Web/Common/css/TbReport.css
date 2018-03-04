@@ -4,12 +4,14 @@
     overflow: hidden;
 }
 
+/*单元格内容换行：连续的英文字符和阿拉伯数字,需使用word-wrap : break-word ;或者word-break:break-all;实现强制断行*/
 .ui-jqgrid tr.jqgrow td {
     /* jqGrid cell content wrap  */
     white-space: normal !important;
     height: auto;
+    word-break:break-all;
 }
-
+/*table的header部分换行*/
 th.ui-th-column div {
     /* jqGrid columns name wrap  */
     white-space: normal !important;

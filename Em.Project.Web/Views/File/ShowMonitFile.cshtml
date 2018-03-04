@@ -33,14 +33,15 @@
         </p>*@
 
 
-    <div style="float:left; margin-left:200px; height:40px;   background-color:steelblue; text-align:center;width:680px; vertical-align:middle; padding-top:5px;" class="thumbnail">
+    <div style="float:left; margin-left:100px; height:40px;   background-color:steelblue; text-align:center;width:680px; vertical-align:middle; padding-top:5px;" class="thumbnail">
         Search: <input type="text" name="searchName" id="searchName" style="width:500px;" /><button type="button" id="btnSearch" onclick="SearchFile()">Go</button>
         <button type="button" id="btnRefresh" onclick="javascript: location.reload();">Refresh</button>
     </div>
 
 
     <div>
-        Current there are  <a href="#" style="font-size:x-large" onclick="LookErrlog()" id="errNum">0</a> error monitoring data.
+        Current there are  <a href="#" style="font-size:x-large" onclick="LookErrlogOne()" id="errNum">0</a> error monitoring data.
+        <a href="#" onclick="LookErrlog()" id="moreLog" style="font-size:20px; color:red">more</a> err log 。
         <a href="#" onclick="LookMoreLog()" id="moreLog" style="font-size:20px;">more</a> log
     </div>
 
@@ -320,6 +321,15 @@
             //ModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errNodeCase', 1100, 500);
             //ModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errorDetail', 1100, 500);
             TopModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errorDetail', 1200, 500);//弹顶级层
+        }
+        //查看日志信息(一天)
+        function LookErrlogOne() {
+            //弹出一个新页面（报表）,显示搜索结果
+            var modalId = CreateRandomNum(1, 0, 1000);//取0到1000的随机数
+            //打开监控历史记录报表
+            //ModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errNodeCase', 1100, 500);
+            //ModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errorDetail', 1100, 500);
+            TopModeDialogUrl('modalId' + modalId, 'monit error', 'Report/TbReport?code=errLogOne', 1200, 500);//弹顶级层
         }
         //查看所有日志
         function LookMoreLog() {

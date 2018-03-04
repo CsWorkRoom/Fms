@@ -1156,6 +1156,7 @@ namespace Easyman.Service
                                 AND D.FOLDER_VERSION_ID = A.ID
                                 AND F.ID = SCRIPT_NODE_CASE_ID
                                 AND F.RETURN_CODE = 0
+                                AND F.END_TIME>=SYSDATE-1
                         UNION
                         SELECT A.ID MONIT_FILE_ID,
                                 A.CASE_VERSION_ID,
@@ -1176,6 +1177,7 @@ namespace Easyman.Service
                                     WHERE A.DISTRICT_ID = B.ID) B,
                                 FM_FOLDER C
                             WHERE     A.COMPUTER_ID = B.ID
+                                AND A.COPY_STATUS_TIME>=SYSDATE-1
                                 AND A.COPY_STATUS = 3
                                 AND A.FOLDER_ID = C.ID)", CurrUserId());
             #endregion
