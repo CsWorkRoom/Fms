@@ -29,10 +29,10 @@ namespace Easyman.Domain
         /// <summary>
         /// 文件名称
         /// </summary>
-        [Column("NAME"), StringLength(100)]
+        [Column("NAME"), StringLength(2000)]
         public virtual string Name { get; set; }
 
-        [Column("MD5"), StringLength(100)]
+        [Column("MD5"), StringLength(2000)]
         public virtual string MD5 { get; set; }
 
         [Column("SIZE")]
