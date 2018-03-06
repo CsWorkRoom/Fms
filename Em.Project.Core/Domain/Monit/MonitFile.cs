@@ -85,17 +85,17 @@ namespace Easyman.Domain
         /// <summary>
         /// 客户端路径
         /// </summary>
-        [Column("CLIENT_PATH"), StringLength(100)]
+        [Column("CLIENT_PATH"), StringLength(2000)]
         public virtual string ClientPath { get; set; }
         /// <summary>
         /// 服务器路径
         /// </summary>
-        [Column("SERVER_PATH"), StringLength(100)]
+        [Column("SERVER_PATH"), StringLength(2000)]
         public virtual string ServerPath { get; set; }
         /// <summary>
         /// MD5
         /// </summary>
-        [Column("MD5"), StringLength(100)]
+        [Column("MD5"), StringLength(2000)]
         public virtual string MD5 { get; set; }
         /// <summary>
         /// 状态
