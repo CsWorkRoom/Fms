@@ -814,61 +814,65 @@ namespace Easyman.Service
                     }
                     else//文件
                     {
-                        if (monitFile.CopyStatus == (short)CopyStatus.Success)//文件已拷贝到服务端
-                        {
-                            string tempVar = DateTime.Now.Ticks.ToString();
-                            string tempPath = "";
+                        //先压缩文件，再拷贝
+                        fileName = GenerateZipByFile(caseVersionId, monitFile, logVersionId);
+                        #region 直接拷贝文件方式--已废弃
+                        //if (monitFile.CopyStatus == (short)CopyStatus.Success)//文件已拷贝到服务端
+                        //{
+                        //    string tempVar = DateTime.Now.Ticks.ToString();
+                        //    string tempPath = "";
 
-                            string tempFolder = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\";
-                            
-                            //创建文件夹
-                            DirectoryInfo di = new DirectoryInfo(tempFolder);
-                            // 没有时就创建
-                            if (!di.Exists)
-                                di.Create();
+                        //    string tempFolder = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\";
 
-                            var msg = "开始生成临时文件名...";
-                            Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+                        //    //创建文件夹
+                        //    DirectoryInfo di = new DirectoryInfo(tempFolder);
+                        //    // 没有时就创建
+                        //    if (!di.Exists)
+                        //        di.Create();
 
-                            string newFileName = "";
-                            if (monitFile.Name.LastIndexOf('.') != -1)//有后缀
-                            {
-                                newFileName = monitFile.Name.Insert(monitFile.Name.LastIndexOf('.'), "_" + tempVar);
-                                //tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
-                                tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + newFileName;
-                            }
-                            else//无后缀
-                            {
-                                newFileName = monitFile.Name + "_" + tempVar;
-                                //tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
-                                tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + newFileName;
-                            }
-                            try
-                            {
-                                msg = "临时文件名生成完毕：" + tempPath;
-                                Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+                        //    var msg = "开始生成临时文件名...";
+                        //    Log(caseVersionId, logVersionId, monitFileId, logType, msg);
 
-                                msg = "开始拷贝临时文件：" + tempPath;
-                                Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+                        //    string newFileName = "";
+                        //    if (monitFile.Name.LastIndexOf('.') != -1)//有后缀
+                        //    {
+                        //        newFileName = monitFile.Name.Insert(monitFile.Name.LastIndexOf('.'), "_" + tempVar);
+                        //        //tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
+                        //        tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + newFileName;
+                        //    }
+                        //    else//无后缀
+                        //    {
+                        //        newFileName = monitFile.Name + "_" + tempVar;
+                        //        //tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
+                        //        tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + newFileName;
+                        //    }
+                        //    try
+                        //    {
+                        //        msg = "临时文件名生成完毕：" + tempPath;
+                        //        Log(caseVersionId, logVersionId, monitFileId, logType, msg);
 
-                                File.Copy(monitFile.ServerPath, tempPath, true);//复制文件
+                        //        msg = "开始拷贝临时文件：" + tempPath;
+                        //        Log(caseVersionId, logVersionId, monitFileId, logType, msg);
 
-                                msg = "拷贝临时文件完成：" + tempPath;
-                                Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+                        //        File.Copy(monitFile.ServerPath, tempPath, true);//复制文件
 
-                                msg = "返回临时文件：" + tempPath;
-                                Log(caseVersionId, logVersionId, monitFileId, logType, msg);
-                                fileName = newFileName;
-                            }
-                            catch (Exception ex)
-                            {
-                            }
-                        }
-                        else
-                        {
-                            var msg = "文件编号[" + monitFileId.ToString() + "]名[" + monitFile.Name + "]未找到";
-                            Log(caseVersionId, logVersionId, monitFileId, logType, msg);
-                        }
+                        //        msg = "拷贝临时文件完成：" + tempPath;
+                        //        Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+
+                        //        msg = "返回临时文件：" + tempPath;
+                        //        Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+                        //        fileName = newFileName;
+                        //    }
+                        //    catch (Exception ex)
+                        //    {
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    var msg = "文件编号[" + monitFileId.ToString() + "]名[" + monitFile.Name + "]未找到";
+                        //    Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+                        //}
+                        #endregion
                     }
                 }
                 else
@@ -889,6 +893,96 @@ namespace Easyman.Service
         #endregion
 
         #region 私有方法
+        private string GenerateZipByFile(long? caseVersionId, MonitFile monitFile, long? logVersionId)
+        {
+            long? monitFileId = monitFile.Id;
+            short logType = (short)LogType.DownLog;
+            string fileName = "";
+
+            if (monitFile.CopyStatus == (short)CopyStatus.Success)//文件已拷贝到服务端
+            {
+                string tempVar = DateTime.Now.Ticks.ToString();
+                string tempPath = "";
+
+                string tempFolder = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\";
+
+                //创建文件夹
+                DirectoryInfo di = new DirectoryInfo(tempFolder);
+                // 没有时就创建
+                if (!di.Exists)
+                    di.Create();
+
+                var msg = "开始生成临时文件名...";
+                Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+
+                string newFileName = "";
+                if (monitFile.Name.LastIndexOf('.') != -1)//有后缀
+                {
+                    //newFileName = monitFile.Name.Insert(monitFile.Name.LastIndexOf('.'), "_" + tempVar);
+                    newFileName = monitFile.Name.Substring(0, monitFile.Name.LastIndexOf('.')) + "_" + tempVar;
+                    //tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
+                    tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + newFileName;
+                }
+                else//无后缀
+                {
+                    newFileName = monitFile.Name + "_" + tempVar;
+                    //tempPath = HttpContext.Current.Server.MapPath("/") + newFileName;
+                    tempPath = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + newFileName;
+                }
+                try
+                {
+                    DirectoryInfo direct = new DirectoryInfo(tempPath);//创建文件夹
+                    // 没有时就创建
+                    if (direct.Exists == false)
+                        direct.Create();
+
+                    msg = "临时文件夹生成完毕：" + tempPath;
+                    Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+
+                    msg = "开始拷贝文件到临时文件夹：" + tempPath;
+                    Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+
+                    File.Copy(monitFile.ServerPath, tempPath + "\\" + monitFile.Name, true);//复制文件
+
+                    msg = "拷贝文件完成：" + tempPath + "\\" + monitFile.Name;
+                    Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+
+                    msg = "开始压缩临时文件夹...";
+                    Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+                    //压缩文件夹
+                    string sourceDir = tempPath + "\\";//待压缩目录
+                    //string targetFile = HttpContext.Current.Server.MapPath("/") + monitFile.Name + "_" + tempVar + ".zip";//压缩后的文件
+                    string targetFile = AppDomain.CurrentDomain.BaseDirectory + "tempFolder\\" + newFileName + ".zip";//压缩后的文件
+
+                    ZipHelper zip = new ZipHelper();
+                    zip.ZipPath(sourceDir, targetFile);//压缩文件
+
+                    msg = "压缩完毕，文件名：" + newFileName + ".zip";
+                    Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+
+                    //压缩后删除文件夹
+                    Directory.Delete(tempPath, true);
+
+                    msg = "删除临时文件夹：" + tempPath;
+                    Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+
+                    fileName = newFileName + ".zip";
+
+                    msg = "返回压缩文件：" + fileName;
+                    Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+            else
+            {
+                var msg = "文件编号[" + monitFileId.ToString() + "]名[" + monitFile.Name + "]未找到";
+                Log(caseVersionId, logVersionId, monitFileId, logType, msg);
+            }
+            return fileName;
+        }
+
         /// <summary>
         /// 文件夹下载：生成临时文件夹及子目录,压缩成zip包,删除生成临时文件夹 ->返回生成后的压缩文件名
         /// </summary>
