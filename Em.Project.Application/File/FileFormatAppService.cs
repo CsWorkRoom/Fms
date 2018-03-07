@@ -141,7 +141,21 @@ namespace Easyman.Service
                     return null;
             }
             else
-                return null;
+            {
+                var fileFormat = _FileFormatCase.FirstOrDefault(p => p.Name == "null");
+                if (fileFormat != null)
+                    return fileFormat.MapTo<FileFormatModel>();
+                else
+                {
+                    FileFormatModel input = new FileFormatModel();
+                    input.IsFolder = false;
+                    input.IsHide = 0;
+                    input.Name = "null";
+                    return InsertOrUpdateFileFormat(input);               
+                }
+               
+            }
+           
         }
 
         public FileFormatModel GetFileFormatByDir()
