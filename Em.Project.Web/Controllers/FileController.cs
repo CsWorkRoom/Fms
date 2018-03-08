@@ -208,6 +208,166 @@ namespace Easyman.Web.Controllers
             return Json(nodeList);//返回节点列表json
         }
 
+        public string GetNodes(string parentIds = null)
+        {
+            List<TreeNode> nodeList = new List<TreeNode>();//初始化node
+            if (string.IsNullOrEmpty(parentIds))
+            {
+                #region 根据当前用户获取所辖终端列表
+                string sqlComputer = string.Format(@"
+                     SELECT A.*
+                      FROM FM_COMPUTER A,
+                           (    SELECT ID
+                                  FROM EM_DISTRICT
+                            CONNECT BY PRIOR ID = PARENT_ID
+                            START WITH ID = (SELECT DISTRICT_ID
+                                               FROM ABP_USERS
+                                              WHERE ID = {0})) B
+                     WHERE A.DISTRICT_ID = B.ID", CurrUserId());
+                #endregion
+                //List<TreeNode> nodeList = new List<TreeNode>();//初始化node
+
+                DataTable comDt = DbHelper.ExecuteGetTable(sqlComputer);
+                if (comDt != null && comDt.Rows.Count > 0)
+                {
+                    //拼装终端的nodes
+                    foreach (DataRow row in comDt.Rows)
+                    {
+                        TreeNode node = new TreeNode();
+                        node.id = "computer_" + row["ID"].ToString().Trim();//computer_ + 编号
+                        node.name = row["NAME"].ToString();//节点名称
+                        node.title = "(" + row["CODE"].ToString() + ")" + row["NAME"].ToString() + "[" + row["IP"].ToString() + "]";//节点说明
+                        //node.pId = "0";//父节点
+                        node.nodeType = "computer";
+                        node.iconSkin = "pIcon01";//房子
+                        node.isParent = true;
+                        nodeList.Add(node);//添加节点
+
+                    }
+                }
+            }
+            else
+            {
+                var arr = parentIds.Split('_');
+                switch (arr[0])
+                {
+                    case "computer":
+                        //获取共享目录List
+                        var folderList = _FolderAppService.GetFolderListByComputer(Convert.ToInt64(arr[1].Trim()));
+                        if (folderList != null && folderList.Count > 0)
+                        {
+                            var nodeListFolder = folderList.Select(p => new TreeNode
+                            {
+                                id = "folder_" + p.Id,
+                                name = p.Name,
+                                title = p.Name,
+                                //pId = "computer_" + arr[1].Trim(),
+                                nodeType = "folder",//共享目录
+                                iconSkin = "pIcon010",
+                                isParent = true
+                            });
+                            nodeList.AddRange(nodeListFolder);//添加共享目录
+                        }
+                        break;
+                    case "folder":
+                        #region 获取共享文件夹下级文件 fileSql
+                        string fileSql = string.Format(@"
+                                        SELECT A.ID,
+                                               A.CLIENT_PATH,
+                                               A.COMPUTER_ID,
+                                               A.FILE_FORMAT_ID,
+                                               A.FILE_LIBRARY_ID,
+                                               A.FOLDER_ID,
+                                               A.FOLDER_VERSION_ID,
+                                               A.MD5,
+                                               A.NAME,
+                                               A.PARENT_ID,
+                                               A.RELY_MONIT_FILE_ID,
+                                               A.REMARK,
+                                               A.SERVER_PATH,
+                                               A.STATUS,
+                                               B.IS_FOLDER,
+                                               B.NAME FORMAT_NAME,
+                                               B.ICON FILE_ICON,
+                                               C.NAME MD5_NAME,
+                                               C.""SIZE"" FILE_SIZE
+                                          FROM FM_MONIT_FILE A
+                                               LEFT JOIN FM_FILE_FORMAT B ON (A.FILE_FORMAT_ID = B.ID)
+                                               LEFT JOIN FM_FILE_LIBRARY C ON (A.FILE_LIBRARY_ID = C.ID)
+                                         WHERE     A.FOLDER_VERSION_ID = (SELECT MAX (K.ID)
+                                                                            FROM FM_FOLDER_VERSION K
+                                                                           WHERE K.FOLDER_ID = {0})
+                                               AND PARENT_ID IS NULL", arr[1]);
+                        #endregion
+
+                        DataTable fileDt = DbHelper.ExecuteGetTable(fileSql);
+                        if (fileDt != null && fileDt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in fileDt.Rows)
+                            {
+                                TreeNode fileNode = new TreeNode();
+                                fileNode.id = "file_" + dr["ID"].ToString().Trim();
+                                fileNode.nodeType = "file";//文件
+                                fileNode.name = dr["NAME"].ToString();
+                                fileNode.title = dr["NAME"].ToString();
+                                //fileNode.pId = string.IsNullOrEmpty(dr["PARENT_ID"].ToString()) ? ("folder_" + folder.Id) : ("file_" + dr["PARENT_ID"].ToString().Trim());
+                                fileNode.isFolder = dr["IS_FOLDER"].ToString() == "1" ? true : false;
+                                fileNode.isParent = fileNode.isFolder.Value;//文件夹才有子项
+                                fileNode.iconSkin = fileNode.isParent ? "pIcon010" : "";
+                                nodeList.Add(fileNode);
+                            }
+                        }
+                        break;
+                    case "file":
+                        #region 获取文件夹的下级文件 fileSql
+                        string fileSql1 = string.Format(@"SELECT A.ID,
+                                       A.CLIENT_PATH,
+                                       A.COMPUTER_ID,
+                                       A.FILE_FORMAT_ID,
+                                       A.FILE_LIBRARY_ID,
+                                       A.FOLDER_ID,
+                                       A.FOLDER_VERSION_ID,
+                                       A.MD5,
+                                       A.NAME,
+                                       A.PARENT_ID,
+                                       A.RELY_MONIT_FILE_ID,
+                                       A.REMARK,
+                                       A.SERVER_PATH,
+                                       A.STATUS,
+                                       B.IS_FOLDER,
+                                       B.NAME FORMAT_NAME,
+                                       B.ICON FILE_ICON,
+                                       C.NAME MD5_NAME,
+                                       C.""SIZE"" FILE_SIZE
+                                  FROM FM_MONIT_FILE A
+                                       LEFT JOIN FM_FILE_FORMAT B ON (A.FILE_FORMAT_ID = B.ID)
+                                       LEFT JOIN FM_FILE_LIBRARY C ON (A.FILE_LIBRARY_ID = C.ID)
+                                 WHERE PARENT_ID = {0}", arr[1]);
+                        #endregion
+
+                        DataTable fileDt1 = DbHelper.ExecuteGetTable(fileSql1);
+                        if (fileDt1 != null && fileDt1.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in fileDt1.Rows)
+                            {
+                                TreeNode fileNode = new TreeNode();
+                                fileNode.id = "file_" + dr["ID"].ToString().Trim();
+                                fileNode.nodeType = "file";//文件
+                                fileNode.name = dr["NAME"].ToString();
+                                fileNode.title = dr["NAME"].ToString();
+                                //fileNode.pId = string.IsNullOrEmpty(dr["PARENT_ID"].ToString()) ? ("folder_" + folder.Id) : ("file_" + dr["PARENT_ID"].ToString().Trim());
+                                fileNode.isFolder = dr["IS_FOLDER"].ToString() == "1" ? true : false;
+                                fileNode.isParent = fileNode.isFolder.Value;//文件夹才有子项
+                                fileNode.iconSkin = fileNode.isParent ? "pIcon010" : "";
+                                nodeList.Add(fileNode);
+                            }
+                        }
+                        break;
+                }
+            }
+            return JSON.DecodeToStr(nodeList);
+        }
+
         public ActionResult GetComputerListByCurUser()
         {
             #region 根据当前用户获取所辖终端列表

@@ -10,7 +10,13 @@
             enable: true
         }
     },
-    callback: {
+    async: {
+        enable: true,
+        url: "GetNodes",
+        autoParam: ["id=parentIds"]
+        //otherParam: { "otherParam": "zTreeAsyncTest" },
+        //dataFilter: filter
+    },    callback: {
         //beforeClick: beforeClick,
         //beforeCollapse: beforeCollapse,
         //beforeExpand: beforeExpand,

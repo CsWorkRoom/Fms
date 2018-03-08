@@ -163,19 +163,23 @@
 
             //$("div.content_wrap").attr("min-height", height_cont - 91);
 
-            $.ajax({
-                url: "GetNodesByCurUser",
-                type: 'post',
-                success: function (data) {
-                    //debugger;
-                    zNodes = data.result;
-                    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-                },
-                error: function (xhr) {
-                    //debugger;
-                    abp.ui.clearBusy();
-                }
-            });
+            //#region 未异步加载的代码--已废弃
+            //$.ajax({
+            //    url: "GetNodesByCurUser",
+            //    type: 'post',
+            //    success: function (data) {
+            //        //debugger;
+            //        zNodes = data.result;
+            //        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            //    },
+            //    error: function (xhr) {
+            //        //debugger;
+            //        abp.ui.clearBusy();
+            //    }
+            //});
+            //#endregion
+           
+            $.fn.zTree.init($("#treeDemo"), setting);
             getComputerList();//获取终端管辖终端列表
 
             //获得错误节点数
