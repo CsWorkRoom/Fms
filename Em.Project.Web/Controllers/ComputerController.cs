@@ -486,25 +486,6 @@ namespace Easyman.Web.Controllers
             }
             else
             {
-                
-                MonitFileModel relyMonitFile = GetPMonitFile(fullName);
-                if(relyMonitFile != null)
-                    _monitFile.RelyMonitFileId =  relyMonitFile.Id;
-                try
-                {
-                   
-                    _monitFile.MD5 = FileTool.GetFileHash(filePath);
-                    
-                }
-                catch (Exception ex)
-                {
-                    if (relyMonitFile != null)
-                        _monitFile.MD5 = relyMonitFile.MD5;
-                    else
-                        _monitFile.MD5 = fileName.Replace(fileFormat,"");
-                    MonitLogModel monitLogInfo = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:文件获取异常,"+ex.Message), LogTime = DateTime.Now };
-                    _MonitFileAppService.Log(monitLogInfo);
-                }
                 try
                 {
 
@@ -512,8 +493,22 @@ namespace Easyman.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-
+                    MonitLogModel monitLogInfo = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:文件属性获取异常," + ex.Message), LogTime = DateTime.Now };
                 }
+                MonitFileModel relyMonitFile = GetPMonitFile(fullName);
+                if(relyMonitFile != null)
+                    _monitFile.RelyMonitFileId =  relyMonitFile.Id;
+                //获取文件的MD5值，进行5次尝试
+                _monitFile.MD5 = GetFileMD5(filePath);
+                if (_monitFile.MD5 == "" && relyMonitFile != null)
+                    _monitFile.MD5 = relyMonitFile.MD5;
+                else
+                {
+                    //string length = _monitFile.Properties["Length"] == null ? "" : _monitFile.Properties["Length"];
+                    //string lastWriteTime = _monitFile.Properties["LastWriteTime"] == null ? "" : _monitFile.Properties["LastWriteTime"].Replace("/", "").Replace(":", "");
+                    _monitFile.MD5 = fileName.Replace(fileFormat, "");
+                }
+
 
                 if (_monitFile.MD5 != "")
                 {
@@ -551,8 +546,7 @@ namespace Easyman.Web.Controllers
                     else
                     {
                         _monitFile.CopyStatus = CopyStatus.Success;
-                    }
-                   
+                    }                 
                   
                    
                 }
@@ -564,6 +558,36 @@ namespace Easyman.Web.Controllers
 
 
 
+        #endregion
+
+        #region
+        /// <summary>
+        /// 尝试5次获取文件属性
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        private string GetFileMD5(string filePath)
+        {
+            string md5 = "";
+            for (int i = 0; i < 5; i++)
+            {
+                try
+                {
+                    md5 = GetFileHash(filePath);
+                    if (md5 != null && md5 != "")
+                    {
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MonitLogModel monitLogInfo = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:文件获取异常," + ex.Message), LogTime = DateTime.Now };
+                    _MonitFileAppService.Log(monitLogInfo);
+                }
+            }
+            return md5;
+        }
+       
         #endregion
         #region 向数据库中保存数据
         /// <summary>
@@ -819,7 +843,6 @@ namespace Easyman.Web.Controllers
             {
                 FileStream file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
-                var hash = System.Security.Cryptography.HashAlgorithm.Create();
                 byte[] retVal = md5.ComputeHash(file);
                 file.Close();
 
@@ -832,7 +855,9 @@ namespace Easyman.Web.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception("GetMD5HashFromFile() fail,error:" + ex.Message);
+                MonitLogModel monitLogInfo = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:文件MD5值获取异常," + ex.Message), LogTime = DateTime.Now };
+                _MonitFileAppService.Log(monitLogInfo);
+                return "";
             }
         }
         #endregion
