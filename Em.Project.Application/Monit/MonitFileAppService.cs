@@ -197,8 +197,8 @@ namespace Easyman.Service
         {
             var curLog = log.MapTo<MonitLog>();
             curLog.LogTime = DateTime.Now;
-            _MonitLogCase.Insert(curLog);//插入日志
-            CurrentUnitOfWork.SaveChanges();
+            _MonitLogCase.InsertAndGetId(curLog);//插入日志
+            //CurrentUnitOfWork.SaveChanges();
         }
         /// <summary>
         /// 插入一条监控日志
@@ -216,8 +216,8 @@ namespace Easyman.Service
                 LogMsg=logMsg,
                 LogTime=DateTime.Now
             };
-            _MonitLogCase.Insert(log);//插入日志
-            CurrentUnitOfWork.SaveChanges();
+            _MonitLogCase.InsertAndGetId(log);//插入日志
+            //CurrentUnitOfWork.SaveChanges();
         }
         /// <summary>
         /// 插入一条监控日志(含日志批次ID)
@@ -238,8 +238,8 @@ namespace Easyman.Service
                 LogMsg = logMsg,
                 LogTime = DateTime.Now
             };
-            _MonitLogCase.Insert(log);//插入日志
-            CurrentUnitOfWork.SaveChanges();
+            _MonitLogCase.InsertAndGetId(log);//插入日志
+            //CurrentUnitOfWork.SaveChanges();
         }
         #endregion
 
