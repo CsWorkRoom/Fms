@@ -57,12 +57,12 @@ namespace Easyman.Service
         /// <returns></returns>
         public FolderModel InsertOrUpdateFolder(FolderModel input)
         {
-           
+
             try
             {
-                if (_FolderCase.GetAll().Any(p => p.Id != input.Id && p.Name == input.Name))
+                if (_FolderCase.GetAll().Any(p => p.Id != input.Id && p.Name == input.Name && p.ComputerId == input.ComputerId))
                 {
-                    throw new UserFriendlyException("名为【" + input.Name + "】的对象已存在！");
+                    throw new Exception("名为【" + input.Name + "】的对象已存在！");
                 }
                 //var entObj =input.MapTo<Folder>();
                 var entObj = _FolderCase.GetAll().FirstOrDefault(x => x.Id == input.Id) ?? new Folder();
@@ -71,11 +71,11 @@ namespace Easyman.Service
                 var id = _FolderCase.InsertOrUpdateAndGetId(entObj);
                 return entObj.MapTo<FolderModel>();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return null;
+                //return null;
                 throw ex;
-            
+
             }
         }
 

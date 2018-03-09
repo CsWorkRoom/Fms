@@ -186,7 +186,7 @@ namespace Easyman.Service
         {
             try
             {
-                FileStream file = new FileStream(filePath, FileMode.Open);
+                FileStream file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
                 var hash = System.Security.Cryptography.HashAlgorithm.Create();
                 byte[] retVal = md5.ComputeHash(file);

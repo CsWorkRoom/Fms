@@ -117,16 +117,19 @@ namespace Easyman.Web.Controllers
         /// </summary>
         /// <param name="ip"></param>
         /// <param name="folderName"></param>
-        public string MonitorStart(string ip, string folderName, long scriptNodeCaseId  )
+        public string MonitorStart(string ip, string folderName, long scriptNodeCaseId)
         {
             string tip = "1";
-            MonitLogModel monitLog = new MonitLogModel() { LogType=(short) LogType.MonitLog, LogMsg=string.Format("开启对{0}的{1}监控",ip,folderName),LogTime=DateTime.Now };
+            MonitLogModel monitLog = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("开启对{0}的{1}监控", ip, folderName), LogTime = DateTime.Now };
             _MonitFileAppService.Log(monitLog);
-            _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("服务器IP({0})检测...",ip), LogTime = DateTime.Now });
+            _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("服务器IP({0})检测...", ip), LogTime = DateTime.Now });
             ComputerModel computer = _ComputerAppService.GetComputerByIp(ip);
-            FolderModel folder;
+
+            FolderModel folder = new FolderModel();
+
             if (computer != null)
-            {  _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("服务器文件夹路径检测..."), LogTime = DateTime.Now });
+            {
+                _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("{0}服务器文件夹路径检测...", ip), LogTime = DateTime.Now });
                 this.CheckDir(masterPath + ip);
                 folder = _FolderAppService.GetFolderByComputerAndName(computer.Id, folderName);
                 if (folder == null)
@@ -136,27 +139,29 @@ namespace Easyman.Web.Controllers
                     folder = new FolderModel();
                     folder.Name = folderName;
                     folder.ComputerId = computer.Id;
-                    folder.IsUse = true;                  
-                    folder=_FolderAppService.InsertOrUpdateFolder(folder);
+                    folder.IsUse = true;
+                    folder = _FolderAppService.InsertOrUpdateFolder(folder);
+                    _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("IP({0})的共享目录保存成功{1}", ip, folder.Id), LogTime = DateTime.Now });
                 }
             }
-            else {
+            else
+            {
                 tip += "3";
                 MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控异常:此IP({0})的终端在数据库中不存在", ip), LogTime = DateTime.Now };
                 _MonitFileAppService.Log(monitLogErr);
                 return string.Format("结果:false;此IP({0})的终端在数据库中不存在", ip);
             }
 
-               //获取上一个最新版本
+            //获取上一个最新版本
             FolderVersionModel folderVersionOld = _FolderVersionAppService.GetFolderVersionByFolder(folder.Id);
             if (folderVersionOld != null)
             {
                 monitFileModels = _MonitFileAppService.GetMonitFileByVersion(folderVersionOld.Id);
-                _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:获取上一个版本的目录..."), LogTime = DateTime.Now });
+                _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("{0}监控提示:获取上一个版本的目录...", ip), LogTime = DateTime.Now });
 
             }
 
-            string userName =  computer.UserName.Trim();//lcz2016
+            string userName = computer.UserName.Trim();//lcz2016
             string pwd = GetDecryptPwd(computer.Pwd.Trim());//lcz201314
 
             //if (ConnectShare.ConnectRemote(ip, userName, pwd)>0)
@@ -164,17 +169,17 @@ namespace Easyman.Web.Controllers
 
             //}
 
-                // 通过IP 用户名 密码 访问远程目录  不需要权限
-                using (SharedTool tool = new SharedTool(userName, pwd, ip))
+            // 通过IP 用户名 密码 访问远程目录  不需要权限
+            using (SharedTool tool = new SharedTool(userName, pwd, ip))
             {
                 try
                 {
-                  
+
                     string selectPath = string.Format(@"\\{0}\{1}", ip, folderName);
                     var dicInfo = new DirectoryInfo(selectPath);//选择的目录信息 
                     _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:获取当前服务器的最新目录..."), LogTime = DateTime.Now });
                     tip += "4";
-                    RecycleDir(dicInfo, computer, folder, null);             
+                    RecycleDir(dicInfo, computer, folder, null);
                     _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:成功遍历当前目录..."), LogTime = DateTime.Now });
                     tip += "5";
                     string str = "监控文件夹无文件变化";
@@ -183,9 +188,9 @@ namespace Easyman.Web.Controllers
                         var files = from f in waitFiles
                                     where f.IsChange == true
                                     select f;
-                        var plusFiles = monitFileModels.Where(a => !waitFiles.Exists(t => a.ClientPath==t.ClientPath));
+                        var plusFiles = monitFileModels.Where(a => !waitFiles.Exists(t => a.ClientPath == t.ClientPath));
 
-                        if ((files != null && files.Count() > 0)||(plusFiles!=null && plusFiles.Count()>0))
+                        if ((files != null && files.Count() > 0) || (plusFiles != null && plusFiles.Count() > 0))
                         {
                             if (files != null && files.Count() > 0)
                                 str = "监控文件夹存在文件变动的操作";
@@ -202,7 +207,7 @@ namespace Easyman.Web.Controllers
                                 }
 
                             }
-                          if(  plusFiles != null && plusFiles.Count() > 0)
+                            if (plusFiles != null && plusFiles.Count() > 0)
                             {
                                 str += "/监控文件夹存在文件删除的操作";
                                 foreach (MonitFileModel f in plusFiles)
@@ -237,18 +242,15 @@ namespace Easyman.Web.Controllers
                         _MonitFileAppService.Log(monitLogErr);
                     }
 
-                    return string.Format("结果:true;监控提示:对{0}的{1}监控完成!{2}",ip,folderName,str);
+                    return string.Format("结果:true;监控提示:对{0}的{1}监控完成!{2}", ip, folderName, str);
                 }
                 catch (Exception ex)
                 {
                     MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控异常:此{0}的{1}监控发生异常,{2}", ip, folderName, ex.Message), LogTime = DateTime.Now };
                     _MonitFileAppService.Log(monitLogErr);
-                    return string.Format("结果:false;监控提示:对{0}的{1}监控发生异常,{2},{3}", ip, folderName,ex.Message.ToString(),tip);
+                    return string.Format("结果:false;监控提示:对{0}的{1}监控发生异常,{2},{3}", ip, folderName, ex.Message.ToString(), tip);
                 }
             }
-
-            
-             
         }
         /// <summary>
         /// 获得解密后的密码
@@ -815,7 +817,7 @@ namespace Easyman.Web.Controllers
         {
             try
             {
-                FileStream file = new FileStream(filePath, FileMode.Open);
+                FileStream file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
                 var hash = System.Security.Cryptography.HashAlgorithm.Create();
                 byte[] retVal = md5.ComputeHash(file);
