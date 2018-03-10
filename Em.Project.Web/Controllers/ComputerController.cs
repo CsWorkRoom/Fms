@@ -313,13 +313,14 @@ namespace Easyman.Web.Controllers
             //monit_file文件基础信息
             string tableName = "FM_MONIT_FILE_TEMP";
             OracleHelper.BatchInsert(tableName, datas, connString, len);
-
+            _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("{1}的共享目录{0}文件信息monit_file_temp加载成功,批次{2}", folderId.ToString(), computerId.ToString(),operTime), LogTime = DateTime.Now });
             //monit_file文件属性保存
             string tableProName = "FM_MONIT_FILE_TEMP_PRO";
             OracleHelper.BatchInsert(tableProName, pros, connString, IdByPros.Count);
-         
+            _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("{1}的共享目录{0}文件属性monit_file_temp_pro加载成功,批次{2}", folderId.ToString(), computerId.ToString(), operTime), LogTime = DateTime.Now });
             //调用存储过程保存文件相关信息
             OracleHelper.ExeProduce(connString, operTime,  folderId,  computerId,  scriptNodeCaseId);
+            _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("{1}的共享目录{0},成功调用SaveData方法,批次{2}", folderId.ToString(), computerId.ToString(), operTime), LogTime = DateTime.Now });
         }
         private void SaveFileInfo(List<MonitFileTemp> waitFiles, FolderVersionModel folderVersion, CaseVersionModel caseVersionModel)
         {
