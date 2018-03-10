@@ -113,12 +113,12 @@ $(function () {
                 case "restore"://还原
                     $.bootstrapLoading.start({ loadingTips: "Loading, please wait..." });
                     restoreFile(monitFileId);
-                    $.bootstrapLoading.end();
+                    //$.bootstrapLoading.end();
                     break;
                 case "down"://下载
                     $.bootstrapLoading.start({ loadingTips: "Loading, please wait..." });
                     DownFile(monitFileId);
-                    $.bootstrapLoading.end();
+                    //$.bootstrapLoading.end();
                     break;
             }
 
@@ -220,14 +220,17 @@ function restoreFile(monitFileId) {
         success: function (data) {
             debugger;
             if (data.result == "") {
+                $.bootstrapLoading.end();
                 alert("restore success！");
             }
             else {
+                $.bootstrapLoading.end();
                 alert("restore failed：" + data.result);
             }
         },
         error: function (xhr) {
             //debugger;
+            $.bootstrapLoading.end();
             abp.ui.clearBusy();
             alert("restore failed！");
         }
@@ -250,13 +253,16 @@ function DownFile(monitFileId)
             debugger;
             var fileName = data.result;
             if (fileName != "") {
+                $.bootstrapLoading.end();
                 window.downloadFile(bootPATH + "tempFolder/" + fileName);//下载文件
             }
             else {
+                $.bootstrapLoading.end();
                 alert("Download failure！");
             }
         },
         error: function (xhr) {
+            $.bootstrapLoading.end();
             return "error！";
         }
     });

@@ -432,6 +432,38 @@ namespace Easyman.Service
                         switch (logType)
                         {
                             case LogType.UpLog:
+                                #region 根据md5获取FM_FILE_LIBRARY和FM_MONIT_FILE的信息，判断文件是否已拷贝或拷贝中
+                                var fileLib = _FileLibraryCase.Get(monitFile.FileLibraryId.Value);//获得文件库
+                                if (fileLib != null && fileLib.IsCopy.Value)//文件库中为已拷贝时
+                                {
+                                    Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "编号monitFileId[" + monitFile.Id.ToString() + "]的文件[" + monitFile.MD5 + "]已经被其他任务上传到服务器");
+                                    SaveMonitFile(monitFile, CopyStatus.Success);//修改monitFile的状态为拷贝成功
+                                    return;
+                                }
+                                else//文件库中不为已拷贝时
+                                {
+                                    //获取监控文件对应md5的已拷贝数量
+                                    var hasCopyCount = _MonitFileCase.Count(p => p.MD5 == monitFile.MD5 && p.CopyStatus == (short)CopyStatus.Success);
+                                    if(hasCopyCount>0)
+                                    {
+                                        Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "编号monitFileId[" + monitFile.Id.ToString() + "]的文件[" + monitFile.MD5 + "]已经被其他任务上传到服务器");
+                                        SaveMonitFile(monitFile, CopyStatus.Success);//修改monitFile的状态为拷贝成功
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        //获取监控文件对应md5的拷贝中数量
+                                        var copyingCount = _MonitFileCase.Count(p => p.MD5 == monitFile.MD5 && p.CopyStatus == (short)CopyStatus.Excuting);
+                                        if(copyingCount>0)
+                                        {
+                                            Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "编号monitFileId[" + monitFile.Id.ToString() + "]的文件[" + monitFile.MD5 + "]正在被其他任务拷贝，当前状态变更为拷贝中");
+                                            SaveMonitFile(monitFile, CopyStatus.Excuting);//修改monitFile的状态为拷贝中
+                                            return;
+                                        }
+                                    }
+                                }
+                                #endregion
+
                                 //注意：修改FM_FILE_LIBRARY的IS_COPY字段；修改FM_MONIT_FILE的COPY_STATUS字段（待处理）
 
 
@@ -444,10 +476,22 @@ namespace Easyman.Service
                                 {
                                     File.Copy(fromPath, toPath, true);//从客户端拷贝文件到服务端(覆盖式拷贝)
                                     SaveMonitFile(monitFile, CopyStatus.Success);//修改monitFile的状态为拷贝成功
-                                    //修改文件库为已拷贝状态
+                                    #region  修改文件库为已拷贝状态
                                     var fileL = _FileLibraryCase.FirstOrDefault(monitFile.FileLibraryId.Value);
                                     fileL.IsCopy = true;
-                                    _FileLibraryCase.Update(fileL);
+                                    _FileLibraryCase.InsertOrUpdateAndGetId(fileL);
+                                    #endregion
+
+                                    #region 修改其他依赖于当前md5的FM_MONIT_FILE文件状态为拷贝中的
+                                    var monitFlist = _MonitFileCase.GetAllList(p => p.MD5 == monitFile.MD5 && (p.CopyStatus == (short)CopyStatus.Excuting || p.CopyStatus == (short)CopyStatus.Wait));
+                                    if (monitFlist != null && monitFlist.Count > 0)
+                                    {
+                                        foreach (var mf in monitFlist)
+                                        {
+                                            SaveMonitFile(mf, CopyStatus.Success);//修改monitFile的状态为拷贝成功
+                                        }
+                                    }
+                                    #endregion
                                     var msg = "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从客户端[" + fromPath + "]迁移到服务端[" + toPath + "]拷贝成功";
                                     Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                 }
@@ -474,9 +518,17 @@ namespace Easyman.Service
                                 }
 
                                 //先重命名客户端原来文件
+                                string renamePath = "";//重命名文件的初始化
                                 var repVar = toPath.Substring(toPath.LastIndexOf('.'));
+                                if (string.IsNullOrEmpty(repVar))
+                                {
+                                    renamePath = toPath + DateTime.Now.Ticks.ToString();
+                                }
+                                else
+                                {
+                                    renamePath = toPath.Replace(repVar, DateTime.Now.Ticks.ToString() + repVar);
+                                }
                                 //重命名：含时间戳
-                                var renamePath = toPath.Replace(repVar, DateTime.Now.Ticks.ToString() + repVar);
                                 try
                                 {
                                     //验证客户端文件是否存在
@@ -492,7 +544,7 @@ namespace Easyman.Service
                                         }
                                         catch (Exception e)
                                         {
-                                            var msg = "服务端到客户端还原失败:" + e.Message;
+                                            var msg = "["+ monitLogVersionId + "]服务端到客户端还原失败:" + e.Message;
                                             Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                             err.IsError = true;
                                             err.Message = msg;//
@@ -517,7 +569,7 @@ namespace Easyman.Service
                                             }
                                             catch (Exception e)
                                             {
-                                                var msg = "删除客户端重命名的文件[" + renamePath + "]失败:" + e.Message;
+                                                var msg = "["+ monitLogVersionId + "]删除客户端重命名的文件[" + renamePath + "]失败:" + e.Message;
                                                 Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                                 err.IsError = false;
                                                 err.Message = msg;//警告信息
@@ -525,7 +577,7 @@ namespace Easyman.Service
                                         }
                                         catch (Exception e)
                                         {
-                                            var msg = "编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]拷贝失败：" + e.Message;
+                                            var msg = "["+ monitLogVersionId + "]编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]拷贝失败：" + e.Message;
                                             Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                             err.IsError = true;
                                             err.Message = msg;
@@ -534,7 +586,7 @@ namespace Easyman.Service
                                 }
                                 catch (Exception e)
                                 {
-                                    var msg = "把客户端文件重命名失败，从[" + toPath + "]到[" + renamePath + "]：" + e.Message;
+                                    var msg = "["+ monitLogVersionId + "]把客户端文件重命名失败，从[" + toPath + "]到[" + renamePath + "]：" + e.Message;
                                     Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, msg);
                                     err.IsError = true;
                                     err.Message = msg;
