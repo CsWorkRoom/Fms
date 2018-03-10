@@ -54,7 +54,7 @@ namespace Em.Project.Common.Helper
                         cmd.BindByName = true;
                         cmd.CommandType = CommandType.Text;
                         cmd.CommandText = sbCmdText.ToString();
-                        cmd.CommandTimeout = 600;//10分钟  
+                        cmd.CommandTimeout = 1800;//100分钟  
 
                         //创建参数  
                         OracleParameter oraParam;
