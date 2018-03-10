@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmProjectCommonModule.cs" />
+    <Compile Include="Helper\OracleHelper.cs" />
     <Compile Include="Helper\ToolHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

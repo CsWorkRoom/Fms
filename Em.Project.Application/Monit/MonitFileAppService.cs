@@ -482,7 +482,7 @@ namespace Easyman.Service
                                     _FileLibraryCase.InsertOrUpdateAndGetId(fileL);
                                     #endregion
 
-                                    #region 修改其他依赖于当前md5的FM_MONIT_FILE文件状态为拷贝中的
+                                    #region 修改其他依赖于当前md5的FM_MONIT_FILE文件状态为拷贝成功
                                     var monitFlist = _MonitFileCase.GetAllList(p => p.MD5 == monitFile.MD5 && (p.CopyStatus == (short)CopyStatus.Excuting || p.CopyStatus == (short)CopyStatus.Wait));
                                     if (monitFlist != null && monitFlist.Count > 0)
                                     {
