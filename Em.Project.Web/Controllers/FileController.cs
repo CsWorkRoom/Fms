@@ -526,7 +526,7 @@ namespace Easyman.Web.Controllers
                            NVL (E.NAME, 'Other') ATTR_TYPE_NAME,
                            D.ID ATTR_ID,
                            D.NAME ATTR_NAME,
-                            CASE WHEN D.NAME ='Length' THEN  A.ATTR_VAL||'KB'
+                            CASE WHEN D.NAME ='Length' THEN  A.ATTR_VAL||'B'
                               ELSE   A.ATTR_VAL END  ATTR_VAL
                       FROM FM_FILE_ATTR A,
                            FM_FILE_LIBRARY B,
