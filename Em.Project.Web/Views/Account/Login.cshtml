@@ -22,11 +22,11 @@
 </head>
 <body @*oncontextmenu="return false"*@ background="" leftMargin=0 topMargin=0 bgColor=#ffffff>
     <form action="~/Account/Login?returnUrl=/" method="post" id="loginForm" onsubmit="aesEncryptPassword()" style="margin-right: 0px;
-    margin-left: 0px;overflow-x:hidden;overflow-y:hidden;
+    margin-left: 0px;
     margin-bottom: 0px;
     margin-top: 0px;"  leftMargin=0 topMargin=0>
         <input name="action" value="login" type="hidden">
-        <TABLE class=clsLoginBody height="100%" cellSpacing=0 cellPadding=0 width="100%" style="overflow-x:hidden"
+        <TABLE class=clsLoginBody height="100%" cellSpacing=0 cellPadding=0 width="100%"
                border=0>
             <TBODY>
                 <TR>
@@ -34,18 +34,18 @@
                         <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
                             <TBODY>
                                 <TR>
-                                    @*<TD>
+                                    <TD>
                                         <IMG border=0
                                              src="~/Views/Account/img2/global_masthead4_left.jpg">
-                                    </TD>*@
-                                    <TD width="100%" border="0" style="overflow-x:hidden">
+                                    </TD>
+                                    <TD>
                                         <IMG border=0
                                              src="~/Views/Account/img2/global_masthead4_center.jpg">
                                     </TD>
-                                    @*<TD background=~/Views/Account/img2/global_masthead4_rtext.jpg
+                                    <TD background=~/Views/Account/img2/global_masthead4_rtext.jpg
                                         width="100%" border="0">
                                         &nbsp;
-                                    </TD>*@
+                                    </TD>
                                 </TR>
                                 <TR>
                                     <TD height=35
