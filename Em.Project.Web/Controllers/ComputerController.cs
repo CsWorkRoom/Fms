@@ -121,7 +121,7 @@ namespace Easyman.Web.Controllers
         /// <param name="folderName"></param>
         public string MonitorStart(string ip, string folderName, long scriptNodeCaseId)
         {
-            string tip = "1";
+            string tip="" ;
             MonitLogModel monitLog = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("开启对{0}的{1}监控", ip, folderName), LogTime = DateTime.Now };
             _MonitFileAppService.Log(monitLog);
             _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("服务器IP({0})检测...", ip), LogTime = DateTime.Now });
@@ -167,9 +167,10 @@ namespace Easyman.Web.Controllers
                     string selectPath = string.Format(@"\\{0}\{1}", ip, folderName);
                     var dicInfo = new DirectoryInfo(selectPath);//选择的目录信息 
                     _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:获取当前服务器的最新目录..."), LogTime = DateTime.Now });
-                    
-                    RecycleDir(dicInfo, computer, folder, null);
-                    _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:成功遍历当前目录..."), LogTime = DateTime.Now });
+
+                  
+                    RecycleDir(dicInfo, computer, folder, null,ref tip);
+                    _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:成功遍历{0}下{1}目录;总个数:{2}",ip, folderName,waitFiles.Count.ToString()), LogTime = DateTime.Now });
                   
                     //批量保存文件信息
                     SaveFileInfo(waitFiles,folder.Id,computer.Id,scriptNodeCaseId);
@@ -217,7 +218,7 @@ namespace Easyman.Web.Controllers
                     //    _MonitFileAppService.Log(monitLogErr);
                     //}
 
-                    return string.Format("结果:true;监控提示:对{0}的{1}监控完成!", ip, folderName);
+                    return string.Format("结果:true;监控提示:对{0}的{1}监控完成!{2}", ip, folderName,tip);
                 }
                 catch (Exception ex)
                 {
@@ -614,7 +615,7 @@ namespace Easyman.Web.Controllers
         /// <param name="computer"></param>
         /// <param name="folder"></param>
         /// <param name="pguid"></param>
-        public void RecycleDir(DirectoryInfo directory, ComputerModel computer,FolderModel folder,string pguid)
+        public void RecycleDir(DirectoryInfo directory, ComputerModel computer,FolderModel folder,string pguid,ref string mess)
         {
             string filterName=MonitConst.RestoreStr;
             string filterDataBase = MonitConst.DataBaseStr;
@@ -622,9 +623,7 @@ namespace Easyman.Web.Controllers
             FileInfo[] textFiles = directory.GetFiles("*.*", SearchOption.TopDirectoryOnly);
             foreach (FileInfo temp in textFiles)
             {
-            //    _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:"+ temp.FullName), LogTime = DateTime.Now });
-              
-                if (!temp.FullName.Contains(filterName)&& !temp.FullName.Contains(filterDataBase))
+                   if (!temp.FullName.Contains(filterName)&& !temp.FullName.Contains(filterDataBase))
                 {
                     MonitFileTemp _monitFile = InitMonitFileSec(directory.FullName.ToString() + "\\" + temp, false, temp.Name, temp.FullName, temp.Extension, pguid, computer, folder, temp.Length);
                     _monitFile.Size = temp.Length;
@@ -660,7 +659,15 @@ namespace Easyman.Web.Controllers
 
                     waitFiles.Add(_monitFile);
 
-                    this.RecycleDir(temp, computer, folder, _monitFile.Id);
+                    try
+                    {
+                        this.RecycleDir(temp, computer, folder, _monitFile.Id,ref mess);
+                    }
+                    catch (Exception ex)
+                    {
+                        mess += temp.FullName+":"+ex.Message + ";";
+                        _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:遍历文件夹{0}异常;{1}" , temp.FullName,ex.Message), LogTime = DateTime.Now });
+                    }
                 }
             }
         }
