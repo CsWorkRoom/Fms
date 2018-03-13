@@ -508,7 +508,9 @@ namespace Easyman.Service
                                 Log(monitFile.CaseVersionId, monitLogVersionId, monitFile.Id, (short)logType, "开始启动把编号monitFileId[" + monitFile.Id.ToString() + "]的文件从服务端[" + fromPath + "]迁移到客户端[" + toPath + "]");
                                 //SaveMonitFile(monitFile, CopyStatus.Excuting);
 
-                                string curMd5 = FileTool.GetFileHash(toPath);//获取客户端文件的md5
+                                //string curMd5 = FileTool.GetFileHash(toPath);//获取客户端文件的md5 --原方法
+                                string curMd5 = FileTool.GetFileMd5(toPath);//获取客户端文件的md5 --原方法
+
                                 //如果客户端文件和待还原文件md5一致，直接提示还原成功并返回（不做任何操作）
                                 if (!string.IsNullOrEmpty(curMd5) && curMd5 == monitFile.MD5)
                                 {
@@ -803,7 +805,8 @@ namespace Easyman.Service
                         {
                             try
                             {
-                                string curMd5 = FileTool.GetFileHash(temp.FullName);
+                                //string curMd5 = FileTool.GetFileHash(temp.FullName);
+                                string curMd5 = FileTool.GetFileMd5(temp.FullName);
                                 if (!string.IsNullOrEmpty(curMd5) && curMd5 == curDataRow["MD5"].ToString())
                                 {
                                     file = temp;

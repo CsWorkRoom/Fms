@@ -1,0 +1,222 @@
+﻿@using System.Web.Optimization
+@{
+    Layout = null;
+    ViewBag.Title = "Login";
+}
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="shortcut icon" href="~/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- CSS -->
+    @*@Styles.Render("~/Bundles/bootstrap/css")*@
+    @Styles.Render("~/Bundles/alert/css")
+    @Styles.Render("~/Bundles/common/css")
+
+    <link href="~/fonts/css/font-awesome.css" rel="stylesheet" />
+    @*<link href="~/Views/Account/css/newlogin.css" rel="stylesheet" />*@
+   
+</head>
+<body @*oncontextmenu="return false"*@ background="" leftMargin=0 topMargin=0 bgColor=#ffffff>
+    <form action="~/Account/Login?returnUrl=/" method="post" id="loginForm" onsubmit="aesEncryptPassword()" style="margin-right: 0px;
+    margin-left: 0px;overflow-x:hidden;overflow-y:hidden;
+    margin-bottom: 0px;
+    margin-top: 0px;"  leftMargin=0 topMargin=0>
+        <input name="action" value="login" type="hidden">
+        <TABLE class=clsLoginBody height="100%" cellSpacing=0 cellPadding=0 width="100%" style="overflow-x:hidden"
+               border=0>
+            <TBODY>
+                <TR>
+                    <TD height=1>
+                        <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+                            <TBODY>
+                                <TR>
+                                    @*<TD>
+                                        <IMG border=0
+                                             src="~/Views/Account/img2/global_masthead4_left.jpg">
+                                    </TD>*@
+                                    <TD width="100%" border="0" style="overflow-x:hidden">
+                                        <IMG border=0
+                                             src="~/Views/Account/img2/global_masthead4_center.jpg">
+                                    </TD>
+                                    @*<TD background=~/Views/Account/img2/global_masthead4_rtext.jpg
+                                        width="100%" border="0">
+                                        &nbsp;
+                                    </TD>*@
+                                </TR>
+                                <TR>
+                                    <TD height=35
+                                        background=~/Views/Account/img2/hdr_extension3.gif
+                                        width="100%" colSpan=100 border="0">
+                                        &nbsp;
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                    </TD>
+                </TR>
+                <TR>
+                    <TD style="PADDING-BOTTOM: 25px; PADDING-TOP: 75px" align=center>
+                        <TABLE class=clsLoginBody
+                               style="BORDER-TOP: #006699 1px solid; BORDER-RIGHT: #006699 1px solid; BORDER-BOTTOM: #006699 1px solid; BORDER-LEFT: #006699 1px solid; BACKGROUND-COLOR: #e8e8e8"
+                               accessKey="" cellSpacing=0 cellPadding=0 border=0>
+                            <TBODY>
+                                <TR>
+                                    <TD style="BORDER-TOP: #e8e8e8 1px solid; BORDER-RIGHT: #e8e8e8 1px solid; BORDER-BOTTOM: #e8e8e8 1px solid; PADDING-LEFT: 8px; BORDER-LEFT: #e8e8e8 1px solid"
+                                        height=25 background=~/Views/Account/img2/hdr_extension.gif
+                                        colSpan=100>
+                                        <B>
+                                            <FONT color=#ffffff size=2
+                                                  face=Tahoma>Login</FONT>
+                                        </B>
+                                    </TD>
+                                </TR>
+                                <TR style="padding-top: 8px;padding-left: 8px;height:45px">
+                                    <TD noWrap style="font-size:13px;margin-left:3px">User name:</TD>
+                                    <TD>
+                                        <input id="TenancyName" name="TenancyName" type="hidden" value="管理后台">
+                                        <input id="ReturnUrlHash" name="ReturnUrlHash" type="hidden" value="">
+
+                                        <INPUT id=UsernameOrEmailAddress style="font-size: 10pt;width: 200px"
+                                               name=UsernameOrEmailAddress>
+                                    </TD>
+                                </TR>
+                                <TR style="PADDING-LEFT: 8px">
+                                    <TD style="font-size:13px;margin-left:3px">Password:</TD>
+                                    <TD>
+                                        <INPUT id=pwd style="font-size: 10pt;width: 200px"
+                                               type=password name=Password>
+                                    </TD>
+                                </TR>
+
+                                <TR>
+                                    <TD></TD>
+                                    <TD style="padding-top: 5px; padding-left: 8px;font-size:13px" colSpan=2>
+                                        <INPUT tabIndex=0 id=chkRemember
+                                               style="HEIGHT: 16px; WIDTH: 14px; LEFT: 0px; TOP: 0px" type=checkbox
+                                               name=chkRemember> Remember me
+                                    </TD>
+                                </TR>
+                                <TR id=SubmitNormal_TableRow>
+                                    <TD style="PADDING-TOP: 8px; PADDING-LEFT: 8px; PADDING-RIGHT: 8px"
+                                        colSpan=100 align=right>
+                                        @*<IMG tabIndex=0 id="submit" type="submit"
+                                             language=VBScript style="CURSOR: hand" border=0 name=imglogin
+                                             src="~/Views/Account/img2/btn_login.gif">*@
+
+                                        <input style="width: 30%;" id="submit" type="submit" value="Login">
+                                    </TD>
+                                </TR>
+                                <tr>
+                                    @*<TD></TD>*@
+                                    <TD colspan="2"><div style="padding: 5px 0 10px 5px; color:red; font-size: 12px;width: 268px;margin-top: 10px;" id="error-message"></div></TD>
+                                </tr>
+                                <TR>
+                                    <TD height=3></TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                    </TD>
+                </TR>
+                <TR id=InvalidLoginMsg_TableRow_1
+                    style="POSITION: absolute; VISIBILITY: hidden">
+                    <TD colSpan=100 align=center><FONT color=crimson></FONT></TD>
+                </TR>
+                <TR id=InvalidLoginMsg_TableRow_2
+                    style="POSITION: absolute; VISIBILITY: hidden">
+                    <TD style="PADDING-BOTTOM: 20px" colSpan=100 align=center>
+                        <FONT color=crimson></FONT>
+                    </TD>
+                </TR>
+                <TR>
+                    <TD height="100%" vAlign=bottom colSpan=100 noWrap align=left>
+                        <IFRAME style="HEIGHT: 50pt; WIDTH: 500pt"
+                                src="~/Views/Account/img2/Copyright.htm" frameBorder=no
+                                name=Copyright
+                                scrolling=no></IFRAME>
+                    </TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+        </form>
+        <!-- Javascript -->
+        @Scripts.Render("~/Bundles/jquery/js")
+        @Scripts.Render("~/Bundles/bootstrap/js")
+        @Scripts.Render("~/Bundles/common/js")
+        @Scripts.Render("~/Bundles/alert/js")
+        <script src="~/Views/Account/js/login.js"></script>
+    <script type="text/javascript">
+    var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+    // alert(isChrome);
+    if (isChrome) {
+        //alert("是Chrome浏览器");
+    } else {
+        swal({
+            title: "浏览器兼容提升",
+            text: "检测到您使用的不是Chrome浏览器，是否下载Chrome浏览器?",
+            type: "success",
+            confirmButtonText: "是",
+            cancelButtonText: "否",
+            showCancelButton: true,
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                window.downloadFile(bootPATH + "Chrome.exe");
+            }
+        });
+
+        //alert("为了您更好的系统体验使用，建设使用谷歌浏览器。如需要下载，请在网页底部直接下载安装！");
+    }
+
+    //#region 下载网站指定路径的文件
+    window.downloadFile = function (sUrl) {
+
+        //iOS devices do not support downloading. We have to inform user about this.
+        if (/(iP)/g.test(navigator.userAgent)) {
+            alert('Your device does not support files downloading. Please try again in desktop browser.');
+            return false;
+        }
+
+        //If in Chrome or Safari - download via virtual link click
+        if (window.downloadFile.isChrome || window.downloadFile.isSafari) {
+            //Creating new link node.
+            var link = document.createElement('a');
+            link.href = sUrl;
+
+            if (link.download !== undefined) {
+                //Set HTML5 download attribute. This will prevent file from opening if supported.
+                var fileName = sUrl.substring(sUrl.lastIndexOf('/') + 1, sUrl.length);
+                link.download = fileName;
+            }
+
+            //Dispatching click event.
+            if (document.createEvent) {
+                var e = document.createEvent('MouseEvents');
+                e.initEvent('click', true, true);
+                link.dispatchEvent(e);
+                return true;
+            }
+        }
+
+        // Force file download (whether supported by server).
+        if (sUrl.indexOf('?') === -1) {
+            sUrl += '?download';
+        }
+
+        window.open(sUrl, '_self');
+        return true;
+    }
+    window.downloadFile.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+    window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
+        //#endregion
+    </script>
+</body>
+
+
+</html>
+
+
+
