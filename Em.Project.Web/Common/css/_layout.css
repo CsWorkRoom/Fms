@@ -979,7 +979,8 @@ ul.treeview-down {
     font-size: 16px;
     line-height: 50px;
     text-align: center;
-    width: 220px;
+    width: 215px;
+    /*width: 220px;*/
     font-family: PingFangSC-Light,'helvetica neue','hiragino sans gb',arial,'microsoft yahei ui','microsoft yahei',simsun,sans-serif;
     padding: 0 15px;
     font-weight: 200;

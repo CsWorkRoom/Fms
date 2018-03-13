@@ -1954,7 +1954,7 @@
     <Content Include="Views\Account\img2\global_masthead4_center.jpg" />
     <Content Include="Views\Account\img2\global_masthead4_left.jpg" />
     <Content Include="Views\Account\img2\global_masthead4_rtext.jpg" />
-    <Content Include="Views\Account\img2\hdr_extension.gif" />
+    <Content Include="Views\Account\img2\hdr_extension.jpg" />
     <Content Include="Views\Account\img2\hdr_extension3.gif" />
     <Content Include="Views\Account\img2\_util_ClientCookies_JVS.htm" />
     <Content Include="Views\Account\img2\_util_ClientCookies_VBS.htm" />
@@ -2514,6 +2514,8 @@
     <Content Include="Views\File\ShowMonitFile.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\File\UploadFile.cshtml" />
+    <Content Include="Views\Account\Login - 复制.cshtml" />
+    <Content Include="Views\Shared\_Layout - 复制.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
