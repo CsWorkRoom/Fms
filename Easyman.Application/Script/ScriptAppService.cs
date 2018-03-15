@@ -383,6 +383,9 @@ namespace Easyman.Service
                     case 1:
                         node_list[i].RETURN_CODE_STR = "成功";
                         break;
+                    case 2:
+                        node_list[i].RETURN_CODE_STR = "预警";
+                        break;
                     default:
                         node_list[i].RETURN_CODE_STR = "";
                         break;
