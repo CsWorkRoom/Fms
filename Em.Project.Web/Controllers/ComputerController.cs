@@ -224,7 +224,7 @@ namespace Easyman.Web.Controllers
                     }
                     else
                     {
-                        return string.Format("结果:warn;监控提示:对{0}的{1}监控完成!{2}", ip, folderName, tip);
+                        return string.Format("结果:warn;监控提示:对{0}的{1}监控完成!但包含预警信息:{2}", ip, folderName, tip);
                     }
                 }
                 catch (Exception ex)
