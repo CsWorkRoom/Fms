@@ -192,7 +192,7 @@ namespace Easyman.Web.Controllers
                     //        MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})下生成新版本号", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id };
                     //        _MonitFileAppService.Log(monitLogErr);
                     //        _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})开始生产新的目录树", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id });
-                           
+
                     //        if (plusFiles != null && plusFiles.Count() > 0)
                     //        {
                     //            str += "/监控文件夹存在文件删除的操作";
@@ -204,12 +204,12 @@ namespace Easyman.Web.Controllers
 
                     //            }
                     //        }
-                           
+
                     //    }
                     //    else
                     //    {
                     //        str = "监控文件夹无文件变动";
-                            
+
                     //    }
                     //}
                     //else
@@ -218,7 +218,14 @@ namespace Easyman.Web.Controllers
                     //    _MonitFileAppService.Log(monitLogErr);
                     //}
 
-                    return string.Format("结果:true;监控提示:对{0}的{1}监控完成!{2}", ip, folderName,tip);
+                    if (tip == "")
+                    {
+                        return string.Format("结果:true;监控提示:对{0}的{1}监控完成!{2}", ip, folderName, tip);
+                    }
+                    else
+                    {
+                        return string.Format("结果:warn;监控提示:对{0}的{1}监控完成!{2}", ip, folderName, tip);
+                    }
                 }
                 catch (Exception ex)
                 {
