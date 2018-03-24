@@ -148,13 +148,14 @@ namespace Em.Project.Common.Helper
         /// <summary>
         /// 
         /// </summary>
-        public static void ExeProduce(string conStr,string ticks, long folderId, long computerId, long scriptNodeCaseId)
+        public static string ExeProduce(string conStr,string ticks, long folderId, long computerId, long scriptNodeCaseId)
         {
-
+            string outMsg = "";
             using (OracleConnection oc = new OracleConnection(conStr))
             {
                 try
                 {
+
                     oc.Open();
                     OracleCommand om = oc.CreateCommand();
                     om.CommandType = CommandType.StoredProcedure;
@@ -167,19 +168,23 @@ namespace Em.Project.Common.Helper
                     om.Parameters["COMPUTER_ID"].Value = computerId;
                     om.Parameters.Add("SCRIPT_NODE_CASE_ID", OracleDbType.Decimal).Direction = ParameterDirection.Input;
                     om.Parameters["SCRIPT_NODE_CASE_ID"].Value = scriptNodeCaseId;
+                    om.Parameters.Add("OUT_MSG", OracleDbType.Varchar2).Direction = ParameterDirection.Output;
+                    om.Parameters["OUT_MSG"].Value = outMsg;
                     om.ExecuteNonQuery();
-                    oc.Close();
+                    outMsg=om.Parameters["OUT_MSG"].Value.ToString();
+                    oc.Close();                   
                 }
                 catch (Exception ex)
-                {
+                {                 
                     throw ex;
                 }
                 finally
                 {
                     if (oc != null) oc.Close();
                 }
+              
             }
-               
+            return outMsg;
 
         }
         #endregion

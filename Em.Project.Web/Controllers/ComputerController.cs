@@ -158,7 +158,7 @@ namespace Easyman.Web.Controllers
             string userName = computer.UserName.Trim();//lcz2016
             string pwd = GetDecryptPwd(computer.Pwd.Trim());//lcz201314
 
-
+            string outMsg= "";
             // 通过IP 用户名 密码 访问远程目录  不需要权限
             using (SharedTool tool = new SharedTool(userName, pwd, ip))
             {
@@ -173,7 +173,7 @@ namespace Easyman.Web.Controllers
                     _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:成功遍历{0}下{1}目录;总个数:{2}",ip, folderName,waitFiles.Count.ToString()), LogTime = DateTime.Now });
                   
                     //批量保存文件信息
-                    SaveFileInfo(waitFiles,folder.Id,computer.Id,scriptNodeCaseId);
+                    outMsg=SaveFileInfo(waitFiles,folder.Id,computer.Id,scriptNodeCaseId);
 
                     //string str = "监控文件夹无文件变化";
                     //if (waitFiles != null && waitFiles.Count > 0)
@@ -220,11 +220,11 @@ namespace Easyman.Web.Controllers
 
                     if (tip == "")
                     {
-                        return string.Format("结果:true;监控提示:对{0}的{1}监控完成!{2}", ip, folderName, tip);
+                        return string.Format("结果:true;监控提示:对{0}的{1}监控完成!{2};{3}", ip, folderName, tip,outMsg);
                     }
                     else
                     {
-                        return string.Format("结果:warn;监控提示:对{0}的{1}监控完成!但包含预警信息:{2}", ip, folderName, tip);
+                        return string.Format("结果:warn;监控提示:对{0}的{1}监控完成!但包含预警信息:{2};{3}", ip, folderName, tip,outMsg);
                     }
                 }
                 catch (Exception ex)
@@ -238,7 +238,7 @@ namespace Easyman.Web.Controllers
 
         #region 使用新模式保存文件信息
 
-        private void SaveFileInfo(List<MonitFileTemp> waitFiles,long folderId,long computerId,long scriptNodeCaseId)
+        private string SaveFileInfo(List<MonitFileTemp> waitFiles,long folderId,long computerId,long scriptNodeCaseId)
         {
             string connString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString.ToString();
             Dictionary<string, object> datas = new Dictionary<string, object>();
@@ -327,8 +327,9 @@ namespace Easyman.Web.Controllers
             OracleHelper.BatchInsert(tableProName, pros, connString, IdByPros.Count);
             _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("{1}的共享目录{0}文件属性monit_file_temp_pro加载成功,批次{2}", folderId.ToString(), computerId.ToString(), operTime), LogTime = DateTime.Now });
             //调用存储过程保存文件相关信息
-            OracleHelper.ExeProduce(connString, operTime,  folderId,  computerId,  scriptNodeCaseId);
+            string outMsg=OracleHelper.ExeProduce(connString, operTime,  folderId,  computerId,  scriptNodeCaseId);
             _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("{1}的共享目录{0},成功调用SaveData方法,批次{2}", folderId.ToString(), computerId.ToString(), operTime), LogTime = DateTime.Now });
+            return outMsg;
         }
         private void SaveFileInfo(List<MonitFileTemp> waitFiles, FolderVersionModel folderVersion, CaseVersionModel caseVersionModel)
         {
