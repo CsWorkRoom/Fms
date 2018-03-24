@@ -328,7 +328,7 @@ namespace Easyman.Web.Controllers
             _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("{1}的共享目录{0}文件属性monit_file_temp_pro加载成功,批次{2}", folderId.ToString(), computerId.ToString(), operTime), LogTime = DateTime.Now });
             //调用存储过程保存文件相关信息
             string outMsg=OracleHelper.ExeProduce(connString, operTime,  folderId,  computerId,  scriptNodeCaseId);
-            _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("{1}的共享目录{0},成功调用SaveData方法,批次{2}", folderId.ToString(), computerId.ToString(), operTime), LogTime = DateTime.Now });
+            _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("{1}的共享目录{0},成功调用SaveData方法,批次{2},{3}", folderId.ToString(), computerId.ToString(), operTime, outMsg), LogTime = DateTime.Now });
             return outMsg;
         }
         private void SaveFileInfo(List<MonitFileTemp> waitFiles, FolderVersionModel folderVersion, CaseVersionModel caseVersionModel)

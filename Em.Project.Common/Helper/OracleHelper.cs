@@ -169,9 +169,9 @@ namespace Em.Project.Common.Helper
                     om.Parameters.Add("SCRIPT_NODE_CASE_ID", OracleDbType.Decimal).Direction = ParameterDirection.Input;
                     om.Parameters["SCRIPT_NODE_CASE_ID"].Value = scriptNodeCaseId;
                     om.Parameters.Add("OUT_MSG", OracleDbType.Varchar2).Direction = ParameterDirection.Output;
-                    om.Parameters["OUT_MSG"].Value = outMsg;
+
                     om.ExecuteNonQuery();
-                    outMsg=om.Parameters["OUT_MSG"].Value.ToString();
+                    outMsg=om.Parameters[4].Value.ToString();
                     oc.Close();                   
                 }
                 catch (Exception ex)
