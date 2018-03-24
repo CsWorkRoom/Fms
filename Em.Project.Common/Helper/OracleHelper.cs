@@ -168,7 +168,7 @@ namespace Em.Project.Common.Helper
                     om.Parameters["COMPUTER_ID"].Value = computerId;
                     om.Parameters.Add("SCRIPT_NODE_CASE_ID", OracleDbType.Decimal).Direction = ParameterDirection.Input;
                     om.Parameters["SCRIPT_NODE_CASE_ID"].Value = scriptNodeCaseId;
-                    om.Parameters.Add("OUT_MSG", OracleDbType.Varchar2).Direction = ParameterDirection.Output;
+                    om.Parameters.Add("OUT_MSG", OracleDbType.Varchar2,500).Direction = ParameterDirection.Output;
 
                     om.ExecuteNonQuery();
                     outMsg=om.Parameters[4].Value.ToString();
