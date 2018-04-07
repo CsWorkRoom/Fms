@@ -181,7 +181,8 @@ namespace Easyman.Web.Controllers
                                    LEFT JOIN FM_FILE_LIBRARY C ON(A.FILE_LIBRARY_ID = C.ID)
                              WHERE A.FOLDER_VERSION_ID = (SELECT MAX(K.ID)
                                                             FROM FM_FOLDER_VERSION K
-                                                           WHERE K.FOLDER_ID = {0})", folder.Id);
+                                                           WHERE K.FOLDER_ID = {0})
+                                   AND A.FOLDER_ID={0}", folder.Id);
                             #endregion
 
                             DataTable fileDt = DbHelper.ExecuteGetTable(fileSql);
@@ -297,6 +298,7 @@ namespace Easyman.Web.Controllers
                                          WHERE     A.FOLDER_VERSION_ID = (SELECT MAX (K.ID)
                                                                             FROM FM_FOLDER_VERSION K
                                                                            WHERE K.FOLDER_ID = {0})
+                                               AND A.FOLDER_ID={0}
                                                AND PARENT_ID IS NULL", arr[1]);
                         #endregion
 
@@ -438,6 +440,7 @@ namespace Easyman.Web.Controllers
                          WHERE     A.FOLDER_VERSION_ID = (SELECT MAX(K.ID)
                                                             FROM FM_FOLDER_VERSION K
                                                            WHERE K.FOLDER_ID = {0})
+                               AND A.FOLDER_ID={0}
                                AND A.PARENT_ID IS NULL", folderId);
             #endregion
 

@@ -174,7 +174,7 @@ namespace Easyman.Web.Controllers
                   
                     //批量保存文件信息
                     outMsg=SaveFileInfo(waitFiles,folder.Id,computer.Id,scriptNodeCaseId);
-
+                    waitFiles.Clear();
                     //string str = "监控文件夹无文件变化";
                     //if (waitFiles != null && waitFiles.Count > 0)
                     //{
