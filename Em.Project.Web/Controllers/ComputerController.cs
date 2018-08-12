@@ -113,6 +113,121 @@ namespace Easyman.Web.Controllers
         public  List<MonitFileTemp> waitFiles = new List<MonitFileTemp>();
         public  List<MonitFileModel> monitFileModels = new List<MonitFileModel>();
         public string masterPath = ConfigurationManager.AppSettings["MasterPath"];
+
+
+        #region 删除文件大小不一致的文件
+        public string DeleteFileByMD5(string ip)
+        {
+            string sqlMD5 = string.Format(@"SELECT F.MD5
+                       FROM FM_FILE_INFOS F, fm_file_library l
+                      WHERE F.MD5 = L.MD5 AND F.SIZES != L.""SIZE"" AND 
+                      L.""SIZE"" != '0'  AND CAST(F.SIZES AS INT) / CAST(L.""SIZE"" AS INT) > 1 
+                      AND mod(CAST(F.SIZES AS INT), CAST(L.""SIZE"" AS INT)) = 0");
+            DataTable dtMD5 = DbHelper.ExecuteGetTable(sqlMD5);
+            int len = dtMD5.Rows.Count;
+            IList<string> md5s = new List<string>();
+
+            foreach (DataRow dr in dtMD5.Rows)
+            {
+                md5s.Add(dr[0].ToString());
+            }
+
+            string selectPath = string.Format(@"D:\");
+            var directory = new DirectoryInfo(selectPath);//选择的目录信息 
+            DirectoryInfo[] dic = directory.GetDirectories("*10.*", SearchOption.TopDirectoryOnly);
+            foreach (DirectoryInfo temp in dic)
+            {
+                DirectoryInfo[] dicNext = temp.GetDirectories("*.*", SearchOption.TopDirectoryOnly);
+                foreach (DirectoryInfo dinfo in dicNext)
+                {
+                    DeleteFileItem(dinfo,md5s);
+                }
+            }
+            return string.Format("删除文件不一致:文件删除完成");
+        }
+
+
+        public void DeleteFileItem(DirectoryInfo temp, IList<string> md5s)
+        {
+           
+            Dictionary<string, string> file10 = new Dictionary<string, string>();
+            FileInfo[] textFiles = temp.GetFiles("*.*", SearchOption.TopDirectoryOnly);
+            foreach (FileInfo tempFile in textFiles)
+            {
+                string extension = tempFile.Extension;
+                string name = tempFile.Name;
+                if (!string.IsNullOrEmpty(extension))
+                  name = tempFile.Name.Replace(extension,"");
+                if (md5s.Contains(name))
+                {
+                    System.IO.File.Delete(tempFile.FullName);
+                }
+
+            }
+       
+        }
+        #endregion
+
+
+        #region 遍历生成的MD5文件
+        public string ReclyFile(string ip)
+        {
+
+            string selectPath = string.Format(@"D:\");
+            var directory = new DirectoryInfo(selectPath);//选择的目录信息 
+            DirectoryInfo[] dic = directory.GetDirectories("*10.*", SearchOption.TopDirectoryOnly);
+            foreach (DirectoryInfo temp in dic)
+            {
+                DirectoryInfo[] dicNext = temp.GetDirectories("*.*", SearchOption.TopDirectoryOnly);
+                foreach (DirectoryInfo dinfo in dicNext)
+                {
+                    reFile(dinfo);
+                }
+
+
+
+            }
+
+
+            return string.Format("重复文件处理:文件遍历完成");
+        }
+
+        public void reFile(DirectoryInfo temp)
+        {
+            Dictionary<string, string> file10 = new Dictionary<string, string>();
+            FileInfo[] textFiles = temp.GetFiles("*.*", SearchOption.TopDirectoryOnly);
+            foreach (FileInfo tempFile in textFiles)
+            {
+                string name = tempFile.Name;
+                string size = tempFile.Length.ToString();
+                file10.Add(name, size);
+            }
+
+            string connString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString.ToString();
+            Dictionary<string, object> datas = new Dictionary<string, object>();
+            int len = file10.Count;
+            //定义数据，存放列数据
+            string[] names = new string[len];
+            string[] sizes = new string[len];
+
+            for (int i = 0; i < len; i++)
+            {
+                var mft = file10.ElementAt(i);
+                names[i] = mft.Key;
+                sizes[i] = mft.Value;
+
+            }
+
+            //file_infos文件基础信息对应关系
+            datas.Add("NAMES", names);
+            datas.Add("SIZES", sizes);
+
+            //monit_file文件基础信息
+            string tableName = "FM_FILE_INFOS";
+            OracleHelper.BatchInsert(tableName, datas, connString, len);
+        }
+
+#endregion
         #region 开始监听
         /// <summary>
         /// 监听入口
@@ -121,7 +236,9 @@ namespace Easyman.Web.Controllers
         /// <param name="folderName"></param>
         public string MonitorStart(string ip, string folderName, long scriptNodeCaseId)
         {
-            string tip="" ;
+            string tip = "";
+            try {          
+           
             MonitLogModel monitLog = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("开启对{0}的{1}监控", ip, folderName), LogTime = DateTime.Now };
             _MonitFileAppService.Log(monitLog);
             _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("服务器IP({0})检测...", ip), LogTime = DateTime.Now });
@@ -159,80 +276,38 @@ namespace Easyman.Web.Controllers
             string pwd = GetDecryptPwd(computer.Pwd.Trim());//lcz201314
 
             string outMsg= "";
-            // 通过IP 用户名 密码 访问远程目录  不需要权限
-            using (SharedTool tool = new SharedTool(userName, pwd, ip))
-            {
-                try
+                // 通过IP 用户名 密码 访问远程目录  不需要权限
+                using (SharedTool tool = new SharedTool(userName, pwd, ip))
                 {
+
                     string selectPath = string.Format(@"\\{0}\{1}", ip, folderName);
                     var dicInfo = new DirectoryInfo(selectPath);//选择的目录信息 
                     _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:获取当前服务器的最新目录..."), LogTime = DateTime.Now });
 
-                  
-                    RecycleDir(dicInfo, computer, folder, null,ref tip);
-                    _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:成功遍历{0}下{1}目录;总个数:{2}",ip, folderName,waitFiles.Count.ToString()), LogTime = DateTime.Now });
-                  
+
+                    RecycleDir(dicInfo, computer, folder, null, ref tip);
+                    _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:成功遍历{0}下{1}目录;总个数:{2}", ip, folderName, waitFiles.Count.ToString()), LogTime = DateTime.Now });
+
                     //批量保存文件信息
-                    outMsg=SaveFileInfo(waitFiles,folder.Id,computer.Id,scriptNodeCaseId);
+                    outMsg = SaveFileInfo(waitFiles, folder.Id, computer.Id, scriptNodeCaseId);
                     waitFiles.Clear();
-                    //string str = "监控文件夹无文件变化";
-                    //if (waitFiles != null && waitFiles.Count > 0)
-                    //{
-                    //    var files = from f in waitFiles
-                    //                where f.IsChange == true
-                    //                select f;
-                    //    var plusFiles = monitFileModels.Where(a => !waitFiles.Exists(t => a.ClientPath == t.ClientPath));
-
-                    //    if ((files != null && files.Count() > 0) || (plusFiles != null && plusFiles.Count() > 0))
-                    //    {
-                    //        if (files != null && files.Count() > 0)
-                    //            str = "监控文件夹存在文件变动的操作";
-                    //        FolderVersionModel folderVersion = CheckFolderVersion(folder.Id, "add");
-                    //        CaseVersionModel caseVersionModel = SaveCaseVersion(folderVersion, scriptNodeCaseId);
-                    //        MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})下生成新版本号", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id };
-                    //        _MonitFileAppService.Log(monitLogErr);
-                    //        _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})开始生产新的目录树", ip, folderName), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id });
-
-                    //        if (plusFiles != null && plusFiles.Count() > 0)
-                    //        {
-                    //            str += "/监控文件夹存在文件删除的操作";
-                    //            foreach (MonitFileModel f in plusFiles)
-                    //            {
-                    //                f.Status = (short)MonitStatus.Delete;
-                    //                _MonitFileAppService.InsertOrUpdateMonitFile(f);
-                    //                _MonitFileAppService.Log(new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:({0})由于当前版本文件变动，上一版本标记为删除...", f.Name), LogTime = DateTime.Now, CaseVersionId = caseVersionModel.Id });
-
-                    //            }
-                    //        }
-
-                    //    }
-                    //    else
-                    //    {
-                    //        str = "监控文件夹无文件变动";
-
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控提示:此({0})的({1})下暂无可监控的子目录", ip, folderName), LogTime = DateTime.Now };
-                    //    _MonitFileAppService.Log(monitLogErr);
-                    //}
 
                     if (tip == "")
                     {
-                        return string.Format("结果:true;监控提示:对{0}的{1}监控完成!{2};{3}", ip, folderName, tip,outMsg);
+                        return string.Format("结果:true;监控提示:对{0}的{1}监控完成!{2};{3}", ip, folderName, tip, outMsg);
                     }
                     else
                     {
-                        return string.Format("结果:warn;监控提示:对{0}的{1}监控完成!但包含预警信息:{2};{3}", ip, folderName, tip,outMsg);
+                        return string.Format("结果:warn;监控提示:对{0}的{1}监控完成!但包含预警信息:{2};{3}", ip, folderName, tip, outMsg);
                     }
+
                 }
-                catch (Exception ex)
-                {
-                    MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控异常:此{0}的{1}监控发生异常,{2}", ip, folderName, ex.Message), LogTime = DateTime.Now };
-                    _MonitFileAppService.Log(monitLogErr);
-                    return string.Format("结果:false;监控提示:对{0}的{1}监控发生异常,{2},{3}", ip, folderName, ex.Message.ToString(), tip);
-                }
+            }
+            catch (Exception ex)
+            {
+                MonitLogModel monitLogErr = new MonitLogModel() { LogType = (short)LogType.MonitLog, LogMsg = string.Format("监控异常:此{0}的{1}监控发生异常,{2}", ip, folderName, ex.Message), LogTime = DateTime.Now };
+                _MonitFileAppService.Log(monitLogErr);
+                return string.Format("结果:false;监控提示:对{0}的{1}监控发生异常,{2},{3}", ip, folderName, ex.Message.ToString(), tip);
             }
         }
 
