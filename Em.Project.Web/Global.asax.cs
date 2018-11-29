@@ -6,6 +6,7 @@ using System.Web;
 using Abp.PlugIns;
 using Easyman.Web;
 using System.IO;
+using System.Configuration;
 
 //[assembly: PreApplicationStartMethod(typeof(PreStarter), "Start")]
 namespace Easyman.Web
@@ -25,6 +26,22 @@ namespace Easyman.Web
         {
             filters.Add(new System.Web.Mvc.HandleErrorAttribute());
             //filters.Add(new Common.Mvc.ValidateUrAttributel());
+        }
+
+        /// <summary>
+        /// 发布网站的根目录（URL中的应用程序目录）
+        /// </summary>
+        public static string ApplicationPath
+        {
+            get { return Easyman.Common.Mvc.EasyManController.ApplicationPath; }
+        }
+
+        /// <summary>
+        /// 获得BD备份目录
+        /// </summary>
+        public static string DbPath
+        {
+            get { return ConfigurationManager.AppSettings["DbPath"].ToString(); }
         }
     }
 

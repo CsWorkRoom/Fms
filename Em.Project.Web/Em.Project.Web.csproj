@@ -1964,6 +1964,7 @@
     <Content Include="Views\File\js\PerfectLoad.js" />
     <Content Include="Views\File\js\rightContent.js" />
     <Content Include="Views\File\js\ztreeContent.js" />
+    <Content Include="Views\PcFile\js\Index.js" />
     <Content Include="Views\Report\js\EditReport\ChartMain.js" />
     <Content Include="Views\Report\js\ChartReport.js" />
     <Content Include="Echart\data\asset\data\aqi-beijing.json" />
@@ -2454,6 +2455,7 @@
     <Compile Include="Controllers\GlobalVarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\EasymanControllerBase.cs" />
+    <Compile Include="Controllers\PcFileController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\Results\ChallengeResult.cs" />
     <Compile Include="Global.asax.cs">
@@ -2467,6 +2469,7 @@
     <Compile Include="Models\Account\TenantSelectionViewModel.cs" />
     <Compile Include="Models\File\FileDetail.cs" />
     <Compile Include="Models\File\TreeNode.cs" />
+    <Compile Include="Models\HomeModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rdlc\rdlc.aspx.cs">
       <DependentUpon>rdlc.aspx</DependentUpon>
@@ -2516,6 +2519,7 @@
     <Content Include="Views\File\UploadFile.cshtml" />
     <Content Include="Views\Account\Login - 复制.cshtml" />
     <Content Include="Views\Shared\_Layout - 复制.cshtml" />
+    <Content Include="Views\PcFile\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

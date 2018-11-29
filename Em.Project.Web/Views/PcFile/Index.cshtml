@@ -1,0 +1,23 @@
+﻿@using Easyman.Common.Mvc.Controls
+@using System.Web.Optimization;
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+@section Styles{
+    @Styles.Render("~/Bundles/App/jqgrid/css")
+}
+<link href="~/fonts/iconfont/iconfont.css" rel="stylesheet" />
+<input type="hidden" id="dbPath" value="@ViewBag.DbPath" /> <!--db备份路径-->
+
+<!--表格区域-->
+<div style="height:100%">
+    <table id="jqGrid"></table>
+    <div id="jqGridPager"></div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/Bundles/App/jqgrid/js")    
+<script src="~/Views/PcFile/js/Index.js"></script>
+
+}
