@@ -49,12 +49,12 @@ var InitGrid = function () {
                 hidden: true,
                 editable: false
             },
-            {
-                label: '大小',
-                name: 'Size',
-                width: 100,
-                editable: false
-            },
+            //{
+            //    label: '大小',
+            //    name: 'Size',
+            //    width: 100,
+            //    editable: false
+            //},
             {
                 label: '创建时间',
                 name: 'CreateTime',
